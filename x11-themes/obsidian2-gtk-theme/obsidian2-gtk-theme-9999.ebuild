@@ -1,7 +1,7 @@
 # Copyright 1999-2020 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 DESCRIPTION="Obsidian Gnome Theme, based upon Adwaita-Maia dark skin"
 GIT_PN="theme-obsidian-2"
@@ -9,7 +9,6 @@ HOMEPAGE="https://github.com/madmaxms/${GIT_PN}"
 LICENSE="GPL-3"
 SLOT="0"
 IUSE=""
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~sparc-solaris ~x64-solaris ~x86-solaris"
 DEPEND=""
 RDEPEND="
     ${DEPEND}
@@ -28,6 +27,7 @@ else
 	SRC_URI="https://github.com/madmaxms/${GIT_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 	S=${WORKDIR}/${GIT_PN}-${PV}
 	RESTRICT="primaryuri"
+	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~sparc-solaris ~x64-solaris ~x86-solaris"
 fi
 
 src_install() {
