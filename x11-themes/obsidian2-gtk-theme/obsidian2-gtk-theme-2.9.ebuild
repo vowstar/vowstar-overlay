@@ -18,7 +18,7 @@ RDEPEND="
 "
 DOCS=(README.md)
 
-if [[ -z ${PV%%*9999} ]]; then
+if [[ ${PV} == "9999" ]]; then
 	SRC_URI=""
 	EGIT_REPO_URI="https://github.com/madmaxms/${GIT_PN}.git"
 	S=${WORKDIR}/${GIT_PN}
