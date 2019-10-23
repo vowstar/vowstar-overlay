@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE repositories SYSTEM "/dtd/repositories.dtd">
+<repositories xmlns="" version="1.0">
+<repo quality="experimental" status="unofficial">
+    <name>vowstar</name>
+    <description>Ebuilds from vowstar's git</description>
+    <homepage>http://github.com/vowstar/vowstar-overlay</homepage>
+    <source type="git">git://github.com/vowstar/vowstar-overlay.git</source>
+</repo>
+</repositories>
