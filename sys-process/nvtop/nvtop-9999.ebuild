@@ -11,7 +11,6 @@ IUSE="unicode debug"
 
 RDEPEND="
     sys-libs/ncurses:0=[unicode?]
-    sys-libs/ncurses-compat
     dev-util/cmake
     dev-vcs/git
     x11-drivers/nvidia-drivers
