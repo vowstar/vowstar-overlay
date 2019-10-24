@@ -9,13 +9,12 @@ HOMEPAGE="https://github.com/madmaxms/${GIT_PN}"
 LICENSE="GPL-3"
 SLOT="0"
 IUSE=""
-DEPEND=""
 RDEPEND="
-    ${DEPEND}
 	>=x11-libs/gtk+-3.22
 	x11-themes/gtk-engines-adwaita
 "
-DOCS=(README.md)
+DEPEND="${RDEPEND}"
+DOCS=( README.md )
 
 if [[ ${PV} == "9999" ]]; then
 	SRC_URI=""
