@@ -12,10 +12,10 @@ SLOT="0"
 IUSE="unicode debug"
 
 RDEPEND="
-    sys-libs/ncurses:0=[unicode?]
-    dev-util/cmake
-    dev-vcs/git
-    x11-drivers/nvidia-drivers
+	sys-libs/ncurses:0=[unicode?]
+	dev-util/cmake
+	dev-vcs/git
+	x11-drivers/nvidia-drivers
 "
 
 DEPEND="${RDEPEND}"
@@ -32,32 +32,32 @@ else
 fi
 
 CMAKE_CONF="
-    !debug? ( -DCMAKE_BUILD_TYPE=Release )
-    debug? ( -DCMAKE_BUILD_TYPE=Debug )
-    unicode? ( -DCURSES_NEED_WIDE=TRUE )
+	!debug? ( -DCMAKE_BUILD_TYPE=Release )
+	debug? ( -DCMAKE_BUILD_TYPE=Debug )
+	unicode? ( -DCURSES_NEED_WIDE=TRUE )
 "
 
 src_prepare() {
-    default
-    cmake-utils_src_prepare
-    mkdir -p ${BUILD_DIR}/include
-	cp -f ${FILESDIR}/nvml.h ${BUILD_DIR}/include/nvml.h
-    cp -f ${FILESDIR}/FindCurses.cmake ${WORKDIR}/${P}/cmake/modules/FindCurses.cmake
+	default
+	cmake-utils_src_prepare
+	mkdir -p "${BUILD_DIR}/include"
+	cp -f "${FILESDIR}/nvml.h" "${BUILD_DIR}/include/nvml.h"
+	cp -f "${FILESDIR}/FindCurses.cmake" "${WORKDIR}/${P}/cmake/modules/FindCurses.cmake"
 }
 
 src_configure() {
 	local mycmakeargs=(
-		-DCMAKE_INSTALL_PREFIX="${EPREFIX}"/usr
-        ${CMAKE_CONF}
+		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/usr"
+		${CMAKE_CONF}
 	)
 
-    cmake-utils_src_configure
+	cmake-utils_src_configure
 }
 
 src_compile() {
-    cmake-utils_src_compile
+	cmake-utils_src_compile
 }
 
 src_install() {
-    cmake-utils_src_install
+	cmake-utils_src_install
 }
