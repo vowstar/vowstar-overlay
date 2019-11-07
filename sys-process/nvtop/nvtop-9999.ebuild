@@ -13,12 +13,14 @@ IUSE="unicode debug"
 
 RDEPEND="
 	sys-libs/ncurses:0=[unicode?]
-	dev-util/cmake
 	dev-vcs/git
 	x11-drivers/nvidia-drivers
 "
 
-DEPEND="${RDEPEND}"
+DEPEND="
+	dev-util/cmake
+	${RDEPEND}
+"
 
 BUILD_DIR="${WORKDIR}/build"
 
@@ -28,7 +30,7 @@ if [[ ${PV} == "9999" ]] ; then
 else
 	SRC_URI="https://github.com/Syllo/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 	RESTRICT="primaryuri"
-	KEYWORDS="~amd64 ~hppa ~m68k ~mips ~s390 ~sh ~sparc ~x86 ~ppc-aix ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~m68k-mint ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
+	KEYWORDS="~amd64 ~hppa ~m68k ~mips ~s390 ~sh ~sparc ~x86 ~ppc-aix ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~m68k-mint ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
 fi
 
 CMAKE_CONF="
