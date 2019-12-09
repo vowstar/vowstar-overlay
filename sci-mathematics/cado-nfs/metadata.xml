@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+	</maintainer>
+	<use>
+		<flag name="mysql">Install mysql database to store data</flag>
+		<flag name="mpi">Whether to use MPI (Message Passing Interface) or not</flag>
+		<flag name="curl">Support fetching and pushing (requires webdav too) over http:// and https:// protocols</flag>
+		<flag name="hwloc">Displays the hardware topology in convenient formats</flag>
+	</use>
+</pkgmetadata>
