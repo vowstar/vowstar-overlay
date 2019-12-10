@@ -60,6 +60,20 @@ src_prepare() {
 	sed -i -e 's/x$ABI/xdefault/' gf2x/configure.ac || die
 	sed -i -e 's/x$ABI/xdefault/' gf2x/configure || die
 
+	sed -i '/string_join(rpath ":"/a         "${CMAKE_INSTALL_PREFIX}/${LIBSUFFIX}/filter"' CMakeLists.txt || die
+	sed -i '/string_join(rpath ":"/a         "${CMAKE_INSTALL_PREFIX}/${LIBSUFFIX}/linalg"' CMakeLists.txt || die
+	sed -i '/string_join(rpath ":"/a         "${CMAKE_INSTALL_PREFIX}/${LIBSUFFIX}/misc"' CMakeLists.txt || die
+	sed -i '/string_join(rpath ":"/a         "${CMAKE_INSTALL_PREFIX}/${LIBSUFFIX}/numbertheory"' CMakeLists.txt || die
+	sed -i '/string_join(rpath ":"/a         "${CMAKE_INSTALL_PREFIX}/${LIBSUFFIX}/sieve"' CMakeLists.txt || die
+	sed -i '/string_join(rpath ":"/a         "${CMAKE_INSTALL_PREFIX}/${LIBSUFFIX}/sqrt"' CMakeLists.txt || die
+
+	sed -i '/add_library(plingen_${v}_support ${plingen_${v}_support_sources})/a                 install(TARGETS plingen_${v}_support DESTINATION ${LIBSUFFIX}/linalg/bwc)' linalg/bwc/CMakeLists.txt || die
+    sed -i '/add_library(flint-fft ${flint_fft_files})/a     install(TARGETS flint-fft DESTINATION ${LIBSUFFIX}/linalg/bwc)' linalg/bwc/CMakeLists.txt || die
+
+	echo 'install(TARGETS bitlinalg DESTINATION ${LIBSUFFIX}/linalg)' >> linalg/CMakeLists.txt || die
+	echo 'install(TARGETS trialdiv DESTINATION ${LIBSUFFIX}/sieve)' >> sieve/CMakeLists.txt || die
+	echo 'install(TARGETS facul DESTINATION ${LIBSUFFIX}/sieve)' >> sieve/ecm/CMakeLists.txt || die
+
 	if [[ ${PV} == "9999" ]] ; then
 		# workaround c++ compile problem for non-type template parameters
 		sed -i -e 's/std=c++11/std=c++2a/' CMakeLists.txt || die
