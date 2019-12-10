@@ -45,10 +45,22 @@ src_prepare() {
 	default
 	cmake-utils_src_prepare
 
+	if use mpi ; then
+		echo "MPI=1" >> local.sh || die
+	else
+		echo "MPI=0" >> local.sh || die
+	fi
+	# Enable -O2 -DNDEBUG options
+	echo "CFLAGS=-O2 -DNDEBUG" >> local.sh || die
+	echo "CXXFLAGS=-O2 -DNDEBUG" >> local.sh || die
+
+	# install all lib to lib64 dir
+	sed -i -e 's/LIBSUFFIX lib/LIBSUFFIX lib64/' CMakeLists.txt || die
+	# workaround ABI=amd64 compile problem
+	sed -i -e 's/x$ABI/xdefault/' gf2x/configure.ac || die
+	sed -i -e 's/x$ABI/xdefault/' gf2x/configure || die
+
 	if [[ ${PV} == "9999" ]] ; then
-	    # workaround ABI=amd64 compile problem
-		sed -i -e 's/x$ABI/xdefault/' gf2x/configure.ac || die
-		sed -i -e 's/x$ABI/xdefault/' gf2x/configure || die
 		# workaround c++ compile problem for non-type template parameters
 		sed -i -e 's/std=c++11/std=c++2a/' CMakeLists.txt || die
 		sed -i -e 's/std=c++11/std=c++2a/' gf2x/Makefile.in || die
@@ -60,32 +72,22 @@ src_prepare() {
 		#sed -i -e 's/add_executable (convert_rels convert_rels.c)//' misc/CMakeLists.txt || die
 		#sed -i -e 's/target_link_libraries (convert_rels utils)//' misc/CMakeLists.txt || die
 		#sed -i -e 's~install(TARGETS convert_rels RUNTIME DESTINATION bin/misc)~~' misc/CMakeLists.txt || die
-	    # workaround ABI=amd64 compile problem
-		sed -i -e 's/x$ABI/xdefault/' gf2x/configure.ac || die
-		sed -i -e 's/x$ABI/xdefault/' gf2x/configure || die
+
 		# link with gomp to fix compile problem
 		sed -i -e 's/utils pthread/utils pthread gomp/' utils/CMakeLists.txt || die
 		# edit code to fit hwloc 2.0.0
 		sed -i -e 's/flags &= ~(HWLOC_TOPOLOGY_FLAG_IO_DEVICES | HWLOC_TOPOLOGY_FLAG_IO_BRIDGES);//' linalg/bwc/cpubinding.cpp || die
 		sed -i -e 's/hwloc_topology_set_flags(topology, flags)/hwloc_topology_set_io_types_filter(topology, HWLOC_TYPE_FILTER_KEEP_ALL)/' linalg/bwc/cpubinding.cpp || die
 	fi
-
-	if use mpi ; then
-		echo "MPI=1" >> local.sh || die
-	else
-		echo "MPI=0" >> local.sh || die
-	fi
-	# Enable -O2 -DNDEBUG options
-	echo "CFLAGS=-O2 -DNDEBUG" >> local.sh || die
-	echo "CXXFLAGS=-O2 -DNDEBUG" >> local.sh || die
-	# install all lib to lib64 dir
-	sed -i -e 's/LIBSUFFIX lib/LIBSUFFIX lib64/' CMakeLists.txt || die
 }
 
 src_configure() {
 	local mycmakeargs=(
 		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/usr"
 	)
+
+	# Install shared library, and set correctly RPATH
+	export ENABLE_SHARED=1 || die
 
 	cmake-utils_src_configure
 }
