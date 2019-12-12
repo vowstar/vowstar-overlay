@@ -12,7 +12,7 @@ DESCRIPTION="Number Field Sieve (NFS) implementation for factoring integers"
 HOMEPAGE="http://cado-nfs.gforge.inria.fr"
 LICENSE="LGPL-2.1"
 SLOT="0"
-IUSE="mpi mysql curl hwloc"
+IUSE="mpi mysql +curl +hwloc"
 
 RDEPEND="
 	!sci-mathematics/ggnfs
