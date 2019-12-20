@@ -25,9 +25,13 @@ else
 	SRC_URI="https://github.com/steveicarus/${PN}/archive/v${GITHUB_PV}.tar.gz -> ${P}.tar.gz"
 	RESTRICT="primaryuri"
 	KEYWORDS="~amd64 ~hppa ~m68k ~mips ~riscv ~s390 ~sh ~sparc ~x86 ~ppc-aix ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~m68k-mint ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
+	S="${WORKDIR}/${PN}-${GITHUB_PV}"
 fi
 
-S="${WORKDIR}/${PN}-${GITHUB_PV}"
+src_prepare() {
+	default
+	sh autoconf.sh
+}
 
 src_install() {
 	emake DESTDIR="${D}" install
