@@ -14,7 +14,14 @@ RDEPEND="
 	app-arch/bzip2
 	sys-libs/readline:0=
 	sys-libs/zlib:="
-DEPEND="${RDEPEND}"
+
+# If you are building from git, you will also need software to generate
+# the configure scripts.
+DEPEND="
+	>=sys-devel/autoconf-2.53
+	dev-util/gperf
+	${RDEPEND}
+"
 
 GITHUB_PV=$(ver_rs 1- '_')
 
