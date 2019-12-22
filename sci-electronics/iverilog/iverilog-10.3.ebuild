@@ -7,7 +7,6 @@ DESCRIPTION="A Verilog simulation and synthesis tool"
 HOMEPAGE="http://iverilog.icarus.com/"
 LICENSE="LGPL-2.1"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~sparc ~x86"
 IUSE="examples"
 
 RDEPEND="
