@@ -3,6 +3,8 @@
 
 EAPI=7
 
+inherit autotools
+
 DESCRIPTION="A Verilog simulation and synthesis tool"
 HOMEPAGE="http://iverilog.icarus.com/"
 LICENSE="LGPL-2.1"
@@ -35,7 +37,18 @@ fi
 
 src_prepare() {
 	default
-	sh autoconf.sh
+
+	# From upstreams autoconf.sh, to make it utilize the autotools eclass
+	# Here translate the autoconf.sh, equivalent to the following code
+	# > sh autoconf.sh
+
+	# Autoconf in root ...
+	eautoconf --force
+	# Precompiling lexor_keyword.gperf
+	gperf -o -i 7 -C -k 1-4,6,9,\$ -H keyword_hash -N check_identifier -t ./lexor_keyword.gperf > lexor_keyword.cc || die
+	# Precompiling vhdlpp/lexor_keyword.gperf
+	cd vhdlpp || die
+	gperf -o -i 7 --ignore-case -C -k 1-4,6,9,\$ -H keyword_hash -N check_identifier -t ./lexor_keyword.gperf > lexor_keyword.cc || die
 }
 
 src_install() {
