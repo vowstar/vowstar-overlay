@@ -5,6 +5,8 @@ EAPI=7
 
 inherit autotools
 
+GITHUB_PV=$(ver_rs 1- '_')
+
 DESCRIPTION="A Verilog simulation and synthesis tool"
 HOMEPAGE="http://iverilog.icarus.com/"
 LICENSE="LGPL-2.1"
@@ -12,19 +14,15 @@ SLOT="0"
 IUSE="examples"
 
 RDEPEND="
-	app-arch/bzip2
 	sys-libs/readline:0=
 	sys-libs/zlib:="
 
 # If you are building from git, you will also need software to generate
 # the configure scripts.
 DEPEND="
-	>=sys-devel/autoconf-2.53
 	dev-util/gperf
 	${RDEPEND}
 "
-
-GITHUB_PV=$(ver_rs 1- '_')
 
 if [[ ${PV} == "9999" ]] ; then
 	EGIT_REPO_URI="https://github.com/steveicarus/${PN}.git"
@@ -52,7 +50,7 @@ src_prepare() {
 }
 
 src_install() {
-	emake DESTDIR="${D}" install
+	default
 	einstalldocs
 	dodoc *.txt
 
