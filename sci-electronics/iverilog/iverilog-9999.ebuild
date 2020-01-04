@@ -8,7 +8,10 @@ inherit autotools
 GITHUB_PV=$(ver_rs 1- '_')
 
 DESCRIPTION="A Verilog simulation and synthesis tool"
-HOMEPAGE="http://iverilog.icarus.com"
+HOMEPAGE="
+	http://iverilog.icarus.com
+	https://github.com/steveicarus/iverilog
+"
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit git-r3
@@ -23,14 +26,15 @@ LICENSE="LGPL-2.1"
 SLOT="0"
 IUSE="examples"
 
-# If you are building from git, you will also need software to generate
+# If you are building from git, you will also need gperf to generate
 # the configure scripts.
-DEPEND="
-	dev-util/gperf
-"
 RDEPEND="
 	sys-libs/readline:0
 	sys-libs/zlib
+"
+
+DEPEND="
+	dev-util/gperf
 	${RDEPEND}
 "
 
@@ -40,6 +44,9 @@ src_prepare() {
 	# From upstreams autoconf.sh, to make it utilize the autotools eclass
 	# Here translate the autoconf.sh, equivalent to the following code
 	# > sh autoconf.sh
+
+	# Fix build fail problem when using large job number, make it parallel safe
+	echo ".NOTPARALLEL: install" >> ./Makefile.in || die
 
 	# Autoconf in root ...
 	eautoconf --force
