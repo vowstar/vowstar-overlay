@@ -46,6 +46,9 @@ src_prepare() {
 	# > sh autoconf.sh
 
 	# Fix build fail problem when using large job number, make it parallel safe
+	# See also https://github.com/gentoo/gentoo/pull/14096
+	# and https://github.com/vowstar/vowstar-overlay/issues/1
+	# NOTE: this is only a workaround for upstream parallel build bug
 	echo ".NOTPARALLEL: install" >> ./Makefile.in || die
 
 	# Autoconf in root ...
