@@ -45,12 +45,6 @@ src_prepare() {
 	# Here translate the autoconf.sh, equivalent to the following code
 	# > sh autoconf.sh
 
-	# Fix build fail problem when using large job number, make it parallel safe
-	# See also https://github.com/gentoo/gentoo/pull/14096
-	# and https://github.com/vowstar/vowstar-overlay/issues/1
-	# NOTE: this is only a workaround for upstream parallel build bug
-	echo ".NOTPARALLEL: install" >> ./Makefile.in || die
-
 	# Autoconf in root ...
 	eautoconf --force
 	# Precompiling lexor_keyword.gperf
@@ -60,8 +54,20 @@ src_prepare() {
 	gperf -o -i 7 --ignore-case -C -k 1-4,6,9,\$ -H keyword_hash -N check_identifier -t ./lexor_keyword.gperf > lexor_keyword.cc || die
 }
 
+src_compile() {
+	default
+}
+
 src_install() {
 	local DOCS=( *.txt )
+	# Fix build fail problem when using large job number, make it parallel safe
+	# See also https://github.com/gentoo/gentoo/pull/14096
+	# and https://github.com/vowstar/vowstar-overlay/issues/1
+	# NOTE: this is only a workaround for upstream parallel build bug
+	# this fix made by minux https://github.com/minux
+	# https://github.com/steveicarus/iverilog/pull/294
+	# Due to this issue, we must run ``emake installdirs`` before ``default``
+	emake installdirs DESTDIR="${D}" || die 'emake failed'
 	default
 
 	if use examples; then
