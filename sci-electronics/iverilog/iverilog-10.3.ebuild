@@ -60,14 +60,9 @@ src_compile() {
 
 src_install() {
 	local DOCS=( *.txt )
-	# Fix build fail problem when using large job number, make it parallel safe
-	# See also https://github.com/gentoo/gentoo/pull/14096
-	# and https://github.com/vowstar/vowstar-overlay/issues/1
-	# NOTE: this is only a workaround for upstream parallel build bug
-	# this fix made by minux https://github.com/minux
+	# Default build fails with parallel jobs, 
 	# https://github.com/steveicarus/iverilog/pull/294
-	# Due to this issue, we must run ``emake installdirs`` before ``default``
-	emake installdirs DESTDIR="${D}" || die 'emake failed'
+	emake installdirs DESTDIR="${D}"
 	default
 
 	if use examples; then
