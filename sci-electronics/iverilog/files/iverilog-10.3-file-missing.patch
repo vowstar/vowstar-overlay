@@ -1,0 +1,161 @@
+https://bugs.gentoo.org/705412
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -390,3 +390,5 @@ uninstall:
+ 
+ 
+ -include $(patsubst %.o, dep/%.d, $O)
++
++.PHONY: $(MAKECMDGOALS)
+--- a/cadpli/Makefile.in
++++ b/cadpli/Makefile.in
+@@ -93,3 +93,5 @@ uninstall: $(UNINSTALL32)
+ uninstall32:
+ 
+ -include $(patsubst %.o, dep/%.d, $O)
++
++.PHONY: $(MAKECMDGOALS)
+--- a/driver-vpi/Makefile.in
++++ b/driver-vpi/Makefile.in
+@@ -103,3 +103,5 @@ installdirs: $(srcdir)/../mkinstalldirs
+ 
+ uninstall:
+ 	rm -f $(bindir)/iverilog-vpi$(suffix)@EXEEXT@
++
++.PHONY: $(MAKECMDGOALS)
+--- a/driver/Makefile.in
++++ b/driver/Makefile.in
+@@ -146,3 +146,5 @@ uninstall:
+ 	rm -f "$(DESTDIR)$(mandir)/man1/iverilog$(suffix).1" "$(DESTDIR)$(prefix)/iverilog$(suffix).pdf"
+ 
+ -include $(patsubst %.o, dep/%.d, $O)
++
++.PHONY: $(MAKECMDGOALS)
+--- a/ivlpp/Makefile.in
++++ b/ivlpp/Makefile.in
+@@ -84,3 +84,5 @@ uninstall:
+ 
+ lexor.o: lexor.c globals.h
+ main.o: main.c globals.h $(srcdir)/../version_base.h ../version_tag.h
++
++.PHONY: $(MAKECMDGOALS)
+--- a/libveriuser/Makefile.in
++++ b/libveriuser/Makefile.in
+@@ -113,3 +113,5 @@ uninstall::
+ 	rm -f "$(DESTDIR)$(libdir)/libveriuser$(suffix).a"
+ 
+ -include $(patsubst %.o, dep/%.d, $O)
++
++.PHONY: $(MAKECMDGOALS)
+--- a/tgt-blif/Makefile.in
++++ b/tgt-blif/Makefile.in
+@@ -103,3 +103,5 @@ uninstall:
+ 
+ 
+ -include $(patsubst %.o, dep/%.d, $O)
++
++.PHONY: $(MAKECMDGOALS)
+--- a/tgt-fpga/Makefile.in
++++ b/tgt-fpga/Makefile.in
+@@ -128,3 +128,5 @@ uninstall:
+ 	rm -f "$(DESTDIR)$(libdir)/ivl$(suffix)/fpga.conf"
+ 
+ -include $(patsubst %.o, dep/%.d, $O)
++
++.PHONY: $(MAKECMDGOALS)
+--- a/tgt-null/Makefile.in
++++ b/tgt-null/Makefile.in
+@@ -102,3 +102,5 @@ uninstall:
+ 
+ 
+ -include $(patsubst %.o, dep/%.d, $O)
++
++.PHONY: $(MAKECMDGOALS)
+--- a/tgt-pal/Makefile.in
++++ b/tgt-pal/Makefile.in
+@@ -93,3 +93,5 @@ uninstall:
+ 
+ 
+ -include $(patsubst %.o, dep/%.d, $O)
++
++.PHONY: $(MAKECMDGOALS)
+--- a/tgt-pcb/Makefile.in
++++ b/tgt-pcb/Makefile.in
+@@ -126,3 +126,5 @@ uninstall:
+ 
+ 
+ -include $(patsubst %.o, dep/%.d, $O)
++
++.PHONY: $(MAKECMDGOALS)
+--- a/tgt-sizer/Makefile.in
++++ b/tgt-sizer/Makefile.in
+@@ -102,3 +102,5 @@ uninstall:
+ 
+ 
+ -include $(patsubst %.o, dep/%.d, $O)
++
++.PHONY: $(MAKECMDGOALS)
+--- a/tgt-stub/Makefile.in
++++ b/tgt-stub/Makefile.in
+@@ -103,3 +103,5 @@ uninstall:
+ 
+ 
+ -include $(patsubst %.o, dep/%.d, $O)
++
++.PHONY: $(MAKECMDGOALS)
+--- a/tgt-verilog/Makefile.in
++++ b/tgt-verilog/Makefile.in
+@@ -94,3 +94,5 @@ uninstall:
+ 
+ 
+ -include $(patsubst %.o, dep/%.d, $O)
++
++.PHONY: $(MAKECMDGOALS)
+--- a/tgt-vhdl/Makefile.in
++++ b/tgt-vhdl/Makefile.in
+@@ -109,3 +109,5 @@ uninstall:
+ 
+ 
+ -include $(patsubst %.o, dep/%.d, $O)
++
++.PHONY: $(MAKECMDGOALS)
+--- a/tgt-vlog95/Makefile.in
++++ b/tgt-vlog95/Makefile.in
+@@ -102,3 +102,5 @@ uninstall:
+ 
+ 
+ -include $(patsubst %.o, dep/%.d, $O)
++
++.PHONY: $(MAKECMDGOALS)
+--- a/tgt-vvp/Makefile.in
++++ b/tgt-vvp/Makefile.in
+@@ -123,3 +123,5 @@ uninstall:
+ 
+ 
+ -include $(patsubst %.o, dep/%.d, $O)
++
++.PHONY: $(MAKECMDGOALS)
+--- a/vhdlpp/Makefile.in
++++ b/vhdlpp/Makefile.in
+@@ -145,3 +145,5 @@ vhplpp_config.h: stamp-vhdlpp_config-h
+ 
+ 
+ -include $(patsubst %.o, dep/%.d, $O $M)
++
++.PHONY: $(MAKECMDGOALS)
+--- a/vpi/Makefile.in
++++ b/vpi/Makefile.in
+@@ -232,3 +232,5 @@ uninstall:
+ -include $(patsubst %.o, dep/%.d, $(OPP))
+ -include $(patsubst %.o, dep/%.d, $M)
+ -include $(patsubst %.o, dep/%.d, $V)
++
++.PHONY: $(MAKECMDGOALS)
+--- a/vvp/Makefile.in
++++ b/vvp/Makefile.in
+@@ -229,3 +229,5 @@ uninstall: $(UNINSTALL32)
+ 	rm -f "$(DESTDIR)$(mandir)/man1/vvp$(suffix).1" "$(DESTDIR)$(prefix)/vvp$(suffix).pdf"
+ 
+ -include $(patsubst %.o, dep/%.d, $O)
++
++.PHONY: $(MAKECMDGOALS)
