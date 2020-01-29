@@ -39,7 +39,7 @@ DEPEND="
 "
 
 PATCHES=(
-	"${FILESDIR}"/${PN}-10.3-file-missing.patch
+	"${FILESDIR}"/${PN}-10.3-file-missing.patch #705412
 )
 
 src_prepare() {
