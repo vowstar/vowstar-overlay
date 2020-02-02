@@ -36,11 +36,11 @@ DEPEND="
 "
 
 src_prepare() {
-	eapply_user
 	cd "${S}/libsigrok4DSL" || die
 	sh ./autogen.sh || die
 	cd "${S}/libsigrokdecode4DSL" || die
 	sh ./autogen.sh || die
+	eapply_user
 }
 
 src_configure() {
@@ -64,5 +64,5 @@ src_install() {
 	emake DESTDIR="${D}" install
 	cd "${S}/DSView" || die
 	PKG_CONFIG_PATH="${D}/usr/local/lib/pkgconfig" cmake . || die
-	emake DESTDIR="${D}" install
+	emake CFLAGS="-I${D}/usr/local/include" LDFLAGS="-L${D}/usr/local/lib" DESTDIR="${D}" install
 }
