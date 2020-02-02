@@ -43,9 +43,6 @@ DEPEND="
 "
 
 src_prepare() {
-	cd "${S}"
-	find . -type f -exec sed -i "s@/usr/local/@/usr/@g" {} + || die
-	find . -type f -exec sed -i "s@/usr/lib@/usr/lib64@g" {} + || die
 	cd "${S}/libsigrok4DSL" || die
 	sh ./autogen.sh || die
 	cd "${S}/libsigrokdecode4DSL" || die
@@ -55,9 +52,11 @@ src_prepare() {
 
 src_configure() {
 	cd "${S}/libsigrok4DSL" || die
-	sh ./configure || die
+	sh ./configure --prefix=/usr || die
 	cd "${S}/libsigrokdecode4DSL" || die
-	sh ./configure || die
+	sh ./configure --prefix=/usr || die
+	find . -type f -exec sed -i "s@/usr/local@/usr@g" {} + || die
+	find . -type f -exec sed -i "s@/usr/lib@/usr/lib64@g" {} + || die
 }
 
 src_compile() {
@@ -78,7 +77,7 @@ src_install() {
 	PKG_CONFIG_PATH="${D}/usr/lib/pkgconfig" \
 	CFLAGS="-I${D}/usr/include" \
 	CXXFLAGS="-I${D}/usr/include" \
-	LDFLAGS="-L${D}/usr/lib" \
-	cmake . || die
+	LDFLAGS="-L${D}/usr/lib64" \
+	cmake -DCMAKE_INSTALL_PREFIX=/usr . || die
 	emake DESTDIR="${D}" install
 }
