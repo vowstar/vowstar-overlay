@@ -5,6 +5,7 @@ EAPI=7
 
 PYTHON_COMPAT=( python3_{6,7} )
 GITHUB_PN="DSView"
+LIBDIR="/usr/lib64"
 
 inherit autotools cmake-utils python-r1
 
@@ -43,8 +44,8 @@ DEPEND="
 "
 
 src_prepare() {
-	grep -rl 'usr/local/lib' "${S}" | xargs sed -i 's@usr/local/lib@usr/lib64@g' || die
-	grep -rl 'usr/local' "${S}" | xargs sed -i 's@usr/local@usr@g' || die
+	grep -rl "/usr/local/lib" "${S}" | xargs sed -i "s@/usr/local/lib@${LIBDIR}@g" || die
+	grep -rl "/usr/local" "${S}" | xargs sed -i "s@/usr/local@/usr@g" || die
 	cd "${S}/libsigrok4DSL" || die
 	sh ./autogen.sh || die
 	cd "${S}/libsigrokdecode4DSL" || die
@@ -54,9 +55,9 @@ src_prepare() {
 
 src_configure() {
 	cd "${S}/libsigrok4DSL" || die
-	sh ./configure --libdir=/usr/lib64 --prefix=/usr || die
+	sh ./configure --libdir=${LIBDIR} --prefix=/usr || die
 	cd "${S}/libsigrokdecode4DSL" || die
-	sh ./configure --libdir=/usr/lib64 --prefix=/usr || die
+	sh ./configure --libdir=${LIBDIR} --prefix=/usr || die
 }
 
 src_compile() {
@@ -75,10 +76,10 @@ src_install() {
 	cd "${S}/DSView" || die
 
 	DESTDIR="${D}" \
-	PKG_CONFIG_PATH="${D}/usr/lib/pkgconfig" \
+	PKG_CONFIG_PATH="${D}${LIBDIR}/pkgconfig" \
 	CFLAGS="-I${D}/usr/include" \
 	CXXFLAGS="-I${D}/usr/include" \
-	LDFLAGS="-L${D}/usr/lib64" \
+	LDFLAGS="-L${D}${LIBDIR}" \
 	cmake -DCMAKE_INSTALL_PREFIX=/usr . || die
 	emake DESTDIR="${D}" install
 }
