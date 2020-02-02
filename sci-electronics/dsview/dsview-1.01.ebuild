@@ -58,13 +58,13 @@ src_configure() {
 }
 
 src_compile() {
-	cd "${S}"
-	find . -type f -exec sed -i 's@usr/local/lib@usr/lib64@g' {} + || die
-	find . -type f -exec sed -i 's@usr/local@usr@g' {} + || die
 	cd "${S}/libsigrok4DSL" || die
 	emake DESTDIR="${D}"
 	cd "${S}/libsigrokdecode4DSL" || die
 	emake DESTDIR="${D}"
+	cd "${S}"
+	find . -type f -exec sed -i 's@usr/local/lib@usr/lib64@g' {} + || die
+	find . -type f -exec sed -i 's@usr/local@usr@g' {} + || die
 }
 
 src_install() {
