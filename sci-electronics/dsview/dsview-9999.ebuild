@@ -34,32 +34,32 @@ DEPEND="
 "
 
 src_prepare() {
-	cd "${S}/libsigrok4DSL" || die
+	cd "${WORKDIR}/libsigrok4DSL" || die
 	sh ./autogen.sh || die
-	cd "${S}/libsigrokdecode4DSL" || die
+	cd "${WORKDIR}/libsigrokdecode4DSL" || die
 	sh ./autogen.sh || die
 }
 
 src_configure() {
-	cd "${S}/libsigrok4DSL" || die
+	cd "${WORKDIR}/libsigrok4DSL" || die
 	sh ./configure || die
-	cd "${S}/libsigrokdecode4DSL" || die
+	cd "${WORKDIR}/libsigrokdecode4DSL" || die
 	sh ./configure || die
 }
 
 src_compile() {
-	cd "${S}/libsigrok4DSL" || die
+	cd "${WORKDIR}/libsigrok4DSL" || die
 	emake DESTDIR="${D}"
-	cd "${S}/libsigrokdecode4DSL" || die
+	cd "${WORKDIR}/libsigrokdecode4DSL" || die
 	emake DESTDIR="${D}"
 }
 
 src_install() {
-	cd "${S}/libsigrok4DSL" || die
+	cd "${WORKDIR}/libsigrok4DSL" || die
 	emake DESTDIR="${D}" install
-	cd "${S}/libsigrokdecode4DSL" || die
+	cd "${WORKDIR}/libsigrokdecode4DSL" || die
 	emake DESTDIR="${D}" install
-	cd "${S}/DSView" || die
+	cd "${WORKDIR}/DSView" || die
 	cmake . || die
 	emake DESTDIR="${D}" install
 }
