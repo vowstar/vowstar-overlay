@@ -52,9 +52,9 @@ src_prepare() {
 
 src_configure() {
 	cd "${S}/libsigrok4DSL" || die
-	sh ./configure || die
+	sh ./configure --libdir=/usr/lib64 --prefix=/usr || die
 	cd "${S}/libsigrokdecode4DSL" || die
-	sh ./configure || die
+	sh ./configure --libdir=/usr/lib64 --prefix=/usr || die
 }
 
 src_compile() {
@@ -63,8 +63,6 @@ src_compile() {
 	cd "${S}/libsigrokdecode4DSL" || die
 	emake DESTDIR="${D}"
 	cd "${S}"
-	find . -type f -exec sed -i 's@usr/local/lib@usr/lib64@g' {} + || die
-	find . -type f -exec sed -i 's@usr/local@usr@g' {} + || die
 }
 
 src_install() {
