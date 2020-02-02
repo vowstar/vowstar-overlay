@@ -52,16 +52,16 @@ src_prepare() {
 
 src_configure() {
 	cd "${S}/libsigrok4DSL" || die
-	sh ./configure --prefix=/usr || die
+	sh ./configure || die
 	cd "${S}/libsigrokdecode4DSL" || die
-	sh ./configure --prefix=/usr || die
-	cd "${S}"
-	find . -type f -exec sed -i "s@/usr/local@/usr@g" {} + || die
-	find . -type f -exec sed -i "s@/usr/lib@/usr/lib64@g" {} + || die
-	find . -type f -exec sed -i "s@/usr/lib6464@/usr/lib64@g" {} + || die
+	sh ./configure || die
 }
 
 src_compile() {
+	cd "${S}"
+	find . -type f -exec sed -i 's@/usr/local@/usr@g' {} + || die
+	find . -type f -exec sed -i 's@/lib@/lib64@g' {} + || die
+	find . -type f -exec sed -i 's@/lib6464@/lib64@g' {} + || die
 	cd "${S}/libsigrok4DSL" || die
 	emake DESTDIR="${D}"
 	cd "${S}/libsigrokdecode4DSL" || die
