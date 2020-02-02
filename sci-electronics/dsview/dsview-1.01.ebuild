@@ -55,8 +55,10 @@ src_configure() {
 	sh ./configure --prefix=/usr || die
 	cd "${S}/libsigrokdecode4DSL" || die
 	sh ./configure --prefix=/usr || die
+	cd "${S}"
 	find . -type f -exec sed -i "s@/usr/local@/usr@g" {} + || die
 	find . -type f -exec sed -i "s@/usr/lib@/usr/lib64@g" {} + || die
+	find . -type f -exec sed -i "s@/usr/lib6464@/usr/lib64@g" {} + || die
 }
 
 src_compile() {
