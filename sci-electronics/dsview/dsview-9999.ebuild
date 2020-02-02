@@ -63,6 +63,12 @@ src_install() {
 	cd "${S}/libsigrokdecode4DSL" || die
 	emake DESTDIR="${D}" install
 	cd "${S}/DSView" || die
-	PKG_CONFIG_PATH="${D}/usr/local/lib/pkgconfig" cmake . || die
-	emake CFLAGS="-I${D}/usr/local/include" LDFLAGS="-L${D}/usr/local/lib" DESTDIR="${D}" install
+
+	DESTDIR="${D}" \
+	PKG_CONFIG_PATH="${D}/usr/local/lib/pkgconfig" \
+	CFLAGS="-I${D}/usr/local/include" \
+	CXXFLAGS="-I${D}/usr/local/include" \
+	LDFLAGS="-L${D}/usr/local/lib" \
+	cmake . || die
+	emake DESTDIR="${D}" install
 }
