@@ -36,6 +36,7 @@ DEPEND="
 "
 
 src_prepare() {
+	eapply_user
 	cd "${S}/libsigrok4DSL" || die
 	sh ./autogen.sh || die
 	cd "${S}/libsigrokdecode4DSL" || die
