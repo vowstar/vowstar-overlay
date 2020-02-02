@@ -19,7 +19,7 @@ if [[ ${PV} == "9999" ]] ; then
 	EGIT_REPO_URI="git@github.com:DreamSourceLab/${GITHUB_PN}.git"
 else
 	SRC_URI="https://github.com/DreamSourceLab/${GITHUB_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
+	KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
 	S="${WORKDIR}/${GITHUB_PN}-${PV}"
 fi
 
@@ -29,6 +29,13 @@ SLOT="0"
 RDEPEND="
 	virtual/libusb:1
 	>=dev-libs/libzip-0.8
+	>=dev-libs/boost-1.55
+	>=dev-libs/glib-2.28.0:2
+	>=dev-cpp/glibmm-2.28.0:2
+	dev-qt/qtcore:5
+	dev-qt/qtgui:5
+	dev-qt/qtwidgets:5
+	dev-qt/qtsvg:5
 "
 
 DEPEND="
