@@ -43,6 +43,9 @@ DEPEND="
 "
 
 src_prepare() {
+	cd "${S}"
+	find . -type f -exec sed -i "s@/usr/local/@/usr/@g" {} + || die
+	find . -type f -exec sed -i "s@/usr/lib@/usr/lib64@g" {} + || die
 	cd "${S}/libsigrok4DSL" || die
 	sh ./autogen.sh || die
 	cd "${S}/libsigrokdecode4DSL" || die
