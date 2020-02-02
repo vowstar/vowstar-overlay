@@ -4,6 +4,7 @@
 EAPI=7
 
 PYTHON_COMPAT=( python3_{6,7} )
+GITHUB_PN="DSView"
 
 inherit autotools cmake-utils python-r1
 
@@ -15,10 +16,11 @@ HOMEPAGE="
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit git-r3
-	EGIT_REPO_URI="git@github.com:DreamSourceLab/DSView.git"
+	EGIT_REPO_URI="git@github.com:DreamSourceLab/${GITHUB_PN}.git"
 else
-	SRC_URI="https://github.com/DreamSourceLab/DSView/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/DreamSourceLab/${GITHUB_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
+	S="${WORKDIR}/${GITHUB_PN}-${PV}"
 fi
 
 LICENSE="GPL-3"
@@ -34,32 +36,32 @@ DEPEND="
 "
 
 src_prepare() {
-	cd "${WORKDIR}/libsigrok4DSL" || die
+	cd "${S}/libsigrok4DSL" || die
 	sh ./autogen.sh || die
-	cd "${WORKDIR}/libsigrokdecode4DSL" || die
+	cd "${S}/libsigrokdecode4DSL" || die
 	sh ./autogen.sh || die
 }
 
 src_configure() {
-	cd "${WORKDIR}/libsigrok4DSL" || die
+	cd "${S}/libsigrok4DSL" || die
 	sh ./configure || die
-	cd "${WORKDIR}/libsigrokdecode4DSL" || die
+	cd "${S}/libsigrokdecode4DSL" || die
 	sh ./configure || die
 }
 
 src_compile() {
-	cd "${WORKDIR}/libsigrok4DSL" || die
+	cd "${S}/libsigrok4DSL" || die
 	emake DESTDIR="${D}"
-	cd "${WORKDIR}/libsigrokdecode4DSL" || die
+	cd "${S}/libsigrokdecode4DSL" || die
 	emake DESTDIR="${D}"
 }
 
 src_install() {
-	cd "${WORKDIR}/libsigrok4DSL" || die
+	cd "${S}/libsigrok4DSL" || die
 	emake DESTDIR="${D}" install
-	cd "${WORKDIR}/libsigrokdecode4DSL" || die
+	cd "${S}/libsigrokdecode4DSL" || die
 	emake DESTDIR="${D}" install
-	cd "${WORKDIR}/DSView" || die
+	cd "${S}/DSView" || die
 	cmake . || die
 	emake DESTDIR="${D}" install
 }
