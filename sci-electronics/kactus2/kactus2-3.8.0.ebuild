@@ -58,5 +58,5 @@ src_compile() {
 
 src_install() {
 	# Can't use default here, neet set INSTALL_ROOT
-	emake INSTALL_ROOT="${D}" install
+	emake -j1 INSTALL_ROOT="${D}" install
 }
