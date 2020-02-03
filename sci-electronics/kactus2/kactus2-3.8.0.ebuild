@@ -17,7 +17,7 @@ if [[ ${PV} == "9999" ]] ; then
 else
 	SRC_URI="https://github.com/${PN}/${PN}dev/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
-	S="${WORKDIR}/${PN}dev-${GITHUB_PV}"
+	S="${WORKDIR}/${PN}dev-${PV}"
 fi
 
 LICENSE="LGPL-2.1"
