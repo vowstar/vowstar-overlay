@@ -40,6 +40,10 @@ DEPEND="
 	${RDEPEND}
 "
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-3.8.0-install.patch # Fix install problem
+)
+
 src_prepare() {
 	default
 }
@@ -54,5 +58,5 @@ src_compile() {
 
 src_install() {
 	# Can't use default here, neet set INSTALL_ROOT
-	emake DESTDIR="${D}" INSTALL_ROOT="${ED}" install
+	emake INSTALL_ROOT="${D}" install
 }
