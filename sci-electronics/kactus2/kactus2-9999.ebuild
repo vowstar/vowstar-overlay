@@ -53,5 +53,6 @@ src_compile() {
 }
 
 src_install() {
-	default
+	# Can't use default here, neet set INSTALL_ROOT
+	emake DESTDIR="${D}" INSTALL_ROOT="${ED}" install
 }
