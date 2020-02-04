@@ -23,7 +23,7 @@ fi
 LICENSE="GPL-2"
 SLOT="0"
 
-RDEPEND="
+DEPEND="
 	dev-qt/qtcore:5
 	dev-qt/qtxml:5
 	dev-qt/qtwidgets:5
@@ -33,25 +33,13 @@ RDEPEND="
 	dev-qt/qtsvg:5
 "
 
-DEPEND="
-	${RDEPEND}
+RDEPEND="
+	${DEPEND}
 "
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-3.8.0-install.patch # Fix install problem
 )
-
-src_prepare() {
-	default
-}
-
-src_configure() {
-	default
-}
-
-src_compile() {
-	default
-}
 
 src_install() {
 	# Can't use default, set INSTALL_ROOT and workaround parallel install bug
