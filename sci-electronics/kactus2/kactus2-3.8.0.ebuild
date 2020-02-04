@@ -23,8 +23,6 @@ fi
 LICENSE="LGPL-2.1"
 SLOT="0"
 
-# If you are building from git, you will also need gperf to generate
-# the configure scripts.
 RDEPEND="
 	dev-qt/qtcore:5
 	dev-qt/qtxml:5
