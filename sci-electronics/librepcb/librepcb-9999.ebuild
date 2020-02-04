@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit qmake-utils
+inherit qmake-utils xdg-utils
 
 DESCRIPTION="Free EDA GUI software to develop printed circuit boards"
 HOMEPAGE="
@@ -20,7 +20,7 @@ else
 	S="${WORKDIR}/LibrePCB-${PV}"
 fi
 
-LICENSE="GPL-3"
+LICENSE="GPL-3+"
 SLOT="0"
 
 DEPEND="
@@ -40,12 +40,29 @@ RDEPEND="
 	${DEPEND}
 "
 
+BDEPEND="
+	app-arch/unzip
+	dev-qt/linguist-tools:5
+"
+
 src_configure() {
 	# Can't use default, call emake5 to generate Makefile
-	eqmake5 -r ${PN}.pro
+	eqmake5 -r ${PN}.pro PREFIX="/usr"
 }
 
 src_install() {
 	# Can't use default, need set INSTALL_ROOT
 	emake INSTALL_ROOT="${D}" install
+}
+
+pkg_postinst() {
+	xdg_desktop_database_update
+	xdg_icon_cache_update
+	xdg_mimeinfo_database_update
+}
+
+pkg_postrm() {
+	xdg_desktop_database_update
+	xdg_icon_cache_update
+	xdg_mimeinfo_database_update
 }
