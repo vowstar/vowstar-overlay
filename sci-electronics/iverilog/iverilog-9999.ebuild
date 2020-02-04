@@ -40,7 +40,6 @@ DEPEND="
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-9999-file-missing.patch #705412
-	"${FILESDIR}"/${PN}-10.3-fno-common.patch #706366
 )
 
 src_prepare() {
