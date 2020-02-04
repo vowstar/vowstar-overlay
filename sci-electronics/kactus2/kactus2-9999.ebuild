@@ -3,6 +3,8 @@
 
 EAPI=7
 
+inherit xdg-utils
+
 DESCRIPTION="A open source IP-XACT-based tool"
 HOMEPAGE="
 	http://funbase.cs.tut.fi
@@ -42,4 +44,16 @@ PATCHES=(
 src_install() {
 	# Can't use default, set INSTALL_ROOT and workaround parallel install bug
 	emake -j1 INSTALL_ROOT="${D}" install
+}
+
+pkg_postinst() {
+	xdg_desktop_database_update
+	xdg_icon_cache_update
+	xdg_mimeinfo_database_update
+}
+
+pkg_postrm() {
+	xdg_desktop_database_update
+	xdg_icon_cache_update
+	xdg_mimeinfo_database_update
 }
