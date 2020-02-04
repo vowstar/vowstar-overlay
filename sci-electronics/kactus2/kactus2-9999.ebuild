@@ -3,8 +3,6 @@
 
 EAPI=7
 
-inherit autotools
-
 DESCRIPTION="A open source IP-XACT-based tool"
 HOMEPAGE="
 	http://funbase.cs.tut.fi
