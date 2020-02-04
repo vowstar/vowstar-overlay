@@ -20,7 +20,7 @@ else
 	S="${WORKDIR}/${PN}dev-${PV}"
 fi
 
-LICENSE="LGPL-2.1"
+LICENSE="GPL-2"
 SLOT="0"
 
 RDEPEND="
