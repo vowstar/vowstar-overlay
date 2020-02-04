@@ -20,8 +20,8 @@ LICENSE="|| ( Artistic-2 LGPL-3 )"
 SLOT="0"
 
 DEPEND="
-	sys-libs/zlib
 	dev-lang/perl
+	sys-libs/zlib
 "
 
 RDEPEND="
