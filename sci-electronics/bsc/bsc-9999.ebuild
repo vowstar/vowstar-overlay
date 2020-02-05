@@ -38,11 +38,6 @@ BDEPEND="
 	dev-util/gperf
 "
 
-src_prepare() {
-	default
-	eautoconf --force
-}
-
 src_compile() {
 	emake PREFIX="${D}/usr/bin"
 }
