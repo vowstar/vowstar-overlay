@@ -47,5 +47,5 @@ src_compile() {
 }
 
 src_install() {
-	emake PREFIX="${D}/usr/bin"
+	emake # PREFIX="${D}/usr/bin"
 }
