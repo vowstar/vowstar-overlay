@@ -38,7 +38,7 @@ RDEPEND="
 "
 
 src_install() {
-	# Can't use default, set INSTALL_ROOT and workaround parallel install bug
+	# Can't use default, set INSTALL_ROOT
 	emake INSTALL_ROOT="${D}" install
 }
 
