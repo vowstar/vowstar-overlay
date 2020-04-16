@@ -40,7 +40,8 @@ DEPEND="
 	${RDEPEND}
 "
 
-src_install() {
-	# Can't use default, set INSTALL_ROOT
-	emake INSTALL_ROOT="${D}" install
+src_configure() {
+	eqmake5 \
+		INSTROOT="${D}" \
+		CONFIG+=install_translations
 }
