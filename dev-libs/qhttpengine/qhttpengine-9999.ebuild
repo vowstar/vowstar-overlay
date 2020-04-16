@@ -17,7 +17,7 @@ else
 	S="${WORKDIR}/${PN}-${PV}"
 fi
 
-LICENSE="GPL-2"
+LICENSE="MIT"
 SLOT="0"
 
 IUSE="doc examples test"
