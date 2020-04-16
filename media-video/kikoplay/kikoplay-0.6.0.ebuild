@@ -27,7 +27,7 @@ SLOT="0"
 
 RDEPEND="
 	dev-lang/lua
-	dev-libs/qthttpengine
+	dev-libs/qhttpengine
 	dev-qt/qtconcurrent:5
 	dev-qt/qtcore:5
 	dev-qt/qtgui:5
