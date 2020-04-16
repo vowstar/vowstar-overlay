@@ -5,7 +5,7 @@ EAPI=7
 
 inherit cmake-utils
 
-DESCRIPTION="HTTP server library for Qt applications"
+DESCRIPTION="HTTP server for Qt applications"
 HOMEPAGE="https://github.com/nitroshare/qhttpengine"
 
 if [[ ${PV} == "9999" ]] ; then
@@ -37,7 +37,7 @@ src_configure() {
 		-DBUILD_DOC=$(usex doc)
 		-DBUILD_EXAMPLES=$(usex examples)
 		-DBUILD_TESTS=$(usex test)
-		-DCMAKE_INSTALL_PREFIX="${D}"/usr
+		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/usr"
 		-DLIB_INSTALL_DIR=$(get_libdir)
 		${CMAKE_CONF}
 	)

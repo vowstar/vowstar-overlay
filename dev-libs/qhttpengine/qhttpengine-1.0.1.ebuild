@@ -37,7 +37,7 @@ src_configure() {
 		-DBUILD_DOC=$(usex doc)
 		-DBUILD_EXAMPLES=$(usex examples)
 		-DBUILD_TESTS=$(usex test)
-		-DCMAKE_INSTALL_PREFIX="${D}"/usr
+		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/usr"
 		-DLIB_INSTALL_DIR=$(get_libdir)
 		${CMAKE_CONF}
 	)
