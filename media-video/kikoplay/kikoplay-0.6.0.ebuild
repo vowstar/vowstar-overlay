@@ -33,6 +33,7 @@ RDEPEND="
 	dev-qt/qtgui:5
 	dev-qt/qtnetwork:5
 	dev-qt/qtsql:5
+	dev-qt/qtwidgets:5
 	media-video/mpv[libmpv]
 "
 
