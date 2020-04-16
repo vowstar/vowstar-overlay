@@ -22,7 +22,7 @@ else
 	S="${WORKDIR}/${GIT_PN}-${PV}"
 fi
 
-LICENSE="GPL-2"
+LICENSE="GPL-3"
 SLOT="0"
 
 RDEPEND="
