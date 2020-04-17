@@ -18,7 +18,7 @@ else
 fi
 
 LICENSE="MIT"
-SLOT="0"
+SLOT="5"
 
 IUSE="doc examples test"
 
