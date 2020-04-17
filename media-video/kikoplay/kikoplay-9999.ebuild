@@ -48,7 +48,5 @@ src_prepare() {
 }
 
 src_configure() {
-	eqmake5 \
-		INSTROOT="${D}" \
-		CONFIG+=install_translations
+	eqmake5 PREFIX="${D}"/usr
 }

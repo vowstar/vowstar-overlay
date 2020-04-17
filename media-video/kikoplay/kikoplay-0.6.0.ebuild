@@ -41,15 +41,14 @@ DEPEND="
 	${RDEPEND}
 "
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-0.6.0-install.patch # Fix install problem
+)
+
 src_prepare() {
 	default
 	# Fix lua link problem, link to lua5.3 to fix bug
 	sed -i "s/-llua/-llua5.3/" KikoPlay.pro || die "Could not fix lua link"
-}
-
-src_compile() {
-	# Fix parallel compile bug 
-	emake -j1
 }
 
 src_configure() {
