@@ -58,13 +58,12 @@ src_prepare() {
 	# Fix lua link problem, link to lua5.3 to fix bug
 	sed -i "s/-llua/-llua5.3/" KikoPlay.pro || die "Could not fix lua link"
 	echo "target.path += /usr/bin" >> KikoPlay.pro || die "Could not fix install path"
-	echo "INSTALLS += target link icons desktop" >> KikoPlay.pro || die "Could not fix install target"
+	echo "INSTALLS += target icons desktop" >> KikoPlay.pro || die "Could not fix install target"
 	echo "unix:icons.path = /usr/share/pixmaps" >> KikoPlay.pro || die "Could not fix install icon PATH"
 	echo "unix:desktop.path = /usr/share/applications" >> KikoPlay.pro || die "Could not fix install desktop PATH"
 	echo "unix:icons.files = kikoplay.png kikoplay.xpm" >> KikoPlay.pro || die "Could not fix install desktop PATH"
 	echo "unix:desktop.files = kikoplay.desktop" >> KikoPlay.pro || die "Could not fix install desktop PATH"
 	echo "DEFINES += CONFIG_HOME_DATA" >> KikoPlay.pro || die "Could not set defines"
-	ln -sf KikoPlay kikoplay || die "Could not create link"
 	convert kikoplay.ico kikoplay.png || die "Could not create PNG icon"
 	convert kikoplay.ico kikoplay.xpm || die "Could not create XPM icon"
 }
