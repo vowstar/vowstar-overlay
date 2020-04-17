@@ -26,7 +26,7 @@ LICENSE="GPL-3"
 SLOT="0"
 
 RDEPEND="
-
+	dev-lang/lua:5.3
 	dev-libs/qhttpengine:5
 	dev-qt/qtconcurrent:5
 	dev-qt/qtcore:5
@@ -45,7 +45,11 @@ src_prepare() {
 	default
 	# Fix lua link problem, link to lua5.3 to fix bug
 	sed -i "s/-llua/-llua5.3/" KikoPlay.pro || die "Could not fix lua link"
-	echo "CONFIG += ordered" >> KikoPlay.pro || die "Could not fix parallel bug"
+}
+
+src_compile() {
+	# Fix parallel compile bug 
+	emake -j1
 }
 
 src_configure() {
