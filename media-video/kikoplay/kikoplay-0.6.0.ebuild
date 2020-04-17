@@ -26,8 +26,8 @@ LICENSE="GPL-3"
 SLOT="0"
 
 RDEPEND="
-	dev-lang/lua
-	dev-libs/qhttpengine
+	dev-lang/lua:5.3
+	dev-libs/qhttpengine:5
 	dev-qt/qtconcurrent:5
 	dev-qt/qtcore:5
 	dev-qt/qtgui:5
