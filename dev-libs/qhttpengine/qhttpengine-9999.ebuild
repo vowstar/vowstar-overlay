@@ -3,48 +3,51 @@
 
 EAPI=7
 
-inherit cmake-utils
+GIT_PN="KikoPlay"
 
-DESCRIPTION="HTTP server for Qt applications"
-HOMEPAGE="https://github.com/nitroshare/qhttpengine"
+inherit qmake-utils xdg
+
+DESCRIPTION="KikoPlay is a full-featured danmu player"
+HOMEPAGE="
+	https://kikoplay.fun
+	https://github.com/Protostars/KikoPlay
+"
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/nitroshare/${PN}.git"
+	EGIT_REPO_URI="https://github.com/Protostars/${GIT_PN}.git"
 else
-	SRC_URI="https://github.com/nitroshare/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/Protostars/${GIT_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~m68k ~mips ~ppc ~ppc64 ~s390 ~sparc ~x86"
-	S="${WORKDIR}/${PN}-${PV}"
+	S="${WORKDIR}/${GIT_PN}-${PV}"
 fi
 
-LICENSE="MIT"
-SLOT="5"
-
-IUSE="doc examples test"
+LICENSE="GPL-3"
+SLOT="0"
 
 RDEPEND="
+
+	dev-libs/qhttpengine:5
+	dev-qt/qtconcurrent:5
+	dev-qt/qtcore:5
+	dev-qt/qtgui:5
 	dev-qt/qtnetwork:5
+	dev-qt/qtsql:5
+	dev-qt/qtwidgets:5
+	media-video/mpv[libmpv,-luajit]
 "
 
 DEPEND="
-	doc? ( app-doc/doxygen )
-	test? ( dev-qt/qttest:5 )
 	${RDEPEND}
 "
 
-BDEPEND="
-	virtual/pkgconfig
-"
+src_prepare() {
+	default
+	# Fix lua link problem, link to lua5.3 to fix bug
+	sed -i "s/-llua/-llua5.3/" KikoPlay.pro || die "Could not fix lua link"
+	echo "CONFIG += ordered" >> KikoPlay.pro || die "Could not fix parallel bug"
+}
 
 src_configure() {
-	local mycmakeargs=(
-		-DBUILD_DOC=$(usex doc)
-		-DBUILD_EXAMPLES=$(usex examples)
-		-DBUILD_TESTS=$(usex test)
-		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/usr"
-		-DLIB_INSTALL_DIR=$(get_libdir)
-		${CMAKE_CONF}
-	)
-
-	cmake-utils_src_configure
+	eqmake5 PREFIX="${D}"/usr
 }

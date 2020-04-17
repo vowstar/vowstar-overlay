@@ -45,9 +45,9 @@ src_prepare() {
 	default
 	# Fix lua link problem, link to lua5.3 to fix bug
 	sed -i "s/-llua/-llua5.3/" KikoPlay.pro || die "Could not fix lua link"
+	echo "CONFIG += ordered" >> KikoPlay.pro || die "Could not fix parallel bug"
 }
 
 src_configure() {
-	eqmake5 \
-		INSTROOT="${D}"
+	eqmake5 PREFIX="${D}"/usr
 }
