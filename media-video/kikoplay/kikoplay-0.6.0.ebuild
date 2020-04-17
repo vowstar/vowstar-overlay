@@ -69,3 +69,8 @@ src_prepare() {
 src_configure() {
 	eqmake5 PREFIX="${D}"/usr
 }
+
+src_install() {
+	# Can't use default, set INSTALL_ROOT
+	emake INSTALL_ROOT="${D}" install
+}
