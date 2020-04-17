@@ -41,6 +41,12 @@ DEPEND="
 	${RDEPEND}
 "
 
+src_prepare() {
+	default
+	# Fix lua link problem, link to lua5.3 to fix bug
+	sed -i "s/-llua/-llua5.3/" KikoPlay.pro || die "Could not fix lua link"
+}
+
 src_configure() {
 	eqmake5 \
 		INSTROOT="${D}" \
