@@ -17,7 +17,7 @@ if [[ ${PV} == "9999" ]] ; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/Protostars/${GIT_PN}.git"
 else
-	SRC_URI="https://github.com/vowstar/${GIT_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/Protostars/${GIT_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~m68k ~mips ~ppc ~ppc64 ~s390 ~sparc ~x86"
 	S="${WORKDIR}/${GIT_PN}-${PV}"
 fi
