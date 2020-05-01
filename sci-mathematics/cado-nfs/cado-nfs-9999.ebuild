@@ -1,4 +1,4 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -33,7 +33,7 @@ DEPEND="
 BUILD_DIR="${WORKDIR}/build"
 
 if [[ ${PV} == "9999" ]] ; then
-	EGIT_REPO_URI="https://scm.gforge.inria.fr/anonscm/git/${PN}/${PN}.git"
+	EGIT_REPO_URI="https://gitlab.inria.fr/${PN}/${PN}.git"
 	inherit git-r3
 else
 	SRC_URI="https://gforge.inria.fr/frs/download.php/file/37058/${P}.tar.gz -> ${P}.tar.gz"
