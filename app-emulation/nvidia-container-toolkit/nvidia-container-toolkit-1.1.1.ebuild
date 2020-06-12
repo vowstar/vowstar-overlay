@@ -37,11 +37,12 @@ BDEPEND=""
 src_compile() {
 	echo "${S}" || die
 	EGO_PN="${EGO_PN}/pkg" \
+		EGO_BUILD_FLAGS="-o ${T}/${PN}" \
 		golang-build_src_compile
 }
 
 src_install() {
-	dobin ${PN}
+	dobin "${T}/${PN}"
 	dosym "bin/${PN}" "bin/nvidia-container-runtime-hook"
 	cp "${S}/config/config.toml.debian" "${S}/config/config.toml" || die
 	insinto /etc/nvidia-container-runtime
