@@ -44,7 +44,7 @@ src_compile() {
 
 src_install() {
 	dobin "${T}/${PN}"
-	dosym "bin/${PN}" "bin/nvidia-container-runtime-hook"
+	dosym "${PN}" "bin/nvidia-container-runtime-hook"
 	pushd "src/${EGO_PN}" || die
 	cp "config/config.toml.debian" "config/config.toml" || die
 	insinto /etc/nvidia-container-runtime
