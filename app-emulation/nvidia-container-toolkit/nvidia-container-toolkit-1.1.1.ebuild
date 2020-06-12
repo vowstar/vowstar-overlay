@@ -4,6 +4,7 @@
 EAPI=7
 
 GITHUB_PN="container-toolkit"
+EGO_PN="github.com/NVIDIA/${GITHUB_PN}"
 
 inherit golang-build golang-vcs-snapshot
 
@@ -42,7 +43,7 @@ src_compile() {
 	-asmflags "all=-trimpath=${S}" \
     -ldflags "-s -w -extldflags ${LDFLAGS}" \
     -o "${PN}" \
-	"github.com/NVIDIA/${GITHUB_PN}/pkg" || die
+	"${EGO_PN}/pkg" || die
 }
 
 src_install() {
