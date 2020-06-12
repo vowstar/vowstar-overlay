@@ -10,7 +10,9 @@ if [[ "${PV}" == "9999" ]] ; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/NVIDIA/${PN}.git"
 else
-	SRC_URI="https://github.com/NVIDIA/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="
+		https://github.com/NVIDIA/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
+	"
 	KEYWORDS="~amd64"
 fi
 
@@ -36,5 +38,12 @@ BDEPEND="
 "
 
 PATCHES=(
+	"${FILESDIR}"/${PN}-1.1.1-add-enum-h.patch
+	"${FILESDIR}"/${PN}-1.1.1-add-sysfs-c.patch
+	"${FILESDIR}"/${PN}-1.1.1-add-sysfs-h.patch
+	"${FILESDIR}"/${PN}-1.1.1-add-utils-c.patch
+	"${FILESDIR}"/${PN}-1.1.1-add-utils-h.patch
 	"${FILESDIR}"/${PN}-1.1.1-fix-git.patch
+	"${FILESDIR}"/${PN}-1.1.1-fix-makefile.patch
+	"${FILESDIR}"/${PN}-1.1.1-fix-nvc.patch
 )
