@@ -54,7 +54,7 @@ pkg_postinst() {
 	elog "Your docker service must restart after install this package."
 	elog "OpenRC: sudo rc-service docker restart"
 	elog "systemd: sudo systemctl restart docker"
-	elog "You may need to edit your /etc/nvidia-container-runtime/config.toml" 
+	elog "You may need to edit your /etc/nvidia-container-runtime/config.toml"
 	elog "file before running ${PN} for the first time."
 	elog "For details, please see the NVIDIA docker manual page."
 }
