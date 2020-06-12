@@ -45,7 +45,7 @@ src_compile() {
 src_install() {
 	dobin "${T}/${PN}"
 	into "/usr/bin"
-	dosym "${PN}" "nvidia-container-runtime-hook"
+	dosym "${PN}" "/usr/bin/nvidia-container-runtime-hook"
 	insinto "/etc/nvidia-container-runtime"
 	doins "${FILESDIR}/config.toml"
 }
