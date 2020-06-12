@@ -20,9 +20,10 @@ SLOT="0"
 IUSE=""
 
 RDEPEND="
+	net-libs/libtirpc
 	sys-libs/libcap
 	sys-libs/libseccomp
-	net-libs/libtirpc
+	x11-drivers/nvidia-drivers
 "
 
 DEPEND="${RDEPEND}"
@@ -33,3 +34,7 @@ BDEPEND="
 	sys-devel/bmake
 	virtual/pkgconfig
 "
+
+PATCHES=(
+	"${FILESDIR}"/${PN}-1.1.1-fix-git.patch
+)
