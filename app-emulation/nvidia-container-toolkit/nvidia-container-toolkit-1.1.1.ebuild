@@ -19,7 +19,6 @@ else
 		https://github.com/NVIDIA/${GITHUB_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	"
 	KEYWORDS="~amd64"
-	S="${WORKDIR}/${GITHUB_PN}-${PV}"
 fi
 
 LICENSE="Apache-2.0"
@@ -36,7 +35,8 @@ DEPEND="${RDEPEND}"
 BDEPEND=""
 
 src_compile() {
-	GOPATH="${WORKDIR}/${P}" \
+	pushd src/${EGO_PN} || die
+	GOPATH="${S}" \
 	go install -v \
 	-buildmode=pie \
 	-gcflags "all=-trimpath=${S}" \
@@ -44,12 +44,15 @@ src_compile() {
     -ldflags "-s -w -extldflags ${LDFLAGS}" \
     -o "${PN}" \
 	"${EGO_PN}/pkg" || die
+	popd || die
 }
 
 src_install() {
+	pushd src/${EGO_PN} || die
 	dobin bin/*
 	dosym "bin/${PN}" "bin/nvidia-container-runtime-hook"
 	insinto /etc/nvidia-container-runtime
-	cp "${S}/config/config.toml.debian" "${S}/config/config.toml" || die
-	doins "${S}/config/config.toml"
+	cp "config/config.toml.debian" "config/config.toml" || die
+	doins "config/config.toml"
+	popd || die
 }
