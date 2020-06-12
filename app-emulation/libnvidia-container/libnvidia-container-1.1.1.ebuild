@@ -46,4 +46,5 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-1.1.1-fix-git.patch
 	"${FILESDIR}"/${PN}-1.1.1-fix-makefile.patch
 	"${FILESDIR}"/${PN}-1.1.1-fix-nvc.patch
+	"${FILESDIR}"/${PN}-1.1.1-fix-strip.patch
 )
