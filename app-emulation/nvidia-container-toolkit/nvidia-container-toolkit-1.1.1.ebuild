@@ -36,9 +36,8 @@ BDEPEND=""
 
 src_compile() {
 	echo "${S}" || die
-	EGO_PN="${EGO_PN}/pkg"
-	EGO_BUILD_FLAGS="-s -w" \
-	golang-build_src_compile
+	EGO_PN="${EGO_PN}/pkg" \
+		golang-build_src_compile
 }
 
 src_install() {
