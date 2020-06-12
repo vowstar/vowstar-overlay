@@ -48,6 +48,6 @@ src_install() {
 	pushd "src/${EGO_PN}" >/dev/null || die
 	cp "config/config.toml.debian" "config/config.toml" || die
 	insinto "/etc/nvidia-container-runtime"
-	doins "config/config.toml"
+	doins "${FILESDIR}/config.toml"
 	popd >/dev/null || die
 }
