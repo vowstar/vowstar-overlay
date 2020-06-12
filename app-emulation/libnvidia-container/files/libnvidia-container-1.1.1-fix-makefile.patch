@@ -1,9 +1,13 @@
 diff --git a/Makefile b/Makefile
-index 0070ada..cd2f741 100644
+index 0070ada..8643de0 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -7,18 +7,18 @@
+@@ -4,21 +4,21 @@
  
+ .PHONY: all tools shared static deps install uninstall dist depsclean mostlyclean clean distclean
+ .DEFAULT_GOAL := all
+-
++STRIP  := @echo skipping: strip
  ##### Global variables #####
  
 -WITH_LIBELF  ?= no
@@ -89,3 +93,12 @@ index 0070ada..cd2f741 100644
  endif
  
  install: all
+@@ -237,7 +239,7 @@ install: all
+ 	$(LN) -sf $(LIB_SONAME) $(DESTDIR)$(libdir)/$(LIB_SYMLINK)
+ 	$(LDCONFIG) -n $(DESTDIR)$(libdir)
+ 	# Install debugging symbols
+-	$(INSTALL) -m 644 $(DEBUG_DIR)/$(LIB_SONAME) $(DESTDIR)$(libdbgdir)
++	# $(INSTALL) -m 644 $(DEBUG_DIR)/$(LIB_SONAME) $(DESTDIR)$(libdbgdir)
+ 	# Install configuration files
+ 	$(MAKE_DIR)/$(LIB_PKGCFG).in "$(strip $(VERSION))" "$(strip $(LIB_LDLIBS_SHARED))" > $(DESTDIR)$(pkgconfdir)/$(LIB_PKGCFG)
+ 	# Install binary files
