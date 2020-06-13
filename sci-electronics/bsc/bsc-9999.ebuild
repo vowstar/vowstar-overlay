@@ -4,7 +4,7 @@
 EAPI=7
 
 CABAL_FEATURES="lib profile haddock hoogle hscolour"
-inherit haskell-cabal
+inherit autotools haskell-cabal
 
 DESCRIPTION="Bluespec High Level Hardware Design Language"
 HOMEPAGE="https://github.com/B-Lang-org/bsc"
@@ -14,7 +14,7 @@ if [[ ${PV} == "9999" ]] ; then
 	EGIT_REPO_URI="https://github.com/B-Lang-org/${PN}.git"
 else
 	SRC_URI=""
-	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86"
+	KEYWORDS="~amd64 ~arm ~arm64 ~riscv ~x86"
 fi
 
 LICENSE="BSD GPL-3+ MIT"
@@ -25,8 +25,6 @@ DEPEND="
 	>=dev-haskell/old-time-1.1:=[profile?]
 	>=dev-haskell/regex-compat-0.95.1:=[profile?]
 	>=dev-haskell/syb-0.1:=[profile?]
-	media-libs/fontconfig
-	x11-libs/libXft
 "
 
 RDEPEND="
@@ -37,15 +35,3 @@ BDEPEND="
 	>=dev-lang/ghc-6.12.1
 	dev-util/gperf
 "
-
-src_configure() {
-	echo "Skip configure" || die
-}
-
-src_compile() {
-	echo "Skip compile" || die
-}
-
-src_install() {
-	emake # PREFIX="${D}/usr/bin"
-}

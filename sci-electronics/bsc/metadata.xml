@@ -5,14 +5,10 @@
 		<email>vowstar@gmail.com</email>
 		<name>Huang Rui</name>
 	</maintainer>
-	<maintainer type="project">
-		<email>proxy-maint@gentoo.org</email>
-		<name>Proxy Maintainers</name>
-	</maintainer>
 	<upstream>
 		<remote-id type="github">B-Lang-org/bsc</remote-id>
 	</upstream>
-	<longdescription>
+	<longdescription lang="en">
 	This is a compiler, simulator, and associated tools for Bluespec High Level
 	Hardware Design Language (HL-HDL), supporting the two optional syntaxes,
 	BSV and BH. Language specifications and tutorials are available in the
