@@ -36,3 +36,7 @@ BDEPEND="
 	dev-lang/ghc:0=
 	dev-util/gperf
 "
+
+src_install() {
+	emake PREFIX="${D}" install
+}
