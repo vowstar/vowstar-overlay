@@ -3,8 +3,7 @@
 
 EAPI=7
 
-CABAL_FEATURES="lib profile haddock hoogle hscolour"
-inherit autotools haskell-cabal
+inherit autotools
 
 DESCRIPTION="Bluespec High Level Hardware Design Language"
 HOMEPAGE="https://github.com/B-Lang-org/bsc"
@@ -21,11 +20,10 @@ LICENSE="BSD GPL-3+ MIT"
 SLOT="0"
 
 RDEPEND="
-	dev-haskell/cabal:=[profile?]
-	dev-haskell/old-time:=[profile?]
-	dev-haskell/regex-compat:=[profile?]
-	dev-haskell/split:=[profile?]
-	dev-haskell/syb:=[profile?]
+	dev-haskell/old-time:0=
+	dev-haskell/regex-compat:0=
+	dev-haskell/split:0=
+	dev-haskell/syb:0=
 	dev-lang/tcl
 "
 
@@ -34,6 +32,7 @@ DEPEND="
 "
 
 BDEPEND="
-	>=dev-lang/ghc-6.12.1
+	dev-haskell/cabal:0=
+	dev-lang/ghc:0=
 	dev-util/gperf
 "
