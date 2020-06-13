@@ -47,6 +47,7 @@ PATCHES=(
 src_configure() {
 	local mycmakeargs=(
 		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/usr"
+		-DNVML_INCLUDE_DIRS="${S}/include"
 		${CMAKE_CONF}
 	)
 

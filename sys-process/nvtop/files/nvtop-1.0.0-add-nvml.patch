@@ -1,8 +1,8 @@
-diff --git a/build/nvml.h b/build/nvml.h
+diff --git a/include/nvml.h b/include/nvml.h
 new file mode 100644
 index 0000000..ed7c3e0
 --- /dev/null
-+++ b/build/nvml.h
++++ b/include/nvml.h
 @@ -0,0 +1,1014 @@
 +#ifndef __nvml_nvml_h__
 +#define __nvml_nvml_h__ 
