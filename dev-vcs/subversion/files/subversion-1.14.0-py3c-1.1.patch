@@ -1,0 +1,525 @@
+--- a/py3c/include/py3c/capsulethunk.h
++++ b/py3c/include/py3c/capsulethunk.h
+@@ -0,0 +1,141 @@
++/* Copyright (c) 2011, Larry Hastings
++ * Copyright (c) 2015, py3c contributors
++ * Licensed under the MIT license; see py3c.h
++ *
++ * (Note: Relicensed from PSF: http://bugs.python.org/issue24937#msg250191 )
++ */
++
++#ifndef __CAPSULETHUNK_H
++#define __CAPSULETHUNK_H
++
++#if (    (PY_VERSION_HEX <  0x02070000) \
++     || ((PY_VERSION_HEX >= 0x03000000) \
++      && (PY_VERSION_HEX <  0x03010000)) )
++
++#define __PyCapsule_GetField(capsule, field, error_value) \
++    ( PyCapsule_CheckExact(capsule) \
++        ? (((PyCObject *)capsule)->field) \
++        : (PyErr_SetString(PyExc_TypeError, "CObject required"), (error_value)) \
++    ) \
++
++#define __PyCapsule_SetField(capsule, field, value) \
++    ( PyCapsule_CheckExact(capsule) \
++        ? (((PyCObject *)capsule)->field = value), 0 \
++        : (PyErr_SetString(PyExc_TypeError, "CObject required"), 1) \
++    ) \
++
++
++#define PyCapsule_Type PyCObject_Type
++
++#define PyCapsule_CheckExact(capsule) (PyCObject_Check(capsule))
++#define PyCapsule_IsValid(capsule, name) (PyCObject_Check(capsule))
++
++
++#define PyCapsule_New(pointer, name, destructor) \
++    (PyCObject_FromVoidPtr(pointer, (void (*)(void*)) (destructor)))
++
++
++#define PyCapsule_GetPointer(capsule, name) \
++    (PyCObject_AsVoidPtr(capsule))
++
++/* Don't call PyCObject_SetPointer here, it fails if there's a destructor */
++#define PyCapsule_SetPointer(capsule, pointer) \
++    __PyCapsule_SetField(capsule, cobject, pointer)
++
++
++#define PyCapsule_GetDestructor(capsule) \
++    __PyCapsule_GetField(capsule, destructor, (void (*)(void*)) NULL)
++
++#define PyCapsule_SetDestructor(capsule, dtor) \
++    __PyCapsule_SetField(capsule, destructor, (void (*)(void*)) dtor)
++
++
++/*
++ * Sorry, there's simply no place
++ * to store a Capsule "name" in a CObject.
++ */
++#define PyCapsule_GetName(capsule) NULL
++
++static int
++PyCapsule_SetName(PyObject *capsule, const char *unused)
++{
++    unused = unused;
++    PyErr_SetString(PyExc_NotImplementedError,
++        "can't use PyCapsule_SetName with CObjects");
++    return 1;
++}
++
++
++
++#define PyCapsule_GetContext(capsule) \
++    __PyCapsule_GetField(capsule, desc, (void*) NULL)
++
++#define PyCapsule_SetContext(capsule, context) \
++    __PyCapsule_SetField(capsule, desc, context)
++
++
++static void *
++PyCapsule_Import(const char *name, int no_block)
++{
++    PyObject *object = NULL;
++    void *return_value = NULL;
++    char *trace;
++    size_t name_length = (strlen(name) + 1) * sizeof(char);
++    char *name_dup = (char *)PyMem_MALLOC(name_length);
++
++    if (!name_dup) {
++        return NULL;
++    }
++
++    memcpy(name_dup, name, name_length);
++
++    trace = name_dup;
++    while (trace) {
++        char *dot = strchr(trace, '.');
++        if (dot) {
++            *dot++ = '\0';
++        }
++
++        if (object == NULL) {
++            if (no_block) {
++                object = PyImport_ImportModuleNoBlock(trace);
++            } else {
++                object = PyImport_ImportModule(trace);
++                if (!object) {
++                    PyErr_Format(PyExc_ImportError,
++                        "PyCapsule_Import could not "
++                        "import module \"%s\"", trace);
++                }
++            }
++        } else {
++            PyObject *object2 = PyObject_GetAttrString(object, trace);
++            Py_DECREF(object);
++            object = object2;
++        }
++        if (!object) {
++            goto EXIT;
++        }
++
++        trace = dot;
++    }
++
++    if (PyCObject_Check(object)) {
++        PyCObject *cobject = (PyCObject *)object;
++        return_value = cobject->cobject;
++    } else {
++        PyErr_Format(PyExc_AttributeError,
++            "PyCapsule_Import \"%s\" is not valid",
++            name);
++    }
++
++EXIT:
++    Py_XDECREF(object);
++    if (name_dup) {
++        PyMem_FREE(name_dup);
++    }
++    return return_value;
++}
++
++#endif /* #if PY_VERSION_HEX < 0x02070000 */
++
++#endif /* __CAPSULETHUNK_H */
+--- a/py3c/include/py3c/comparison.h
++++ b/py3c/include/py3c/comparison.h
+@@ -0,0 +1,45 @@
++/* Copyright (c) 2015, Red Hat, Inc. and/or its affiliates
++ * Licensed under the MIT license; see py3c.h
++ */
++
++#ifndef _PY3C_COMPARISON_H_
++#define _PY3C_COMPARISON_H_
++#include <Python.h>
++
++/* Rich comparisons */
++
++#ifndef Py_RETURN_NOTIMPLEMENTED
++#define Py_RETURN_NOTIMPLEMENTED \
++    return Py_INCREF(Py_NotImplemented), Py_NotImplemented
++#endif
++
++#ifndef Py_UNREACHABLE
++#define Py_UNREACHABLE() abort()
++#endif
++
++#ifndef Py_RETURN_RICHCOMPARE
++#define Py_RETURN_RICHCOMPARE(val1, val2, op)                               \
++    do {                                                                    \
++        switch (op) {                                                       \
++        case Py_EQ: if ((val1) == (val2)) Py_RETURN_TRUE; Py_RETURN_FALSE;  \
++        case Py_NE: if ((val1) != (val2)) Py_RETURN_TRUE; Py_RETURN_FALSE;  \
++        case Py_LT: if ((val1) < (val2)) Py_RETURN_TRUE; Py_RETURN_FALSE;   \
++        case Py_GT: if ((val1) > (val2)) Py_RETURN_TRUE; Py_RETURN_FALSE;   \
++        case Py_LE: if ((val1) <= (val2)) Py_RETURN_TRUE; Py_RETURN_FALSE;  \
++        case Py_GE: if ((val1) >= (val2)) Py_RETURN_TRUE; Py_RETURN_FALSE;  \
++        default:                                                            \
++            Py_UNREACHABLE();                                               \
++        }                                                                   \
++    } while (0)
++#endif
++
++#define PY3C_RICHCMP(val1, val2, op) \
++    ((op) == Py_EQ) ? PyBool_FromLong((val1) == (val2)) : \
++    ((op) == Py_NE) ? PyBool_FromLong((val1) != (val2)) : \
++    ((op) == Py_LT) ? PyBool_FromLong((val1) < (val2)) : \
++    ((op) == Py_GT) ? PyBool_FromLong((val1) > (val2)) : \
++    ((op) == Py_LE) ? PyBool_FromLong((val1) <= (val2)) : \
++    ((op) == Py_GE) ? PyBool_FromLong((val1) >= (val2)) : \
++    (Py_INCREF(Py_NotImplemented), Py_NotImplemented)
++
++#endif
+--- a/py3c/include/py3c/compat.h
++++ b/py3c/include/py3c/compat.h
+@@ -0,0 +1,139 @@
++/* Copyright (c) 2015, Red Hat, Inc. and/or its affiliates
++ * Licensed under the MIT license; see py3c.h
++ */
++
++#ifndef _PY3C_COMPAT_H_
++#define _PY3C_COMPAT_H_
++#include <Python.h>
++
++#if PY_MAJOR_VERSION >= 3
++
++/***** Python 3 *****/
++
++#define IS_PY3 1
++
++/* Strings */
++
++#define PyStr_Type PyUnicode_Type
++#define PyStr_Check PyUnicode_Check
++#define PyStr_CheckExact PyUnicode_CheckExact
++#define PyStr_FromString PyUnicode_FromString
++#define PyStr_FromStringAndSize PyUnicode_FromStringAndSize
++#define PyStr_FromFormat PyUnicode_FromFormat
++#define PyStr_FromFormatV PyUnicode_FromFormatV
++#define PyStr_AsString PyUnicode_AsUTF8
++#define PyStr_Concat PyUnicode_Concat
++#define PyStr_Format PyUnicode_Format
++#define PyStr_InternInPlace PyUnicode_InternInPlace
++#define PyStr_InternFromString PyUnicode_InternFromString
++#define PyStr_Decode PyUnicode_Decode
++
++#define PyStr_AsUTF8String PyUnicode_AsUTF8String /* returns PyBytes */
++#define PyStr_AsUTF8 PyUnicode_AsUTF8
++#define PyStr_AsUTF8AndSize PyUnicode_AsUTF8AndSize
++
++/* Ints */
++
++#define PyInt_Type PyLong_Type
++#define PyInt_Check PyLong_Check
++#define PyInt_CheckExact PyLong_CheckExact
++#define PyInt_FromString PyLong_FromString
++#define PyInt_FromLong PyLong_FromLong
++#define PyInt_FromSsize_t PyLong_FromSsize_t
++#define PyInt_FromSize_t PyLong_FromSize_t
++#define PyInt_AsLong PyLong_AsLong
++#define PyInt_AS_LONG PyLong_AS_LONG
++#define PyInt_AsUnsignedLongLongMask PyLong_AsUnsignedLongLongMask
++#define PyInt_AsSsize_t PyLong_AsSsize_t
++
++/* Module init */
++
++#define MODULE_INIT_FUNC(name) \
++    PyMODINIT_FUNC PyInit_ ## name(void); \
++    PyMODINIT_FUNC PyInit_ ## name(void)
++
++#else
++
++/***** Python 2 *****/
++
++#define IS_PY3 0
++
++/* Strings */
++
++#define PyStr_Type PyString_Type
++#define PyStr_Check PyString_Check
++#define PyStr_CheckExact PyString_CheckExact
++#define PyStr_FromString PyString_FromString
++#define PyStr_FromStringAndSize PyString_FromStringAndSize
++#define PyStr_FromFormat PyString_FromFormat
++#define PyStr_FromFormatV PyString_FromFormatV
++#define PyStr_AsString PyString_AsString
++#define PyStr_Format PyString_Format
++#define PyStr_InternInPlace PyString_InternInPlace
++#define PyStr_InternFromString PyString_InternFromString
++#define PyStr_Decode PyString_Decode
++
++#ifdef __GNUC__
++static PyObject *PyStr_Concat(PyObject *left, PyObject *right) __attribute__ ((unused));
++#endif
++static PyObject *PyStr_Concat(PyObject *left, PyObject *right) {
++    PyObject *str = left;
++    Py_INCREF(left);  /* reference to old left will be stolen */
++    PyString_Concat(&str, right);
++    if (str) {
++        return str;
++    } else {
++        return NULL;
++    }
++}
++
++#define PyStr_AsUTF8String(str) (Py_INCREF(str), (str))
++#define PyStr_AsUTF8 PyString_AsString
++#define PyStr_AsUTF8AndSize(pystr, sizeptr) \
++    ((*sizeptr=PyString_Size(pystr)), PyString_AsString(pystr))
++
++#define PyBytes_Type PyString_Type
++#define PyBytes_Check PyString_Check
++#define PyBytes_CheckExact PyString_CheckExact
++#define PyBytes_FromString PyString_FromString
++#define PyBytes_FromStringAndSize PyString_FromStringAndSize
++#define PyBytes_FromFormat PyString_FromFormat
++#define PyBytes_FromFormatV PyString_FromFormatV
++#define PyBytes_Size PyString_Size
++#define PyBytes_GET_SIZE PyString_GET_SIZE
++#define PyBytes_AsString PyString_AsString
++#define PyBytes_AS_STRING PyString_AS_STRING
++#define PyBytes_AsStringAndSize PyString_AsStringAndSize
++#define PyBytes_Concat PyString_Concat
++#define PyBytes_ConcatAndDel PyString_ConcatAndDel
++#define _PyBytes_Resize _PyString_Resize
++
++/* Floats */
++
++#define PyFloat_FromString(str) PyFloat_FromString(str, NULL)
++
++/* Module init */
++
++#define PyModuleDef_HEAD_INIT 0
++
++typedef struct PyModuleDef {
++    int m_base;
++    const char* m_name;
++    const char* m_doc;
++    Py_ssize_t m_size;
++    PyMethodDef *m_methods;
++} PyModuleDef;
++
++#define PyModule_Create(def) \
++    Py_InitModule3((def)->m_name, (def)->m_methods, (def)->m_doc)
++
++#define MODULE_INIT_FUNC(name) \
++    static PyObject *PyInit_ ## name(void); \
++    PyMODINIT_FUNC init ## name(void); \
++    PyMODINIT_FUNC init ## name(void) { PyInit_ ## name(); } \
++    static PyObject *PyInit_ ## name(void)
++
++
++#endif
++
++#endif
+--- a/py3c/include/py3c/fileshim.h
++++ b/py3c/include/py3c/fileshim.h
+@@ -0,0 +1,49 @@
++/* Copyright (c) 2015, Red Hat, Inc. and/or its affiliates
++ * Licensed under the MIT license; see py3c.h
++ */
++
++#ifndef _PY3C_FILESHIM_H_
++#define _PY3C_FILESHIM_H_
++#include <Python.h>
++
++/*
++
++For debugging purposes only.
++Caveats:
++ * Only works on file-like objects backed by an actual file
++ * All C-level writes should be done before additional
++   Python-level writes are allowed (e.g. by running Python code).
++ * Though the function tries to flush, there is no guarantee that
++   writes will be reordered due to different layers of buffering.
++
++*/
++
++static char FLUSH[] = "flush";
++static char EMPTY_STRING[] = "";
++
++static FILE* py3c_PyFile_AsFileWithMode(PyObject *py_file, const char *mode) {
++    FILE *f;
++    PyObject *ret;
++    int fd;
++
++    ret = PyObject_CallMethod(py_file, FLUSH, EMPTY_STRING);
++    if (ret == NULL) {
++        return NULL;
++    }
++    Py_DECREF(ret);
++
++    fd = PyObject_AsFileDescriptor(py_file);
++    if (fd == -1) {
++        return NULL;
++    }
++
++        f = fdopen(fd, mode);
++    if (f == NULL) {
++        PyErr_SetFromErrno(PyExc_OSError);
++        return NULL;
++    }
++
++    return f;
++}
++
++#endif /* _PY3C_FILESHIM_H_ */
+--- a/py3c/include/py3c/py3shims.h
++++ b/py3c/include/py3c/py3shims.h
+@@ -0,0 +1,44 @@
++/* Copyright (c) 2016, Red Hat, Inc. and/or its affiliates
++ * Licensed under the MIT license; see py3c.h
++ */
++
++/*
++ * Shims for new functionality from in Python 3.3+
++ *
++ * See https://docs.python.org/3/c-api/memory.html#raw-memory-interface
++ */
++
++#ifndef _PY3C_RAWMALLOC_H_
++#define _PY3C_RAWMALLOC_H_
++#include <Python.h>
++#include <stdlib.h>
++
++
++/* Py_UNUSED - added in Python 3.4, documneted in 3.7 */
++
++#ifndef Py_UNUSED
++#ifdef __GNUC__
++#define Py_UNUSED(name) _unused_ ## name __attribute__((unused))
++#else
++#define Py_UNUSED(name) _unused_ ## name
++#endif
++#endif
++
++
++/* PyMem_Raw{Malloc,Realloc,Free} - added in Python 3.4 */
++
++#if PY_MAJOR_VERSION < 3 || (PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION < 4)
++#define PyMem_RawMalloc(n) malloc((n) || 1)
++#define PyMem_RawRealloc(p, n) realloc(p, (n) || 1)
++#define PyMem_RawFree(p) free(p)
++#endif /* version < 3.4 */
++
++
++/* PyMem_RawCalloc - added in Python 3.5 */
++
++#if PY_MAJOR_VERSION < 3 || (PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION < 5)
++#define PyMem_RawCalloc(n, s) calloc((n) || 1, (s) || 1)
++#endif /* version < 3.5 */
++
++
++#endif /* _PY3C_RAWMALLOC_H_ */
+--- a/py3c/include/py3c/tpflags.h
++++ b/py3c/include/py3c/tpflags.h
+@@ -0,0 +1,52 @@
++/* Copyright (c) 2015, Red Hat, Inc. and/or its affiliates
++ * Licensed under the MIT license; see py3c.h
++ */
++
++/*
++ * WARNING: These flags are only to be used in class definitions.
++ *
++ * Before including this header file, check that you do not use
++ * these flags with with PyType_HasFeature. Example command:
++ *      grep -r PyType_HasFeature .
++ *
++ * In Python 3, *all objects* have the features corresponding to removed flags.
++ */
++
++#ifndef _PY3C_TPFLAGS_H_
++#define _PY3C_TPFLAGS_H_
++#include <Python.h>
++
++#if PY_MAJOR_VERSION >= 3
++
++#define Py_TPFLAGS_HAVE_GETCHARBUFFER  0
++#define Py_TPFLAGS_HAVE_SEQUENCE_IN 0
++#define Py_TPFLAGS_HAVE_INPLACEOPS 0
++#define Py_TPFLAGS_CHECKTYPES 0
++#define Py_TPFLAGS_HAVE_RICHCOMPARE 0
++#define Py_TPFLAGS_HAVE_WEAKREFS 0
++#define Py_TPFLAGS_HAVE_ITER 0
++#define Py_TPFLAGS_HAVE_CLASS 0
++/* Py_TPFLAGS_HEAPTYPE is still optional in py3 */
++/* Py_TPFLAGS_BASETYPE is still optional in py3 */
++/* Py_TPFLAGS_READY is still useful in py3 */
++/* Py_TPFLAGS_READYING is still useful in py3 */
++/* Py_TPFLAGS_HAVE_GC is still optional in py3 */
++/* Py_TPFLAGS_HAVE_STACKLESS_EXTENSION is still optional in py3 */
++#define Py_TPFLAGS_HAVE_INDEX 0
++/* Py_TPFLAGS_HAVE_VERSION_TAG is still optional in py3 */
++/* Py_TPFLAGS_VALID_VERSION_TAG is still optional in py3 */
++/* Py_TPFLAGS_IS_ABSTRACT is still optional in py3 */
++#define Py_TPFLAGS_HAVE_NEWBUFFER 0
++/* Py_TPFLAGS_INT_SUBCLASS is still optional in py3 */
++/* Py_TPFLAGS_LONG_SUBCLASS is still optional in py3 */
++/* Py_TPFLAGS_LIST_SUBCLASS is still optional in py3 */
++/* Py_TPFLAGS_TUPLE_SUBCLASS is still optional in py3 */
++/* Py_TPFLAGS_STRING_SUBCLASS is still optional in py3 */
++/* Py_TPFLAGS_UNICODE_SUBCLASS is still optional in py3 */
++/* Py_TPFLAGS_DICT_SUBCLASS is still optional in py3 */
++/* Py_TPFLAGS_BASE_EXC_SUBCLASS is still optional in py3 */
++/* Py_TPFLAGS_TYPE_SUBCLASS is still optional in py3 */
++
++/* py 3.4 adds Py_TPFLAGS_HAVE_FINALIZE */
++#endif
++#endif /* _PY3C_TPFLAGS_H_ */
+--- a/py3c/include/py3c.h
++++ b/py3c/include/py3c.h
+@@ -0,0 +1,34 @@
++/*
++The MIT License (MIT)
++
++Copyright (c) 2015, Red Hat, Inc. and/or its affiliates
++
++Permission is hereby granted, free of charge, to any person obtaining a copy
++of this software and associated documentation files (the "Software"), to deal
++in the Software without restriction, including without limitation the rights
++to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++copies of the Software, and to permit persons to whom the Software is
++furnished to do so, subject to the following conditions:
++
++The above copyright notice and this permission notice shall be included in all
++copies or substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
++SOFTWARE.
++*/
++
++#ifndef _PY3COMPAT_H_
++#define _PY3COMPAT_H_
++
++#include <Python.h>
++
++#include <py3c/comparison.h>
++#include <py3c/compat.h>
++#include <py3c/py3shims.h>
++
++#endif
