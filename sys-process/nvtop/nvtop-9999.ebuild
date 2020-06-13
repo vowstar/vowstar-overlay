@@ -41,7 +41,7 @@ CMAKE_CONF="
 "
 
 PATCHES=(
-	"${FILESDIR}"/${PN}-add-nvml.patch
+	"${FILESDIR}"/${PN}-1.0.0-add-nvml.patch
 )
 
 src_configure() {
