@@ -20,15 +20,17 @@ fi
 LICENSE="BSD GPL-3+ MIT"
 SLOT="0"
 
-DEPEND="
-	>=dev-haskell/cabal-1.6:=[profile?]
-	>=dev-haskell/old-time-1.1:=[profile?]
-	>=dev-haskell/regex-compat-0.95.1:=[profile?]
-	>=dev-haskell/syb-0.1:=[profile?]
+RDEPEND="
+	dev-haskell/cabal:=[profile?]
+	dev-haskell/old-time:=[profile?]
+	dev-haskell/regex-compat:=[profile?]
+	dev-haskell/split:=[profile?]
+	dev-haskell/syb:=[profile?]
+	dev-lang/tcl
 "
 
-RDEPEND="
-	${DEPEND}
+DEPEND="
+	${RDEPEND}
 "
 
 BDEPEND="
