@@ -37,11 +37,11 @@ BDEPEND="
 	app-arch/unzip
 "
 
-src_compile() {
-	EGO_PN="${EGO_PN_VCS}" \
-		EGO_BUILD_FLAGS="-o ${T}/${PN}" \
-		golang-build_src_compile
-}
+# src_compile() {
+# 	EGO_PN="${EGO_PN_VCS}" \
+# 		EGO_BUILD_FLAGS="-o ${T}/${PN}" \
+# 		golang-build_src_compile
+# }
 
 src_install() {
 	dobin "${T}/${PN}"
