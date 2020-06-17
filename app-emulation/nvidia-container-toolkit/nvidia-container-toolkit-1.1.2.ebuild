@@ -12,6 +12,7 @@ DESCRIPTION="NVIDIA container runtime toolkit"
 HOMEPAGE="https://github.com/NVIDIA/container-toolkit"
 
 if [[ "${PV}" == "9999" ]] ; then
+	EGIT_REPO_URI="https://github.com/NVIDIA/${GITHUB_PN}.git"
 	inherit git-r3
 
 	src_unpack() {
