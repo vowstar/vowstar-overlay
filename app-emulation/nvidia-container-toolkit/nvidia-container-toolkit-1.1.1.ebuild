@@ -36,7 +36,6 @@ DEPEND="${RDEPEND}"
 BDEPEND=""
 
 src_compile() {
-	echo "${S}" || die
 	EGO_PN="${EGO_PN_VCS}/pkg" \
 		EGO_BUILD_FLAGS="-o ${T}/${PN}" \
 		golang-build_src_compile
