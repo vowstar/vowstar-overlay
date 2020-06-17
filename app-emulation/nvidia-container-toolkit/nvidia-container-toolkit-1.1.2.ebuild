@@ -48,6 +48,7 @@ else
 	inherit golang-vcs-snapshot
 	SRC_URI="
 		https://github.com/NVIDIA/${GITHUB_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
+		${EGO_SUM_SRC_URI}
 	"
 	KEYWORDS="~amd64"
 fi
