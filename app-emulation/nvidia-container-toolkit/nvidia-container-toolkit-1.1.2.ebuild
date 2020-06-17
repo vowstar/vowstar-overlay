@@ -54,6 +54,7 @@ else
 		${EGO_SUM_SRC_URI}
 	"
 	KEYWORDS="~amd64"
+	S="${WORKDIR}/${GITHUB_PN}-${PV}"
 fi
 
 LICENSE="Apache-2.0"
