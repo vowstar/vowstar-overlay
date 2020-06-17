@@ -4,8 +4,7 @@
 EAPI=7
 
 GITHUB_PN="container-toolkit"
-EGO_PN_VCS="github.com/NVIDIA/${GITHUB_PN}"
-EGO_PN="${EGO_PN_VCS}"
+EGO_PN="github.com/NVIDIA/${GITHUB_PN}"
 
 inherit go-module
 
@@ -72,14 +71,15 @@ BDEPEND="
 	app-arch/unzip
 "
 
-# src_compile() {
-# 	EGO_PN="${EGO_PN_VCS}/pkg" \
-# 		EGO_BUILD_FLAGS="-o ${T}/${PN}" \
-# 		golang-build_src_compile
-# }
+src_compile() {
+	LIB_NAME=${PN} LIB_VERSION=${PV} go build \
+		-ldflags "-s -w" \
+		-o "${PN}" \
+		"${EGO_PN}/pkg" || die
+}
 
 src_install() {
-	dobin "${T}/${PN}"
+	dobin "${PN}"
 	into "/usr/bin"
 	dosym "${PN}" "/usr/bin/nvidia-container-runtime-hook"
 	insinto "/etc/nvidia-container-runtime"
