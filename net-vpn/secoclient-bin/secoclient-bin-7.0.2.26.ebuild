@@ -37,15 +37,14 @@ DEPEND="${RDEPEND}"
 BDEPEND=""
 
 src_unpack() {
-	mkdir ${S} || die
-	cd ${S} || die
+	mkdir "${S}" || die
+	cd "${S}" || die
 	unpack_makeself "${DISTDIR}/${MY_FILE}" "$(grep -a ^lines= "${DISTDIR}/${MY_FILE}" | tr '=' ' ' | awk '{print $2}' | head -n 1)" tail
 }
 
 src_install() {
-	cd ${S} || die
 	rm -rf bak || die
-	insinto /opt/${MY_PN}
-	dodir /opt/${MY_PN}/certificate
+	insinto "/opt/${MY_PN}"
+	dodir "/opt/${MY_PN}/certificate"
 	doins -r ./*
 }
