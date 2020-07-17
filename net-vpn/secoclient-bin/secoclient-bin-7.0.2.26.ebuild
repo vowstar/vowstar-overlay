@@ -69,7 +69,7 @@ src_install() {
 	exeinto "/opt/${MY_PN}"
 	doexe "${S}/SecoClient"
 	exeinto "/opt/${MY_PN}/promote"
-	doexe "${S}/SecoClient/promote/SecoClientPromoteService"
+	doexe "${S}/promote/SecoClientPromoteService"
 	exeinto "/opt/${MY_PN}/serviceclient"
-	doexe "${S}/SecoClient/serviceclient/SecoClientCS"
+	doexe "${S}/serviceclient/SecoClientCS"
 }
