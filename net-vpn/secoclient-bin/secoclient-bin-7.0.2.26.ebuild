@@ -56,7 +56,8 @@ src_prepare() {
 	rm -rf "${S}/bak" || die
 	rm -rf "${S}/plugins" || die
 	rm -rf "${S}/qt.conf" || die
-	rm -rf "${S}/*.sh" || die
+	rm -rf "${S}/install.sh" || die
+	rm -rf "${S}/uninstall.sh" || die
 	# Set RPATH for fix relative DT_RPATH security problem
 	patchelf --set-rpath '$ORIGIN' "${S}/SecoClient" || die
 }
@@ -64,5 +65,11 @@ src_prepare() {
 src_install() {
 	insinto "/opt/${MY_PN}"
 	dodir "/opt/${MY_PN}/certificate"
-	doins -r ./*
+	doins -r "${S}/*"
+	exeinto "/opt/${MY_PN}"
+	doexe "${S}/SecoClient"
+	exeinto "/opt/${MY_PN}/promote"
+	doexe "${S}/SecoClient/promote/SecoClientPromoteService"
+	exeinto "/opt/${MY_PN}/serviceclient"
+	doexe "${S}/SecoClient/serviceclient/SecoClientCS"
 }
