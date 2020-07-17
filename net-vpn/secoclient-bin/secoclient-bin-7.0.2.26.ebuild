@@ -37,7 +37,7 @@ DEPEND="${RDEPEND}"
 BDEPEND=""
 
 src_unpack() {
-	unpack_makeself "${MY_FILE}" "$(grep -a ^lines= "${MY_FILE}" | tr '=' ' ' | awk '{print $2}' | head -n 1)" tail
+	unpack_makeself "${DISTDIR}/${MY_FILE}" "$(grep -a ^lines= "${DISTDIR}/${MY_FILE}" | tr '=' ' ' | awk '{print $2}' | head -n 1)" tail
 }
 
 src_install() {
