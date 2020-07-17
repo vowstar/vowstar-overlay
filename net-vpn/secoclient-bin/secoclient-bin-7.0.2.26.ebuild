@@ -65,7 +65,7 @@ src_prepare() {
 src_install() {
 	insinto "/opt/${MY_PN}"
 	dodir "/opt/${MY_PN}/certificate"
-	doins -r "${S}/*"
+	doins -r "${S}"/*
 	exeinto "/opt/${MY_PN}"
 	doexe "${S}/SecoClient"
 	exeinto "/opt/${MY_PN}/promote"
