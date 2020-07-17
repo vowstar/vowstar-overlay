@@ -43,7 +43,9 @@ src_unpack() {
 }
 
 src_install() {
+	cd ${S} || die
+	rm -rf bak || die
 	insinto /opt/${MY_PN}
-	dodir certificate
+	dodir /opt/${MY_PN}/certificate
 	doins -r ./*
 }
