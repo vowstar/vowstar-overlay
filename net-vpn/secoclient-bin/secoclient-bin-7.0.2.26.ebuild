@@ -54,6 +54,9 @@ src_prepare() {
 	# Remove the libraries and use the system libs instead
 	rm -rf "${S}/lib" || die
 	rm -rf "${S}/bak" || die
+	rm -rf "${S}/plugins" || die
+	rm -rf "${S}/qt.conf" || die
+	rm -rf "${S}/*.sh" || die
 	# Set RPATH for fix relative DT_RPATH security problem
 	patchelf --set-rpath '$ORIGIN' "${S}/SecoClient" || die
 }
