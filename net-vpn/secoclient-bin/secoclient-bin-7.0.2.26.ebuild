@@ -20,7 +20,7 @@ DESCRIPTION="Huawei VPN client software to remotely access enterprise network"
 HOMEPAGE="https://support.huawei.com/enterprise/en/doc/EDOC1000141431"
 
 SRC_URI="https://github.com/h2o8/${MY_PN}/releases/download/${PV}/${MY_FILE}"
-S="${WORKDIR}"
+
 LICENSE="all-rights-reserved"
 SLOT="0"
 
@@ -37,6 +37,8 @@ DEPEND="${RDEPEND}"
 BDEPEND=""
 
 src_unpack() {
+	mkdir ${S} || die
+	cd ${S} || die
 	unpack_makeself "${DISTDIR}/${MY_FILE}" "$(grep -a ^lines= "${DISTDIR}/${MY_FILE}" | tr '=' ' ' | awk '{print $2}' | head -n 1)" tail
 }
 
