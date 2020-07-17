@@ -3,19 +3,28 @@
 
 EAPI=7
 
+MY_PN="secoclient"
+
+if [[ "${ARCH}" == "amd64" ]]; then
+	MY_BIT="64"
+elif [[ "${ARCH}" = "x86" ]]; then
+	MY_BIT="32"
+else
+	die "Unsuppoted ARCH ${ARCH}"
+fi
+MY_FILE="${MY_PN}-linux-${MY_BIT}-${PV}.run"
+
 inherit unpacker xdg
 
 DESCRIPTION="Huawei VPN client software to remotely access enterprise network"
 HOMEPAGE="https://support.huawei.com/enterprise/en/doc/EDOC1000141431"
 
-SRC_URI="
-	amd64? ( https://github.com/h2o8/secoclient/releases/download/${PV}/secoclient-linux-64-${PV}.run )
-"
+SRC_URI="https://github.com/h2o8/${MY_PN}/releases/download/${PV}/${MY_FILE}"
 
 LICENSE="all-rights-reserved"
 SLOT="0"
 
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~x86"
 
 IUSE=""
 
@@ -28,7 +37,7 @@ DEPEND="${RDEPEND}"
 BDEPEND=""
 
 src_unpack() {
-	unpack_makeself secoclient-linux-64-${PV}.run
+	unpack_makeself ${MY_FILE} $(grep -a ^lines= ${MY_FILE} | tr '=' ' ' | awk '{print $2}' | head -n 1) tail
 }
 
 src_install() {
