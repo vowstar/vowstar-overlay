@@ -30,11 +30,18 @@ IUSE=""
 
 RESTRICT="strip test"
 
-RDEPEND=""
+RDEPEND="
+	dev-libs/icu
+	dev-qt/qtcore:5
+	dev-qt/qtdbus:5
+	dev-qt/qtgui:5
+	dev-qt/qtnetwork:5
+	dev-qt/qtwidgets:5
+"
 
 DEPEND="${RDEPEND}"
 
-BDEPEND=""
+BDEPEND="dev-util/patchelf"
 
 src_unpack() {
 	mkdir "${S}" || die
@@ -42,8 +49,15 @@ src_unpack() {
 	unpack_makeself "${DISTDIR}/${MY_FILE}" "$(grep -a ^lines= "${DISTDIR}/${MY_FILE}" | tr '=' ' ' | awk '{print $2}' | head -n 1)" tail
 }
 
+src_prepare() {
+	# Remove the libraries and use the system libs instead
+	rm -rf "${S}/lib" || die
+	rm -rf "${S}/bak" || die
+	# Set RPATH for fix relative DT_RPATH security problem
+	patchelf --set-rpath '$ORIGIN' "${S}/SecoClient" || die
+}
+
 src_install() {
-	rm -rf bak || die
 	insinto "/opt/${MY_PN}"
 	dodir "/opt/${MY_PN}/certificate"
 	doins -r ./*
