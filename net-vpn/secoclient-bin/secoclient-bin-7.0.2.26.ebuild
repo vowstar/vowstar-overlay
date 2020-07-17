@@ -52,14 +52,14 @@ src_unpack() {
 src_prepare() {
 	default
 	# Remove the libraries and use the system libs instead
-	rm -rf "${S}/lib" || die
+	# rm -rf "${S}/lib" || die
 	rm -rf "${S}/bak" || die
-	rm -rf "${S}/plugins" || die
-	rm -rf "${S}/qt.conf" || die
+	# rm -rf "${S}/plugins" || die
+	# rm -rf "${S}/qt.conf" || die
 	rm -rf "${S}/install.sh" || die
 	rm -rf "${S}/uninstall.sh" || die
 	# Set RPATH for fix relative DT_RPATH security problem
-	patchelf --set-rpath '$ORIGIN' "${S}/SecoClient" || die
+	patchelf --set-rpath "/opt/${MY_PN}/lib" "${S}/SecoClient" || die
 }
 
 src_install() {
