@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<longdescription lang="en">
+	SecoClient is a VPN client software launched by Huawei to provide secure
+	and convenient access services for mobile users to remotely access
+	enterprise network resources. This document is intended for network
+	administrators who manage the SecoClient and FW.
+	</longdescription>
+</pkgmetadata>
