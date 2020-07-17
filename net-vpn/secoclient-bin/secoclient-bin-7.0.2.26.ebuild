@@ -20,7 +20,7 @@ DESCRIPTION="Huawei VPN client software to remotely access enterprise network"
 HOMEPAGE="https://support.huawei.com/enterprise/en/doc/EDOC1000141431"
 
 SRC_URI="https://github.com/h2o8/${MY_PN}/releases/download/${PV}/${MY_FILE}"
-
+S="${WORKDIR}"
 LICENSE="all-rights-reserved"
 SLOT="0"
 
