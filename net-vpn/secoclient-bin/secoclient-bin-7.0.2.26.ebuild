@@ -50,6 +50,7 @@ src_unpack() {
 }
 
 src_prepare() {
+	default
 	# Remove the libraries and use the system libs instead
 	rm -rf "${S}/lib" || die
 	rm -rf "${S}/bak" || die
