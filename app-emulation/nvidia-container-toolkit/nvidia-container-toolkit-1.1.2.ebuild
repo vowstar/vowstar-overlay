@@ -3,13 +3,13 @@
 
 EAPI=7
 
-GITHUB_PN="container-toolkit"
+GITHUB_PN="nvidia-container-toolkit"
 EGO_PN="github.com/NVIDIA/${GITHUB_PN}"
 
 inherit go-module
 
 DESCRIPTION="NVIDIA container runtime toolkit"
-HOMEPAGE="https://github.com/NVIDIA/container-toolkit"
+HOMEPAGE="https://github.com/NVIDIA/nvidia-container-toolkit"
 
 if [[ "${PV}" == "9999" ]] ; then
 	EGIT_REPO_URI="https://github.com/NVIDIA/${GITHUB_PN}.git"
@@ -70,13 +70,11 @@ DEPEND="${RDEPEND}"
 
 BDEPEND="
 	app-arch/unzip
+	sys-devel/make
 "
 
 src_compile() {
-	LIB_NAME=${PN} LIB_VERSION=${PV} go build \
-		-ldflags "-s -w" \
-		-o "${PN}" \
-		"${EGO_PN}/pkg" || die
+	make binary || die
 }
 
 src_install() {
