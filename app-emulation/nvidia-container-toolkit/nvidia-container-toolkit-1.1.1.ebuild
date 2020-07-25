@@ -10,14 +10,14 @@ EGO_PN="${EGO_PN_VCS}"
 inherit golang-build
 
 DESCRIPTION="NVIDIA container runtime toolkit"
-HOMEPAGE="https://github.com/NVIDIA/container-toolkit"
+HOMEPAGE="https://github.com/NVIDIA/nvidia-container-toolkit"
 
 if [[ "${PV}" == "9999" ]] ; then
 	inherit golang-vcs
 else
 	inherit golang-vcs-snapshot
 	SRC_URI="
-		https://github.com/NVIDIA/${GITHUB_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
+		https://github.com/NVIDIA/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 	"
 	KEYWORDS="~amd64"
 fi
