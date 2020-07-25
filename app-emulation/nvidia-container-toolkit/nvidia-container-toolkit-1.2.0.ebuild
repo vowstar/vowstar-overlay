@@ -3,15 +3,16 @@
 
 EAPI=7
 
-EGO_PN="github.com/NVIDIA/${PN}"
+GITHUB_PN="container-toolkit"
+EGO_PN="github.com/NVIDIA/${GITHUB_PN}"
 
 inherit go-module
 
 DESCRIPTION="NVIDIA container runtime toolkit"
-HOMEPAGE="https://github.com/NVIDIA/nvidia-container-toolkit"
+HOMEPAGE="https://github.com/NVIDIA/container-toolkit"
 
 if [[ "${PV}" == "9999" ]] ; then
-	EGIT_REPO_URI="https://github.com/NVIDIA/${PN}.git"
+	EGIT_REPO_URI="https://github.com/NVIDIA/${GITHUB_PN}.git"
 	inherit git-r3
 
 	src_unpack() {
@@ -49,10 +50,11 @@ else
 	go-module_set_globals
 
 	SRC_URI="
-		https://github.com/NVIDIA/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
+		https://github.com/NVIDIA/${GITHUB_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz
 		${EGO_SUM_SRC_URI}
 	"
 	KEYWORDS="~amd64"
+	S="${WORKDIR}/${GITHUB_PN}-${PV}"
 fi
 
 LICENSE="Apache-2.0"
