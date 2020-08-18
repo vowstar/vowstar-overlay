@@ -47,6 +47,8 @@ PATCHES=(
 )
 
 src_prepare() {
+	default
+
 	local LIBDIR="/usr/$(get_libdir)"
 
 	grep -rl "/usr/local/lib" "${S}" | xargs sed -i "s@/usr/local/lib@${LIBDIR}@g" || die
@@ -55,7 +57,6 @@ src_prepare() {
 	sh ./autogen.sh || die
 	cd "${S}/libsigrokdecode4DSL" || die
 	sh ./autogen.sh || die
-	eapply_user
 }
 
 src_configure() {

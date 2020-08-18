@@ -48,13 +48,14 @@ PATCHES=(
 )
 
 src_prepare() {
+	default
+
 	grep -rl "/usr/local/lib" "${S}" | xargs sed -i "s@/usr/local/lib@${LIBDIR}@g" || die
 	grep -rl "/usr/local" "${S}" | xargs sed -i "s@/usr/local@/usr@g" || die
 	cd "${S}/libsigrok4DSL" || die
 	sh ./autogen.sh || die
 	cd "${S}/libsigrokdecode4DSL" || die
 	sh ./autogen.sh || die
-	eapply_user
 }
 
 src_configure() {
