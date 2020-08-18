@@ -6,8 +6,6 @@ index 29f848d..59be0a2 100755
  install(TARGETS ${PROJECT_NAME} DESTINATION bin/)
  install(DIRECTORY res DESTINATION share/${PROJECT_NAME})
  install(FILES icons/logo.svg DESTINATION share/${PROJECT_NAME} RENAME logo.svg)
-+install(FILES icons/logo.svg DESTINATION share/pixmaps RENAME dsview.svg)
-+install(FILES icons/logo.svg DESTINATION share/icons/hicolor/scalable/apps RENAME dsview.svg)
 +install(CODE "execute_process( \
 +    COMMAND ${CMAKE_COMMAND} -E create_symlink \
 +    ${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}/logo.svg \

@@ -3,7 +3,7 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{6,7} )
+PYTHON_COMPAT=( python3_{6,7,8,9} )
 GITHUB_PN="DSView"
 
 inherit autotools cmake python-r1
