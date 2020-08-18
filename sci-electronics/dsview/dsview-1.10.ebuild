@@ -43,6 +43,10 @@ DEPEND="
 	${RDEPEND}
 "
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-1.01-viewport.patch
+)
+
 src_prepare() {
 	grep -rl "/usr/local/lib" "${S}" | xargs sed -i "s@/usr/local/lib@${LIBDIR}@g" || die
 	grep -rl "/usr/local" "${S}" | xargs sed -i "s@/usr/local@/usr@g" || die

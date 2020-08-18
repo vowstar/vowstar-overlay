@@ -42,6 +42,10 @@ DEPEND="
 	${RDEPEND}
 "
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-1.01-viewport.patch
+)
+
 src_prepare() {
 	local LIBDIR="/usr/$(get_libdir)"
 
