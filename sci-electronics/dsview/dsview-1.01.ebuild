@@ -90,5 +90,6 @@ src_install() {
 }
 
 pkg_postinst() {
+	xdg_pkg_postinst
 	udev_reload
 }
