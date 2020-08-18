@@ -3,7 +3,7 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{6,7} )
+PYTHON_COMPAT=( python3_{6,7,8,9} )
 GITHUB_PN="DSView"
 
 inherit autotools cmake python-r1
@@ -19,7 +19,7 @@ if [[ ${PV} == "9999" ]] ; then
 	EGIT_REPO_URI="https://github.com/DreamSourceLab/${GITHUB_PN}.git"
 else
 	SRC_URI="https://github.com/DreamSourceLab/${GITHUB_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~m68k ~mips ~ppc ~ppc64 ~s390 ~sparc ~x86"
+	KEYWORDS="~amd64 ~x86"
 	S="${WORKDIR}/${GITHUB_PN}-${PV}"
 fi
 
