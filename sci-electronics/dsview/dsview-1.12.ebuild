@@ -44,6 +44,8 @@ DEPEND="
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-1.01-viewport.patch
+	"${FILESDIR}"/${PN}-1.12-desktop.patch
+	"${FILESDIR}"/${PN}-1.12-cmake.patch
 )
 
 src_prepare() {
