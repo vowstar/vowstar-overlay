@@ -6,7 +6,7 @@ EAPI=7
 PYTHON_COMPAT=( python3_{6,7,8,9} )
 GITHUB_PN="DSView"
 
-inherit autotools cmake python-r1
+inherit autotools cmake python-r1 udev xdg
 
 DESCRIPTION="An open source multi-function instrument"
 HOMEPAGE="
@@ -92,4 +92,8 @@ src_install() {
 	LDFLAGS="-L${D}${LIBDIR}" \
 	cmake -DCMAKE_INSTALL_PREFIX=/usr . || die
 	emake DESTDIR="${D}" install
+}
+
+pkg_postinst() {
+	udev_reload
 }
