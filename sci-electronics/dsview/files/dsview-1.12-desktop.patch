@@ -1,5 +1,5 @@
 diff --git a/DSView/DSView.desktop b/DSView/DSView.desktop
-index fba3202..4e74e05 100755
+index fba3202..e114324 100755
 --- a/DSView/DSView.desktop
 +++ b/DSView/DSView.desktop
 @@ -1,9 +1,10 @@
@@ -14,7 +14,7 @@ index fba3202..4e74e05 100755
 -Type=Application
 +TryExec=DSView
 +Exec=DSView
-+Icon=dsview.svg
++Icon=dsview
  Terminal=false
 -Categories=Development
 +Categories=Development;Electronics;Qt;
