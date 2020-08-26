@@ -36,7 +36,7 @@ QA_PREBUILT="opt/*"
 S=${WORKDIR}
 
 src_unpack() {
-	yes -n | /bin/sh "${DISTDIR}/${A}" --nox11 --confirm --keep --target ${S}/unpack -- -auto "-targetdir=${S}/${M_TARGET}" "-execdir=${S}/opt/bin" || die
+	yes -n | /bin/sh "${DISTDIR}/${A}" --nox11 --confirm --keep --target ${S}/unpack || die
 }
 
 src_prepare() {
