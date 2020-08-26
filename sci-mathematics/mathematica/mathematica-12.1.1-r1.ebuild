@@ -35,7 +35,7 @@ QA_PREBUILT="opt/*"
 
 S=${WORKDIR}
 
-src_unpack() {
+src_prepare() {
 	# fix ACCESS DENIED issue when installer check the avahi-daemon
 	sed -e "s:avahi-daemon -c:true:g" "${DISTDIR}/${A}" | /bin/sh /dev/stdin --nox11 --confirm -- -auto "-targetdir=${S}/${M_TARGET}" "-execdir=${S}/opt/bin" || die
 }
