@@ -40,9 +40,9 @@ src_unpack() {
 }
 
 src_prepare() {
-	fix ACCESS DENIED issue when installer check the avahi-daemon
-	sed -e "s:avahi-daemon -c:true:g" "${DISTDIR}/${A}" > "${S}/${A}" || die
-	SETUP_NOCHECK=1 /bin/sh "${S}/${A}" --nox11 --confirm -- -auto "-targetdir=${S}/${M_TARGET}" "-execdir=${S}/opt/bin" || die
+	# fix ACCESS DENIED issue when installer check the avahi-daemon
+	sed -e "s:avahi-daemon -c:true:g" -i "${S}/unpack/Unix/Installer/MathInstaller" || die
+	/bin/sh "${S}/unpack/Unix/Installer/MathInstaller" -auto "-targetdir=${S}/${M_TARGET}" "-execdir=${S}/opt/bin" || die
 }
 
 src_install() {
