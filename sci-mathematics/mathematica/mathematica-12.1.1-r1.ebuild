@@ -39,14 +39,12 @@ src_unpack() {
 	/bin/sh "${DISTDIR}/${A}" --nox11 --keep --target "${S}/unpack" -- "-help" || die
 }
 
-src_prepare() {
+src_install() {
+	local ARCH='-x86-64'
+
 	# fix ACCESS DENIED issue when installer check the avahi-daemon
 	sed -e "s:avahi-daemon -c:true:g" -i "${S}/unpack/Unix/Installer/MathInstaller" || die
 	/bin/sh "${S}/unpack/Unix/Installer/MathInstaller" -auto "-targetdir=${S}/${M_TARGET}" "-execdir=${S}/opt/bin" || die
-}
-
-src_install() {
-	local ARCH='-x86-64'
 
 	if ! use doc; then
 		einfo "Removing documentation"
