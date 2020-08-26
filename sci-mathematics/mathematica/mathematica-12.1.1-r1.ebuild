@@ -42,9 +42,11 @@ src_unpack() {
 src_install() {
 	local ARCH='-x86-64'
 
+	pushd "${S}/unpack" > /dev/null || die
 	# fix ACCESS DENIED issue when installer check the avahi-daemon
-	sed -e "s:avahi-daemon -c:true:g" -i "${S}/unpack/Unix/Installer/MathInstaller" || die
-	/bin/sh "${S}/unpack/Unix/Installer/MathInstaller" -auto "-targetdir=${S}/${M_TARGET}" "-execdir=${S}/opt/bin" || die
+	sed -e "s:avahi-daemon -c:true:g" -i "Unix/Installer/MathInstaller" || die
+	/bin/sh "Unix/Installer/MathInstaller" -auto "-targetdir=${S}/${M_TARGET}" "-execdir=${S}/opt/bin" || die
+	popd > /dev/null || die
 
 	if ! use doc; then
 		einfo "Removing documentation"
