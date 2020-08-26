@@ -35,10 +35,8 @@ QA_PREBUILT="opt/*"
 
 S=${WORKDIR}
 
-src_unpack
-
 src_unpack() {
-	unpack_makeself "${DISTDIR}/${A}"
+	unpack_makeself
 }
 
 src_prepare() {
