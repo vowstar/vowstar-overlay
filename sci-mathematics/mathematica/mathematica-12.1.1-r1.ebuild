@@ -38,7 +38,7 @@ S=${WORKDIR}
 src_unpack
 
 src_unpack() {
-	unpack_makeself
+	unpack_makeself "${DISTDIR}/${A}"
 }
 
 src_prepare() {
