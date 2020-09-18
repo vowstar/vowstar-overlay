@@ -460,7 +460,7 @@
 +    return mknod_helper(major, minor_num, vgpu_dev_name, NV_PROC_REGISTRY_PATH);
 +}
 +
-+static int nvidia_cap_get_device_file_attrs(const char* cap_file_path,
++int nvidia_cap_get_device_file_attrs(const char* cap_file_path,
 +                                            int *major,
 +                                            int *minor,
 +                                            char *name)
