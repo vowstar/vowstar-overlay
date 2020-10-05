@@ -35,10 +35,6 @@ BDEPEND="dev-util/gperf
 	sys-devel/flex
 "
 
-PATCHES=(
-	"${FILESDIR}"/${PN}-10.3-gen-bison-header.patch #734760
-)
-
 src_prepare() {
 	default
 
@@ -59,9 +55,6 @@ src_prepare() {
 src_install() {
 	local DOCS=( *.txt )
 
-	# Default build fails with parallel jobs,
-	# https://github.com/steveicarus/iverilog/pull/294
-	emake installdirs DESTDIR="${ED}"
 	default
 
 	dodoc -r examples
