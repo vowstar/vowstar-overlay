@@ -30,7 +30,8 @@ DEPEND="
 	sys-libs/zlib
 "
 RDEPEND="${DEPEND}"
-BDEPEND="dev-util/gperf
+BDEPEND="
+    dev-util/gperf
 	sys-devel/bison
 	sys-devel/flex
 "
