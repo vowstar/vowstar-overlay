@@ -71,10 +71,7 @@ BDEPEND="
 "
 
 src_compile() {
-	LIB_NAME=${PN} LIB_VERSION=${PV} go build \
-		-ldflags "-s -w" \
-		-o "${PN}" \
-		"${EGO_PN}/pkg" || die
+	make binary || die
 }
 
 src_install() {
