@@ -3,11 +3,11 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{6,7} )
+PYTHON_COMPAT=( python3_{6,7,8,9} )
 GITHUB_PN="DSView"
 LIBDIR="/usr/lib64"
 
-inherit autotools cmake-utils python-r1
+inherit autotools cmake python-r1 udev xdg
 
 DESCRIPTION="An open source multi-function instrument"
 HOMEPAGE="
@@ -20,7 +20,7 @@ if [[ ${PV} == "9999" ]] ; then
 	EGIT_REPO_URI="https://github.com/DreamSourceLab/${GITHUB_PN}.git"
 else
 	SRC_URI="https://github.com/DreamSourceLab/${GITHUB_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~m68k ~mips ~ppc ~ppc64 ~s390 ~sparc ~x86"
+	KEYWORDS="~amd64 ~x86"
 	S="${WORKDIR}/${GITHUB_PN}-${PV}"
 fi
 
@@ -43,14 +43,19 @@ DEPEND="
 	${RDEPEND}
 "
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-1.01-viewport.patch
+)
+
 src_prepare() {
+	default
+
 	grep -rl "/usr/local/lib" "${S}" | xargs sed -i "s@/usr/local/lib@${LIBDIR}@g" || die
 	grep -rl "/usr/local" "${S}" | xargs sed -i "s@/usr/local@/usr@g" || die
 	cd "${S}/libsigrok4DSL" || die
 	sh ./autogen.sh || die
 	cd "${S}/libsigrokdecode4DSL" || die
 	sh ./autogen.sh || die
-	eapply_user
 }
 
 src_configure() {
@@ -82,4 +87,9 @@ src_install() {
 	LDFLAGS="-L${D}${LIBDIR}" \
 	cmake -DCMAKE_INSTALL_PREFIX=/usr . || die
 	emake DESTDIR="${D}" install
+}
+
+pkg_postinst() {
+	xdg_pkg_postinst
+	udev_reload
 }

@@ -5,7 +5,6 @@ EAPI=7
 
 PYTHON_COMPAT=( python3_{6,7,8,9} )
 GITHUB_PN="DSView"
-LIBDIR="/usr/lib64"
 
 inherit autotools cmake python-r1 udev xdg
 
@@ -28,15 +27,15 @@ LICENSE="GPL-3"
 SLOT="0"
 
 RDEPEND="
-	virtual/libusb:1
-	>=dev-libs/libzip-0.8
-	>=dev-libs/boost-1.55
-	>=dev-libs/glib-2.28.0:2
-	>=dev-cpp/glibmm-2.28.0:2
+	dev-cpp/glibmm:2
+	dev-libs/boost
+	dev-libs/glib
+	dev-libs/libzip
 	dev-qt/qtcore:5
 	dev-qt/qtgui:5
 	dev-qt/qtwidgets:5
 	dev-qt/qtsvg:5
+	virtual/libusb:1
 "
 
 DEPEND="
@@ -50,6 +49,8 @@ PATCHES=(
 src_prepare() {
 	default
 
+	local LIBDIR="/usr/$(get_libdir)"
+
 	grep -rl "/usr/local/lib" "${S}" | xargs sed -i "s@/usr/local/lib@${LIBDIR}@g" || die
 	grep -rl "/usr/local" "${S}" | xargs sed -i "s@/usr/local@/usr@g" || die
 	cd "${S}/libsigrok4DSL" || die
@@ -59,6 +60,8 @@ src_prepare() {
 }
 
 src_configure() {
+	local LIBDIR="/usr/$(get_libdir)"
+
 	cd "${S}/libsigrok4DSL" || die
 	sh ./configure --libdir=${LIBDIR} --prefix=/usr || die
 	cd "${S}/libsigrokdecode4DSL" || die
@@ -74,6 +77,8 @@ src_compile() {
 }
 
 src_install() {
+	local LIBDIR="/usr/$(get_libdir)"
+
 	cd "${S}/libsigrok4DSL" || die
 	emake DESTDIR="${D}" install
 	cd "${S}/libsigrokdecode4DSL" || die

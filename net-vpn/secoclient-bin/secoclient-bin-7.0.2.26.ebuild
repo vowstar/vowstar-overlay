@@ -10,7 +10,7 @@ if [[ "${ARCH}" == "amd64" ]]; then
 elif [[ "${ARCH}" = "x86" ]]; then
 	MY_BIT="32"
 else
-	die "Unsuppoted ARCH ${ARCH}"
+	elog "Unsuppoted ARCH ${ARCH}"
 fi
 MY_FILE="${MY_PN}-linux-${MY_BIT}-${PV}.run"
 

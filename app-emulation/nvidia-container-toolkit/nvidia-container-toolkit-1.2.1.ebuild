@@ -3,7 +3,7 @@
 
 EAPI=7
 
-GITHUB_PN="nvidia-container-toolkit"
+GITHUB_PN="container-toolkit"
 EGO_PN="github.com/NVIDIA/${GITHUB_PN}"
 
 inherit go-module
@@ -69,11 +69,13 @@ DEPEND="${RDEPEND}"
 
 BDEPEND="
 	app-arch/unzip
-	sys-devel/make
 "
 
 src_compile() {
-	make binary || die
+	LIB_NAME=${PN} LIB_VERSION=${PV} go build \
+		-ldflags "-s -w" \
+		-o "${PN}" \
+		"${EGO_PN}/pkg" || die
 }
 
 src_install() {

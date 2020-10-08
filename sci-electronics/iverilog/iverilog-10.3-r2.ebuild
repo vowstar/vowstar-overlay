@@ -30,11 +30,16 @@ DEPEND="
 	sys-libs/zlib
 "
 RDEPEND="${DEPEND}"
-BDEPEND="
-    dev-util/gperf
+BDEPEND="dev-util/gperf
 	sys-devel/bison
 	sys-devel/flex
 "
+
+PATCHES=(
+	"${FILESDIR}"/${PN}-10.3-file-missing.patch #705412
+	"${FILESDIR}"/${PN}-10.3-fno-common.patch #706366
+	"${FILESDIR}"/${PN}-10.3-gen-bison-header.patch #734760
+)
 
 src_prepare() {
 	default
@@ -56,6 +61,9 @@ src_prepare() {
 src_install() {
 	local DOCS=( *.txt )
 
+	# Default build fails with parallel jobs,
+	# https://github.com/steveicarus/iverilog/pull/294
+	emake installdirs DESTDIR="${ED}"
 	default
 
 	dodoc -r examples
