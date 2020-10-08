@@ -33,7 +33,10 @@ RDEPEND="
 
 DEPEND="${RDEPEND}"
 
-BDEPEND=""
+BDEPEND="
+	app-arch/unzip
+	sys-devel/make
+"
 
 src_compile() {
 	EGO_PN="${EGO_PN_VCS}/pkg" \
