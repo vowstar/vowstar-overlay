@@ -3,7 +3,7 @@
 
 EAPI=7
 
-GITHUB_PN="container-toolkit"
+GITHUB_PN="nvidia-container-toolkit"
 EGO_PN_VCS="github.com/NVIDIA/${GITHUB_PN}"
 EGO_PN="${EGO_PN_VCS}"
 
@@ -39,9 +39,7 @@ BDEPEND="
 "
 
 src_compile() {
-	EGO_PN="${EGO_PN_VCS}/pkg" \
-		EGO_BUILD_FLAGS="-o ${T}/${PN}" \
-		golang-build_src_compile
+	emake binary || die
 }
 
 src_install() {
