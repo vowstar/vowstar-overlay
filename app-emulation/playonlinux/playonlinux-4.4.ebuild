@@ -58,6 +58,7 @@ PATCHES=(
 	"${FILESDIR}/${PN}-4.2.6-stop-update-warning.patch"
 	"${FILESDIR}/${PN}-4.4-bash-find-python.patch"
 	"${FILESDIR}/${PN}-4.4-version-fix.patch"
+	"${FILESDIR}/${PN}-4.4-remove-setspacing.patch"
 )
 
 src_prepare() {

@@ -1,0 +1,129 @@
+From 788fad16eff4904193e4e9c52b23672535a23c33 Mon Sep 17 00:00:00 2001
+From: Gilles <gilles.wiber@gmail.com>
+Date: Sat, 30 May 2020 11:19:35 +0200
+Subject: [PATCH] Removing SetSpacing funtion
+
+---
+ python/configurewindow/ConfigureWindow.py         | 2 +-
+ python/configurewindow/ConfigureWindowNotebook.py | 2 +-
+ python/debug.py                                   | 2 +-
+ python/install/InstallWindow.py                   | 2 +-
+ python/mainwindow.py                              | 2 +-
+ python/options.py                                 | 2 +-
+ python/setupwindow/POL_SetupFrame.py              | 2 +-
+ python/wine_versions/WineVersionsNotebook.py      | 4 ++--
+ 8 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/python/configurewindow/ConfigureWindow.py b/python/configurewindow/ConfigureWindow.py
+index 30f779db1..a26321437 100755
+--- a/python/configurewindow/ConfigureWindow.py
++++ b/python/configurewindow/ConfigureWindow.py
+@@ -75,7 +75,7 @@ def __init__(self,parent,id,title,shortcut, isPrefix = False):
+         self.Bind(wx.EVT_BUTTON, self.DeletePrefix, id=1002)
+ 
+ 
+-        self.list_game.SetSpacing(0)
++        #self.list_game.SetSpacing(0)
+         self.list_game.SetImageList(self.images)
+ 
+ 
+diff --git a/python/configurewindow/ConfigureWindowNotebook.py b/python/configurewindow/ConfigureWindowNotebook.py
+index 8b4e387ea..973d9bbd3 100644
+--- a/python/configurewindow/ConfigureWindowNotebook.py
++++ b/python/configurewindow/ConfigureWindowNotebook.py
+@@ -269,7 +269,7 @@ def Packages(self, nom):
+ 
+         self.Menu = wx.TreeCtrl(self.panelPackages, 99, pos=(15, 75), size=(530, 260),
+                                 style=wx.TR_HIDE_ROOT | wx.TR_FULL_ROW_HIGHLIGHT | Variables.widget_borders)
+-        self.Menu.SetSpacing(0);
++        #self.Menu.SetSpacing(0);
+         self.Menu.SetImageList(self.imagePackages)
+         self.imagePackages.RemoveAll()
+ 
+diff --git a/python/debug.py b/python/debug.py
+index 0221e89c0..43e8cf021 100755
+--- a/python/debug.py
++++ b/python/debug.py
+@@ -60,7 +60,7 @@ def __init__(self,parent,id,title,logcheck="/dev/null",logtype=None):
+         self.Bind(wx.EVT_TREE_SEL_CHANGED, self.analyseLog, id=900)
+ 
+ 
+-        self.list_game.SetSpacing(0);
++        #self.list_game.SetSpacing(0);
+         self.list_game.SetImageList(self.images)
+ 
+ 
+diff --git a/python/install/InstallWindow.py b/python/install/InstallWindow.py
+index 27a6b51a5..5b584774d 100755
+--- a/python/install/InstallWindow.py
++++ b/python/install/InstallWindow.py
+@@ -183,7 +183,7 @@ def _createAppNavigation(self):
+         self.appsList = wx.TreeCtrl(self.appNavigationPanel, 106,
+                                     style=wx.TR_HIDE_ROOT | wx.TR_FULL_ROW_HIGHLIGHT | Variables.widget_borders)
+         self.appsList.SetImageList(self.imagesapps)
+-        self.appsList.SetSpacing(0)
++        #self.appsList.SetSpacing(0)
+ 
+         self.appNavigationSizer.AddSpacer(10)
+         self.appNavigationSizer.Add(self.appsList, 4, wx.EXPAND, 5)
+diff --git a/python/mainwindow.py b/python/mainwindow.py
+index 7c21142df..8df1ff14b 100755
+--- a/python/mainwindow.py
++++ b/python/mainwindow.py
+@@ -240,7 +240,7 @@ def __init__(self, parent, id, title):
+ 
+         ## List game
+         self.list_game = wx.TreeCtrl(self, 105, style=wx.TR_HIDE_ROOT | wx.TR_FULL_ROW_HIGHLIGHT)
+-        self.list_game.SetSpacing(0)
++        #self.list_game.SetSpacing(0)
+         self.list_game.SetIndent(5)
+         self.list_game.SetImageList(self.images)
+         self.menu_gauche = wx.Panel(self, -1)
+diff --git a/python/options.py b/python/options.py
+index a54c11000..723073ce4 100755
+--- a/python/options.py
++++ b/python/options.py
+@@ -187,7 +187,7 @@ def Plugins(self, nom):
+         self.txtPlugin = wx.StaticText(self.panelPlugins, -1, _("Installed plugins"), size=wx.DefaultSize)
+         self.txtPlugin.SetFont(self.fontTitle)
+         self.pluginlist = wx.TreeCtrl(self.panelPlugins, 220, style=Variables.widget_borders|wx.TR_HIDE_ROOT|wx.TR_FULL_ROW_HIGHLIGHT)
+-        self.pluginlist.SetSpacing(0)
++        #self.pluginlist.SetSpacing(0)
+ 
+         self.pluginImgList = wx.ImageList(16,16)
+ 
+diff --git a/python/setupwindow/POL_SetupFrame.py b/python/setupwindow/POL_SetupFrame.py
+index 66bee8533..33d73d38a 100755
+--- a/python/setupwindow/POL_SetupFrame.py
++++ b/python/setupwindow/POL_SetupFrame.py
+@@ -212,7 +212,7 @@ def _createUI(self):
+                                      style=wx.TR_HIDE_ROOT | wx.TR_FULL_ROW_HIGHLIGHT | Variables.widget_borders,
+                                      pos=(25, 25), size=(460, 220))
+         self.MenuGames.SetImageList(self.images)
+-        self.MenuGames.SetSpacing(0)
++        #self.MenuGames.SetSpacing(0)
+ 
+         # Login
+         self.login = wx.StaticText(self.contentPanel, -1, _("Login: "), pos=(20, 40), size=(460, 20))
+diff --git a/python/wine_versions/WineVersionsNotebook.py b/python/wine_versions/WineVersionsNotebook.py
+index e088abeb2..ec5f12535 100644
+--- a/python/wine_versions/WineVersionsNotebook.py
++++ b/python/wine_versions/WineVersionsNotebook.py
+@@ -39,7 +39,7 @@ def _createInstalledWineVersionsPanel(self, arch):
+         self.installedWineVersionsTreeSelector[arch] = wx.TreeCtrl(installedWineVersionsPanel, 107 + self.calculateEventDelta(arch),
+                                                                    style=wx.TR_HIDE_ROOT | wx.TR_FULL_ROW_HIGHLIGHT | Variables.widget_borders)
+         self.installedWineVersionsTreeSelector[arch].SetImageList(self.imagesapps_i[arch])
+-        self.installedWineVersionsTreeSelector[arch].SetSpacing(0)
++        #self.installedWineVersionsTreeSelector[arch].SetSpacing(0)
+         installedWineVersionsSizer.Add(self.installedWineVersionsTreeSelector[arch], 1, wx.EXPAND)
+         installedWineVersionsSizer.AddSpacer(10)
+ 
+@@ -55,7 +55,7 @@ def _createAvailableWineVersionsPanel(self, arch):
+                                                                    style=wx.TR_HIDE_ROOT | wx.TR_FULL_ROW_HIGHLIGHT | Variables.widget_borders,
+                                                                    size=(320, 300), pos=(10, 35))
+         self.availableWineVersionsTreeSelector[arch].SetImageList(self.imagesapps[arch])
+-        self.availableWineVersionsTreeSelector[arch].SetSpacing(0)
++        #self.availableWineVersionsTreeSelector[arch].SetSpacing(0)
+         availableWineVersionsSizer.Add(self.availableWineVersionsTreeSelector[arch], 1, wx.EXPAND)
+         availableWineVersionsSizer.AddSpacer(10)
+ 
