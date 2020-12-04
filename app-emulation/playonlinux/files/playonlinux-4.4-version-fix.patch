@@ -1,5 +1,5 @@
---- /usr/share/playonlinux/python/lib/playonlinux.py	2020-12-05 04:38:18.034809713 +0800
-+++ /home/vowstar/playonlinux.py	2020-12-05 05:12:21.543262213 +0800
+--- a/python/lib/playonlinux.py	2020-12-05 04:38:18.034809713 +0800
++++ b/python/lib/playonlinux.py	2020-12-05 05:12:21.543262213 +0800
 @@ -7,6 +7,7 @@
  import os
  import subprocess, shlex, pipes, wx
