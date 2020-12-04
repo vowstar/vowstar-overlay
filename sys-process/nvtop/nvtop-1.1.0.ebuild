@@ -52,5 +52,9 @@ src_configure() {
 		${CMAKE_CONF}
 	)
 
+	local NVLM_H="${WORKDIR}/nvidia-settings-${NVIDIA_PV}/src/nvml.h"
+
+	cp "${WORKDIR}/nvidia-settings-${NVIDIA_PV}/src/nvml.h" "${S}/include/nvml.h" || die
+
 	cmake_src_configure
 }
