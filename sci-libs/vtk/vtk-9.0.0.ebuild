@@ -27,14 +27,15 @@ KEYWORDS="~amd64 ~x86"
 SLOT="0"
 IUSE="
 	all-modules aqua boost doc examples imaging ffmpeg gdal java json mpi
-	mysql odbc offscreen postgres python qt5 rendering tbb theora
+	mysql odbc offscreen postgres python qt5 rendering tbb theora tk
 	video_cards_nvidia views web R +X xdmf2"
 
 REQUIRED_USE="
 	all-modules? ( python xdmf2 boost )
+	examples? ( python )
 	java? ( qt5 )
 	python? ( ${PYTHON_REQUIRED_USE} )
-	examples? ( python )
+	tk? ( python )
 	web? ( python )
 	^^ ( X aqua offscreen )"
 
@@ -77,6 +78,7 @@ RDEPEND="
 	python? ( ${PYTHON_DEPS} )
 	R? ( dev-lang/R )
 	tbb? ( dev-cpp/tbb )
+	tk? ( dev-lang/tk:0= )
 	video_cards_nvidia? ( x11-drivers/nvidia-drivers[tools,static-libs] )
 	web? (
 		${WEBAPP_DEPEND}
@@ -116,13 +118,12 @@ DEPEND="
 	${RDEPEND}
 	doc? ( app-doc/doxygen )
 "
-BDEPEND="dev-cpp/eigen"
+BDEPEND="dev-cpp/eigen[c++11]"
 
-PATCHES=(
-	"${FILESDIR}/${P}-libdir.patch"
-	"${FILESDIR}/${P}-fix-designer-plugin-install-dir.patch"
-	"${FILESDIR}/${P}-0001-add-missing-include-statement.patch"
-)
+#PATCHES=(
+#	"${FILESDIR}/${P}-libdir.patch"
+#	"${FILESDIR}/${P}-fix-designer-plugin-install-dir.patch"
+#)
 
 S="${WORKDIR}"/VTK-${PV}
 
@@ -137,12 +138,12 @@ pkg_setup() {
 
 src_prepare() {
 	local x
-	# missing: VPIC freerange sqlite utf8 verdict xmdf2 xmdf3
-	for x in expat freetype glew hdf5 jpeg jsoncpp libharu libxml2 lz4 mpi4py netcdf png tiff zlib; do
-		ebegin "Dropping bundled ${x}"
-		rm -r ThirdParty/${x}/vtk${x} || die
-		eend $?
-	done
+	# missing: VPIC expat freerange freetype glew hdf5 jpeg jsoncpp libharu libxml2 lz4 netcdf png sqlite tiff utf8 verdict xmdf2 xmdf3 zlib
+#	for x in mpi4py; do
+#		ebegin "Dropping bundled ${x}"
+#		rm -r ThirdParty/${x}/vtk${x} || die
+#		eend $?
+#	done
 
 	if use doc; then
 		einfo "Removing .md5 files from documents."
@@ -186,7 +187,8 @@ src_configure() {
 		# Use bundled diy2 (no gentoo package / upstream does not provide a Finddiy2.cmake or diy2Config.cmake / diy2-config.cmake)
 		-DVTK_USE_SYSTEM_DIY2=OFF
 		-DVTK_USE_LARGE_DATA=ON
-		-DVTK_EXTRA_COMPILER_WARNINGS=ON
+		# FIXME: enable for debug builds
+		-DVTK_EXTRA_COMPILER_WARNINGS=OFF
 		-DVTK_Group_StandAlone=ON
 		-DBUILD_DOCUMENTATION=$(usex doc)
 		-DBUILD_EXAMPLES=$(usex examples)
@@ -199,6 +201,7 @@ src_configure() {
 		-DVTK_WWW_DIR="${ED}/${MY_HTDOCSDIR}"
 		-DVTK_WRAP_JAVA=$(usex java)
 		-DVTK_WRAP_PYTHON=$(usex python)
+		-DVTK_WRAP_TK=$(usex tk)
 		-DModule_vtkInfovisBoost=$(usex boost)
 		-DModule_vtkInfovisBoostGraphAlgorithms=$(usex boost)
 		-DModule_vtkIOODBC=$(usex odbc)
@@ -212,7 +215,8 @@ src_configure() {
 		-DModule_vtkIOGDAL=$(usex gdal)
 		-DModule_vtkIOGeoJSON=$(usex json)
 		-DModule_vtkIOXdmf2=$(usex xdmf2)
-		-DBUILD_TESTING=$(usex examples)
+		# we forbid downloads, but testing needs download
+		-DVTK_BUILD_TESTING=OFF
 	# Apple stuff, does it really work?
 		-DVTK_USE_COCOA=$(usex aqua)
 	)
@@ -230,9 +234,10 @@ src_configure() {
 
 	if use python; then
 		mycmakeargs+=(
+			-DPython3_EXECUTABLE="${PYTHON}"
 			-DPYTHON_INCLUDE_DIR="$(python_get_includedir)"
 			-DPYTHON_LIBRARY="$(python_get_library_path)"
-			-DVTK_INSTALL_PYTHON_MODULES_DIR="$(python_get_sitedir)"
+			-DVTK_PYTHON_VERSION="3"
 			-DVTK_USE_SYSTEM_SIX=ON
 		)
 	fi
@@ -267,8 +272,6 @@ src_install() {
 	use web && webapp_src_preinst
 
 	cmake_src_install
-
-	use python && python_optimize
 
 	use java && java-pkg_regjar "${ED}"/usr/$(get_libdir)/${PN}.jar
 
