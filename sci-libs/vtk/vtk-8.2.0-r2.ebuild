@@ -23,7 +23,7 @@ SRC_URI="
 	)"
 
 LICENSE="BSD LGPL-2"
-KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
+KEYWORDS="~amd64 ~x86"
 SLOT="0"
 IUSE="
 	all-modules aqua boost doc examples imaging ffmpeg gdal java json mpi
