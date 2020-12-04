@@ -54,6 +54,7 @@ PATCHES=(
 	"${FILESDIR}/${PN}-4.2.4-pol-bash.patch"
 	"${FILESDIR}/${PN}-4.2.4-binary-plugin.patch"
 	"${FILESDIR}/${PN}-4.2.6-stop-update-warning.patch"
+	"${FILESDIR}/${PN}-4.2.4-bash-find-python.patch"
 )
 
 src_prepare() {

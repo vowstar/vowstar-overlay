@@ -1,0 +1,16 @@
+--- a/bash/find_python	2020-12-05 04:10:18.783784009 +0800
++++ b/bash/find_python	2020-12-05 04:34:51.423966229 +0800
+@@ -13,8 +13,12 @@
+ 	POL_PYTHON=""
+ 	while true; do
+ 		# list of interpreter names to try, in order
+-		next_python "python3"
+ 		next_python "python"
++		next_python "python3.9"
++		next_python "python3.8"
++		next_python "python3.7"
++		next_python "python3.6"
++		next_python "python3"
+ 		next_python "python2.7"
+ 		next_python "python2.6"
+ 		next_python "python2"
