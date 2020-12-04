@@ -21,7 +21,6 @@ IUSE="winbind"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 RDEPEND="${PYTHON_DEPS}
-	app-arch/cabextract
 	app-arch/p7zip
 	app-arch/unzip
 	app-crypt/gnupg
@@ -40,7 +39,9 @@ RDEPEND="${PYTHON_DEPS}
 	x11-terms/xterm
 "
 
-DEPEND="${RDEPEND}"
+DEPEND="${RDEPEND}
+	app-arch/cabextract
+"
 
 S="${WORKDIR}/${PN}"
 
