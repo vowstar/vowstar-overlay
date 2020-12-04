@@ -55,7 +55,7 @@
 -            return False
 -    else:
 -        return False
-+    return LooseVersion(version1, version2)
++    return LooseVersion(version1) < LooseVersion(version2)
  
  def convertVersionToInt(version): # Code par MulX en Bash, adapte en python par Tinou
      #rajouter pour les vesions de dev -> la version stable peut sortir
