@@ -118,7 +118,7 @@ DEPEND="
 	${RDEPEND}
 	doc? ( app-doc/doxygen )
 "
-BDEPEND="dev-cpp/eigen[c++11]"
+BDEPEND="dev-cpp/eigen"
 
 #PATCHES=(
 #	"${FILESDIR}/${P}-libdir.patch"
