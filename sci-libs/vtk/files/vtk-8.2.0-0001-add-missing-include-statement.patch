@@ -1,0 +1,38 @@
+From 7edd9b8a4920ff60122f3d7b0aaac419253a2413 Mon Sep 17 00:00:00 2001
+From: Bernd Waibel <waebbl@gmail.com>
+Date: Mon, 1 Jun 2020 14:57:02 +0200
+Subject: [PATCH] add missing include statement
+
+Signed-off-by: Bernd Waibel <waebbl@gmail.com>
+---
+ Rendering/Qt/vtkQtLabelRenderStrategy.cxx | 1 +
+ Rendering/Qt/vtkQtStringToImage.cxx       | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/Rendering/Qt/vtkQtLabelRenderStrategy.cxx b/Rendering/Qt/vtkQtLabelRenderStrategy.cxx
+index dd901154..1bdbff88 100644
+--- a/Rendering/Qt/vtkQtLabelRenderStrategy.cxx
++++ b/Rendering/Qt/vtkQtLabelRenderStrategy.cxx
+@@ -41,6 +41,7 @@
+ #include <QImage>
+ #include <QMap>
+ #include <QPainter>
++#include <QPainterPath>
+ #include <QPair>
+ #include <QPixmap>
+ #include <QTextDocument>
+diff --git a/Rendering/Qt/vtkQtStringToImage.cxx b/Rendering/Qt/vtkQtStringToImage.cxx
+index 549ffbe8..a7c726e4 100644
+--- a/Rendering/Qt/vtkQtStringToImage.cxx
++++ b/Rendering/Qt/vtkQtStringToImage.cxx
+@@ -31,6 +31,7 @@
+ #include <QFontMetrics>
+ #include <QImage>
+ #include <QPainter>
++#include <QPainterPath>
+ #include <QPixmap>
+ #include <QTextDocument>
+ #include <QTextStream>
+-- 
+2.26.2
+
