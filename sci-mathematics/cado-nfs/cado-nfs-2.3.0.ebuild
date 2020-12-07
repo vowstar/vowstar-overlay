@@ -6,7 +6,7 @@ EAPI=7
 PYTHON_COMPAT=( python{2_7,3_7,3_8} )
 PYTHON_REQ_USE="sqlite"
 CMAKE_MAKEFILE_GENERATOR="emake"
-inherit cmake-utils python-r1
+inherit cmake python-r1
 
 DESCRIPTION="Number Field Sieve (NFS) implementation for factoring integers"
 HOMEPAGE="http://cado-nfs.gforge.inria.fr"
@@ -43,7 +43,7 @@ fi
 
 src_prepare() {
 	default
-	cmake-utils_src_prepare
+	cmake_src_prepare
 
 	if use mpi ; then
 		echo "MPI=1" >> local.sh || die
@@ -77,9 +77,9 @@ src_prepare() {
 
 	if [[ ${PV} == "9999" ]] ; then
 		# workaround c++ compile problem for non-type template parameters
-		sed -i -e 's/std=c++11/std=c++2a/' CMakeLists.txt || die
-		sed -i -e 's/std=c++11/std=c++2a/' gf2x/Makefile.in || die
-		sed -i -e 's/std=c++11/std=c++2a/' gf2x/Makefile.am || die
+		# sed -i -e 's/std=c++11/std=c++2a/' CMakeLists.txt || die
+		# sed -i -e 's/std=c++11/std=c++2a/' gf2x/Makefile.in || die
+		# sed -i -e 's/std=c++11/std=c++2a/' gf2x/Makefile.am || die
 		# link with gomp to fix compile problem
 		sed -i -e 's/utils pthread/utils pthread gomp/' utils/CMakeLists.txt || die
 	else
@@ -106,14 +106,14 @@ src_configure() {
 	# Install shared library, and set correctly RPATH
 	export ENABLE_SHARED=1 || die
 
-	cmake-utils_src_configure
+	cmake_src_configure
 }
 
 src_compile() {
-	cmake-utils_src_compile
+	cmake_src_compile
 }
 
 src_install() {
-	cmake-utils_src_install
+	cmake_src_install
 	#find "${WORKDIR}/build" | grep -e "so$" | xargs -I{} dolib.so {}  || die
 }
