@@ -77,9 +77,9 @@ src_prepare() {
 
 	if [[ ${PV} == "9999" ]] ; then
 		# workaround c++ compile problem for non-type template parameters
-		sed -i -e 's/std=c++11/std=c++2a/' CMakeLists.txt || die
-		sed -i -e 's/std=c++11/std=c++2a/' gf2x/Makefile.in || die
-		sed -i -e 's/std=c++11/std=c++2a/' gf2x/Makefile.am || die
+		# sed -i -e 's/std=c++11/std=c++2a/' CMakeLists.txt || die
+		# sed -i -e 's/std=c++11/std=c++2a/' gf2x/Makefile.in || die
+		# sed -i -e 's/std=c++11/std=c++2a/' gf2x/Makefile.am || die
 		# link with gomp to fix compile problem
 		sed -i -e 's/utils pthread/utils pthread gomp/' utils/CMakeLists.txt || die
 	else
