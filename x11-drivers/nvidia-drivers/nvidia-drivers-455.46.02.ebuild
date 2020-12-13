@@ -586,16 +586,3 @@ pkg_postinst() {
 	elog "For more information see:"
 	elog "${ROOT}/usr/share/doc/${PF}/html/powermanagement.html"
 }
-
-pkg_prerm() {
-	if ! use libglvnd; then
-		use X && "${ROOT}"/usr/bin/eselect opengl set --use-old xorg-x11
-	fi
-}
-
-pkg_postrm() {
-	use driver && use kernel_linux && linux-mod_pkg_postrm
-	if ! use libglvnd; then
-		use X && "${ROOT}"/usr/bin/eselect opengl set --use-old xorg-x11
-	fi
-}
