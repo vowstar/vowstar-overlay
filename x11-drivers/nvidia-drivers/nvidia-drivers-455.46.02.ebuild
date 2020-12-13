@@ -12,7 +12,7 @@ AMD64_NV_PACKAGE="NVIDIA-Linux-x86_64-${PV}"
 
 NV_URI="https://us.download.nvidia.com/XFree86/"
 NV_DEV_URI="https://developer.nvidia.com/"
-NV_SETTINGS_PV="$(ver_cut '1').38"
+NV_SETTINGS_PV="$(ver_cut '1').45.01"
 NV_VULKAN_BETA_PV="$(ver_rs 1- '')"
 
 SRC_URI="
