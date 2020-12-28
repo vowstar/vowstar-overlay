@@ -1,6 +1,0 @@
-dev-lang/lua:5.1
-dev-lang/lua:5.2
-dev-lang/lua:5.3
-app-eselect/eselect-lua
-virtual/lua
-media-video/kikoplay
