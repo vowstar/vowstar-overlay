@@ -1,0 +1,25 @@
+From d56c5b463bc34f23b806f6c97e4c330e5f26e7fc Mon Sep 17 00:00:00 2001
+From: Bernd Waibel <waebbl@gmail.com>
+Date: Tue, 8 Dec 2020 07:33:59 +0100
+Subject: [PATCH] fix std namespace issue with endl
+
+Signed-off-by: Bernd Waibel <waebbl@gmail.com>
+---
+ src/Mod/Raytracing/App/RayFeature.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/Mod/Raytracing/App/RayFeature.cpp b/src/Mod/Raytracing/App/RayFeature.cpp
+index cdd2cb6..235a986 100644
+--- a/src/Mod/Raytracing/App/RayFeature.cpp
++++ b/src/Mod/Raytracing/App/RayFeature.cpp
+@@ -36,6 +36,7 @@
+ 
+ 
+ using namespace Raytracing;
++using namespace std;
+ 
+ PROPERTY_SOURCE(Raytracing::RayFeature, Raytracing::RaySegment)
+ 
+-- 
+2.29.2
+

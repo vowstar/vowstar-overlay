@@ -1,0 +1,25 @@
+From 551d452a31129858e3739236f0aae2821a837f2c Mon Sep 17 00:00:00 2001
+From: Bernd Waibel <waebbl@gmail.com>
+Date: Sun, 6 Dec 2020 17:24:26 +0100
+Subject: [PATCH] fix path for coin doc
+
+Signed-off-by: Bernd Waibel <waebbl@gmail.com>
+---
+ cMake/FindCoin3DDoc.cmake | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/cMake/FindCoin3DDoc.cmake b/cMake/FindCoin3DDoc.cmake
+index 8833684..898316b 100644
+--- a/cMake/FindCoin3DDoc.cmake
++++ b/cMake/FindCoin3DDoc.cmake
+@@ -23,6 +23,7 @@ IF (COIN3D_FOUND)
+       find_path(COIN3D_DOC_PATH index.html 
+                 /usr/share/doc/libcoin80-doc/html
+                 /usr/share/doc/coin/html
++                /usr/share/doc/coin-4.0.0/html
+       )
+       IF( EXISTS ${COIN3D_DOC_PATH})
+         message(STATUS "Coin3D doc is installed")
+-- 
+2.29.2
+

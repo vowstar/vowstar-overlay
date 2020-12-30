@@ -1,0 +1,38 @@
+From 2c52a1be4bd8f294bbcd96f99b0b5f84be68b917 Mon Sep 17 00:00:00 2001
+From: Bernd Waibel <waebbl@gmail.com>
+Date: Tue, 2 Jun 2020 08:55:43 +0200
+Subject: [PATCH] add missing include statements
+
+Signed-off-by: Bernd Waibel <waebbl@gmail.com>
+---
+ src/Mod/Image/Gui/OpenGLImageBox.cpp | 1 +
+ src/Mod/Sandbox/Gui/Command.cpp      | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/src/Mod/Image/Gui/OpenGLImageBox.cpp b/src/Mod/Image/Gui/OpenGLImageBox.cpp
+index 404a1a1..bb22ae0 100644
+--- a/src/Mod/Image/Gui/OpenGLImageBox.cpp
++++ b/src/Mod/Image/Gui/OpenGLImageBox.cpp
+@@ -26,6 +26,7 @@
+ # include <QSurfaceFormat>
+ # include <QMessageBox>
+ # include <QPainter>
++# include <QPainterPath>
+ #endif
+ 
+ #if defined(__MINGW32__)
+diff --git a/src/Mod/Sandbox/Gui/Command.cpp b/src/Mod/Sandbox/Gui/Command.cpp
+index 67db11a..5bf8813 100644
+--- a/src/Mod/Sandbox/Gui/Command.cpp
++++ b/src/Mod/Sandbox/Gui/Command.cpp
+@@ -45,6 +45,7 @@
+ # include <QImage>
+ # include <QImageReader>
+ # include <QPainter>
++# include <QPainterPath>
+ # include <QThread>
+ # include <Inventor/nodes/SoAnnotation.h>
+ # include <Inventor/nodes/SoImage.h>
+-- 
+2.26.2
+
