@@ -1,0 +1,31 @@
+From 5ca935bee8709f5cfa30cead829368bb99a45fec Mon Sep 17 00:00:00 2001
+From: Bernd Waibel <waebbl@gmail.com>
+Date: Wed, 16 Dec 2020 19:51:22 +0100
+Subject: [PATCH] Fix python-3.8 related issue
+
+Python 3.8 made some functions related to thread state private.
+The patch has been included in 0.19 but it seems not in 0.18.5.
+
+See: https://github.com/FreeCAD/FreeCAD/commit/6eacb17b3e03d20039b85c9daebab9e44386d6bf?branch=6eacb17b3e03d20039b85c9daebab9e44386d6bf&diff=unified
+
+Signed-off-by: Bernd Waibel <waebbl@gmail.com>
+---
+ src/Base/swigpyrun.inl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Base/swigpyrun.inl b/src/Base/swigpyrun.inl
+index 0eedaaa..65bba62 100644
+--- a/src/Base/swigpyrun.inl
++++ b/src/Base/swigpyrun.inl
+@@ -72,7 +72,7 @@ void cleanupSWIG_T(const char* TypeName)
+ 
+     PyObject *module, *dict;
+     PyInterpreterState *interp = PyThreadState_GET()->interp;
+-    PyObject *modules = interp->modules;
++    PyObject *modules = PyImport_GetModuleDict();
+     module = PyDict_GetItemString(modules, "__builtin__");
+     if (module != NULL && PyModule_Check(module)) {
+         dict = PyModule_GetDict(module);
+-- 
+2.29.2
+

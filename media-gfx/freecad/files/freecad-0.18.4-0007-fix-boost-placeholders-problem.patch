@@ -1,0 +1,42 @@
+From db67488227119b93f7a4170bdf1aeec244b2e6fc Mon Sep 17 00:00:00 2001
+From: Bernd Waibel <waebbl@gmail.com>
+Date: Wed, 9 Sep 2020 07:35:41 +0200
+Subject: [PATCH] fix boost placeholders problem
+
+Thanks to Huang Rui for reporting the issue and providing a fix.
+
+Reported-by: Huang Rui <vowstar@gmail.com>
+Closes: https://github.com/waebbl/waebbl-gentoo/issues/250
+Signed-off-by: Bernd Waibel <waebbl@gmail.com>
+---
+ src/Gui/DAGView/DAGView.cpp                  | 1 +
+ src/Mod/Sketcher/Gui/TaskSketcherGeneral.cpp | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/src/Gui/DAGView/DAGView.cpp b/src/Gui/DAGView/DAGView.cpp
+index 501a424..229d32c 100644
+--- a/src/Gui/DAGView/DAGView.cpp
++++ b/src/Gui/DAGView/DAGView.cpp
+@@ -37,6 +37,7 @@
+ #include "DAGModel.h"
+ #include "DAGView.h"
+ 
++using namespace boost::placeholders;
+ using namespace Gui;
+ using namespace DAG;
+ 
+diff --git a/src/Mod/Sketcher/Gui/TaskSketcherGeneral.cpp b/src/Mod/Sketcher/Gui/TaskSketcherGeneral.cpp
+index 8b0e884..4e0c8ea 100644
+--- a/src/Mod/Sketcher/Gui/TaskSketcherGeneral.cpp
++++ b/src/Mod/Sketcher/Gui/TaskSketcherGeneral.cpp
+@@ -38,6 +38,7 @@
+ 
+ #include "ViewProviderSketch.h"
+ 
++using namespace boost::placeholders;
+ using namespace SketcherGui;
+ using namespace Gui::TaskView;
+ 
+-- 
+2.28.0
+

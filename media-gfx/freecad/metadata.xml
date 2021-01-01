@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>waebbl@gmail.com</email>
+		<name>Bernd Waibel</name>
+	</maintainer>
+	<use>
+		<flag name="addonmgr">
+			Build the addon manager module for automatic handling of 3rd 
+			party addons
+		</flag>
+		<flag name="arch">
+			Build the architecture workbench for working with architectural 
+			elements
+		</flag>
+		<flag name="assembly">
+			Build the assembly module
+		</flag>
+		<flag name="drawing">
+			Build the drawing module and workbench to display 3D work on a 
+			2D sheet
+		</flag>
+		<flag name="fem">
+			Build the FEM module and workbench which provides Finite Element 
+			Analysis (FEA) workflows
+		</flag>
+		<flag name="idf">
+			Build the IDF module to provide file exchange capabilities with
+			IDF files
+		</flag>
+		<flag name="image">
+			Build the image module and workbench for working with bitmap
+			images
+		</flag>
+		<flag name="inspection">
+			Build the inspection workbench which gives you specific tools
+			for examination of shapes (experimental)
+		</flag>
+		<flag name="material">
+			Build the material module and workbench to work with materials
+		</flag>
+		<flag name="mesh">
+			Build the mesh module and workbench to work with triangulated 
+			meshes
+		</flag>
+		<flag name="netgen">
+			Support <pkg>sci-mathematics/netgen</pkg> with the FEM workbench
+		</flag>
+		<flag name="oce">
+			If set, build against the community edition of opencascade,
+			<pkg>sci-libs/oce</pkg>. If unset, the package is built against
+			the official version <pkg>sci-libs/opencascade</pkg>.
+		</flag>
+		<flag name="openscad">
+			Build the OpenSCAD module for interoperability with OpenSCAD 
+			and repairing Constructive Solid Geometry (CSG) history
+		</flag>
+		<flag name="part-design">
+			Build the part design module and workbench for build part shapes
+			from sketches
+		</flag>
+		<flag name="path"><!-- FIXME: auto-enable throught robot? -->
+			Build the path module and workbench to procude G-Code instructions 
+			for CNC
+		</flag>
+		<flag name="pcl">
+			Use external <pkg>sci-libs/pcl</pkg> for point clouds support.
+		</flag>
+		<flag name="plot">
+			Build the internal plot workbench. NOTE: This conflicts with the
+			external plot workbench, which you can add via the Addon Manager!
+		</flag>
+		<flag name="points">
+			Build the points module and workbench for working with point clouds
+		</flag>
+		<flag name="raytracing">
+			Build the raytracing module and workbench for raytracing and rendering
+		</flag>
+		<flag name="robot">
+			Build the robot module and workbench for studying robot movements
+		</flag>
+		<flag name="ship">
+			Build the ship module and workbench which works over ship entities, 
+			that must be created on top of provided geometry. NOTE: This conflicts
+			with the external ship workbench, which you can add via the Addon Manager!
+		</flag>
+		<flag name="show">
+			Build the show module, a helper module for visibility automation
+		</flag>
+		<flag name="spreadsheet">
+			Build the spreadsheet module and workbench to create and manipulate 
+			spreadsheet data
+		</flag>
+		<flag name="surface">
+			Build the surface module and workbench
+		</flag>
+		<!-- FIXME: comment this until we can build it external?
+		<flag name="system-smesh">
+			Use system-provided smesh (not implemented)
+		</flag>
+		-->
+		<flag name="techdraw">
+			Build the techdraw module and workbench, a more advanced and 
+			feature-rich successor of the drawing workbench
+		</flag>
+		<flag name="tux">
+			Build the Tux module
+		</flag>
+	</use>
+	<upstream>
+		<bugs-to>https://www.freecadweb.org/tracker/</bugs-to>
+		<remote-id type="github">FreeCAD/FreeCAD</remote-id>
+		<doc lang="en">https://www.freecadweb.org/wiki/MainPage</doc>
+	</upstream>
+</pkgmetadata>
+<!--
+NOTE: Below flags were once in the ebuild, but have been removed as
+USE flags for maintainability and reducing number of USE flags.
+They are either enabled by default, or enabled through the use of
+other USE flags.
+
+default enabled:
+draft - Build the draft module and workbench for 2D tools and basic 2D and 3D CAD operations
+import - Build the import module for importing various file formats
+part - Build the part module and workbench to work with CAD parts
+sketcher - Build the sketcher module and workbench to work with geometry-constrained sketches
+start - Build the start center workbench, which allows you to quickly jump to one of the most common workbenches
+web - Build the web module and workbench, which provides a browser window
+
+enabled through USE=mesh
+flat_mesh - Build the flat mesh module
+mesh_part - Build the mesh part module
+smesh - Build the smesh module for optimized mesh handling
+
+enabled through USE=debug
+sandbox - Build the sanbox module (only for testing / debugging)
+template - Build the template module (only for testing / debugging)
+test - Build the test framework module and workbench used for debugging
+
+disabled: The Occulus SDK development for linux seems to be stalled. 
+As long as there is no stable means to add a package for it, we disable the use of vr.
+vr - Build the VR module and workbench which provides Occulus Rift support (needs Occulus SDK 4.x or higher)
+-->
