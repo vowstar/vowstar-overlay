@@ -74,7 +74,6 @@ RDEPEND="
 	>=media-libs/coin-4.0.0
 	media-libs/freetype
 	media-libs/qhull
-	media-libs/simage[sndfile]
 	sci-libs/flann[openmp]
 	>=sci-libs/med-4.0.0-r1[python,${PYTHON_SINGLE_USEDEP}]
 	sci-libs/orocos_kdl:=
