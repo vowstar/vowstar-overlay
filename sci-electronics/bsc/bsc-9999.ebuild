@@ -3,7 +3,7 @@
 
 EAPI=7
 
-DESCRIPTION="Bluespec High Level Hardware Design Language"
+DESCRIPTION="Bluespec high level hardware design language compiler"
 HOMEPAGE="https://github.com/B-Lang-org/bsc"
 
 if [[ ${PV} == "9999" ]] ; then
@@ -16,6 +16,8 @@ fi
 
 LICENSE="BSD GPL-3+ MIT"
 SLOT="0"
+IUSE="test"
+RESTRICT="!test? ( test )"
 
 RDEPEND="
 	dev-haskell/old-time:0=
@@ -38,6 +40,14 @@ BDEPEND="
 	sys-devel/flex
 "
 
+DOCS=( "README.md" "COPYING" "LICENSES/*" )
+
+src_prepare() {
+	default
+    find /path -type f -exec sed -i 's:/lib:/$(get_libdir):g' "{}" + || die
+}
+
 src_install() {
-	emake PREFIX="${D}" install
+	emake PREFIX="${ED%/}"/usr install
+	einstalldocs
 }
