@@ -51,6 +51,6 @@ src_prepare() {
 }
 
 src_install() {
-	emake PREFIX="${ED%/}"/usr install
+	emake PREFIX="${ED%/}"/usr LIBDIR="${ED%/}"/usr/$(get_libdir) install
 	einstalldocs
 }
