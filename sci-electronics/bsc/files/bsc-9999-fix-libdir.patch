@@ -130,7 +130,7 @@ index 4ee8e86..e243531 100644
  if { [catch Bluetcl::initBluespec err] } {
      puts "Error in initialization file bluespec.tcl: $err" 
 diff --git a/src/comp/Makefile b/src/comp/Makefile
-index 58b81d7..52955c6 100644
+index 58b81d7..a788349 100644
 --- a/src/comp/Makefile
 +++ b/src/comp/Makefile
 @@ -14,6 +14,7 @@ RM = rm -f
@@ -153,7 +153,7 @@ index 58b81d7..52955c6 100644
  $(BINDIR)/%: wrapper.sh $(BINDIR)/core/%
  	mkdir -p -m 755 $(BINDIR)
  	$(INSTALL) -m 755 wrapper.sh $(BINDIR)/$(@F)
-+	$(SED) -i "s:^LIBDIR=.*$$:LIBDIR=\"$(realpath $(LIBDIR))\":g" $(BINDIR)/$(@F)
++	$(SED) -i "s:^LIBDIR=.*$$:LIBDIR=\"$(shell realpath --relative-to $(BINDIR) $(LIBDIR))\":g" $(BINDIR)/$(@F)
  
  .PHONY: install-bsc
  install-bsc: $(addprefix $(BINDIR)/,$(BSCEXES))

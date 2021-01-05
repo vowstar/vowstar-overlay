@@ -44,7 +44,7 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-9999-fix-libdir.patch
 )
 
-DOCS=( "README.md" "COPYING" "LICENSES/*" )
+DOCS=( "README.md" "COPYING" )
 
 # We don't want to run it because it will do install by default.
 src_compile() { :; }
