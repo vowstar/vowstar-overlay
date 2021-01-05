@@ -44,7 +44,7 @@ DOCS=( "README.md" "COPYING" "LICENSES/*" )
 
 src_prepare() {
 	default
-	find ${S} -type f -exec sed -i "s:/lib:/$(get_libdir):g" "{}" + || die
+	find "${S}" -type f -exec sed -i "s:/lib:/$(get_libdir):g" "{}" + || die
 }
 
 src_install() {
