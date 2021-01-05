@@ -40,6 +40,10 @@ BDEPEND="
 	sys-devel/flex
 "
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-9999-fix-libdir.patch
+)
+
 DOCS=( "README.md" "COPYING" "LICENSES/*" )
 
 src_prepare() {
