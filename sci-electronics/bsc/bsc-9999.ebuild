@@ -37,3 +37,7 @@ BDEPEND="
 	sys-devel/bison
 	sys-devel/flex
 "
+
+src_install() {
+	emake PREFIX="${D}" install
+}
