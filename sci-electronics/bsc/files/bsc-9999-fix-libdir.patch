@@ -130,7 +130,7 @@ index 4ee8e86..e243531 100644
  if { [catch Bluetcl::initBluespec err] } {
      puts "Error in initialization file bluespec.tcl: $err" 
 diff --git a/src/comp/Makefile b/src/comp/Makefile
-index 58b81d7..b017545 100644
+index 58b81d7..dda30ac 100644
 --- a/src/comp/Makefile
 +++ b/src/comp/Makefile
 @@ -14,6 +14,7 @@ RM = rm -f
@@ -153,20 +153,31 @@ index 58b81d7..b017545 100644
  $(BINDIR)/%: wrapper.sh $(BINDIR)/core/%
  	mkdir -p -m 755 $(BINDIR)
  	$(INSTALL) -m 755 wrapper.sh $(BINDIR)/$(@F)
-+	$(SED) -i "s:^LIBDIR=.*$$:LIBDIR=\"$$\{BINDIR\}/$(shell realpath --relative-to $(BINDIR) $(LIBDIR))\":g" $(BINDIR)/$(@F)
++	cat $(BINDIR)/$(@F) | $(SED) -e "s:^LIBDIR=.*$$:LIBDIR=\"$(abspath $(LIBDIR))\":g" > $(BINDIR)/$(@F)
  
  .PHONY: install-bsc
  install-bsc: $(addprefix $(BINDIR)/,$(BSCEXES))
 diff --git a/src/comp/wrapper.sh b/src/comp/wrapper.sh
-index 656e9a0..930d274 100755
+index 656e9a0..fa1a052 100755
 --- a/src/comp/wrapper.sh
 +++ b/src/comp/wrapper.sh
-@@ -5,9 +5,11 @@
+@@ -5,9 +5,22 @@
  ABSNAME="$(cd "${0%/*}"; echo $PWD)/${0##*/}"
  SCRIPTNAME="${ABSNAME##*/}"
  BINDIR="${ABSNAME%/*}"
 +# LIBDIR will be replaced to user defined path after build
 +LIBDIR="${BINDIR}/../lib"
++
++# If missing LIBDIR, search one
++if [ ! -d ${LIBDIR} ]; then
++    LIBDIR="$(find ${BINDIR}/.. -maxdepth 10 -type d -name 'SAT' -print -quit)"
++    if [ ! "x${LIBDIR}" = "x"  ]; then
++        LIBDIR="${LIBDIR}/.."
++    else
++        echo "Error Bluespec library path not found."
++        exit 1;
++    fi
++fi
  
  # Set BLUESPECDIR based on the location
 -BLUESPECDIR="$(cd ${BINDIR}/../lib; echo $PWD)"
