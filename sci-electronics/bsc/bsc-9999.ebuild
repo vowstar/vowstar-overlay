@@ -46,9 +46,8 @@ PATCHES=(
 
 DOCS=( "README.md" "COPYING" "LICENSES/*" )
 
-src_prepare() {
-	default
-}
+# We don't want to run it because it will do install by default.
+src_compile() { :; }
 
 src_install() {
 	emake PREFIX="${ED%/}"/usr LIBDIR="${ED%/}"/usr/$(get_libdir) install
