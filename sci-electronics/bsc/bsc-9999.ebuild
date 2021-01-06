@@ -10,7 +10,9 @@ if [[ ${PV} == "9999" ]] ; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/B-Lang-org/${PN}.git"
 else
-	SRC_URI=""
+	# Waiting for https://github.com/B-Lang-org/bsc/issues/85
+	# SRC_URI=""
+	EGIT_COMMIT="7d25cdedd5c6df310acfcf5a3255aeb13b6adb61"
 	KEYWORDS="~amd64 ~arm ~arm64 ~riscv ~x86"
 fi
 
