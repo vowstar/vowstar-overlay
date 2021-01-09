@@ -44,9 +44,9 @@ src_configure() {
 pkg_postinst() {
 	elog "If you want to run the examples, you need to :"
 	elog "    tar xvfz ${PORTAGE_ACTUAL_DISTDIR}/${A}"
-	elog "    cd ${MY_P}"
-	elog "    find examples -name 'Makefile.*' -exec sed -i -e 's/-lm/-lm -lpthread/' '{}' \;"
-	elog "    ./configure"
+	elog "    cd ${PN}-${MY_PV}"
+	elog "    mkdir build && cd build"
+	elog "    cmake .."
 	elog "    cd examples"
 	elog "    make check"
 }
