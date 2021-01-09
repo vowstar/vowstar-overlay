@@ -31,10 +31,14 @@ DEPEND="
 "
 RDEPEND="${DEPEND}"
 BDEPEND="
-    dev-util/gperf
+	dev-util/gperf
 	sys-devel/bison
 	sys-devel/flex
 "
+
+PATCHES=(
+	"${FILESDIR}/${P}-autoconf-2.70.patch" #749870
+)
 
 src_prepare() {
 	default
