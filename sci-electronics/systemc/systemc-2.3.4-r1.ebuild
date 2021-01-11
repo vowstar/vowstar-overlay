@@ -44,12 +44,12 @@ src_install() {
 	if use doc; then
 		DOCS=(AUTHORS.md CONTRIBUTING.md INSTALL.md LICENSE NOTICE README.md RELEASENOTES)
 		if use examples; then
-			docompress -x /usr/share/doc/"${P}"/examples
+			docompress -x /usr/share/doc/"${PF}"/examples
 		else
-			rm -r "${ED}"/usr/share/doc/"${P}"/examples
+			rm -r "${ED}"/usr/share/doc/"${PF}"/examples
 		fi
 	else
-		rm -r "${ED}"/usr/share/doc/"${P}"
+		rm -r "${ED}"/usr/share/doc/"${PF}"
 	fi
 	default
 }
