@@ -41,8 +41,11 @@ src_configure() {
 }
 
 src_install() {
+	default
+
 	if use doc; then
 		DOCS=(AUTHORS.md CONTRIBUTING.md INSTALL.md LICENSE NOTICE README.md RELEASENOTES)
+
 		if use examples; then
 			docompress -x /usr/share/doc/"${PF}"/examples
 		else
@@ -51,7 +54,6 @@ src_install() {
 	else
 		rm -r "${ED}"/usr/share/doc/"${PF}"
 	fi
-	default
 }
 
 pkg_postinst() {
