@@ -46,21 +46,9 @@ src_install() {
 		if use examples; then
 			docompress -x /usr/share/doc/"${PF}"/examples
 		else
-			rm -r "${ED}"/usr/share/doc/"${PF}"/examples
+			rm -r "${ED}"/usr/share/doc/"${PF}"/examples || die
 		fi
 	else
-		rm -r "${ED}"/usr/share/doc/"${PF}"
-	fi
-}
-
-pkg_postinst() {
-	if use examples; then
-		elog "If you want to run the examples, you need to :"
-		elog "    tar xvfz ${PORTAGE_ACTUAL_DISTDIR}/${A}"
-		elog "    cd ${PN}-${MY_PV}"
-		elog "    mkdir build && cd build"
-		elog "    cmake .."
-		elog "    cd examples"
-		elog "    make check"
+		rm -r "${ED}"/usr/share/doc/"${PF}" || die
 	fi
 }
