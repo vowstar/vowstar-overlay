@@ -24,7 +24,7 @@ fi
 
 LICENSE="GPL-2+ GPL-3+ Boost-1.0"
 SLOT="0"
-IUSE="doc examples +ngspice occ +oce openmp +python"
+IUSE="doc examples github +ngspice occ +oce openmp +python"
 
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
@@ -40,6 +40,7 @@ COMMON_DEPEND="
 	>=x11-libs/cairo-1.8.8:=
 	>=x11-libs/pixman-0.30
 	x11-libs/wxGTK:${WX_GTK_VER}[X,opengl]
+	github? ( net-misc/curl:=[ssl] )
 	ngspice? (
 		>sci-electronics/ngspice-27[shared]
 	)
@@ -60,10 +61,6 @@ RDEPEND="${COMMON_DEPEND}
 "
 BDEPEND="doc? ( app-doc/doxygen )"
 CHECKREQS_DISK_BUILD="800M"
-
-PATCHES=(
-	"${FILESDIR}/${PN}-5.1.6-metainfo.patch"
-)
 
 pkg_setup() {
 	use python && python-single-r1_pkg_setup
@@ -90,6 +87,7 @@ src_configure() {
 	local mycmakeargs=(
 		-DKICAD_DOCS="${EPREFIX}/usr/share/doc/${PF}"
 		-DKICAD_HELP="${EPREFIX}/usr/share/doc/${PN}-doc-${PV}"
+		-DBUILD_GITHUB_PLUGIN="$(usex github)"
 		-DKICAD_SCRIPTING="$(usex python)"
 		-DKICAD_SCRIPTING_MODULES="$(usex python)"
 		-DKICAD_SCRIPTING_WXPYTHON="$(usex python)"

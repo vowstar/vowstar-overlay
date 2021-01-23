@@ -10,6 +10,7 @@
 		<name>Proxy Maintainers</name>
 	</maintainer>
 	<use>
+		<flag name="github">Add github support into PCB editor</flag>
 		<flag name="ngspice">Enable circuit simulation</flag>
 		<flag name="occ">Enable viewing 3D rendering of designs via opencascade</flag>
 		<flag name="oce">Enable viewing 3D rendering of designs via OCE</flag>
