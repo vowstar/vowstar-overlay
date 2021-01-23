@@ -79,6 +79,7 @@ src_unpack() {
 	# directory. as per
 	# https://www.freedesktop.org/software/appstream/docs/chap-Metadata.html
 	mv "${S}/resources/linux/appdata" "${S}/resources/linux/metainfo" || die "Appdata move failed"
+	grep -rl "resources/linux/appdata" "${S}" | xargs sed -i "s@resources/linux/appdata@resources/linux/metainfo@g" || die
 }
 
 src_configure() {
