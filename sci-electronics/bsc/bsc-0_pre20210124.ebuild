@@ -39,6 +39,7 @@ DEPEND="
 	${RDEPEND}
 	test? (
 		dev-util/dejagnu
+		sci-electronics/systemc
 		sys-process/time
 	)
 "
