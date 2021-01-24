@@ -33,6 +33,10 @@ RDEPEND="
 	dev-haskell/split:0=
 	dev-haskell/syb:0=
 	dev-lang/tcl
+	test? (
+		dev-util/dejagnu
+		sys-process/time
+	)
 "
 
 DEPEND="
