@@ -8,12 +8,11 @@ inherit cmake
 DESCRIPTION="Electronic Schematic and PCB design tools footprint libraries"
 HOMEPAGE="https://kicad.github.io/footprints/"
 
-
 if [[ ${PV} == 9999 ]]; then
 	EGIT_REPO_URI="https://gitlab.com/kicad/libraries/${PN}.git"
 	inherit autotools git-r3
 else
-    SRC_URI="https://gitlab.com/kicad/libraries/${PN}/-/archive/${PV}/${P}.tar.bz2"
+	SRC_URI="https://gitlab.com/kicad/libraries/${PN}/-/archive/${PV}/${P}.tar.bz2"
 	KEYWORDS="~amd64 ~x86"
 fi
 
