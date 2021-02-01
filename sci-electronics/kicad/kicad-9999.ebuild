@@ -13,7 +13,7 @@ DESCRIPTION="Electronic Schematic and PCB design tools"
 HOMEPAGE="https://www.kicad-pcb.org"
 
 if [[ ${PV} == 9999 ]]; then
-	EGIT_REPO_URI="https://gitlab.com/kicad/code/kicad.git"
+	EGIT_REPO_URI="https://gitlab.com/kicad/code/${PN}.git"
 	inherit autotools git-r3
 	# x11-misc-util/macros only required on live ebuilds
 	LIVE_DEPEND=">=x11-misc/util-macros-1.18"
@@ -79,6 +79,10 @@ src_unpack() {
 	# directory. as per
 	# https://www.freedesktop.org/software/appstream/docs/chap-Metadata.html
 	mv "${S}/resources/linux/appdata" "${S}/resources/linux/metainfo" || die "Appdata move failed"
+}
+
+src_prepare() {
+	default
 	grep -rl "resources/linux/appdata" "${S}" | xargs sed -i "s@resources/linux/appdata@resources/linux/metainfo@g" || die
 }
 
