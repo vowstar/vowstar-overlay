@@ -20,4 +20,4 @@ LICENSE="CC-BY-SA-4.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
-RDEPEND=">=sci-electronics/kicad-5.1.0"
+RDEPEND=">sci-electronics/kicad-5.1.0"
