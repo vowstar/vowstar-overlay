@@ -18,7 +18,6 @@ fi
 
 LICENSE="CC-BY-SA-4.0"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
 
 BDEPEND="sys-devel/gettext"
 RDEPEND=">=sci-electronics/kicad-5.1.9"
