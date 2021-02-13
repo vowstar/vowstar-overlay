@@ -38,7 +38,7 @@ if [[ ${PV} == "9999" ]] ; then
 else
 	SRC_URI="https://gforge.inria.fr/frs/download.php/file/37058/${P}.tar.gz -> ${P}.tar.gz"
 	RESTRICT="primaryuri"
-	KEYWORDS="~amd64 ~hppa ~m68k ~mips ~s390 ~sparc ~x86 ~ppc-aix ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~m68k-mint ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
+	KEYWORDS="~amd64 ~hppa ~m68k ~mips ~s390 ~sparc ~x86 ~x86-linux ~ppc-macos ~x64-macos ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
 fi
 
 src_prepare() {
