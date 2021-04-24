@@ -7,17 +7,21 @@ DESCRIPTION="NVIDIA Accelerated Deep Learning on GPU library"
 HOMEPAGE="https://developer.nvidia.com/cuDNN"
 SRC_URI="
 	cuda11-1? ( cudnn-11.3-linux-x64-v${PV}.tgz )
+	cuda11-2? ( cudnn-11.3-linux-x64-v${PV}.tgz )
+	cuda11-3? ( cudnn-11.3-linux-x64-v${PV}.tgz )
 	cuda10-2? ( cudnn-10.2-linux-x64-v${PV}.tgz )"
 
 LICENSE="NVIDIA-cuDNN"
 SLOT="0/8"
 KEYWORDS="~amd64 ~amd64-linux"
-IUSE="cuda10-2 +cuda11-1"
-REQUIRED_USE="^^ ( cuda10-2 cuda11-1 )"
+IUSE="cuda10-2 cuda11-1 +cuda11-2 cuda11-3"
+REQUIRED_USE="^^ ( cuda10-2 cuda11-1 cuda11-2 cuda11-3)"
 RESTRICT="fetch"
 
 DEPEND="
 	cuda11-1? ( =dev-util/nvidia-cuda-toolkit-11.1* )
+	cuda11-2? ( =dev-util/nvidia-cuda-toolkit-11.2* )
+	cuda11-3? ( =dev-util/nvidia-cuda-toolkit-11.3* )
 	cuda10-2? ( =dev-util/nvidia-cuda-toolkit-10.2* )"
 RDEPEND="${DEPEND}"
 
