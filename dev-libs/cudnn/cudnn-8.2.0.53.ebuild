@@ -15,13 +15,12 @@ LICENSE="NVIDIA-cuDNN"
 SLOT="0/8"
 KEYWORDS="~amd64 ~amd64-linux"
 IUSE="cuda10-2 cuda11-1 +cuda11-2 cuda11-3"
-REQUIRED_USE="^^ ( cuda10-2 cuda11-1 cuda11-2 cuda11-3)"
+REQUIRED_USE="^^ ( cuda10-2 cuda11-1 cuda11-2 )"
 RESTRICT="fetch"
 
 DEPEND="
 	cuda11-1? ( =dev-util/nvidia-cuda-toolkit-11.1* )
 	cuda11-2? ( =dev-util/nvidia-cuda-toolkit-11.2* )
-	cuda11-3? ( =dev-util/nvidia-cuda-toolkit-11.3* )
 	cuda10-2? ( =dev-util/nvidia-cuda-toolkit-10.2* )"
 RDEPEND="${DEPEND}"
 
