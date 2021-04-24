@@ -8,13 +8,12 @@ HOMEPAGE="https://developer.nvidia.com/cuDNN"
 SRC_URI="
 	cuda11-1? ( cudnn-11.3-linux-x64-v${PV}.tgz )
 	cuda11-2? ( cudnn-11.3-linux-x64-v${PV}.tgz )
-	cuda11-3? ( cudnn-11.3-linux-x64-v${PV}.tgz )
 	cuda10-2? ( cudnn-10.2-linux-x64-v${PV}.tgz )"
 
 LICENSE="NVIDIA-cuDNN"
 SLOT="0/8"
 KEYWORDS="~amd64 ~amd64-linux"
-IUSE="cuda10-2 cuda11-1 +cuda11-2 cuda11-3"
+IUSE="cuda10-2 cuda11-1 +cuda11-2"
 REQUIRED_USE="^^ ( cuda10-2 cuda11-1 cuda11-2 )"
 RESTRICT="fetch"
 
