@@ -80,7 +80,7 @@ src_install() {
 	done
 
 	# fix some embedded paths and install desktop files
-	for filename in $(find "${D}/${M_TARGET}/SystemFiles/Installation" -name "wolfram-mathematica.desktop") ; do
+	for filename in $(find "${D}/${M_TARGET}/SystemFiles/Installation" -name "wolfram-mathematica*.desktop") ; do
 		echo Fixing "${filename}"
 		sed -e "s:${S}::g" -e 's:^\t\t::g' -i "${filename}"
 		echo "Categories=Physics;Science;Engineering;2DGraphics;Graphics;" >> "${filename}"
