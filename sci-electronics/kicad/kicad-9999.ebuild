@@ -83,7 +83,7 @@ src_unpack() {
 
 src_prepare() {
 	default
-	grep -rl "resources/linux/appdata" "${S}" | xargs sed -i "s@resources/linux/appdata@resources/linux/metainfo@g" || die
+	# grep -rl "resources/linux/appdata" "${S}" | xargs sed -i "s@resources/linux/appdata@resources/linux/metainfo@g" || die
 	cmake_src_prepare
 }
 
