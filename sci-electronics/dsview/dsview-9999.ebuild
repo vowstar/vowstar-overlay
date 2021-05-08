@@ -3,10 +3,10 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{6,7,8,9} )
+PYTHON_COMPAT=( python3_{7,8,9} )
 GITHUB_PN="DSView"
 
-inherit autotools cmake python-r1 udev xdg
+inherit autotools cmake python-r1 toolchain-funcs udev xdg
 
 DESCRIPTION="An open source multi-function instrument"
 HOMEPAGE="
@@ -26,7 +26,9 @@ fi
 LICENSE="GPL-3"
 SLOT="0"
 
-RDEPEND="
+REQUIRED_USE="${PYTHON_REQUIRED_USE}"
+
+RDEPEND="${PYTHON_DEPS}
 	dev-cpp/glibmm:2
 	dev-libs/boost
 	dev-libs/glib
@@ -35,6 +37,7 @@ RDEPEND="
 	dev-qt/qtgui:5
 	dev-qt/qtwidgets:5
 	dev-qt/qtsvg:5
+	dev-qt/qtconcurrent:5
 	sci-libs/fftw:3.0
 	virtual/libusb:1
 "
@@ -43,13 +46,10 @@ DEPEND="
 	${RDEPEND}
 "
 
-PATCHES=(
-	"${FILESDIR}"/${PN}-1.01-viewport.patch
-	"${FILESDIR}"/${PN}-1.12-desktop.patch
-	"${FILESDIR}"/${PN}-1.12-cmake.patch
-)
-
 src_prepare() {
+	export CC="$(tc-getCC)"
+	export AR="$(tc-getAR)"
+
 	default
 
 	local LIBDIR="/usr/$(get_libdir)"
@@ -69,14 +69,6 @@ src_configure() {
 	sh ./configure --libdir=${LIBDIR} --prefix=/usr || die
 	cd "${S}/libsigrokdecode4DSL" || die
 	sh ./configure --libdir=${LIBDIR} --prefix=/usr || die
-}
-
-src_compile() {
-	cd "${S}/libsigrok4DSL" || die
-	emake DESTDIR="${D}"
-	cd "${S}/libsigrokdecode4DSL" || die
-	emake DESTDIR="${D}"
-	cd "${S}"
 }
 
 src_install() {
