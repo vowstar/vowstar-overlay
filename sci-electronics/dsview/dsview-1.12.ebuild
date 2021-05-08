@@ -47,7 +47,6 @@ DEPEND="
 "
 
 PATCHES=(
-	"${FILESDIR}"/${PN}-1.01-viewport.patch
 	"${FILESDIR}"/${P}-desktop.patch
 	"${FILESDIR}"/${P}-cmake.patch
 	"${FILESDIR}"/${P}-fix-qt.patch
