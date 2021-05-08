@@ -5,7 +5,7 @@ EAPI=7
 
 PYTHON_COMPAT=( python3_{7,8,9} )
 
-inherit python-single-r1 gnome2-utils cmake multilib
+inherit cmake gnome2-utils multilib python-single-r1
 
 DESCRIPTION="Universal Software Radio Peripheral (USRP) Hardware Driver"
 HOMEPAGE="https://kb.ettus.com"
@@ -21,17 +21,18 @@ KEYWORDS="~amd64 ~arm ~x86"
 IUSE="+b100 +b200 doc e300 examples +mpmd octoclock +n230 test +usb +usrp1 +usrp2 +utils +x300"
 RESTRICT="!test? ( test )"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
-			b100? ( usb )
-			b200? ( usb )
-			usrp1? ( usb )
-			usrp2? ( usb )
-			|| ( b100 b200 e300 mpmd n230 usrp1 usrp2 x300 )"
+	b100? ( usb )
+	b200? ( usb )
+	usrp1? ( usb )
+	usrp2? ( usb )
+	|| ( b100 b200 e300 mpmd n230 usrp1 usrp2 x300 )
+"
 
 RDEPEND="${PYTHON_DEPS}
-	e300? ( virtual/udev )
-	usb? ( virtual/libusb:1 )
 	dev-libs/boost:=
+	e300? ( virtual/udev )
 	sys-libs/ncurses:0[tinfo]
+	usb? ( virtual/libusb:1 )
 	$(python_gen_cond_dep '
 	dev-python/numpy[${PYTHON_MULTI_USEDEP}]
 	dev-python/requests[${PYTHON_MULTI_USEDEP}]
@@ -39,12 +40,12 @@ RDEPEND="${PYTHON_DEPS}
 "
 
 DEPEND="${RDEPEND}
+	app-arch/gzip
+	app-arch/unzip
 	doc? ( app-doc/doxygen )
 	$(python_gen_cond_dep '
 	dev-python/mako[${PYTHON_MULTI_USEDEP}]
 	')
-	app-arch/unzip
-	app-arch/gzip
 "
 
 PATCHES=(
