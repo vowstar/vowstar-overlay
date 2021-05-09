@@ -31,7 +31,7 @@ RDEPEND="${DEPEND}
 BDEPEND="dev-lang/swig"
 
 PATCHES=(
-	"${FILESDIR}"/${P}-fityk-1.3.1-fix-gcc11.patch
+	"${FILESDIR}"/${P}-fix-gcc11.patch
 )
 
 src_configure() {
