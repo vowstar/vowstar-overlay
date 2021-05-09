@@ -32,6 +32,7 @@ BDEPEND="dev-lang/swig"
 
 PATCHES=(
 	"${FILESDIR}"/${P}-fix-gcc11.patch
+	"${FILESDIR}"/${P}-fix-gtk3.patch
 )
 
 src_configure() {
