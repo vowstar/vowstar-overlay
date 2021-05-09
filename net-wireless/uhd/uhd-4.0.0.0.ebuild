@@ -39,7 +39,9 @@ RDEPEND="${PYTHON_DEPS}
 	')
 "
 
-DEPEND="${RDEPEND}
+DEPEND="${RDEPEND}"
+
+BDEPEND="
 	app-arch/gzip
 	app-arch/unzip
 	doc? ( app-doc/doxygen )
