@@ -4,7 +4,7 @@
 EAPI=7
 
 LUA_COMPAT=( lua5-{1..3} )
-WX_GTK_VER=3.0
+WX_GTK_VER=3.0-gtk3
 
 inherit lua-single wxwidgets xdg
 
