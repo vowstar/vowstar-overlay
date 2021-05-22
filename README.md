@@ -34,8 +34,6 @@ docker run --gpus all nvidia/cuda:10.0-base nvidia-smi
 
 ### OpenRC
 
-Code:
-
 ```bash
 sudo layman --add=vowstar
 sudo emerge -av nvidia-container-toolkit
@@ -45,8 +43,6 @@ docker run --gpus all nvidia/cuda:10.0-base nvidia-smi
 
 ### systemd
 
-Code:
-
 ```bash
 sudo layman --add=vowstar
 sudo emerge -av nvidia-container-toolkit
@@ -54,9 +50,7 @@ sudo systemctl restart docker
 docker run --gpus all nvidia/cuda:10.0-base nvidia-smi
 ```
 
-Result
-
-Code:
+### sResult
 
 ```text
 $ docker run --gpus all nvidia/cuda:10.0-base nvidia-smi
