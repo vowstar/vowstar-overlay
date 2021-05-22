@@ -58,7 +58,7 @@ Result
 
 Code:
 
-```bash
+```text
 $ docker run --gpus all nvidia/cuda:10.0-base nvidia-smi
 Fri Jun 12 17:23:54 2020
 +-----------------------------------------------------------------------------+
