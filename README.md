@@ -24,7 +24,7 @@ layman -o https://raw.githubusercontent.com/vowstar/vowstar-overlay/master/metad
 
 I fixed the nvidia-container-toolkit (aka. nvidia-docker2 ) issue under gentoo and got this working.
 
-Due to historical reasons, the software supported by nvidia's docker has gone through a very messy period. About The difference between libnvidia-containernvidia-docker2, nvidia-container-runtime, nvidia-container-toolkit, [here is a good introduction](https://github.com/NVIDIA/nvidia-docker/issues/1268).
+Due to historical reasons, the software supported by nvidia's docker has gone through a very messy period. About The difference between libnvidia-container, nvidia-docker2, nvidia-container-runtime, nvidia-container-toolkit, [here is a good introduction](https://github.com/NVIDIA/nvidia-docker/issues/1268).
 
 Here only introduces how to use the new method in the Docker version after 19.03:
 
