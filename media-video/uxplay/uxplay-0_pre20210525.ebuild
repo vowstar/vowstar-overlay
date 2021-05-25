@@ -3,18 +3,20 @@
 
 EAPI=7
 
+GIT_PN="UxPlay"
+
 inherit cmake
 
 DESCRIPTION="AirPlay Unix mirroring server"
 HOMEPAGE="https://github.com/antimof/UxPlay"
 
 if [[ ${PV} == "9999" ]] ; then
-	EGIT_REPO_URI="https://github.com/antimof/UxPlay.git"
+	EGIT_REPO_URI="https://github.com/antimof/${GIT_PN}.git"
 	inherit git-r3
 else
 	EGIT_COMMIT="6a473d6026480c47b6d9f1b2d619039da3cd36ba"
-	SRC_URI="https://github.com/antimof/UxPlay/archive/${EGIT_COMMIT}.tar.gz -> ${P}.tar.gz"
-
+	SRC_URI="https://github.com/antimof/${GIT_PN}/archive/${EGIT_COMMIT}.tar.gz -> ${P}.tar.gz"
+	S="${WORKDIR}/${GIT_PN}-${EGIT_COMMIT}"
 	KEYWORDS="~amd64 ~arm ~x86"
 fi
 
