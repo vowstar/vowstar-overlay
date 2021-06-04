@@ -1,5 +1,5 @@
---- libsigrokdecode4DSL/configure.ac	2020-05-11 21:07:38.000000000 +0800
-+++ libsigrokdecode4DSL/configure.ac.new	2021-06-05 01:54:35.937525565 +0800
+--- a/libsigrokdecode4DSL/configure.ac	2020-05-11 21:07:38.000000000 +0800
++++ b/libsigrokdecode4DSL/configure.ac	2021-06-05 01:54:35.937525565 +0800
 @@ -90,7 +90,7 @@
  
  # Python 3 is always needed.
