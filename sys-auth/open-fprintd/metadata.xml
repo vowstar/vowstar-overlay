@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">uunicorn/open-fprintd</remote-id>
+	</upstream>
+	<longdescription lang="en">
+	This is the middleware to access fingerprint readers. This is the fprintd
+	replacement which allows you to have your own backend as a standalone
+	service. This is work in progress. Install and use at your own risc.
+	At this point this project does not enforce any auth checks against
+	requests made on DBus.
+	Existing architecture of fprintd and libfprint does not allow loosely
+	coupled integration with 3rd party drivers. This is done on purpose to
+	force hardware vendors to contribute their drivers as an open source.
+	Unfortunately this approach prevents open source projects, 
+	(like python-validity) to be integrated with the rest of the stack without
+	creating a shim which could be exploited by the vendors to create a binary
+	driver distributions. open-fprintd will allow anyone to contribute a
+	backend implementation. I rust the end user should be responsible for
+	making a choice between an open source driver and a binary blob provided by
+	a hardware vendor. They have already chosen Linux over Windows anyway.
+	</longdescription>
+</pkgmetadata>
