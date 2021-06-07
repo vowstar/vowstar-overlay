@@ -53,7 +53,7 @@ PATCHES=(
 	"${FILESDIR}/${PN}-1.90.1-0003-disable-systemd-reactivated.patch"
 )
 
-S="${WORKDIR}/${PN}-${EGIT_COMMIT}"
+S="${WORKDIR}/fprintd-${EGIT_COMMIT}"
 
 src_configure() {
 		local emesonargs=(
