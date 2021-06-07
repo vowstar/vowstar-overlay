@@ -16,6 +16,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~ia64 ~sparc ~x86"
 
 RDEPEND="
+	!sys-auth/fprintd
 	sys-auth/fprintd-clients
 "
 DEPEND="${RDEPEND}"
