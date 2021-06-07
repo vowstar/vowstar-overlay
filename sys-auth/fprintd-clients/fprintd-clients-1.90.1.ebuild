@@ -46,10 +46,14 @@ BDEPEND="
 	)
 	virtual/pkgconfig
 "
-
+# These files already installed by open-fprintd
+# /usr/share/dbus-1/system.d/net.reactivated.Fprint.conf
+# /usr/share/dbus-1/system-services/net.reactivated.Fprint.service
+# To avoid file collisions, fixed by fix-file-collisions.patch
 PATCHES=(
 	"${FILESDIR}/${PN}-1.90.1-add-meson-build-libsystemd-test.patch"
 	"${FILESDIR}/${PN}-1.90.1-add-meson-options-libsystemd-test.patch"
+	"${FILESDIR}/${PN}-1.90.1-fix-file-collisions.patch" # fix file collisions
 )
 
 S="${WORKDIR}/fprintd-${EGIT_COMMIT}"
