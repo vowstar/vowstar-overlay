@@ -48,9 +48,8 @@ BDEPEND="
 "
 
 PATCHES=(
-	"${FILESDIR}/${PN}-1.90.7_0001-add-test-feature-and-make-tests-optional.patch"
-	"${FILESDIR}/${PN}-1.90.8_0002-add-configure-option-for-libsystemd-provider.patch"
-	"${FILESDIR}/${PN}-1.90.1-0003-disable-systemd-reactivated.patch"
+	"${FILESDIR}/${PN}-1.90.1-add-meson-build-libsystemd-test.patch"
+	"${FILESDIR}/${PN}-1.90.1-add-meson-options-libsystemd-test.patch"
 )
 
 S="${WORKDIR}/fprintd-${EGIT_COMMIT}"
