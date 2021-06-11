@@ -3,14 +3,14 @@
 
 EAPI=7
 
-MY_PV="${PV}.0.0"
+MY_PV="$(ver_cut 1-2)"
 
 inherit desktop unpacker xdg
 
 DESCRIPTION="For converting between different versions of .dwg and .dxf"
 HOMEPAGE="https://www.opendesign.com"
 
-SRC_URI="https://download.opendesign.com/guestfiles/Demo/ODAFileConverter_QT5_lnxX64_7.2dll_${PV}.deb"
+SRC_URI="https://download.opendesign.com/guestfiles/Demo/ODAFileConverter_QT5_lnxX64_7.2dll_${MY_PV}.deb"
 
 LICENSE="all-rights-reserved"
 SLOT="0"
@@ -32,16 +32,16 @@ QA_DESKTOP_FILE="usr/share/applications/ODAFileConverter.*\\.desktop"
 
 src_compile() {
 	patchelf --set-rpath \
-		"/usr/bin/ODAFileConverter_${MY_PV}" \
-		"usr/bin/ODAFileConverter_${MY_PV}/ODAFileConverter" \
+		"/usr/bin/ODAFileConverter_${PV}" \
+		"usr/bin/ODAFileConverter_${PV}/ODAFileConverter" \
 		|| die "Failed to fix insecure RPATH"
 }
 
 src_install() {
 	exeinto /usr/bin
 	doexe usr/bin/ODAFileConverter
-	exeinto /usr/bin/ODAFileConverter_${MY_PV}
-	doexe usr/bin/ODAFileConverter_${MY_PV}/*
+	exeinto /usr/bin/ODAFileConverter_${PV}
+	doexe usr/bin/ODAFileConverter_${PV}/*
 	domenu usr/share/applications/*.desktop
 	doicon -s 16 usr/share/icons/hicolor/16x16/apps/ODAFileConverter.png
 	doicon -s 32 usr/share/icons/hicolor/32x32/apps/ODAFileConverter.png
