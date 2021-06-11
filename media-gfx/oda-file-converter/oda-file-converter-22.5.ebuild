@@ -30,11 +30,14 @@ S="${WORKDIR}"
 QA_PREBUILT="*"
 QA_DESKTOP_FILE="usr/share/applications/ODAFileConverter.*\\.desktop"
 
-src_install() {
+src_compile() {
 	patchelf --set-rpath \
-		"usr/bin/ODAFileConverter_${MY_PV}" \
+		"/usr/bin/ODAFileConverter_${MY_PV}" \
 		"usr/bin/ODAFileConverter_${MY_PV}/ODAFileConverter" \
-		|| die "patchelf failed"
+		|| die "Failed to fix insecure RPATH"
+}
+
+src_install() {
 	exeinto /usr/bin
 	doexe usr/bin/ODAFileConverter
 	exeinto /usr/bin/ODAFileConverter_${MY_PV}
