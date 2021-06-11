@@ -31,7 +31,10 @@ QA_PREBUILT="*"
 QA_DESKTOP_FILE="usr/share/applications/ODAFileConverter.*\\.desktop"
 
 src_prepare() {
-	patchelf --set-rpath "usr/bin/ODAFileConverter_${MY_PV}" "usr/bin/ODAFileConverter" || die "patchelf failed"
+	patchelf --set-rpath \
+		"usr/bin/ODAFileConverter_${MY_PV}" \
+		"usr/bin/ODAFileConverter_${MY_PV}/ODAFileConverter" \
+		|| die "patchelf failed"
 }
 
 src_install() {
