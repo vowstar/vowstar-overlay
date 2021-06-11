@@ -5,7 +5,7 @@ EAPI=7
 
 MY_PV="${PV}.0.0"
 
-inherit unpacker xdg
+inherit desktop unpacker xdg
 
 DESCRIPTION="For converting between different versions of .dwg and .dxf"
 HOMEPAGE="https://www.opendesign.com"
@@ -16,20 +16,22 @@ LICENSE="all-rights-reserved"
 SLOT="0"
 KEYWORDS="-* ~amd64"
 
-DEPEND="
+RDEPEND="
 	dev-qt/qtcore
 	x11-themes/hicolor-icon-theme
 "
 
-RDEPEND="${DEPEND}"
+DEPEND="${RDEPEND}"
+
+BDEPEND="dev-util/patchelf"
 
 S="${WORKDIR}"
 
 QA_PREBUILT="*"
 QA_DESKTOP_FILE="usr/share/applications/ODAFileConverter.*\\.desktop"
 
-src_unpack() {
-	unpack_deb ${A}
+src_prepare() {
+	patchelf --set-rpath "usr/bin/ODAFileConverter_${MY_PV}" "usr/bin/ODAFileConverter" || die "patchelf failed"
 }
 
 src_install() {
