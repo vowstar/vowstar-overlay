@@ -31,11 +31,13 @@ RDEPEND="${DEPEND}
 BDEPEND="dev-lang/swig"
 
 PATCHES=(
-	"${FILESDIR}"/${P}-fix-gcc11.patch
 	"${FILESDIR}"/${P}-fix-gtk3.patch
 )
 
 src_configure() {
+	# bug 787317
+	append-cxxflags -std=c++14
+
 	use wxwidgets && setup-wxwidgets
 
 	econf \
