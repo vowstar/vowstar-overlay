@@ -55,6 +55,21 @@ src_install() {
 	local cudadir=/opt/cuda
 	local ecudadir="${EPREFIX}${cudadir}"
 	local pathextradirs ldpathextradirs
+
+	# Allow newer compilers to work. This is not officially supported in the gentoo package but
+	# if users want to try, let them try.
+	# See https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#system-requirements
+	# for official requirements
+	sed -i "/.*unsupported GNU version.*/d" "builds/cuda_cudart/targets/x86_64-linux/include/host_config.h" || die
+	sed -i "/.*unsupported clang version.*/d" "builds/cuda_cudart/targets/x86_64-linux/include/host_config.h" || die
+	sed -i "/.*unsupported GNU version.*/d" "builds/cuda_nvcc/targets/x86_64-linux/include/crt/host_config.h" || die
+	sed -i "/.*unsupported clang version.*/d" "builds/cuda_nvcc/targets/x86_64-linux/include/crt/host_config.h" || die
+
+	# Fix Makefile paths to CUDA
+	for f in $(find "builds" -name Makefile); do
+		sed -i "s|/usr/local/cuda|/opt/cuda|g" "$f" || die
+	done
+
 	dodir ${cudadir}
 	into ${cudadir}
 
