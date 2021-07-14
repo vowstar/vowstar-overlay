@@ -21,19 +21,22 @@ src_install() {
 	local INST_PREFIX="${D}/usr/share/octave/packages"
 	local ARCH_PREFIX="${D}/usr/$(get_libdir)/octave/packages"
 	local OCTAVE_CMD="warning('off','all');\
-		pkg local_list ${INST_PREFIX}/octave_packages;\
-		pkg global_list ${INST_PREFIX}/octave_packages;\
-		pkg install -verbose -nodeps ${DISTDIR}/${P}.tar.gz;"
+pkg local_list ${INST_PREFIX}/octave_packages;\
+pkg global_list ${INST_PREFIX}/octave_packages;\
+pkg install -verbose -nodeps ${DISTDIR}/${P}.tar.gz;"
 
-	octave --no-history --no-init-file --no-window-system -q -f --eval ${OCTAVE_CMD} || die
+	octave --no-history --no-init-file --no-site-file --no-window-system -q -f \
+		--eval ${OCTAVE_CMD} || die
 }
 
 pkg_postinst() {
 	einfo "Update Octave internal packages cache"
-	octave --no-history --no-init-file --no-window-system -q -f --eval "pkg('rebuild');" || die
+	octave --no-history --no-init-file --no-site-file --no-window-system -q -f \
+		--eval "pkg('rebuild');" || die
 }
 
 pkg_postrm() {
 	einfo "Update Octave internal packages cache"
-	octave --no-history --no-init-file --no-window-system -q -f --evall "pkg('rebuild');" || die
+	octave --no-history --no-init-file --no-site-file --no-window-system -q -f \
+		--evall "pkg('rebuild');" || die
 }
