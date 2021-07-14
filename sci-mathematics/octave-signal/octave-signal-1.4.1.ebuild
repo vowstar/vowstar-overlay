@@ -18,10 +18,10 @@ BDEPEND="virtual/pkgconfig"
 S="${WORKDIR}/${P/octave-/}"
 
 src_install() {
-	local INSTALL_PREFIX = "${D}/usr/share/octave/packages"
-	local INSTALL_ARCHPREFIX = "${D}/usr/$(get_libdir)/octave/packages"
+	local INST_PREFIX="${D}/usr/share/octave/packages"
+	local ARCH_PREFIX="${D}/usr/$(get_libdir)/octave/packages"
 	octave --no-history --no-init-file --no-window-system -q -f --eval \
-		"pkg local_list octave_packages;pkg prefix ${INSTALL_PREFIX} ${INSTALL_ARCHPREFIX};pkg install -verbose -nodeps ${DISTDIR}/${P}.tar.gz" || die
+		"pkg local_list octave_packages;pkg prefix ${INST_PREFIX} ${ARCH_PREFIX};pkg install -verbose -nodeps ${DISTDIR}/${P}.tar.gz" || die
 }
 
 pkg_postinst() {
