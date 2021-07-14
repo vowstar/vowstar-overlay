@@ -3,8 +3,8 @@
 
 EAPI=7
 
-DESCRIPTION="Signal processing tools, including filtering, windowing and display functions"
-HOMEPAGE="https://octave.sourceforge.io/signal"
+DESCRIPTION="The Octave-FITS package provides functions for reading, and writing FITS (Flexible Image Transport System) files"
+HOMEPAGE="https://octave.sourceforge.io/fits"
 SRC_URI="https://downloads.sourceforge.net/octave/${P/octave-/}.tar.gz -> ${P}.tar.gz"
 LICENSE="GPL-3"
 SLOT="0"

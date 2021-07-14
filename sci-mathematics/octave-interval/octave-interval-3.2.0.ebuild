@@ -3,8 +3,8 @@
 
 EAPI=7
 
-DESCRIPTION="Signal processing tools, including filtering, windowing and display functions"
-HOMEPAGE="https://octave.sourceforge.io/signal"
+DESCRIPTION="The interval package for real-valued interval arithmetic allows one to evaluate functions over subsets of their domain"
+HOMEPAGE="https://octave.sourceforge.io/interval"
 SRC_URI="https://downloads.sourceforge.net/octave/${P/octave-/}.tar.gz -> ${P}.tar.gz"
 LICENSE="GPL-3"
 SLOT="0"

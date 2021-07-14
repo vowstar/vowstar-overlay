@@ -3,8 +3,8 @@
 
 EAPI=7
 
-DESCRIPTION="Signal processing tools, including filtering, windowing and display functions"
-HOMEPAGE="https://octave.sourceforge.io/signal"
+DESCRIPTION="Digital Communications, Error Correcting Codes (Channel Code), Source Code functions, Modulation and Galois Fields"
+HOMEPAGE="https://octave.sourceforge.io/communications"
 SRC_URI="https://downloads.sourceforge.net/octave/${P/octave-/}.tar.gz -> ${P}.tar.gz"
 LICENSE="GPL-3"
 SLOT="0"

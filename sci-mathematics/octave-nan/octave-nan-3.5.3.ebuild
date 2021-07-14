@@ -3,8 +3,8 @@
 
 EAPI=7
 
-DESCRIPTION="Signal processing tools, including filtering, windowing and display functions"
-HOMEPAGE="https://octave.sourceforge.io/signal"
+DESCRIPTION="A statistics and machine learning toolbox for data with and w/o missing values"
+HOMEPAGE="https://octave.sourceforge.io/nan"
 SRC_URI="https://downloads.sourceforge.net/octave/${P/octave-/}.tar.gz -> ${P}.tar.gz"
 LICENSE="GPL-3"
 SLOT="0"

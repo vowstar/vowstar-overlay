@@ -3,8 +3,8 @@
 
 EAPI=7
 
-DESCRIPTION="Signal processing tools, including filtering, windowing and display functions"
-HOMEPAGE="https://octave.sourceforge.io/signal"
+DESCRIPTION="Package using OpenCL for parallelization, mostly suitable to Single-Instruction-Multiple-Data (SIMD) computations, selectively using available OpenCL hardware and drivers"
+HOMEPAGE="https://octave.sourceforge.io/ocl"
 SRC_URI="https://downloads.sourceforge.net/octave/${P/octave-/}.tar.gz -> ${P}.tar.gz"
 LICENSE="GPL-3"
 SLOT="0"
