@@ -15,21 +15,7 @@ RDEPEND="sci-mathematics/octave"
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 
-src_unpack() {
-	: # Skip unpack phase
-}
-
-src_prepare() {
-	: # Skip prepare phase
-}
-
-src_configure() {
-	: # Skip configure phase
-}
-
-src_compile() {
-	: # Skip compile phase
-}
+S="${WORKDIR}/${P/octave-/}"
 
 src_install() {
 	local INSTALL_PREFIX = "${D}/usr/share/octave/packages"
