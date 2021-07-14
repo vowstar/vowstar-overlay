@@ -23,6 +23,7 @@ src_install() {
 
 	octave --no-history --no-init-file --no-site-file --no-window-system -q -f \
 		--eval "warning('off','all');\
+		pkg prefix ${INST_PREFIX} ${ARCH_PREFIX};\
 		pkg local_list octave_packages;\
 		pkg global_list octave_packages;\
 		pkg install -verbose -nodeps ${DISTDIR}/${P}.tar.gz;" || die
