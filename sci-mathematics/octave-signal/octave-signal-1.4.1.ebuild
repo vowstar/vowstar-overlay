@@ -26,7 +26,7 @@ src_install() {
 	OCTAVE_CMD+="pkg global_list ${INST_PREFIX}/octave_packages;"
 	OCTAVE_CMD+="pkg install -verbose -nodeps ${DISTDIR}/${P}.tar.gz;"
 
-	octave --no-history --no-init-file --no-window-system -q -f --eval ${OCTAVE_CMD} || die
+	octave --no-history --no-init-file --no-window-system -q -f --eval "${OCTAVE_CMD}" || die
 }
 
 pkg_postinst() {
