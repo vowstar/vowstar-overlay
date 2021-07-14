@@ -22,7 +22,7 @@ src_install() {
 	local ARCH_PREFIX="${D}/usr/$(get_libdir)/octave/packages"
 
 	octave --no-history --no-init-file --no-site-file --no-window-system -q -f \
-		--eval "warning('off','all');\
+		--eval "warning off all;\
 		pkg prefix ${INST_PREFIX} ${ARCH_PREFIX};\
 		pkg local_list octave_packages;\
 		pkg global_list octave_packages;\
@@ -30,13 +30,14 @@ src_install() {
 }
 
 pkg_postinst() {
-	einfo "Update Octave internal packages cache"
+	einfo "Updating Octave internal packages cache..."
 	octave --no-history --no-init-file --no-site-file --no-window-system -q -f \
-		--eval "pkg('rebuild');" || die
+		--eval "pkg rebuild;" || die
+	elog "Please add 'pkg load ${PN/octave-/}' to ~/.octaverc"
 }
 
 pkg_postrm() {
-	einfo "Update Octave internal packages cache"
+	einfo "Updating Octave internal packages cache..."
 	octave --no-history --no-init-file --no-site-file --no-window-system -q -f \
-		--evall "pkg('rebuild');" || die
+		--evall "pkg rebuild;" || die
 }
