@@ -33,11 +33,12 @@ pkg_postinst() {
 	einfo "Updating Octave internal packages cache..."
 	octave --no-history --no-init-file --no-site-file --no-window-system -q -f \
 		--eval "pkg rebuild;" || die
-	elog "Please add 'pkg load ${PN/octave-/}' to ~/.octaverc"
+	elog "Please append 'pkg load ${PN/octave-/}' to ~/.octaverc"
 }
 
 pkg_postrm() {
 	einfo "Updating Octave internal packages cache..."
 	octave --no-history --no-init-file --no-site-file --no-window-system -q -f \
-		--evall "pkg rebuild;" || die
+		--eval "pkg rebuild;" || die
+	elog "Please remove 'pkg load ${PN/octave-/}' to ~/.octaverc"
 }
