@@ -9,13 +9,26 @@ SRC_URI="https://downloads.sourceforge.net/octave/${P/octave-/}.tar.gz -> ${P}.t
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~x86"
+RESTRICT="test"
 
 RDEPEND="sci-mathematics/octave"
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 
 src_unpack() {
-	: # Skip unpack package
+	: # Skip unpack phase
+}
+
+src_prepare() {
+	: # Skip prepare phase
+}
+
+src_configure() {
+	: # Skip configure phase
+}
+
+src_compile() {
+	: # Skip compile phase
 }
 
 src_install() {
