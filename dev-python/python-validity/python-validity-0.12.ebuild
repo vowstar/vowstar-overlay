@@ -11,8 +11,6 @@ DESCRIPTION="Validity fingerprint sensor prototype"
 HOMEPAGE="https://github.com/uunicorn/python-validity"
 SRC_URI="https://github.com/uunicorn/${PN}/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz"
 
-S="${WORKDIR}/${PV}"
-
 LICENSE="MIT"
 SLOT="0"
 
