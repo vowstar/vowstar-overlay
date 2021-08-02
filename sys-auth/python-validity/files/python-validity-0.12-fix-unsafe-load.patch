@@ -1,5 +1,5 @@
---- dbus_service/dbus-service	2021-08-02 20:57:18.511342842 +0800
-+++ dbus_service/dbus-service	2021-08-02 20:57:47.720742177 +0800
+--- a/dbus_service/dbus-service	2021-08-02 20:57:18.511342842 +0800
++++ b/dbus_service/dbus-service	2021-08-02 20:57:47.720742177 +0800
 @@ -242,7 +242,7 @@
      # Load and perform basic validation of config file.
      try:
