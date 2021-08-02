@@ -27,3 +27,8 @@ python_install_all() {
 	systemd_dounit "${S}"/debian/open-fprintd-resume.service
 	systemd_dounit "${S}"/debian/open-fprintd-suspend.service
 }
+
+pkg_postinst() {
+	elog "To make sure fingerprint working after waking up from suspend:"
+	elog "systemctl enable open-fprintd-resume open-fprintd-suspend"
+}
