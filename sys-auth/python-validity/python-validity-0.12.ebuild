@@ -41,5 +41,5 @@ python_install_all() {
 
 pkg_postinst() {
 	elog "Sample configurations are available at:"
-	elog "http://mmonit.com/monit/documentation/"
+	elog "https://github.com/uunicorn/python-validity"
 }
