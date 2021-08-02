@@ -1,36 +1,11 @@
-From c0bf88ea050c446dc12d81a0de8d30a4f81cc797 Mon Sep 17 00:00:00 2001
-From: Huang Rui <vowstar@users.noreply.github.com>
-Date: Mon, 2 Aug 2021 20:49:31 +0800
-Subject: [PATCH] Unsafe load() call disabled by Gentoo. See bug #659348
-
-```
-Aug 02 20:42:54 t480 dbus-service[60937]: Traceback (most recent call last):
-Aug 02 20:42:54 t480 dbus-service[60937]:   File "/usr/lib/python-validity/dbus-service", line 307, in <module>
-Aug 02 20:42:54 t480 dbus-service[60937]:     main()
-Aug 02 20:42:54 t480 dbus-service[60937]:   File "/usr/lib/python-validity/dbus-service", line 245, in main
-Aug 02 20:42:54 t480 dbus-service[60937]:     config = yaml.load(configfd)
-Aug 02 20:42:54 t480 dbus-service[60937]:   File "/usr/lib/python3.9/site-packages/yaml/__init__.py", line 109, in load
-Aug 02 20:42:54 t480 dbus-service[60937]:     raise RuntimeError("Unsafe load() call disabled by Gentoo. See bug #659348")
-Aug 02 20:42:54 t480 dbus-service[60937]: RuntimeError: Unsafe load() call disabled by Gentoo. See bug #659348
-```
-
-Relevant Gentoo bug report https://bugs.gentoo.org/659348
-
-Replacing yaml.load() calls with yaml.safe_load() should fix it
----
- dbus_service/dbus-service | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/dbus_service/dbus-service b/dbus_service/dbus-service
-index a488b09..680f498 100755
---- a/dbus_service/dbus-service
-+++ b/dbus_service/dbus-service
-@@ -241,7 +241,7 @@ def main():
+--- dbus_service/dbus-service	2021-08-02 20:57:18.511342842 +0800
++++ dbus_service/dbus-service	2021-08-02 20:57:47.720742177 +0800
+@@ -242,7 +242,7 @@
      # Load and perform basic validation of config file.
      try:
          with (args.configpath / 'dbus-service.yaml').open(mode='rt') as configfd:
--            config = yaml.load(configfd, Loader=yaml.BaseLoader)
-+            config = yaml.safe_load(configfd, Loader=yaml.BaseLoader)
+-            config = yaml.load(configfd)
++            config = yaml.safe_load(configfd)
      except FileNotFoundError:
          # No configuration file. Create default
          config = {'user_to_sid': {}}
