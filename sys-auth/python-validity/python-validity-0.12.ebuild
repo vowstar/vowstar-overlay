@@ -33,6 +33,10 @@ DEPEND="
 	${RDEPEND}
 "
 
+PATCHES=(
+	"${FILESDIR}/${PN}-0.12-fix-unsafe-load.patch"
+)
+
 python_install_all() {
 	distutils-r1_python_install_all
 	systemd_dounit "${S}"/debian/python3-validity.service
