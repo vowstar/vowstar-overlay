@@ -37,6 +37,8 @@ python_install_all() {
 	distutils-r1_python_install_all
 	systemd_dounit "${S}"/debian/python3-validity.service
 	udev_newrules "${S}"/debian/python3-validity.udev 60-python-validity.rules
+	insinto /etc/python-validity
+	doins "${S}"/etc/python-validity/dbus-service.yaml
 }
 
 pkg_postinst() {
