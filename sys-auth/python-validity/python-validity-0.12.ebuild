@@ -44,4 +44,7 @@ python_install_all() {
 pkg_postinst() {
 	elog "Sample configurations are available at:"
 	elog "https://github.com/uunicorn/python-validity"
+	elog "To enable this service:"
+	elog "systemctl enable python3-validity"
+	elog "systemctl start python3-validity"
 }
