@@ -25,5 +25,10 @@ BDEPEND="dev-vcs/git"
 
 src_prepare() {
 	default
-	sh autogen.sh || die
+	echo ${PV} > VERSION
+	eautoheader
+	elibtoolize --force
+	eaclocal
+	eautomake --add-missing
+	eautoconf
 }
