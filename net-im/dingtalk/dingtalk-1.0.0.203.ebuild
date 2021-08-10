@@ -20,6 +20,7 @@ RDEPEND="
 	net-nds/openldap
 	sys-libs/glibc
 	sys-libs/zlib
+	sys-process/procps
 "
 
 BDEPEND="dev-util/patchelf"
@@ -60,6 +61,26 @@ src_install() {
 	# Fix fcitx5
 	sed -i "s/export XMODIFIERS/#export XMODIFIERS/g" opt/apps/com.alibabainc.dingtalk/files/Elevator.sh || die
 	sed -i "s/export QT_IM_MODULE/#export QT_IM_MODULE/g" opt/apps/com.alibabainc.dingtalk/files/Elevator.sh || die
+
+	cat >> opt/apps/com.alibabainc.dingtalk/files/Elevator.sh.head <<- EOF || die
+#!/bin/sh
+if [ -z "$(pidof fcitx5)" ]
+then
+export XMODIFIERS="@im=fcitx5"
+export QT_IM_MODULE=fcitx5
+elif [ -z "$(pidof ibus-daemon)" ]
+then
+export XMODIFIERS="@im=ibus"
+export QT_IM_MODULE=ibus
+else
+export XMODIFIERS="@im=fcitx"
+export QT_IM_MODULE=fcitx
+fi
+	EOF
+
+	cat opt/apps/com.alibabainc.dingtalk/files/Elevator.sh.head opt/apps/com.alibabainc.dingtalk/files/Elevator.sh > opt/apps/com.alibabainc.dingtalk/files/Elevator.sh.new || die
+	cat opt/apps/com.alibabainc.dingtalk/files/Elevator.sh.new > opt/apps/com.alibabainc.dingtalk/files/Elevator.sh || die
+	rm opt/apps/com.alibabainc.dingtalk/files/Elevator.sh.head opt/apps/com.alibabainc.dingtalk/files/Elevator.sh.new || die
 
 	mkdir -p usr/share/applications || die
 	cp opt/apps/com.alibabainc.dingtalk/entries/applications/com.alibabainc.dingtalk.desktop usr/share/applications/ || die
