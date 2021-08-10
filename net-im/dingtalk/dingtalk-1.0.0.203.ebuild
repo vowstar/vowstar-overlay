@@ -52,7 +52,8 @@ src_install() {
 	for x in $(find) ; do
 		# Use \x7fELF header to separate ELF executables and libraries
 		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
-		patchelf --set-rpath '$ORIGIN' "${x}" || \
+		local rpath_root="/opt/apps/com.alibabainc.dingtalk/files/${version}"
+		patchelf --set-rpath "${rpath_root}/:${rpath_root}/swiftshader/:${rpath_root}/platforminputcontexts/:${rpath_root}/imageformats/" "${x}" || \
 			die "patchelf failed on ${x}"
 	done
 	popd || die
