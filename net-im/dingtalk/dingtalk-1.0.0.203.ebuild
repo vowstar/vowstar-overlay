@@ -31,7 +31,6 @@ RDEPEND="
 	net-nds/openldap
 	sys-libs/glibc
 	sys-libs/zlib
-	x11-libs/pango
 "
 
 BDEPEND="dev-util/patchelf"
@@ -72,8 +71,6 @@ src_install() {
 	rm opt/apps/com.alibabainc.dingtalk/files/${version}/libm.so* || die
 	# Use system zlib
 	rm opt/apps/com.alibabainc.dingtalk/files/${version}/libz* || die
-	# Use system pango
-	rm opt/apps/com.alibabainc.dingtalk/files/${version}/libpango* || die
 
 	# Set RPATH for preserve-libs handling
 	pushd "opt/apps/com.alibabainc.dingtalk/files/${version}/" || die
@@ -82,9 +79,6 @@ src_install() {
 		# Use \x7fELF header to separate ELF executables and libraries
 		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
 		patchelf --set-rpath '$ORIGIN' "${x}" || \
-			die "patchelf failed on ${x}"
-		# Remove deprecated pangox
-		patchelf --remove-needed libpangox-1.0.so.0 "${x}" || \
 			die "patchelf failed on ${x}"
 	done
 	popd || die
