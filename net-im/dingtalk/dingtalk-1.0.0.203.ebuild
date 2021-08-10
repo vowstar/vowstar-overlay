@@ -17,6 +17,7 @@ RESTRICT="strip mirror bindist fetch"
 
 RDEPEND="
 	dev-libs/libsodium
+	dev-libs/libthai
 	dev-libs/libunistring
 	dev-libs/openssl
 	dev-qt/qtcore:5
