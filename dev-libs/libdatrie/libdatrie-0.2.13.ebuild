@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit autotools libtool
+inherit autotools
 
 DESCRIPTION="Double-Array Trie Library"
 HOMEPAGE="https://github.com/tlwg/libdatrie"
@@ -27,7 +27,7 @@ src_prepare() {
 	default
 	echo ${PV} > VERSION
 	eautoheader
-	elibtoolize --force
+	_elibtoolize --force
 	eaclocal
 	eautomake --add-missing
 	eautoconf
