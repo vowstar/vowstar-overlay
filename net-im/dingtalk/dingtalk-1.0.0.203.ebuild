@@ -80,10 +80,14 @@ src_install() {
 	for x in $(find) ; do
 		# Use \x7fELF header to separate ELF executables and libraries
 		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
-		patchelf --set-rpath '/opt/apps/com.alibabainc.dingtalk/files/${version}' "${x}" || \
+		patchelf --set-rpath '$ORIGIN' "${x}" || \
 			die "patchelf failed on ${x}"
 	done
 	popd || die
+	# Fix fcitx5
+	sed -i "s/export XMODIFIERS/#export XMODIFIERS/g" opt/apps/com.alibabainc.dingtalk/files/Elevator.sh || die
+	sed -i "s/export QT_IM_MODULE/#export QT_IM_MODULE/g" opt/apps/com.alibabainc.dingtalk/files/Elevator.sh || die
+	sed -i "s/export QT_QPA_PLATFORM/#export QT_QPA_PLATFORM/g" opt/apps/com.alibabainc.dingtalk/files/Elevator.sh || die
 	mkdir -p usr/share/applications || die
 	cp opt/apps/com.alibabainc.dingtalk/entries/applications/com.alibabainc.dingtalk.desktop usr/share/applications/ || die
 }
