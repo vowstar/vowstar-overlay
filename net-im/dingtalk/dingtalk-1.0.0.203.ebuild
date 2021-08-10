@@ -59,7 +59,7 @@ src_install() {
 	# Fix fcitx5
 	sed -i "s/export XMODIFIERS/#export XMODIFIERS/g" opt/apps/com.alibabainc.dingtalk/files/Elevator.sh || die
 	sed -i "s/export QT_IM_MODULE/#export QT_IM_MODULE/g" opt/apps/com.alibabainc.dingtalk/files/Elevator.sh || die
-	sed -i "s/export QT_QPA_PLATFORM/#export QT_QPA_PLATFORM/g" opt/apps/com.alibabainc.dingtalk/files/Elevator.sh || die
+
 	mkdir -p usr/share/applications || die
 	cp opt/apps/com.alibabainc.dingtalk/entries/applications/com.alibabainc.dingtalk.desktop usr/share/applications/ || die
 }
