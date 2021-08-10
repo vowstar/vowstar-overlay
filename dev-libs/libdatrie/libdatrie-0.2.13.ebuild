@@ -3,7 +3,7 @@
 
 EAPI=7
 
-inherit autotools
+inherit autotools libtool
 
 DESCRIPTION="Double-Array Trie Library"
 HOMEPAGE="https://github.com/tlwg/libdatrie"
@@ -18,3 +18,16 @@ fi
 
 LICENSE="LGPL-2.1"
 SLOT="0"
+
+src_prepare() {
+	default
+	# From upstreams autoconf.sh, to make it utilize the autotools eclass
+	# Here translate the autoconf.sh, equivalent to the following code
+	# > sh autoconf.sh
+	eautoheader
+	elibtoolize --force
+	eaclocal
+	eautomake --add-missing
+	# Use -f so git-version-gen does refresh
+	eautoconf -f
+}
