@@ -30,7 +30,7 @@ src_prepare() {
 	# From upstreams autogen.sh, to make it utilize the autotools eclass
 	# Here translate the autogen.sh, equivalent to the following code
 	# > sh autogen.sh
-	eautoheader
+
 	_elibtoolize --force
 	eaclocal
 	eautomake --add-missing
