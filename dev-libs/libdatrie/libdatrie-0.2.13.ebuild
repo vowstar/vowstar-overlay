@@ -13,25 +13,17 @@ if [[ ${PV} == "9999" ]] ; then
 	EGIT_REPO_URI="https://github.com/tlwg/${PN}.git"
 else
 	SRC_URI="https://github.com/tlwg/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~arm ~arm64 ~riscv ~x86"
+	KEYWORDS="~amd64 ~arm ~arm64 ~x86"
 fi
 
 LICENSE="LGPL-2.1"
 SLOT="0"
 
-RDEPEND=""
+RDEPEND="dev-libs/libiconv"
 DEPEND="${RDEPEND}"
 BDEPEND="dev-vcs/git"
 
 src_prepare() {
 	default
-	# From upstreams autoconf.sh, to make it utilize the autotools eclass
-	# Here translate the autoconf.sh, equivalent to the following code
-	# > sh autoconf.sh
-	eautoheader
-	elibtoolize --force
-	eaclocal
-	eautomake --add-missing
-	# Use -f so git-version-gen does refresh
-	eautoconf -f
+	sh autogen.sh || die
 }
