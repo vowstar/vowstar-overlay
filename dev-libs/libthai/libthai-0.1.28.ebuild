@@ -31,8 +31,6 @@ src_prepare() {
 	default
 	# Fixed version if in non git project
 	echo ${PV} > VERSION
-	# configure.ac: remove duplicate AC_CONFIG_MACRO_DIR
-
 	# From upstreams autogen.sh, to make it utilize the autotools eclass
 	# Here translate the autogen.sh, equivalent to the following code
 	# > sh autogen.sh
