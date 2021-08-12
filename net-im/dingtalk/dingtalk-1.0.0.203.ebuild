@@ -7,13 +7,13 @@ inherit desktop multilib unpacker xdg
 
 DESCRIPTION="dingtalk"
 HOMEPAGE="https://gov.dingtalk.com"
-SRC_URI="com.alibabainc.${PN}_${PV}_amd64.deb"
+SRC_URI="https://dtapp-pub.dingtalk.com/dingtalk-desktop/xc_dingtalk_update/linux_deb/Release/com.alibabainc.${PN}_${PV}_amd64.deb"
 
 LICENSE="all-rights-reserved"
 KEYWORDS="-* ~amd64"
 SLOT="0"
 
-RESTRICT="strip mirror bindist fetch"
+RESTRICT="strip mirror bindist"
 
 RDEPEND="
 	dev-libs/libthai
