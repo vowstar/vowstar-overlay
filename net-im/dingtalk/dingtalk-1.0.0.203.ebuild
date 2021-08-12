@@ -85,9 +85,3 @@ fi
 	mkdir -p usr/share/applications || die
 	cp opt/apps/com.alibabainc.dingtalk/entries/applications/com.alibabainc.dingtalk.desktop usr/share/applications/ || die
 }
-
-pkg_nofetch() {
-	einfo "Please follow https://h5.dingtalk.com/circle/healthCheckin.html?corpId=dingdc75e6471f48e6171a5c74e782e240c4&c003e554-f=3edf7be3-a&cbdbhh=qwertyuiop and download"
-	einfo "${DISTFILE_BIN}"
-	einfo "and place it in your DISTDIR directory."
-}
