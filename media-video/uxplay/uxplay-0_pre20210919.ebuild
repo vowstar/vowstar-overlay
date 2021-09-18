@@ -39,8 +39,8 @@ BDEPEND="
 	virtual/pkgconfig
 "
 
-PATCHES=(
-	"${FILESDIR}/${P}-fix-installation.patch"
-	"${FILESDIR}/${P}-fix-screen-sharing.patch"
-	"${FILESDIR}/${P}-use-machine-hostname.patch"
-)
+# PATCHES=(
+# 	"${FILESDIR}/${P}-fix-installation.patch"
+# 	"${FILESDIR}/${P}-fix-screen-sharing.patch"
+# 	"${FILESDIR}/${P}-use-machine-hostname.patch"
+# )
