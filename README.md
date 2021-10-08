@@ -50,7 +50,7 @@ sudo systemctl restart docker
 docker run --gpus all nvidia/cuda:10.0-base nvidia-smi
 ```
 
-### sResult
+### Result
 
 ```text
 $ docker run --gpus all nvidia/cuda:10.0-base nvidia-smi
