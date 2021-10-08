@@ -78,3 +78,5 @@ Linux ryzen 5.6.17-gentoo #1 SMP PREEMPT Mon Jun 8 11:35:26 CST 2020 x86_64 AMD 
 ## The octave-forge packages
 
 It is generated from [https://github.com/vowstar/octave-gentoo-package](https://github.com/vowstar/octave-gentoo-package)
+
+After install, please append ``pkg load <package-name>`` to ``~/.octaverc``
