@@ -82,20 +82,22 @@ pkg_setup() {
 # }
 
 src_prepare() {
-	# Fix OpenCASCADE lookup
-	local OCC_P=$(best_version sci-libs/opencascade[vtk])
-	OCC_P=${OCC_P#sci-libs/}
-	local OCC_PV=${OCC_P#opencascade-}
-	OCC_PV=$(ver_cut 1-2 ${OCC_PV})
-	# check for CASROOT needed to ensure occ-7.5 is eselected and profile resourced
-	if [[ ${OCC_PV} = 7.5 && ${CASROOT} = "/usr" ]]; then
-		sed -e 's|/usr/include/opencascade|'${CASROOT}'/include/'${OCC_P}'|' \
-			-e 's|/usr/lib|'${CASROOT}'/'$(get_libdir)'/'${OCC_P}' NO_DEFAULT_PATH|' \
-			-i CMakeModules/FindOCC.cmake || die
-	else
-		sed -e 's|/usr/include/opencascade|${CASROOT}/include/opencascade|' \
-			-e 's|/usr/lib|${CASROOT}/'$(get_libdir)' NO_DEFAULT_PATH|' \
-			-i CMakeModules/FindOCC.cmake || die
+	if use occ; then
+		# Fix OpenCASCADE lookup
+		local OCC_P=$(best_version sci-libs/opencascade)
+		OCC_P=${OCC_P#sci-libs/}
+		local OCC_PV=${OCC_P#opencascade-}
+		OCC_PV=$(ver_cut 1-2 ${OCC_PV})
+		# check for CASROOT needed to ensure occ-7.5 is eselected and profile resourced
+		if [[ ${OCC_PV} = 7.5 && ${CASROOT} = "/usr" ]]; then
+			sed -e '|endif(WIN32)|aFIND_LIBRARY(OCC_LIBRARY TKernel HINTS '${CASROOT}'/'$(get_libdir)'/'${OCC_P}' NO_DEFAULT_PATH)' \
+				-e '|endif(WIN32)|aFIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx '${CASROOT}'/include/'${OCC_P}')' \
+				-i CMakeModules/FindOCC.cmake || die
+		else
+			sed -e '|endif(WIN32)|aFIND_LIBRARY(OCC_LIBRARY TKernel HINTS '${CASROOT}'/'$(get_libdir)' NO_DEFAULT_PATH' \
+				-e '|endif(WIN32)|aFIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx '${CASROOT}'/include/opencascade)' \
+				-i CMakeModules/FindOCC.cmake || die
+		fi
 	fi
 	cmake_src_prepare
 }
