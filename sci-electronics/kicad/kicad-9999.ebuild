@@ -73,23 +73,23 @@ pkg_setup() {
 	check-reqs_pkg_setup
 }
 
-src_unpack() {
-	#default_src_unpack
-	git-r3_src_unpack
-	# For the metainfo patch to work the kicad.appdata.xml has to be moved to
-	# avoid QA issue.  This is needed because /usr/share/appdata location is
-	# deprecated, it should not be used anymore by new software.
-	# Appdata/Metainfo files should be installed into /usr/share/metainfo
-	# directory. as per
-	# https://www.freedesktop.org/software/appstream/docs/chap-Metadata.html
-	# mv "${S}/resources/linux/appdata" "${S}/resources/linux/metainfo" || die "Appdata move failed"
-}
+# src_unpack() {
+# 	#default_src_unpack
+# 	git-r3_src_unpack
+# 	# For the metainfo patch to work the kicad.appdata.xml has to be moved to
+# 	# avoid QA issue.  This is needed because /usr/share/appdata location is
+# 	# deprecated, it should not be used anymore by new software.
+# 	# Appdata/Metainfo files should be installed into /usr/share/metainfo
+# 	# directory. as per
+# 	# https://www.freedesktop.org/software/appstream/docs/chap-Metadata.html
+# 	# mv "${S}/resources/linux/appdata" "${S}/resources/linux/metainfo" || die "Appdata move failed"
+# }
 
-src_prepare() {
-	default
-	# grep -rl "resources/linux/appdata" "${S}" | xargs sed -i "s@resources/linux/appdata@resources/linux/metainfo@g" || die
-	cmake_src_prepare
-}
+# src_prepare() {
+# 	default
+# 	# grep -rl "resources/linux/appdata" "${S}" | xargs sed -i "s@resources/linux/appdata@resources/linux/metainfo@g" || die
+# 	cmake_src_prepare
+# }
 
 src_configure() {
 	xdg_environment_reset
