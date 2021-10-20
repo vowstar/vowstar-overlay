@@ -18,7 +18,7 @@ fi
 
 LICENSE="CC-BY-SA-4.0"
 SLOT="0"
-IUSE="occ +oce"
+IUSE="+occ oce"
 
 REQUIRED_USE="|| ( occ oce )"
 
