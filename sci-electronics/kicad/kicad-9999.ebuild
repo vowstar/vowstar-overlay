@@ -97,7 +97,7 @@ src_prepare() {
 			-e 's|/usr/lib|${CASROOT}/'$(get_libdir)' NO_DEFAULT_PATH|' \
 			-i CMakeModules/FindOCC.cmake || die
 	fi
-	default
+	cmake_src_prepare
 }
 
 src_configure() {
