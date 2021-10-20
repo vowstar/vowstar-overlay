@@ -24,7 +24,7 @@ fi
 
 LICENSE="GPL-2+ GPL-3+ Boost-1.0"
 SLOT="0"
-IUSE="doc examples github +ngspice occ +oce openmp +python"
+IUSE="doc examples github +ngspice +occ oce openmp +python"
 
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
