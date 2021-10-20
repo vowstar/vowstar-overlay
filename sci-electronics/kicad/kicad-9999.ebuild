@@ -90,14 +90,14 @@ src_prepare() {
 		OCC_PV=$(ver_cut 1-2 ${OCC_PV})
 		# check for CASROOT needed to ensure occ-7.5 is eselected and profile resourced
 		if [[ ${OCC_PV} = 7.5 && ${CASROOT} = "/usr" ]]; then
-			sed 's|endif(WIN32)|endif(WIN32)\nFIND_LIBRARY(OCC_LIBRARY TKernel HINTS '${CASROOT}'/'$(get_libdir)'/'${OCC_P}' NO_DEFAULT_PATH)|g' \
+			sed 's|endif(WIN32)|endif(WIN32)\nSET(OCC_LIBRARY '${CASROOT}'/'$(get_libdir)'/'${OCC_P}')|g' \
 				-i CMakeModules/FindOCC.cmake || die
-			sed 's|endif(WIN32)|endif(WIN32)\nFIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx '${CASROOT}'/include/'${OCC_P}')|g' \
+			sed 's|endif(WIN32)|endif(WIN32)\nSET(OCC_INCLUDE_DIR '${CASROOT}'/include/'${OCC_P}')|g' \
 				-i CMakeModules/FindOCC.cmake || die
 		else
-			sed 's|endif(WIN32)|endif(WIN32)\nFIND_LIBRARY(OCC_LIBRARY TKernel HINTS '${CASROOT}'/'$(get_libdir)' NO_DEFAULT_PATH)|g' \
+			sed 's|endif(WIN32)|endif(WIN32)\nSET(OCC_LIBRARY '${CASROOT}'/'$(get_libdir)')|g' \
 				-i CMakeModules/FindOCC.cmake || die
-			sed 's|endif(WIN32)|endif(WIN32)\nFIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx '${CASROOT}'/include/opencascade)|g' \
+			sed 's|endif(WIN32)|endif(WIN32)\nSET(OCC_INCLUDE_DIR '${CASROOT}'/include/opencascade)|g' \
 				-i CMakeModules/FindOCC.cmake || die
 		fi
 	fi
