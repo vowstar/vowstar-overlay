@@ -12,8 +12,6 @@ HOMEPAGE="https://kb.ettus.com"
 
 SRC_URI="https://github.com/EttusResearch/uhd/archive/v${PV}.tar.gz -> EttusResearch-UHD-${PV}.tar.gz \
 	https://github.com/EttusResearch/uhd/releases/download/v${PV}/uhd-images_${PV}.tar.xz"
-#https://github.com/EttusResearch/UHD-Mirror/tags
-#http://files.ettus.com/binaries/images/
 
 LICENSE="GPL-3"
 SLOT="0/$(ver_cut 1-3)"
@@ -51,10 +49,7 @@ BDEPEND="
 "
 
 PATCHES=(
-	"${FILESDIR}/${P}-tinfo.patch"
-	"${FILESDIR}/${P}-fix-frequency-offsets.patch"
-	"${FILESDIR}/${P}-fix-gcc11-sleep-for.patch"
-	"${FILESDIR}/${P}-fix-boost-math-header.patch"
+	"${FILESDIR}/${PN}-4.0.0.0-tinfo.patch"
 )
 
 S="${WORKDIR}/${P}/host"
