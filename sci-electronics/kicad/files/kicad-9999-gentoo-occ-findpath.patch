@@ -1,5 +1,9 @@
---- a/CMakeModules/FindOCC.cmake	2021-10-20 19:28:07.023213146 +0800
-+++ b/CMakeModules/FindOCC.cmake	2021-10-20 19:38:31.118979838 +0800
+From: Huang Rui <vowstar@gmail.com>
+Date: Wed, 20 Oct 2021 20:00:09 +0800
+Subject: [PATCH] fix FindOCC.cmake for gentoo build
+
+--- a/CMakeModules/FindOCC.cmake	2021-10-20 19:54:57.158406717 +0800
++++ b/CMakeModules/FindOCC.cmake	2021-10-20 19:56:04.209691763 +0800
 @@ -113,11 +113,13 @@
      )
    endif()
