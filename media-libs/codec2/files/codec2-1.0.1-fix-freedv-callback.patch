@@ -4,6 +4,8 @@ Date: Sat, 2 Oct 2021 15:48:09 +0930
 Subject: [PATCH] moved freedv_callback_rx_sym typedef and function into
  freedv_api_internal.h
 
+Project-Bug-URL: https://github.com/drowe67/codec2/pull/235
+Gentoo-Bug-URL: https://bugs.gentoo.org/816453
 ---
  src/freedv_api.h          | 2 --
  src/freedv_api_internal.h | 4 ++++
