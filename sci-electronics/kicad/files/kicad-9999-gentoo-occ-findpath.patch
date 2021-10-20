@@ -1,0 +1,16 @@
+--- a/CMakeModules/FindOCC.cmake	2021-10-20 19:28:07.023213146 +0800
++++ b/CMakeModules/FindOCC.cmake	2021-10-20 19:38:31.118979838 +0800
+@@ -113,11 +113,13 @@
+     )
+   endif()
+ else(WIN32)
++  FILE(GLOB OCC_SEARCH_PATHS "/usr/include/opencascade*" "/usr/local/include/opencascade*")
+   FIND_PATH(OCC_INCLUDE_DIR Standard_Version.hxx
+     /usr/include/opencascade
+     /usr/local/include/opencascade
+     /opt/opencascade/include
+     /opt/opencascade/inc
++    PATHS ${OCC_SEARCH_PATHS}
+   )
+   FIND_LIBRARY(OCC_LIBRARY TKernel
+     HINTS
