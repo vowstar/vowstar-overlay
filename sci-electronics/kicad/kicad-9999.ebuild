@@ -108,7 +108,7 @@ src_prepare() {
 		local OCE_PV=${OCE_P#oce-}
 		OCE_PV=$(ver_cut 1-2 ${OCE_PV})
 
-		sed 's|include_directories( SYSTEM|include_directories( SYSTEM\n    '${CASROOT}'/'$(get_libdir)'/oce-'${OCE_PV}'|g' \
+		sed 's|include_directories( SYSTEM|include_directories( SYSTEM\n    '${CASROOT}'/include/oce|g' \
 			-i utils/kicad2step/CMakeLists.txt || die
 	fi
 	cmake_src_prepare
