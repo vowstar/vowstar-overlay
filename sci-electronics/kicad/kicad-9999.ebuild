@@ -101,6 +101,16 @@ src_prepare() {
 				-i CMakeModules/FindOCC.cmake || die
 		fi
 	fi
+	if use oce; then
+		# Fix OCE lookup
+		local OCE_P=$(best_version sci-libs/oce)
+		OCE_P=${OCE_P#sci-libs/}
+		local OCE_PV=${OCE_P#oce-}
+		OCE_PV=$(ver_cut 1-2 ${OCE_PV})
+
+		sed 's|include_directories( SYSTEM|include_directories( SYSTEM\n    '${CASROOT}'/'$(get_libdir)'/'${OCE_P}')|g' \
+			-i utils/kicad2step/CMakeLists.txt || die
+	fi
 	cmake_src_prepare
 }
 
