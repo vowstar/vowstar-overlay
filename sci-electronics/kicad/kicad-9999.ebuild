@@ -110,6 +110,8 @@ src_prepare() {
 
 		sed 's|include_directories( SYSTEM|include_directories( SYSTEM\n    '${CASROOT}'/include/oce|g' \
 			-i utils/kicad2step/CMakeLists.txt || die
+		sed 's|INTERFACE_INCLUDE_DIRECTORIES>|INTERFACE_INCLUDE_DIRECTORIES>\n    '${CASROOT}'/include/oce|g' \
+			-i plugins/3d/oce/CMakeLists.txt || die
 	fi
 	cmake_src_prepare
 }
