@@ -62,9 +62,9 @@ RDEPEND="${COMMON_DEPEND}
 BDEPEND="doc? ( app-doc/doxygen )"
 CHECKREQS_DISK_BUILD="800M"
 
-PATCHES=(
-    "${FILESDIR}"/${PN}-9999-gentoo-occ-findpath.patch
-)
+# PATCHES=(
+#     "${FILESDIR}"/${PN}-9999-gentoo-occ-findpath.patch
+# )
 
 pkg_setup() {
 	use python && python-single-r1_pkg_setup
