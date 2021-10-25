@@ -97,20 +97,37 @@ src_install() {
 
 	# Fix permission to all files
 	chmod 0644 -R "${D}/opt/${PKG_NAME}" || die
-	find "${D}/opt/${PKG_NAME}" -type f -exec chmod a-x,o-w {} \; || die
-	find "${D}/opt/${PKG_NAME}" -type d -exec chmod o-w {} \; || die
+	find "${D}/opt/${PKG_NAME}" -type d -exec chmod 0755 "{}" \; || die
+	while IFS= read -r -d '' i; do
+		chmod 0755 "${i}" || die
+	done < <(find "${D}/opt/${PKG_NAME}" -type d -print0)
+
+	while IFS= read -r -d '' i; do
+		[[ -f "${i}" && $(od -t x1 -N 4 "${i}") == *"7f 45 4c 46"* ]] || continue
+		chmod 0755 "${i}" || die
+	done < <(find "${D}/opt/${PKG_NAME}" -type f -print0)
+
+	while IFS= read -r -d '' i; do
+		[[ -f "${i}" && $(od -t x1 -N 4 "${i}") == *"7f 45 4c 46"* ]] || continue
+		patchelf --set-rpath '/opt/'"${PKG_NAME}"'/libs:$ORIGIN' "${i}" || \
+		die "patchelf failed on ${i}"
+	done < <(find "${D}/opt/${PKG_NAME}" -type f -size -32M -print0)
+
+	while IFS= read -r -d '' i; do
+		sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" "${i}" || die
+	done < <(find "${D}/opt/${PKG_NAME}" -type f -name *.desktop -o -name *.directory -o -name *.menu -print0)
 
 	local x
-	for x in $(find -type f -size -32M) ; do
-		# Use \x7fELF header to separate ELF executables and libraries
-		[[ -f "${x}" && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
-		patchelf --set-rpath '/opt/'"${PKG_NAME}"'/libs:$ORIGIN' "${x}" || \
-			die "patchelf failed on ${x}"
-	done
-	for x in $(find -type f -name *.desktop -o -name *.directory -o -name *.menu) ; do
-		[[ -f ${x} ]] || continue
-		sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" ${x} || die
-	done
+	# for x in $(find -type f -size -32M) ; do
+	# 	# Use \x7fELF header to separate ELF executables and libraries
+	# 	[[ -f "${x}" && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
+	# 	patchelf --set-rpath '/opt/'"${PKG_NAME}"'/libs:$ORIGIN' "${x}" || \
+	# 		die "patchelf failed on ${x}"
+	# done
+	# for x in $(find -type f -name *.desktop -o -name *.directory -o -name *.menu) ; do
+	# 	[[ -f ${x} ]] || continue
+	# 	sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" ${x} || die
+	# done
 
 	ln -s "${D}"/opt/"${PKG_NAME}"/BlackmagicRAWPlayer/BlackmagicRawAPI "${D}"/opt/"${PKG_NAME}"/bin/ || die
 
