@@ -77,8 +77,8 @@ src_install() {
 	cp -rf squashfs-root/* "${D}/opt/${PKG_NAME}" || die
 	pushd squashfs-root/share/panels || die
 	tar -zxvf dvpanel-framework-linux-x86_64.tgz || die
-	mv squashfs-root/share/panels/*.so "${D}/opt/${PKG_NAME}/libs" || die
-	mv squashfs-root/share/panels/* "${D}/opt/${PKG_NAME}/libs" || die
+	mv *.so "${D}/opt/${PKG_NAME}/libs" || die
+	mv lib/* "${D}/opt/${PKG_NAME}/libs" || die
 	popd || die
 	#./"${BASE_NAME}".run -i -y -n -a -C "${D}"/opt/resolve || die
 
