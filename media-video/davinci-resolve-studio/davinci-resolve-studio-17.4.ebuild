@@ -51,8 +51,6 @@ DEPEND="
 	${RDEPEND}
 "
 
-BDEPEND="dev-libs/libisoburn"
-
 S="${WORKDIR}"
 
 pkg_nofetch() {
@@ -70,9 +68,10 @@ src_install() {
 	mkdir -p "${D}/usr/lib/udev/rules.d" || die
 	mkdir -p "${D}/etc/xdg/menus" || die
 
-    # xorriso -osirrox on -indev "${BASE_NAME}".run -extract / "${BASE_NAME}" || die
+	# xorriso -osirrox on -indev "${BASE_NAME}".run -extract / "${BASE_NAME}" || die
 	chmod u+x ./"${BASE_NAME}".run || die
-	APPIMAGE_EXTRACT_AND_RUN=1 NO_CLEANUP=1 ./"${BASE_NAME}".run -i -y -n -a -C "${D}"/opt/resolve || die
+	./"${BASE_NAME}".run --appimage-extract || die
+	#./"${BASE_NAME}".run -i -y -n -a -C "${D}"/opt/resolve || die
 
 	find "${D}"/usr/share "${D}"/etc -type f -name *.desktop -o -name *.directory -o -name *.menu | xargs -I {} sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" {} || die
 
