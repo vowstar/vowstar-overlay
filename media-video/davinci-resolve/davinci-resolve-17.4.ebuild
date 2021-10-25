@@ -109,7 +109,7 @@ src_install() {
 
 	while IFS= read -r -d '' i; do
 		[[ -f "${i}" && $(od -t x1 -N 4 "${i}") == *"7f 45 4c 46"* ]] || continue
-		atchelf --set-rpath '/opt/'"${PKG_NAME}"'/libs:$ORIGIN' "${i}" || \
+		patchelf --set-rpath '/opt/'"${PKG_NAME}"'/libs:$ORIGIN' "${i}" || \
 		die "patchelf failed on ${i}"
 	done < <(find "${D}/opt/${PKG_NAME}" -type f -size -32M -print0)
 
