@@ -96,22 +96,14 @@ src_install() {
 	rm -rf installer installer* AppRun AppRun* || die
 
 	# Fix permission to all files
-	chmod 0644 -R "${D}/opt/${PKG_NAME}/" || die
+	chmod 0644 -R "${D}/opt/${PKG_NAME}" || die
+	find "${D}/opt/${PKG_NAME}" -type f -exec chmod a-x,o-w {} +\; || die
+	find "${D}/opt/${PKG_NAME}" -type d -exec chmod o-w {} +\; || die
 
 	local x
-	for x in $(find) ; do
-		# Fix permission to separate directory
-		[[ -d "${x}" ]] || continue
-		chmod 0755 "${x}" || die "failed set permission on ${x}"
-	done
-	for x in $(find) ; do
-		# Fix permission to separate ELF executables and libraries
-		[[ -f "${x}" && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
-		chmod 0755 "${x}" || die "failed set permission on ${x}"
-	done
 	for x in $(find -type f -size -32M) ; do
 		# Use \x7fELF header to separate ELF executables and libraries
-		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
+		[[ -f "${x}" && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
 		patchelf --set-rpath '/opt/'"${PKG_NAME}"'/libs:$ORIGIN' "${x}" || \
 			die "patchelf failed on ${x}"
 	done
