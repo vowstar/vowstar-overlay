@@ -93,7 +93,7 @@ src_install() {
 	rm -rf installer installer* AppRun AppRun* || die
 
 	local x
-	for x in $(find) ; do
+	for x in $(find -type f -size -32M) ; do
 		# Use \x7fELF header to separate ELF executables and libraries
 		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
 		patchelf --set-rpath '$ORIGIN' "${x}" || \
