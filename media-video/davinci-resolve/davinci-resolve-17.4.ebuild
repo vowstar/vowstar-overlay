@@ -98,7 +98,7 @@ src_install() {
 	# Fix permission to all files
 	chmod 0644 -R "${D}/opt/${PKG_NAME}" || die
 	find "${D}/opt/${PKG_NAME}" -type d -exec chmod 0755 {} \; || die
-	find "${D}/opt/${PKG_NAME}" -type f -size -32M -exec [[ -f "${x}" && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] && chmod 0755 {} \; || die
+	find "${D}/opt/${PKG_NAME}" -type f -size -32M -exec [[ -f "{}" && $(od -t x1 -N 4 "{}") == *"7f 45 4c 46"* ]] && chmod 0755 {} \; || die
 
 	local x
 	# for x in $(find -type f -size -32M) ; do
