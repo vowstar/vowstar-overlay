@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+	DaVinci Resolve is the world’s only solution that combines editing, color
+	correction, visual effects, motion graphics and audio post production all in
+	one software tool! Its elegant, modern interface is fast to learn and easy
+	enough for new users, yet powerful for professionals. DaVinci Resolve lets
+	you work faster and at a higher quality because you don’t have to learn
+	multiple apps or switch software for different tasks. That means you can
+	work with camera original quality images throughout the entire process.
+	It’s like having your own post production studio in a single app! Best of
+	all, by learning DaVinci Resolve, you’re learning how to use the exact same
+	tools used by Hollywood professionals!
+	Hardware support is limited. Nvidia cards should work fine.
+	If you're running a hybrid setup, try with primusrun/optirun.
+	This was originally written by Daniel Bermond in blackmagic-decklink-sdk
+	pkgbuild.
+	</longdescription>
+</pkgmetadata>
