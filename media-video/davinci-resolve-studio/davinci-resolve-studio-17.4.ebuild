@@ -36,7 +36,6 @@ RDEPEND="
 
 DEPEND="
 	app-arch/libarchive
-	dev-libs/ocl-icd
 	dev-libs/openssl-compat
 	dev-qt/qtcore:5
 	dev-qt/qtsvg:5
