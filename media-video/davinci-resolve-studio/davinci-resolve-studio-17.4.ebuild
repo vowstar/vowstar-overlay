@@ -30,7 +30,7 @@ RESTRICT="strip mirror bindist fetch"
 
 RDEPEND="
 	virtual/glu
-	x11-libs/gtk+
+	x11-libs/gtk+:=
 	${CONFLICT_PKG}
 "
 
@@ -70,10 +70,7 @@ src_install() {
 	chmod u+x ./"${BASE_NAME}".run || die
 	./"${BASE_NAME}".run -i -y -n -a -C "${D}"/opt/resolve || die
 
-	for _file in $(find ${D}/usr/share ${D}/etc -type f -name *.desktop -o -name *.directory -o -name *.menu | xargs)
-	do
-		sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" $_file || die
-	done
+	find "${D}"/usr/share "${D}"/etc -type f -name *.desktop -o -name *.directory -o -name *.menu | xargs -I {} sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" {} || die
 
 	# This will help adding the app to favorites and prevent glitches on many desktops.
 	echo "StartupWMClass=resolve" >> "${D}/usr/share/applications/${APP_NAME}.desktop" || die
