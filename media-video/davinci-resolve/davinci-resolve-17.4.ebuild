@@ -75,11 +75,11 @@ src_install() {
 	chmod u+x ./"${BASE_NAME}".run || die
 	./"${BASE_NAME}".run --appimage-extract || die
 	cp -rf squashfs-root/* "${D}/opt/${PKG_NAME}" || die
-	pushd squashfs-root/share/panels || die
-	tar -zxvf dvpanel-framework-linux-x86_64.tgz || die
-	mv *.so "${D}/opt/${PKG_NAME}/libs" || die
-	mv lib/* "${D}/opt/${PKG_NAME}/libs" || die
-	popd || die
+	# pushd squashfs-root/share/panels || die
+	# tar -zxvf dvpanel-framework-linux-x86_64.tgz || die
+	# mv *.so "${D}/opt/${PKG_NAME}/libs" || die
+	# mv lib/* "${D}/opt/${PKG_NAME}/libs" || die
+	# popd || die
 	#./"${BASE_NAME}".run -i -y -n -a -C "${D}"/opt/resolve || die
 
 	#find "${D}"/usr/share "${D}"/etc -type f -name *.desktop -o -name *.directory -o -name *.menu | xargs -I {} sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" {} || die
