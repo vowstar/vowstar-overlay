@@ -51,8 +51,6 @@ DEPEND="
 	${RDEPEND}
 "
 
-BDEPEND="dev-libs/libisoburn"
-
 pkg_nofetch() {
 	einfo "Please download"
 	einfo "  - ${ARC_NAME}"
