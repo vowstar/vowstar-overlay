@@ -4,7 +4,7 @@
 EAPI="7"
 
 MAJOR_VER="$(ver_cut 1-2)"
-if [[ "${PN}" != "davinci-resolve-studio" ]] ; then
+if [[ "${PN}" == "davinci-resolve-studio" ]] ; then
 	BASE_NAME="DaVinci_Resolve_Studio_${MAJOR_VER}_Linux"
 	CONFLICT_PKG="!!media-video/davinci-resolve"
 else
