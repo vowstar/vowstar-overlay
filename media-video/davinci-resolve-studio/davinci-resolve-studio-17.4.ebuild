@@ -24,7 +24,7 @@ SRC_URI="DaVinci_Resolve_Studio_17.4_Linux.zip"
 LICENSE="all-rights-reserved"
 KEYWORDS="-* ~amd64"
 SLOT="0"
-IUSE="udev"
+IUSE="doc udev"
 
 RESTRICT="strip mirror bindist fetch"
 
@@ -124,4 +124,8 @@ src_install() {
 	fi
 
 	popd || die
+
+	if use doc ; then
+		dodoc *.pdf
+	fi
 }
