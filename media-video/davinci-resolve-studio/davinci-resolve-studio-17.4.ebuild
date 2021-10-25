@@ -19,7 +19,7 @@ DESCRIPTION="Professional A/V post-production software suite"
 HOMEPAGE="
 	https://www.blackmagicdesign.com/support/family/davinci-resolve-and-fusion
 "
-SRC_URI="DaVinci_Resolve_Studio_17.4_Linux.zip"
+SRC_URI="${ARC_NAME}"
 
 LICENSE="all-rights-reserved"
 KEYWORDS="-* ~amd64"
