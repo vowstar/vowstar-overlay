@@ -78,14 +78,15 @@ src_install() {
 	cp -rf squashfs-root/* "${D}/opt/${PKG_NAME}" || die
 	#./"${BASE_NAME}".run -i -y -n -a -C "${D}"/opt/resolve || die
 
-	find "${D}"/usr/share "${D}"/etc -type f -name *.desktop -o -name *.directory -o -name *.menu | xargs -I {} sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" {} || die
+	#find "${D}"/usr/share "${D}"/etc -type f -name *.desktop -o -name *.directory -o -name *.menu | xargs -I {} sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" {} || die
 
 	# This will help adding the app to favorites and prevent glitches on many desktops.
 	echo "StartupWMClass=resolve" >> "${D}/usr/share/applications/${APP_NAME}.desktop" || die
 
 	# Setting the right permissions"
 	#chown -R root:root "${D}/opt/${PKG_NAME}/"{configs,DolbyVision,easyDCP,Fairlight,logs,Media,'Resolve Disk Database',.crashreport,.license,.LUT} || die
-
+	find "${D}/opt/${PKG_NAME}/" -type d -exec chmod 0755 {} || die
+	find "${D}/opt/${PKG_NAME}/" -type f -exec chmod 0644 {} || die
 	# Install launchers and configs
 	pushd "${D}/opt/${PKG_NAME}/" || die
 
@@ -93,11 +94,21 @@ src_install() {
 	rm -rf installer installer* AppRun AppRun* || die
 
 	local x
+	for x in $(find -type f) ; do
+		# Fix permission to separate ELF executables and libraries
+		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
+		chmod 755 "${x}" || die "failed set permission on ${x}"
+	done
 	for x in $(find -type f -size -32M) ; do
 		# Use \x7fELF header to separate ELF executables and libraries
 		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
 		patchelf --set-rpath '$ORIGIN' "${x}" || \
 			die "patchelf failed on ${x}"
+	done
+
+	for x in $(find -type f -name *.desktop -o -name *.directory -o -name *.menu) ; do
+		[[ -f ${x} ]] || continue
+		sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" ${x} || die
 	done
 
 	dodir "/opt/${PKG_NAME}/configs"
