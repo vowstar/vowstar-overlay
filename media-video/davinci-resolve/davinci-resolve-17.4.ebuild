@@ -97,16 +97,16 @@ src_install() {
 
 	# Fix permission to all files
 	chmod 0644 -R "${D}/opt/${PKG_NAME}" || die
-	find "${D}/opt/${PKG_NAME}" -type f -exec chmod a-x,o-w {} \; || die
-	find "${D}/opt/${PKG_NAME}" -type d -exec chmod o-w {} \; || die
+	find "${D}/opt/${PKG_NAME}" -type d -exec chmod 0755 {} \; || die
+	find "${D}/opt/${PKG_NAME}" -type f -size -32M -exec [[ -f "${x}" && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] && chmod 0755 {} \; || die
 
 	local x
-	for x in $(find -type f -size -32M) ; do
-		# Use \x7fELF header to separate ELF executables and libraries
-		[[ -f "${x}" && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
-		patchelf --set-rpath '/opt/'"${PKG_NAME}"'/libs:$ORIGIN' "${x}" || \
-			die "patchelf failed on ${x}"
-	done
+	# for x in $(find -type f -size -32M) ; do
+	# 	# Use \x7fELF header to separate ELF executables and libraries
+	# 	[[ -f "${x}" && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
+	# 	patchelf --set-rpath '/opt/'"${PKG_NAME}"'/libs:$ORIGIN' "${x}" || \
+	# 		die "patchelf failed on ${x}"
+	# done
 	for x in $(find -type f -name *.desktop -o -name *.directory -o -name *.menu) ; do
 		[[ -f ${x} ]] || continue
 		sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" ${x} || die
