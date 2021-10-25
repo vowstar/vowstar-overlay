@@ -98,6 +98,7 @@ src_install() {
 	# Fix permission to all files
 	chmod 0644 -R "${D}/opt/${PKG_NAME}" || die
 	find "${D}/opt/${PKG_NAME}" -type d -exec chmod 0755 "{}" \; || die
+
 	while IFS= read -r -d '' i; do
 		chmod 0755 "${i}" || die
 	done < <(find "${D}/opt/${PKG_NAME}" -type d -print0)
