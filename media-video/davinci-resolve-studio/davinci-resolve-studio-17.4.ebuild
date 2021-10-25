@@ -112,13 +112,15 @@ src_install() {
 	for x in $(find -type f -size -32M) ; do
 		# Use \x7fELF header to separate ELF executables and libraries
 		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
-		patchelf --set-rpath '$ORIGIN:/opt/${PKG_NAME}/libs' "${x}" || \
+		patchelf --set-rpath '/opt/'"${PKG_NAME}"'/libs:$ORIGIN' "${x}" || \
 			die "patchelf failed on ${x}"
 	done
 	for x in $(find -type f -name *.desktop -o -name *.directory -o -name *.menu) ; do
 		[[ -f ${x} ]] || continue
 		sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" ${x} || die
 	done
+
+	ln -s ./BlackmagicRAWPlayer/BlackmagicRawAPI ./bin/
 
 	dodir "/opt/${PKG_NAME}/configs"
 	insinto "/opt/${PKG_NAME}/configs"
