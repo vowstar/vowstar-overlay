@@ -70,7 +70,7 @@ src_install() {
 
 	# xorriso -osirrox on -indev "${BASE_NAME}".run -extract / "${BASE_NAME}" || die
 	chmod u+x ./"${BASE_NAME}".run || die
-	./"${BASE_NAME}".run --appimage-extract || die
+	./"${BASE_NAME}".run --appimage-extract -y -n -a -C "${D}"/opt/resolve || die
 	#./"${BASE_NAME}".run -i -y -n -a -C "${D}"/opt/resolve || die
 
 	find "${D}"/usr/share "${D}"/etc -type f -name *.desktop -o -name *.directory -o -name *.menu | xargs -I {} sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" {} || die
