@@ -74,42 +74,45 @@ src_install() {
 	# xorriso -osirrox on -indev "${BASE_NAME}".run -extract / "${BASE_NAME}" || die
 	chmod u+x ./"${BASE_NAME}".run || die
 	./"${BASE_NAME}".run --appimage-extract || die
-	cp -rf squashfs-root/* "${D}/opt/${PKG_NAME}" || die
+
 	pushd squashfs-root/share/panels || die
 	tar -zxvf dvpanel-framework-linux-x86_64.tgz || die
-	mv *.so "${D}/opt/${PKG_NAME}/libs" || die
-	mv lib/* "${D}/opt/${PKG_NAME}/libs" || die
+	mv *.so "${S}/squashfs-root/libs" || die
+	mv lib/* "${S}/squashfs-root/libs" || die
 	popd || die
 
 	# Use portage manage packages so remove installers
 	rm -rf installer installer* AppRun AppRun* || die
 
 	# Fix permission to all files
-	chmod 0644 -R "squashfs-root" || die
-	find "squashfs-root" -type d -exec chmod 0755 "{}" \; || die
+	chmod 0644 -R "${S}/squashfs-root" || die
+	find "${S}/squashfs-root" -type d -exec chmod 0755 "{}" \; || die
 
 	while IFS= read -r -d '' i; do
 		chmod 0755 "${i}" || die
 		elog "chmod ${i}"
-	done < <(find "squashfs-root" -type d -print0)
+	done < <(find "${S}/squashfs-root" -type d -print0)
 
 	while IFS= read -r -d '' i; do
 		[[ -f "${i}" && $(od -t x1 -N 4 "${i}") == *"7f 45 4c 46"* ]] || continue
 		chmod 0755 "${i}" || die
 		elog "chmod ${i}"
-	done < <(find "squashfs-root" -type f -print0)
+	done < <(find "${S}/squashfs-root" -type f -print0)
 
 	while IFS= read -r -d '' i; do
 		[[ -f "${i}" && $(od -t x1 -N 4 "${i}") == *"7f 45 4c 46"* ]] || continue
 		patchelf --set-rpath '/opt/'"${PKG_NAME}"'/libs:$ORIGIN' "${i}" || \
 		die "patchelf failed on ${i}"
 		elog "patchelf ${i}"
-	done < <(find "squashfs-root" -type f -size -32M -print0)
+	done < <(find "${S}/squashfs-root" -type f -size -32M -print0)
 
 	while IFS= read -r -d '' i; do
 		sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" "${i}" || die
 		elog "rep ${i}"
-	done < <(find "squashfs-root" -type f -name *.desktop -o -name *.directory -o -name *.menu -print0)
+	done < <(find "${S}/squashfs-root" -type f -name *.desktop -o -name *.directory -o -name *.menu -print0)
+
+	# Install the squashfs-root
+	cp -rf "${S}"/squashfs-root/* "${D}/opt/${PKG_NAME}" || die
 	#./"${BASE_NAME}".run -i -y -n -a -C "${D}"/opt/resolve || die
 
 	#find "${D}"/usr/share "${D}"/etc -type f -name *.desktop -o -name *.directory -o -name *.menu | xargs -I {} sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" {} || die
