@@ -97,8 +97,8 @@ src_install() {
 
 	# Fix permission to all files
 	chmod 0644 -R "${D}/opt/${PKG_NAME}" || die
-	find "${D}/opt/${PKG_NAME}" -type f -exec chmod a-x,o-w {} +\; || die
-	find "${D}/opt/${PKG_NAME}" -type d -exec chmod o-w {} +\; || die
+	find "${D}/opt/${PKG_NAME}" -type f -exec chmod a-x,o-w {} \; || die
+	find "${D}/opt/${PKG_NAME}" -type d -exec chmod o-w {} \; || die
 
 	local x
 	for x in $(find -type f -size -32M) ; do
