@@ -95,7 +95,7 @@ src_install() {
 	for x in $(find) ; do
 		# Fix permission to separate ELF executables and libraries
 		[[ -d ${x} ]] && chmod 0755 "${x}" || die "failed set permission on ${x}"
-		[[ -f ${x} ]] && chmod 0644 "${x}" || die "failed set permission on ${x}"
+		#[[ -f ${x} ]] && chmod 0644 "${x}" || die "failed set permission on ${x}"
 		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] && chmod 755 "${x}" || die "failed set permission on ${x}"
 	done
 	for x in $(find -type f -size -32M) ; do
