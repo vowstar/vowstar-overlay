@@ -101,12 +101,12 @@ src_install() {
 	local x
 	for x in $(find) ; do
 		# Fix permission to separate directory
-		[[ -d ${x} ]] || continue
+		[[ -d "${x}" ]] || continue
 		chmod 0755 "${x}" || die "failed set permission on ${x}"
 	done
 	for x in $(find) ; do
 		# Fix permission to separate ELF executables and libraries
-		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
+		[[ -f "${x}" && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
 		chmod 0755 "${x}" || die "failed set permission on ${x}"
 	done
 	for x in $(find -type f -size -32M) ; do
