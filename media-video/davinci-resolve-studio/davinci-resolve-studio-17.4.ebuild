@@ -137,9 +137,10 @@ src_install() {
 	doins share/resolve.xml
 
 	if use udev ; then
+		mkdir -p "${D}/$(get_udevdir)" || die
 		# Creating and installing udev rules
-		echo 'SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTRS{idVendor}=="096e", MODE="0666"' > "${D}/"$(get_udevdir)"/75-davincipanel.rules" || die
-		echo 'SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTRS{idVendor}=="1edb", MODE="0666"' > "${D}/"$(get_udevdir)"/75-sdx.rules" || die
+		echo 'SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTRS{idVendor}=="096e", MODE="0666"' > "${D}/$(get_udevdir)/75-davincipanel.rules" || die
+		echo 'SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTRS{idVendor}=="1edb", MODE="0666"' > "${D}/$(get_udevdir)/75-sdx.rules" || die
 	fi
 
 	popd || die
