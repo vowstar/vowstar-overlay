@@ -51,6 +51,8 @@ DEPEND="
 	${RDEPEND}
 "
 
+S="${WORKDIR}"
+
 pkg_nofetch() {
 	einfo "Please download"
 	einfo "  - ${ARC_NAME}"
