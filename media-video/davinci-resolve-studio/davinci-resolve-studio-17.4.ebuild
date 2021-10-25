@@ -84,9 +84,7 @@ src_install() {
 	echo "StartupWMClass=resolve" >> "${D}/usr/share/applications/${APP_NAME}.desktop" || die
 
 	# Setting the right permissions"
-	#chown -R root:root "${D}/opt/${PKG_NAME}/"{configs,DolbyVision,easyDCP,Fairlight,logs,Media,'Resolve Disk Database',.crashreport,.license,.LUT} || die
-	find "${D}/opt/${PKG_NAME}/" -type d -exec chmod 0755 {} || die
-	find "${D}/opt/${PKG_NAME}/" -type f -exec chmod 0644 {} || die
+	chown -R root:root "${D}/opt/${PKG_NAME}/"{configs,DolbyVision,easyDCP,Fairlight,logs,Media,'Resolve Disk Database',.crashreport,.license,.LUT} || die
 	# Install launchers and configs
 	pushd "${D}/opt/${PKG_NAME}/" || die
 
@@ -94,10 +92,11 @@ src_install() {
 	rm -rf installer installer* AppRun AppRun* || die
 
 	local x
-	for x in $(find -type f) ; do
+	for x in $(find) ; do
 		# Fix permission to separate ELF executables and libraries
-		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
-		chmod 755 "${x}" || die "failed set permission on ${x}"
+		[[ -d ${x} ]] && chmod 0755 "${x}" || die "failed set permission on ${x}"
+		[[ -f ${x} ]] && chmod 0644 "${x}" || die "failed set permission on ${x}"
+		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] && chmod 755 "${x}" || die "failed set permission on ${x}"
 	done
 	for x in $(find -type f -size -32M) ; do
 		# Use \x7fELF header to separate ELF executables and libraries
