@@ -101,21 +101,25 @@ src_install() {
 
 	while IFS= read -r -d '' i; do
 		chmod 0755 "${i}" || die
+		elog "chmod ${i}"
 	done < <(find "${D}/opt/${PKG_NAME}" -type d -print0)
 
 	while IFS= read -r -d '' i; do
 		[[ -f "${i}" && $(od -t x1 -N 4 "${i}") == *"7f 45 4c 46"* ]] || continue
 		chmod 0755 "${i}" || die
+		elog "chmod ${i}"
 	done < <(find "${D}/opt/${PKG_NAME}" -type f -print0)
 
 	while IFS= read -r -d '' i; do
 		[[ -f "${i}" && $(od -t x1 -N 4 "${i}") == *"7f 45 4c 46"* ]] || continue
 		patchelf --set-rpath '/opt/'"${PKG_NAME}"'/libs:$ORIGIN' "${i}" || \
 		die "patchelf failed on ${i}"
+		elog "patchelf ${i}"
 	done < <(find "${D}/opt/${PKG_NAME}" -type f -size -32M -print0)
 
 	while IFS= read -r -d '' i; do
 		sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" "${i}" || die
+		elog "rep ${i}"
 	done < <(find "${D}/opt/${PKG_NAME}" -type f -name *.desktop -o -name *.directory -o -name *.menu -print0)
 
 	local x
