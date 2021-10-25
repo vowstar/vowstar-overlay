@@ -120,7 +120,7 @@ src_install() {
 		sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" ${x} || die
 	done
 
-	ln -s ./BlackmagicRAWPlayer/BlackmagicRawAPI ./bin/
+	ln -s ./BlackmagicRAWPlayer/BlackmagicRawAPI ./bin/ || die
 
 	dodir "/opt/${PKG_NAME}/configs"
 	insinto "/opt/${PKG_NAME}/configs"
