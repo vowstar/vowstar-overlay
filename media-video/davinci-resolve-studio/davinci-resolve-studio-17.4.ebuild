@@ -99,7 +99,39 @@ src_install() {
 
 	while IFS= read -r -d '' i; do
 		[[ -f "${i}" && $(od -t x1 -N 4 "${i}") == *"7f 45 4c 46"* ]] || continue
-		patchelf --set-rpath '/opt/'"${PKG_NAME}"'/libs:$ORIGIN' "${i}" || \
+		patchelf --set-rpath \
+'/opt/'"${PKG_NAME}"'/libs:'\
+'/opt/'"${PKG_NAME}"'/libs/plugins/sqldrivers:'\
+'/opt/'"${PKG_NAME}"'/libs/plugins/xcbglintegrations:'\
+'/opt/'"${PKG_NAME}"'/libs/plugins/imageformats:'\
+'/opt/'"${PKG_NAME}"'/libs/plugins/platforms:'\
+'/opt/'"${PKG_NAME}"'/libs/Fusion:'\
+'/opt/'"${PKG_NAME}"'/plugins:'\
+'/opt/'"${PKG_NAME}"'/bin:'\
+'/opt/'"${PKG_NAME}"'/BlackmagicRAWSpeedTest/BlackmagicRawAPI:'\
+'/opt/'"${PKG_NAME}"'/BlackmagicRAWSpeedTest/plugins/platforms:'\
+'/opt/'"${PKG_NAME}"'/BlackmagicRAWSpeedTest/plugins/imageformats:'\
+'/opt/'"${PKG_NAME}"'/BlackmagicRAWSpeedTest/plugins/mediaservice:'\
+'/opt/'"${PKG_NAME}"'/BlackmagicRAWSpeedTest/plugins/audio:'\
+'/opt/'"${PKG_NAME}"'/BlackmagicRAWSpeedTest/plugins/xcbglintegrations:'\
+'/opt/'"${PKG_NAME}"'/BlackmagicRAWSpeedTest/plugins/bearer:'\
+'/opt/'"${PKG_NAME}"'/BlackmagicRAWPlayer/BlackmagicRawAPI:'\
+'/opt/'"${PKG_NAME}"'/BlackmagicRAWPlayer/plugins/mediaservice:'\
+'/opt/'"${PKG_NAME}"'/BlackmagicRAWPlayer/plugins/imageformats:'\
+'/opt/'"${PKG_NAME}"'/BlackmagicRAWPlayer/plugins/audio:'\
+'/opt/'"${PKG_NAME}"'/BlackmagicRAWPlayer/plugins/platforms:'\
+'/opt/'"${PKG_NAME}"'/BlackmagicRAWPlayer/plugins/xcbglintegrations:'\
+'/opt/'"${PKG_NAME}"'/BlackmagicRAWPlayer/plugins/bearer:'\
+'/opt/'"${PKG_NAME}"'/Onboarding/plugins/xcbglintegrations:'\
+'/opt/'"${PKG_NAME}"'/Onboarding/plugins/qtwebengine:'\
+'/opt/'"${PKG_NAME}"'/Onboarding/plugins/platforms:'\
+'/opt/'"${PKG_NAME}"'/Onboarding/plugins/imageformats:'\
+'/opt/'"${PKG_NAME}"'/DaVinci Control Panels Setup/plugins/platforms:'\
+'/opt/'"${PKG_NAME}"'/DaVinci Control Panels Setup/plugins/imageformats:'\
+'/opt/'"${PKG_NAME}"'/DaVinci Control Panels Setup/plugins/bearer:'\
+'/opt/'"${PKG_NAME}"'/DaVinci Control Panels Setup/AdminUtility/PlugIns/DaVinciKeyboards:'\
+'/opt/'"${PKG_NAME}"'/DaVinci Control Panels Setup/AdminUtility/PlugIns/DaVinciPanels:'\
+'$ORIGIN' "${i}" || \
 		die "patchelf failed on ${i}"
 	done < <(find "${S}/squashfs-root" -type f -size -32M -print0)
 
@@ -109,26 +141,11 @@ src_install() {
 
 	# Install the squashfs-root
 	cp -rf "${S}"/squashfs-root/* "${D}/opt/${PKG_NAME}" || die
-	#./"${BASE_NAME}".run -i -y -n -a -C "${D}"/opt/resolve || die
-
-	#find "${D}"/usr/share "${D}"/etc -type f -name *.desktop -o -name *.directory -o -name *.menu | xargs -I {} sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" {} || die
 
 	# Setting the right permissions"
 	chown -R root:root "${D}/opt/${PKG_NAME}/"{configs,DolbyVision,easyDCP,Fairlight,logs,Media,'Resolve Disk Database',.crashreport,.license,.LUT} || die
 	# Install launchers and configs
 	pushd "${D}/opt/${PKG_NAME}/" || die
-
-	local x
-	# for x in $(find -type f -size -32M) ; do
-	# 	# Use \x7fELF header to separate ELF executables and libraries
-	# 	[[ -f "${x}" && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
-	# 	patchelf --set-rpath '/opt/'"${PKG_NAME}"'/libs:$ORIGIN' "${x}" || \
-	# 		die "patchelf failed on ${x}"
-	# done
-	# for x in $(find -type f -name *.desktop -o -name *.directory -o -name *.menu) ; do
-	# 	[[ -f ${x} ]] || continue
-	# 	sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" ${x} || die
-	# done
 
 	ln -s "${D}"/opt/"${PKG_NAME}"/BlackmagicRAWPlayer/BlackmagicRawAPI "${D}"/opt/"${PKG_NAME}"/bin/ || die
 
