@@ -137,7 +137,8 @@ src_install() {
 
 	while IFS= read -r -d '' i; do
 		sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" "${i}" || die
-	done < <(find "${S}/squashfs-root" -type f -name *.desktop -o -name *.directory -o -name *.menu -print0)
+		elog "chagne ${i}"
+	done < <(find . -type f '(' -name "*.desktop" -o -name "*.directory" -o -name "*.directory" -o -name "*.menu" ')' -print0)
 
 	# Install the squashfs-root
 	cp -rf "${S}"/squashfs-root/* "${D}/opt/${PKG_NAME}" || die
