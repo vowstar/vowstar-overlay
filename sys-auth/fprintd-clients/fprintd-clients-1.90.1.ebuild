@@ -80,4 +80,5 @@ src_install() {
 
 pkg_postinst() {
 	elog "Please take a look at README.pam_fprintd for integration docs."
+	elog "Please add yourself to input group."
 }
