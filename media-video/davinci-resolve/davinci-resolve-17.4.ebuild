@@ -57,9 +57,9 @@ S="${WORKDIR}"
 QA_PREBUILT="*"
 
 pkg_nofetch() {
-	einfo "Please download"
+	einfo "Please download installation file"
 	einfo "  - ${ARC_NAME}"
-	einfo "from ${HOMEPAGE} and place it in ${DISTDIR}"
+	einfo "from ${HOMEPAGE} and place it in \$\{DISTDIR\}."
 }
 
 src_install() {
