@@ -145,7 +145,9 @@ src_configure() {
 	if use occ; then
 		# Fix OpenCASCADE lookup
 		local OCC_P=$(best_version sci-libs/opencascade)
-		OCC_P=${OCC_P#sci-libs/}
+		#OCC_P=${OCC_P#sci-libs/}
+		# Package name and version (excluding revision, if any, to fix location)
+		OCC_P=${${OCC_P#sci-libs/}%-r*}
 		local OCC_PV=${OCC_P#opencascade-}
 		OCC_PV=$(ver_cut 1-2 ${OCC_PV})
 		# check for CASROOT needed to ensure occ-7.5 is eselected and profile resourced
