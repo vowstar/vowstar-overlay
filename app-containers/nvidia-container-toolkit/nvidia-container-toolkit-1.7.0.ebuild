@@ -788,6 +788,10 @@ BDEPEND="
 	sys-devel/make
 "
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-1.5.0-gosum.patch
+)
+
 src_compile() {
 	emake binary
 }
