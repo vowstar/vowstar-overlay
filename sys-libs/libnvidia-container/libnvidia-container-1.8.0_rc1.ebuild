@@ -24,6 +24,7 @@ IUSE=""
 
 RDEPEND="
 	net-libs/libtirpc
+	sys-devel/elftoolchain
 	sys-libs/libcap
 	sys-libs/libseccomp
 	x11-drivers/nvidia-drivers
