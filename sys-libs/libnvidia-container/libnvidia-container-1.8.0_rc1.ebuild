@@ -51,4 +51,5 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-1.3.0-fix-nvc-mount.patch
 	"${FILESDIR}"/${PN}-1.3.0-fix-modprobe-utils-c.patch
 	"${FILESDIR}"/${PN}-1.3.0-fix-modprobe-utils-h.patch
+	"${FILESDIR}"/${PN}-1.8.0-fix-nvcgomk.patch
 )
