@@ -35,10 +35,6 @@ BDEPEND="
 	sys-devel/make
 "
 
-src_compile() {
-	emake binary
-}
-
 src_install() {
 	dobin "${PN}"
 	into "/usr/bin"
