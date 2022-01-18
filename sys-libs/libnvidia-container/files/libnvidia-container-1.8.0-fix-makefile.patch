@@ -10,9 +10,10 @@ index 0070ada..8643de0 100644
 +STRIP  := @echo skipping: strip
  ##### Global variables #####
  
- WITH_NVCGO   ?= yes
+-WITH_NVCGO   ?= yes
 -WITH_LIBELF  ?= no
 -WITH_TIRPC   ?= no
++WITH_NVCGO   ?= no
 +WITH_LIBELF  ?= yes
 +WITH_TIRPC   ?= yes
  WITH_SECCOMP ?= yes
