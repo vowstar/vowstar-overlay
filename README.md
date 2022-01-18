@@ -32,6 +32,27 @@ Here only introduces how to use the new method in the Docker version after 19.03
 docker run --gpus all nvidia/cuda:10.0-base nvidia-smi
 ```
 
+### cgroup v2
+
+By default ``libnvidia-container`` and ``nvidia-container-toolkit`` equal or above version ``1.8.0`` support cgroup v2.
+
+Systemd v247.2-2 introduced cgroup v2 which broken nvidia-container's access to ``/sys/fs/cgroup/devices``.
+To solve this problem, you should upgrade both ``libnvidia-container`` and ``nvidia-container-toolkit`` equal or above
+version ``1.8.0`` to support cgroup v2.
+
+If you don't want use the cgroup v2, you should add kernel parameter ``systemd.unified_cgroup_hierarchy=false``.
+
+If you don't want use the cgroup at all, you should change ``/etc/nvidia-container-runtime/config.toml`` with ``no-cgroups = true`` and need to run docker explicitly allow access to the nvidia devices, like:
+
+```bash
+docker run ... --gpus all \
+    --device /dev/nvidia0 \
+    --device /dev/nvidiactl \
+    --device /dev/nvidia-modeset \
+    --device /dev/nvidia-uvm \
+    --device /dev/nvidia-uvm-tools
+```
+
 ### OpenRC
 
 ```bash
