@@ -789,7 +789,7 @@ BDEPEND="
 "
 
 src_compile() {
-	emake binary
+	emake binaries
 }
 
 src_install() {
