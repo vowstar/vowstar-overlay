@@ -95,27 +95,10 @@ src_configure() {
 		-DPYTHON_LIBRARY="$(python_get_library_path)"
 	)
 
-	if use occ; then
-		# Fix OpenCASCADE lookup
-		local OCC_P=$(best_version sci-libs/opencascade)
-		OCC_P=${OCC_P#sci-libs/}
-		# Excluding revision, if any
-		OCC_P=${OCC_P%-r*}
-		local OCC_PV=${OCC_P#opencascade-}
-		OCC_PV=$(ver_cut 1-2 ${OCC_PV})
-		# check for CASROOT needed to ensure occ-7.5 is eselected and profile resourced
-		if [[ ${OCC_PV} = 7.5 && ${CASROOT} = "/usr" ]]; then
-			mycmakeargs+=(
-				-DOCC_INCLUDE_DIR="${CASROOT}"/include/opencascade
-				-DOCC_LIBRARY_DIR="${CASROOT}"/"$(get_libdir)"/opencascade
-			)
-		else
-			mycmakeargs+=(
-				-DOCC_INCLUDE_DIR="${CASROOT}"/include/opencascade
-				-DOCC_LIBRARY_DIR="${CASROOT}"/"$(get_libdir)"/opencascade
-			)
-		fi
-	fi
+	use occ && mycmakeargs+=(
+		-DOCC_INCLUDE_DIR="${CASROOT}"/include/opencascade
+		-DOCC_LIBRARY_DIR="${CASROOT}"/"$(get_libdir)"/opencascade
+	)
 
 	cmake_src_configure
 }
