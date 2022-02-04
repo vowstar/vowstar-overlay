@@ -1,38 +1,42 @@
 # Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-PYTHON_COMPAT=( python3_{6..10} )
-
+PYTHON_COMPAT=( python3_{8,9} )
 WX_GTK_VER="3.0-gtk3"
 
 inherit check-reqs cmake optfeature python-single-r1 toolchain-funcs wxwidgets xdg-utils
 
 DESCRIPTION="Electronic Schematic and PCB design tools"
-HOMEPAGE="https://www.kicad-pcb.org"
+HOMEPAGE="https://www.kicad.org"
 
 if [[ ${PV} == 9999 ]]; then
-	EGIT_REPO_URI="https://gitlab.com/kicad/code/${PN}.git"
-	inherit autotools git-r3
-	# x11-misc-util/macros only required on live ebuilds
-	LIVE_DEPEND=">=x11-misc/util-macros-1.18"
+	EGIT_REPO_URI="https://gitlab.com/kicad/code/kicad.git"
+	inherit git-r3
 else
-	SRC_URI="https://gitlab.com/kicad/code/${PN}/-/archive/${PV}/${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
+	MY_PV="${PV/_rc/-rc}"
+	MY_P="${PN}-${MY_PV}"
+	SRC_URI="https://gitlab.com/kicad/code/${PN}/-/archive/${MY_PV}/${MY_P}.tar.gz -> ${P}.tar.gz"
+	S="${WORKDIR}/${PN}-${MY_PV}"
+
+	if [[ ${PV} != *_rc* ]] ; then
+		KEYWORDS="~amd64 ~arm64 ~x86"
+	fi
 fi
 
-LICENSE="GPL-2+ GPL-3+ Boost-1.0"
+# BSD for bundled pybind
+LICENSE="GPL-2+ GPL-3+ Boost-1.0 BSD"
 SLOT="0"
-IUSE="doc examples github +ngspice +occ oce openmp +python"
+IUSE="doc examples +ngspice nls openmp +occ +pcm"
 
-REQUIRED_USE="
-	python? ( ${PYTHON_REQUIRED_USE} )
-	?? ( occ oce )
-"
+REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
+# Contains bundled pybind but it's patched for wx
+# See https://gitlab.com/kicad/code/kicad/-/commit/74e4370a9b146b21883d6a2d1df46c7a10bd0424
 COMMON_DEPEND="
-	>=dev-libs/boost-1.61:=[context,nls,threads]
+	!sci-electronics/kicad-i18n
+	>=dev-libs/boost-1.61:=[context,nls]
 	media-libs/freeglut
 	media-libs/glew:0=
 	>=media-libs/glm-0.9.9.1
@@ -40,33 +44,49 @@ COMMON_DEPEND="
 	>=x11-libs/cairo-1.8.8:=
 	>=x11-libs/pixman-0.30
 	x11-libs/wxGTK:${WX_GTK_VER}[X,opengl]
-	github? ( net-misc/curl:=[ssl] )
+	$(python_gen_cond_dep '
+		>=dev-libs/boost-1.61:=[context,nls,python,${PYTHON_USEDEP}]
+		dev-python/wxpython:4.0[${PYTHON_USEDEP}]
+	')
+	${PYTHON_DEPS}
 	ngspice? (
 		>sci-electronics/ngspice-27[shared]
 	)
-	occ? ( >=sci-libs/opencascade-6.8.0:= )
-	oce? ( sci-libs/oce )
-	python? (
-		$(python_gen_cond_dep '
-			>=dev-libs/boost-1.61:=[context,nls,threads,python,${PYTHON_MULTI_USEDEP}]
-			dev-python/wxpython:4.0[${PYTHON_MULTI_USEDEP}]
-		')
-		${PYTHON_DEPS}
+	nls? (
+		sys-devel/gettext
+	)
+	occ? (
+		>=sci-libs/opencascade-7.3.0:=
 	)
 "
-DEPEND="${COMMON_DEPEND}
-	python? ( >=dev-lang/swig-3.0:0 )"
+DEPEND="${COMMON_DEPEND}"
 RDEPEND="${COMMON_DEPEND}
 	sci-electronics/electronics-menu
 "
-BDEPEND="doc? ( app-doc/doxygen )"
-CHECKREQS_DISK_BUILD="800M"
+BDEPEND=">=dev-lang/swig-3.0
+	doc? ( app-doc/doxygen )"
+
+if [[ ${PV} == 9999 ]] ; then
+	# x11-misc-util/macros only required on live ebuilds
+	BDEPEND+=" >=x11-misc/util-macros-1.18"
+fi
+
+CHECKREQS_DISK_BUILD="900M"
 
 pkg_setup() {
-	use python && python-single-r1_pkg_setup
 	use openmp && tc-check-openmp
+
+	python-single-r1_pkg_setup
 	setup-wxwidgets
 	check-reqs_pkg_setup
+}
+
+src_unpack() {
+	if [[ ${PV} == 9999 ]]; then
+		git-r3_src_unpack
+	else
+		default_src_unpack
+	fi
 }
 
 src_configure() {
@@ -74,30 +94,29 @@ src_configure() {
 
 	local mycmakeargs=(
 		-DKICAD_DOCS="${EPREFIX}/usr/share/doc/${PF}"
-		-DKICAD_HELP="${EPREFIX}/usr/share/doc/${PN}-doc-${PV}"
-		-DBUILD_GITHUB_PLUGIN="$(usex github)"
-		-DKICAD_SCRIPTING="$(usex python)"
-		-DKICAD_SCRIPTING_MODULES="$(usex python)"
-		-DKICAD_SCRIPTING_WXPYTHON="$(usex python)"
-		-DKICAD_SCRIPTING_WXPYTHON_PHOENIX="$(usex python)"
-		-DKICAD_SCRIPTING_PYTHON3="$(usex python)"
-		-DKICAD_SCRIPTING_ACTION_MENU="$(usex python)"
-		-DKICAD_SPICE="$(usex ngspice)"
-		-DKICAD_USE_OCC="$(usex occ)"
-		-DKICAD_USE_OCE="$(usex oce)"
-		-DKICAD_INSTALL_DEMOS="$(usex examples)"
-		-DCMAKE_SKIP_RPATH="ON"
-	)
-	use python && mycmakeargs+=(
+
+		-DKICAD_SCRIPTING_WXPYTHON=ON
+
+		# Merged from separate -i18n package, bug #830274
+		-DKICAD_BUILD_I18N="$(usex nls)"
+		-DKICAD_I18N_UNIX_STRICT_PATH="$(usex nls)"
+
 		-DPYTHON_DEST="$(python_get_sitedir)"
 		-DPYTHON_EXECUTABLE="${PYTHON}"
 		-DPYTHON_INCLUDE_DIR="$(python_get_includedir)"
 		-DPYTHON_LIBRARY="$(python_get_library_path)"
+
+		-DKICAD_SPICE="$(usex ngspice)"
+		-DKICAD_PCM="$(usex pcm)"
+
+		-DKICAD_USE_OCC="$(usex occ)"
+		-DKICAD_INSTALL_DEMOS="$(usex examples)"
+		-DCMAKE_SKIP_RPATH="ON"
 	)
 
 	use occ && mycmakeargs+=(
 		-DOCC_INCLUDE_DIR="${CASROOT}"/include/opencascade
-		-DOCC_LIBRARY_DIR="${CASROOT}"/"$(get_libdir)"/opencascade
+		-DOCC_LIBRARY_DIR="${CASROOT}"/$(get_libdir)/opencascade
 	)
 
 	cmake_src_configure
@@ -106,25 +125,27 @@ src_configure() {
 src_compile() {
 	cmake_src_compile
 	if use doc; then
-		cmake_src_compile dev-docs doxygen-docs
-	fi
-}
-
-src_install() {
-	cmake_src_install
-	use python && python_optimize
-	if use doc ; then
-		dodoc uncrustify.cfg
-		cd Documentation || die
-		dodoc -r *.txt kicad_doxygen_logo.png notes_about_pcbnew_new_file_format.odt doxygen/. development/doxygen/.
+		cmake_src_compile doxygen-docs
 	fi
 }
 
 src_test() {
 	# Test cannot find library in Portage's sandbox. Let's create a link so test can run.
-	ln -s "${S}_build/eeschema/_eeschema.kiface" "${S}_build/qa/eeschema/_eeschema.kiface" || die
+	ln -s "${BUILD_DIR}/eeschema/_eeschema.kiface" "${BUILD_DIR}/qa/eeschema/_eeschema.kiface" || die
 
-	default
+	# LD_LIBRARY_PATH is there to help it pick up the just-built libraries
+	LD_LIBRARY_PATH="${BUILD_DIR}/3d-viewer/3d_cache/sg:${LD_LIBRARY_PATH}" cmake_src_test
+}
+
+src_install() {
+	cmake_src_install
+	python_optimize
+
+	if use doc ; then
+		dodoc uncrustify.cfg
+		cd Documentation || die
+		dodoc -r *.txt kicad_doxygen_logo.png notes_about_pcbnew_new_file_format.odt doxygen/.
+	fi
 }
 
 pkg_postinst() {
