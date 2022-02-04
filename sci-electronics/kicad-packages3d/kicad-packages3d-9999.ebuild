@@ -1,27 +1,36 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 inherit check-reqs cmake
 
 DESCRIPTION="Electronic Schematic and PCB design tools 3D package libraries"
-HOMEPAGE="https://kicad.github.io/packages3d/"
+HOMEPAGE="https://gitlab.com/kicad/libraries/kicad-packages3D"
 
 if [[ ${PV} == 9999 ]]; then
 	EGIT_REPO_URI="https://gitlab.com/kicad/libraries/kicad-packages3D.git"
-	inherit autotools git-r3
+	inherit git-r3
 else
-	SRC_URI="https://gitlab.com/kicad/libraries/kicad-packages3D/-/archive/${PV}/kicad-packages3D-${PV}.tar.bz2 -> ${P}.tar.bz2"
-	KEYWORDS="~amd64 ~x86"
+	MY_PV="${PV/_rc/-rc}"
+	MY_P="${PN}-${MY_PV}"
+	SRC_URI="https://gitlab.com/kicad/libraries/${PN}/-/archive/${MY_PV}/${MY_P}.tar.gz -> ${P}.tar.gz"
+	S="${WORKDIR}/${PN/3d/3D}-${MY_PV}" # check for directory hash
+
+	if [[ ${PV} != *_rc* ]] ; then
+		KEYWORDS="~amd64 ~arm64 ~x86"
+	fi
 fi
 
+IUSE="+occ"
 LICENSE="CC-BY-SA-4.0"
 SLOT="0"
-IUSE="+occ oce"
 
-REQUIRED_USE="|| ( occ oce )"
+RDEPEND=">=sci-electronics/kicad-6.0.0[occ=]"
 
-RDEPEND=">=sci-electronics/kicad-5.1.9[occ=,oce=]"
+if [[ ${PV} == 9999 ]] ; then
+	# x11-misc-util/macros only required on live ebuilds
+	BDEPEND=">=x11-misc/util-macros-1.18"
+fi
 
 CHECKREQS_DISK_BUILD="11G"
