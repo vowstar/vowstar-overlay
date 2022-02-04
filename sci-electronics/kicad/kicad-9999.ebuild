@@ -104,17 +104,17 @@ src_configure() {
 		local OCC_PV=${OCC_P#opencascade-}
 		OCC_PV=$(ver_cut 1-2 ${OCC_PV})
 		# check for CASROOT needed to ensure occ-7.5 is eselected and profile resourced
-		# if [[ ${OCC_PV} = 7.5 && ${CASROOT} = "/usr" ]]; then
-		# 	mycmakeargs+=(
-		# 		-DOCC_INCLUDE_DIR="${CASROOT}"/include/"${OCC_P}"
-		# 		-DOCC_LIBRARY_DIR="${CASROOT}"/"$(get_libdir)"/"${OCC_P}"
-		# 	)
-		# else
-		mycmakeargs+=(
-			-DOCC_INCLUDE_DIR="${CASROOT}"/include/opencascade
-			-DOCC_LIBRARY_DIR="${CASROOT}"/"$(get_libdir)"/opencascade
-		)
-		# fi
+		if [[ ${OCC_PV} = 7.5 && ${CASROOT} = "/usr" ]]; then
+			mycmakeargs+=(
+				-DOCC_INCLUDE_DIR="${CASROOT}"/include/opencascade
+				-DOCC_LIBRARY_DIR="${CASROOT}"/"$(get_libdir)"/opencascade
+			)
+		else
+			mycmakeargs+=(
+				-DOCC_INCLUDE_DIR="${CASROOT}"/include/opencascade
+				-DOCC_LIBRARY_DIR="${CASROOT}"/"$(get_libdir)"/opencascade
+			)
+		fi
 	fi
 
 	cmake_src_configure
