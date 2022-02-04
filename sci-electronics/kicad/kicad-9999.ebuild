@@ -1,4 +1,4 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -69,53 +69,6 @@ pkg_setup() {
 	check-reqs_pkg_setup
 }
 
-# src_unpack() {
-# 	#default_src_unpack
-# 	git-r3_src_unpack
-# 	# For the metainfo patch to work the kicad.appdata.xml has to be moved to
-# 	# avoid QA issue.  This is needed because /usr/share/appdata location is
-# 	# deprecated, it should not be used anymore by new software.
-# 	# Appdata/Metainfo files should be installed into /usr/share/metainfo
-# 	# directory. as per
-# 	# https://www.freedesktop.org/software/appstream/docs/chap-Metadata.html
-# 	# mv "${S}/resources/linux/appdata" "${S}/resources/linux/metainfo" || die "Appdata move failed"
-# }
-
-# src_prepare() {
-# 	if use occ; then
-# 		# Fix OpenCASCADE lookup
-# 		local OCC_P=$(best_version sci-libs/opencascade)
-# 		OCC_P=${OCC_P#sci-libs/}
-# 		local OCC_PV=${OCC_P#opencascade-}
-# 		OCC_PV=$(ver_cut 1-2 ${OCC_PV})
-# 		# check for CASROOT needed to ensure occ-7.5 is eselected and profile resourced
-# 		if [[ ${OCC_PV} = 7.5 && ${CASROOT} = "/usr" ]]; then
-# 			sed 's|endif(WIN32)|endif(WIN32)\nSET(OCC_LIBRARY_DIR '${CASROOT}'/'$(get_libdir)'/'${OCC_P}')|g' \
-# 				-i CMakeModules/FindOCC.cmake || die
-# 			sed 's|endif(WIN32)|endif(WIN32)\nSET(OCC_INCLUDE_DIR '${CASROOT}'/include/'${OCC_P}')|g' \
-# 				-i CMakeModules/FindOCC.cmake || die
-# 		else
-# 			sed 's|endif(WIN32)|endif(WIN32)\nSET(OCC_LIBRARY_DIR '${CASROOT}'/'$(get_libdir)')|g' \
-# 				-i CMakeModules/FindOCC.cmake || die
-# 			sed 's|endif(WIN32)|endif(WIN32)\nSET(OCC_INCLUDE_DIR '${CASROOT}'/include/opencascade)|g' \
-# 				-i CMakeModules/FindOCC.cmake || die
-# 		fi
-# 	fi
-# 	if use oce; then
-# 		# Fix OCE lookup
-# 		local OCE_P=$(best_version sci-libs/oce)
-# 		OCE_P=${OCE_P#sci-libs/}
-# 		local OCE_PV=${OCE_P#oce-}
-# 		OCE_PV=$(ver_cut 1-2 ${OCE_PV})
-
-# 		sed 's|include_directories( SYSTEM|include_directories( SYSTEM\n    '${CASROOT}'/include/oce|g' \
-# 			-i utils/kicad2step/CMakeLists.txt || die
-# 		sed 's|INTERFACE_INCLUDE_DIRECTORIES>|INTERFACE_INCLUDE_DIRECTORIES>\n    '${CASROOT}'/include/oce|g' \
-# 			-i plugins/3d/oce/CMakeLists.txt || die
-# 	fi
-# 	cmake_src_prepare
-# }
-
 src_configure() {
 	xdg_environment_reset
 
@@ -151,17 +104,17 @@ src_configure() {
 		local OCC_PV=${OCC_P#opencascade-}
 		OCC_PV=$(ver_cut 1-2 ${OCC_PV})
 		# check for CASROOT needed to ensure occ-7.5 is eselected and profile resourced
-		if [[ ${OCC_PV} = 7.5 && ${CASROOT} = "/usr" ]]; then
-			mycmakeargs+=(
-				-DOCC_INCLUDE_DIR="${CASROOT}"/include/"${OCC_P}"
-				-DOCC_LIBRARY_DIR="${CASROOT}"/"$(get_libdir)"/"${OCC_P}"
-			)
-		else
-			mycmakeargs+=(
-				-DOCC_INCLUDE_DIR="${CASROOT}"/include/opencascade
-				-DOCC_LIBRARY_DIR="${CASROOT}"/"$(get_libdir)"
-			)
-		fi
+		# if [[ ${OCC_PV} = 7.5 && ${CASROOT} = "/usr" ]]; then
+		# 	mycmakeargs+=(
+		# 		-DOCC_INCLUDE_DIR="${CASROOT}"/include/"${OCC_P}"
+		# 		-DOCC_LIBRARY_DIR="${CASROOT}"/"$(get_libdir)"/"${OCC_P}"
+		# 	)
+		# else
+		mycmakeargs+=(
+			-DOCC_INCLUDE_DIR="${CASROOT}"/include/opencascade
+			-DOCC_LIBRARY_DIR="${CASROOT}"/"$(get_libdir)"/opencascade
+		)
+		# fi
 	fi
 
 	cmake_src_configure
