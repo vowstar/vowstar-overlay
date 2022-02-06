@@ -137,6 +137,7 @@ src_configure() {
 		-DENABLE_GR_BLOCKS=ON
 		-DENABLE_GR_FFT=ON
 		-DENABLE_GR_AUDIO=ON
+		-DENABLE_GR_NETWORK=ON
 		-DENABLE_GR_ANALOG="$(usex analog)"
 		-DENABLE_GR_CHANNELS="$(usex channels)"
 		-DENABLE_GR_CTRLPORT="$(usex ctrlport)"
