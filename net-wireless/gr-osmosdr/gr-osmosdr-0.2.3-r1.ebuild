@@ -46,10 +46,6 @@ DEPEND="${RDEPEND}
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
-PATCHES=(
-	"${FILESDIR}/${P}-use_xtrx_open_string.patch"
-)
-
 src_configure() {
 	local mycmakeargs=(
 		-DENABLE_DEFAULT=OFF
