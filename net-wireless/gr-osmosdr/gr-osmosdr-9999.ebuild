@@ -22,6 +22,7 @@ fi
 LICENSE="GPL-3"
 SLOT="0/${PV}"
 IUSE="airspy bladerf hackrf iqbalance python rtlsdr sdrplay soapy uhd xtrx"
+RESTRICT="mirror"
 
 #xtrx? ( net-wireless/libxtrx )
 RDEPEND="${PYTHON_DEPS}
