@@ -13,18 +13,21 @@ if [[ ${PV} == 9999* ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/osmocom/gr-osmosdr.git"
 else
-	SRC_URI="https://github.com/osmocom/gr-osmosdr/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	GIT_SHA=a100eb024c0210b95e4738b6efd836d48225bd03
+	SRC_URI="https://github.com/osmocom/gr-osmosdr/archive/${GIT_SHA}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~arm ~x86"
+	S="${WORKDIR}/${PN}-${GIT_SHA}"
 fi
 
 LICENSE="GPL-3"
 SLOT="0/${PV}"
 IUSE="airspy bladerf hackrf iqbalance python rtlsdr sdrplay soapy uhd xtrx"
 
+#xtrx? ( net-wireless/libxtrx )
 RDEPEND="${PYTHON_DEPS}
 	dev-libs/boost:=
 	dev-libs/log4cpp
-	>=net-wireless/gnuradio-3.8.0.0:0=[${PYTHON_SINGLE_USEDEP}]
+	=net-wireless/gnuradio-3.10*:0=[${PYTHON_SINGLE_USEDEP}]
 	sci-libs/volk:=
 	airspy? ( net-wireless/airspy )
 	bladerf? ( >=net-wireless/bladerf-2018.08_rc1:= )
