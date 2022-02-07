@@ -5,6 +5,10 @@
 		<email>vowstar@gmail.com</email>
 		<name>Huang Rui</name>
 	</maintainer>
+	<use>
+		<flag name="cli">Build CLI interface</flag>
+		<flag name="gui">Build GUI interface</flag>
+	</use>
 	<longdescription lang="en">
 	Chiaki is a Free and Open Source Software Client for PlayStation 4 and
 	PlayStation 5 Remote Play for Linux, FreeBSD, OpenBSD, Android, macOS,
