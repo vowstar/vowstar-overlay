@@ -14,6 +14,7 @@ if [[ "${PV}" == "9999" ]] ; then
 else
 	SRC_URI="https://git.sr.ht/~thestr4ng3r/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
+	S="${WORKDIR}/${PN}-v${PV}"
 fi
 
 LICENSE="GPL-3"
