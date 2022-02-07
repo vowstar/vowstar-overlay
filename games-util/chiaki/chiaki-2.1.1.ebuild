@@ -23,6 +23,7 @@ SLOT="0"
 IUSE="debug"
 
 RDEPEND="
+	dev-libs/jerasure
 	dev-libs/openssl
 	dev-qt/qtmultimedia
 	dev-qt/qtsvg
@@ -47,6 +48,7 @@ src_configure() {
 	local mycmakeargs=(
 		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/usr"
 		-DNVML_INCLUDE_DIRS="${S}/include"
+		-DCHIAKI_USE_SYSTEM_JERASURE
 		${CMAKE_CONF}
 	)
 
