@@ -20,8 +20,6 @@ fi
 LICENSE="GPL-3"
 SLOT="0"
 
-IUSE="debug"
-
 RDEPEND="
 	dev-libs/jerasure
 	dev-libs/openssl
@@ -41,15 +39,10 @@ BDEPEND="
 "
 
 src_configure() {
-	local CMAKE_CONF="
-		!debug? ( -DCMAKE_BUILD_TYPE=Release )
-		debug? ( -DCMAKE_BUILD_TYPE=Debug )
-		-DCHIAKI_USE_SYSTEM_JERASURE=TRUE
-	"
 	local mycmakeargs=(
 		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/usr"
-		-DNVML_INCLUDE_DIRS="${S}/include"
-		${CMAKE_CONF}
+		-DCMAKE_BUILD_TYPE=Release
+		-DCHIAKI_USE_SYSTEM_JERASURE=TRUE
 	)
 
 	cmake_src_configure
