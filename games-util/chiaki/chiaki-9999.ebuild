@@ -44,11 +44,11 @@ src_configure() {
 	local CMAKE_CONF="
 		!debug? ( -DCMAKE_BUILD_TYPE=Release )
 		debug? ( -DCMAKE_BUILD_TYPE=Debug )
+		-DCHIAKI_USE_SYSTEM_JERASURE=TRUE
 	"
 	local mycmakeargs=(
 		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/usr"
 		-DNVML_INCLUDE_DIRS="${S}/include"
-		-DCHIAKI_USE_SYSTEM_JERASURE
 		${CMAKE_CONF}
 	)
 
