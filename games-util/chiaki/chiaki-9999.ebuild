@@ -12,9 +12,9 @@ if [[ "${PV}" == "9999" ]] ; then
 	EGIT_REPO_URI="https://git.sr.ht/~thestr4ng3r/${PN}"
 	inherit git-r3
 else
-	SRC_URI="https://git.sr.ht/~thestr4ng3r/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://git.sr.ht/~thestr4ng3r/${PN}/refs/download/v${PV}/${PN}-v${PV}-src.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
-	S="${WORKDIR}/${PN}-v${PV}"
+	S="${WORKDIR}/${PN}-v${PV}-src"
 fi
 
 LICENSE="GPL-3"
