@@ -47,3 +47,12 @@ src_configure() {
 
 	cmake_src_configure
 }
+
+src_install() {
+	cmake_src_install
+
+	dolib.so "${BUILD_DIR}"/lib/*.so
+	dolib.so "${BUILD_DIR}"/setsu/*.so
+	dolib.so "${BUILD_DIR}"/third-party/*.so
+	dolib.so "${BUILD_DIR}"/nanopb/*.so
+}
