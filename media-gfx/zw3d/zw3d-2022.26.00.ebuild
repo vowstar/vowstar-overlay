@@ -102,4 +102,5 @@ sh /opt/${MY_PGK_NAME}/files/zw3drun.sh \$*
 	fperms 0755 /opt/${MY_PGK_NAME}/zw3d
 	fperms 0755 /opt/${MY_PGK_NAME}/files/zw3d
 	fperms 0755 /opt/${MY_PGK_NAME}/files/ZwLicManager
+	fperms 0755 /opt/${MY_PGK_NAME}/files/*.sh
 }
