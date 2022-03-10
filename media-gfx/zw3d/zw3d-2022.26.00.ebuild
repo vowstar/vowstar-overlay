@@ -50,6 +50,7 @@ src_install() {
 	# Fix desktop files
 	sed -E -i 's/^Exec=.*$/Exec=zw3d %F/g' "${S}/usr/share/applications/${MY_PGK_NAME}.desktop" || die
 	sed -E -i 's/^Icon=.*$/Icon=ZW3Dprofessional/g' "${S}/usr/share/applications/${MY_PGK_NAME}.desktop" || die
+	sed -E -i 's/Application;//g' "${S}/usr/share/applications/${MY_PGK_NAME}.desktop" || die
 
 	# Add zw3d command
 	mkdir -p "${S}"/usr/bin/ || die
@@ -60,6 +61,8 @@ sh /opt/${MY_PGK_NAME}/files/zw3drun.sh \$*
 	EOF
 	
 	ln -s /opt/${MY_PGK_NAME}/zw3d "${S}"/usr/bin/zw3d || die
+
+	sed -i 's|/opt/apps/|/opt/|g' "${S}/opt/${MY_PGK_NAME}/files/zw3drun.sh" || die
 
 	# Install package and fix permissions
 	insinto /opt
