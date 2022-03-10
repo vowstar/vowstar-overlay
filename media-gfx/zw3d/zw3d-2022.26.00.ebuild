@@ -33,7 +33,7 @@ src_install() {
 	mv "${S}"/opt/apps/${MY_PGK_NAME} "${S}"/opt/${MY_PGK_NAME} || die
 	mv "${S}"/opt/${MY_PGK_NAME}/entries/icons/hicolor/scalable/apps/*.svg "${S}"/usr/share/icons/hicolor/scalable/apps || die
 	sed -E -i 's/^Exec=.*$/Exec=zw3d %F/g' "${S}/usr/share/applications/${MY_PGK_NAME}.desktop" || die
-	sed -E -i 's/^Icon=.*$/ZW3Dprofessional.g' "${S}/usr/share/applications/${MY_PGK_NAME}.desktop" || die
+	sed -E -i 's/^Icon=.*$/ZW3Dprofessional/g' "${S}/usr/share/applications/${MY_PGK_NAME}.desktop" || die
 	mkdir -p "${S}"/usr/bin/ || die
 
 	cat >> "${S}"/opt/${MY_PGK_NAME}/zw3d <<- EOF || die
