@@ -25,6 +25,7 @@ RDEPEND="
 	dev-libs/libxml2
 	dev-qt/qtsvg:5
 	dev-qt/qtwayland:5
+	media-gfx/imagemagick
 	media-libs/libglvnd
 	media-libs/libpng
 	media-libs/tiff
@@ -86,6 +87,10 @@ sh /opt/${MY_PGK_NAME}/files/zw3drun.sh \$*
 	ln -s /opt/${MY_PGK_NAME}/zw3d "${S}"/usr/bin/zw3d || die
 
 	sed -i 's|/opt/apps/|/opt/|g' "${S}/opt/${MY_PGK_NAME}/files/zw3drun.sh" || die
+
+	# Use system libraries
+	rm -rf "${S}"/opt/${MY_PGK_NAME}/files/lib3rd/libMagickCore* || die
+	rm -rf "${S}"/opt/${MY_PGK_NAME}/files/lib3rd/libjpeg* || die
 
 	# Install package and fix permissions
 	insinto /opt
