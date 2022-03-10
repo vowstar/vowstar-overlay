@@ -68,6 +68,8 @@ src_install() {
 		local RPATH_S="${RPATH_ROOT}/:${RPATH_ROOT}/lib/:${RPATH_ROOT}/lib/xlator/:${RPATH_ROOT}/lib/xlator/InterOp/:${RPATH_ROOT}/libqt/:${RPATH_ROOT}/libqt/plugins/designer/:${RPATH_ROOT}/lib3rd/"
 		patchelf --set-rpath "${RPATH_S}" "${x}" || \
 			die "patchelf failed on ${x}"
+		patchelf --replace-needed libMagickCore-6.Q16.so.7 libMagickCore-7.Q16.so "${x}" || \
+			die "patchelf failed on ${x}"
 	done
 	popd || die
 
@@ -98,4 +100,5 @@ sh /opt/${MY_PGK_NAME}/files/zw3drun.sh \$*
 	insinto /usr
 	doins -r usr/*
 	fperms 0755 /opt/${MY_PGK_NAME}/zw3d
+	fperms 0755 /opt/${MY_PGK_NAME}/files/zw3d
 }
