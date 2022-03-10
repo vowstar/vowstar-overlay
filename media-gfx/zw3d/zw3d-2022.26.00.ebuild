@@ -32,18 +32,13 @@ src_install() {
 	mkdir -p "${S}"/usr/share/icons/hicolor/scalable/apps || die
 	mv "${S}"/opt/apps/${MY_PGK_NAME} "${S}"/opt/${MY_PGK_NAME} || die
 	mv "${S}"/opt/${MY_PGK_NAME}/entries/icons/hicolor/scalable/apps/*.svg "${S}"/usr/share/icons/hicolor/scalable/apps || die
-	sed -i '5c Exec=zw3d %F' "${S}/usr/share/applications/${MY_PGK_NAME}.desktop" || die
-	sed -i '6c Icon=ZW3Dprofessional' "${S}/usr/share/applications/${MY_PGK_NAME}.desktop" || die
+	sed -E -i 's/^Exec=.*$/Exec=zw3d %F' "${S}/usr/share/applications/${MY_PGK_NAME}.desktop" || die
+	sed -E -i 's/^Icon=.*$/ZW3Dprofessional' "${S}/usr/share/applications/${MY_PGK_NAME}.desktop" || die
 	mkdir -p "${S}"/usr/bin/ || die
 
 	cat >> "${S}"/opt/${MY_PGK_NAME}/zw3d <<- EOF || die
 #!/bin/sh
-MY_PGK_NAME="com.zwsoft.zw3dprofessional"
-MY_PKG_HOME="/opt/${MY_PGK_NAME}/files"
-cd ${MY_PKG_HOME}
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${MY_PKG_HOME}/lib:${MY_PKG_HOME}/lib/xlator:${MY_PKG_HOME}/lib/xlator/InterOp:${MY_PKG_HOME}/libqt:${MY_PKG_HOME}/libqt/plugins/designer:${MY_PKG_HOME}/lib3rd:$LD_LIBRARY_PATH
-
-./zw3d $*
+sh /opt/${MY_PGK_NAME}/files/zw3drun.sh \$*
 	EOF
 	
 	ln -s /opt/${MY_PGK_NAME}/zw3d "${S}"/usr/bin/zw3d || die
