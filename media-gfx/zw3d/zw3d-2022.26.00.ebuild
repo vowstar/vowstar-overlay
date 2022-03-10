@@ -17,7 +17,30 @@ KEYWORDS="-* ~amd64"
 RESTRICT="strip mirror bindist"
 
 RDEPEND="
-	media-libs/jbigkit
+	app-arch/bzip2
+	app-arch/xz-utils
+	dev-libs/atk
+	dev-libs/glib:2
+	dev-libs/libpcre
+	dev-libs/libxml2
+	dev-qt/qtsvg:5
+	dev-qt/qtwayland:5
+	media-libs/libglvnd
+	media-libs/libpng
+	media-libs/tiff
+	sys-libs/zlib
+	x11-libs/cairo
+	x11-libs/gdk-pixbuf:2
+	x11-libs/gtk+:3
+	x11-libs/libX11
+	x11-libs/libxcb
+	x11-libs/libXcomposite
+	x11-libs/libXext
+	x11-libs/libxkbcommon
+	x11-libs/libXmu
+	x11-libs/libXrender
+	x11-libs/libXt
+	x11-libs/pango
 "
 
 DEPEND="${RDEPEND}"
