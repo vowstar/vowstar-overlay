@@ -100,6 +100,8 @@ sh /opt/${MY_PGK_NAME}/files/zw3drun.sh \$*
 	insinto /usr
 	doins -r usr/*
 
+	fperms 0755 /opt/${MY_PGK_NAME}/zw3d
+
 	pushd "${S}" || die
 	for x in $(find "opt/${MY_PGK_NAME}") ; do
 		# Fix shell script permissions
