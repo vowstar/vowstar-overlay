@@ -94,15 +94,16 @@ sh /opt/${MY_PGK_NAME}/files/zw3drun.sh \$*
 	rm -rf "${S}"/opt/${MY_PGK_NAME}/files/lib3rd/libMagickCore* || die
 	rm -rf "${S}"/opt/${MY_PGK_NAME}/files/lib3rd/libjpeg* || die
 
-	# Fix permissions
-	chmod a+x "${S}"/opt/${MY_PGK_NAME}/zw3d || die
-	chmod a+x "${S}"/opt/${MY_PGK_NAME}/files/zw3d || die
-	chmod a+x "${S}"/opt/${MY_PGK_NAME}/files/ZwLicManager || die
-	chmod a+x "${S}"/opt/${MY_PGK_NAME}/files/*.sh || die
-
 	# Install package and fix permissions
 	insinto /opt
 	doins -r opt/${MY_PGK_NAME}
 	insinto /usr
 	doins -r usr/*
+
+	for x in $(find /opt/${MY_PGK_NAME}) ; do
+		# Fix shell script permissions
+		[[ "${x: -3}" == ".sh" ]] && fperms 0755 ${x}
+		# Use \x7fELF header to separate ELF executables and libraries
+		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] && fperms 0755 ${x}
+	done
 }
