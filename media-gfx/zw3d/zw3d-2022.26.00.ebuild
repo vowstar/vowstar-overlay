@@ -100,10 +100,12 @@ sh /opt/${MY_PGK_NAME}/files/zw3drun.sh \$*
 	insinto /usr
 	doins -r usr/*
 
-	for x in $(find /opt/${MY_PGK_NAME}) ; do
+	pushd "${S}" || die
+	for x in $(find "opt/${MY_PGK_NAME}") ; do
 		# Fix shell script permissions
-		[[ "${x: -3}" == ".sh" ]] && fperms 0755 ${x}
+		[[ "${x: -3}" == ".sh" ]] && fperms 0755 "/${x}"
 		# Use \x7fELF header to separate ELF executables and libraries
-		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] && fperms 0755 ${x}
+		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] && fperms 0755 "/${x}"
 	done
+	popd || die
 }
