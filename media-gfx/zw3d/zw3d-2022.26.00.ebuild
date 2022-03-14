@@ -94,13 +94,15 @@ sh /opt/${MY_PGK_NAME}/files/zw3drun.sh \$*
 	rm -rf "${S}"/opt/${MY_PGK_NAME}/files/lib3rd/libMagickCore* || die
 	rm -rf "${S}"/opt/${MY_PGK_NAME}/files/lib3rd/libjpeg* || die
 
+	# Fix permissions
+	chmod a+x "${S}"/opt/${MY_PGK_NAME}/zw3d || die
+	chmod a+x "${S}"/opt/${MY_PGK_NAME}/files/zw3d || die
+	chmod a+x "${S}"/opt/${MY_PGK_NAME}/files/ZwLicManager || die
+	chmod a+x "${S}"/opt/${MY_PGK_NAME}/files/*.sh || die
+
 	# Install package and fix permissions
 	insinto /opt
 	doins -r opt/${MY_PGK_NAME}
 	insinto /usr
 	doins -r usr/*
-	fperms 0755 /opt/${MY_PGK_NAME}/zw3d
-	fperms 0755 /opt/${MY_PGK_NAME}/files/zw3d
-	fperms 0755 /opt/${MY_PGK_NAME}/files/ZwLicManager
-	fperms 0755 /opt/${MY_PGK_NAME}/files/*.sh
 }
