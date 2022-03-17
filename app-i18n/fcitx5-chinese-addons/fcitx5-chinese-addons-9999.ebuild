@@ -27,19 +27,17 @@ IUSE="browser +gui lua +opencc test"
 REQUIRED_USE=""
 RESTRICT="!test? ( test )"
 
-RDEPEND="app-i18n/fcitx5
+RDEPEND="
+	app-i18n/fcitx5
 	app-i18n/libime
 	opencc? ( app-i18n/opencc:= )
 	gui? (
 		dev-qt/qtcore:5
 		app-i18n/fcitx5-qt[qt5,-onlyplugin]
-		browser? (
-			dev-qt/qtwebengine:5
-		)
-	lua? (
-		app-i18n/fcitx5-lua
-		)
-	)"
+		browser? ( dev-qt/qtwebengine:5 )
+		lua? ( app-i18n/fcitx5-lua )
+	)
+"
 DEPEND="${RDEPEND}
 	kde-frameworks/extra-cmake-modules:5
 	virtual/pkgconfig"
