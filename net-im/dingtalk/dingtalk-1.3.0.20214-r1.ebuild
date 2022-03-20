@@ -43,7 +43,7 @@ src_install() {
 	# Move ${MY_PGK_NAME} out from /opt/apps
 	mkdir -p "${S}"/usr/share/icons/hicolor/scalable/apps || die
 	mv "${S}"/opt/apps/"${MY_PGK_NAME}" "${S}"/opt/"${MY_PGK_NAME}" || die
-	cp "${FILESDIR}"/dingtalk.svg "${pkgdir}"/usr/share/icons/hicolor/scalable/apps || die
+	cp "${FILESDIR}"/dingtalk.svg "${S}"/usr/share/icons/hicolor/scalable/apps || die
 	# Remove the libraries that break compatibility in modern systems
 	# Dingtalk will use the system libs instead
 	MY_VERSION=$(cat "${S}"/opt/"${MY_PGK_NAME}"/files/version)
