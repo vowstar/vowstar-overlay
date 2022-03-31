@@ -47,12 +47,16 @@ RDEPEND="${DEPEND}
 	app-arch/cabextract
 	app-arch/p7zip
 	app-arch/unzip
-	net-misc/wget
 	virtual/wine
 	x11-misc/xdg-utils
 	gtk? ( gnome-extra/zenity )
 	kde? ( kde-apps/kdialog )
 	rar? ( app-arch/unrar )
+	|| (
+		net-misc/aria2
+		net-misc/curl
+		net-misc/wget
+	)
 "
 
 # Test targets include syntax checks only, not the "heavy duty" tests
