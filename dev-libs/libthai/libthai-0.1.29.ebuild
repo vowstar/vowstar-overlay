@@ -23,10 +23,6 @@ RDEPEND="dev-libs/libdatrie"
 DEPEND="${RDEPEND}"
 BDEPEND="dev-vcs/git"
 
-PATCHES=(
-	"${FILESDIR}/${P}-fix-duplicate-dir.patch" #fix autoconf-2.7
-)
-
 src_prepare() {
 	default
 	# Fixed version if in non git project
