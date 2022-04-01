@@ -37,6 +37,7 @@ src_compile() {
 		"/usr/bin/ODAFileConverter_${PV}" \
 		"usr/bin/ODAFileConverter_${PV}/ODAFileConverter" \
 		|| die "Failed to fix insecure RPATH"
+	rm -rf usr/bin/ODAFileConverter_${PV}/qt.conf || die "Failed to fix qt.conf"
 }
 
 src_install() {
