@@ -22,8 +22,7 @@ LICENSE="GPL-3"
 SLOT="0"
 
 RDEPEND="
-	>=x11-libs/gtk+-3.22
-	x11-themes/gtk-engines-adwaita
+	x11-themes/gtk-engines
 "
 DEPEND="${RDEPEND}"
 
