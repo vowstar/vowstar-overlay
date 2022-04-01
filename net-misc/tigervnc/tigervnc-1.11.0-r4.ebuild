@@ -1,37 +1,34 @@
 # Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=8
-
+EAPI=7
 CMAKE_IN_SOURCE_BUILD=1
-inherit autotools cmake flag-o-matic java-pkg-opt-2 optfeature systemd xdg
 
-XSERVER_VERSION="21.1.1"
+inherit autotools cmake flag-o-matic java-pkg-opt-2 systemd xdg
+
+XSERVER_VERSION="1.20.0"
 
 DESCRIPTION="Remote desktop viewer display system"
 HOMEPAGE="http://www.tigervnc.org"
 SRC_URI="https://github.com/TigerVNC/tigervnc/archive/v${PV}.tar.gz -> ${P}.tar.gz
-	server? (
-		ftp://ftp.freedesktop.org/pub/xorg/individual/xserver/xorg-server-${XSERVER_VERSION}.tar.xz
-		https://github.com/TigerVNC/tigervnc/commit/0c5a2b2e7759c2829c07186cfce4d24aa9b5274e.patch -> ${P}-xserver-21.patch
-	)"
+	server? ( ftp://ftp.freedesktop.org/pub/xorg/individual/xserver/xorg-server-${XSERVER_VERSION}.tar.bz2	)"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~mips ~ppc ~ppc64 ~riscv ~sparc ~x86"
-IUSE="dri3 +drm gnutls java nls +opengl server xinerama +xorgmodule"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sparc ~x86"
+IUSE="dri3 +drm gnutls java nls +opengl pam server xinerama +xorgmodule"
 
 CDEPEND="
 	virtual/jpeg:0
 	sys-libs/zlib:=
 	>=x11-libs/fltk-1.3.1
-	sys-libs/pam
+	gnutls? ( net-libs/gnutls:= )
+	nls? ( virtual/libiconv )
+	pam? ( sys-libs/pam )
 	x11-libs/libX11
 	x11-libs/libXext
 	x11-libs/libXrender
 	x11-libs/pixman
-	gnutls? ( net-libs/gnutls:= )
-	nls? ( virtual/libiconv )
 	server? (
 		x11-libs/libXau
 		x11-libs/libXdamage
@@ -50,11 +47,7 @@ CDEPEND="
 	"
 
 RDEPEND="${CDEPEND}
-	java? ( virtual/jre:1.8 )
-	server? (
-		dev-lang/perl
-		sys-process/psmisc
-	)"
+	java? ( virtual/jre:1.8 )"
 
 DEPEND="${CDEPEND}
 	nls? ( sys-devel/gettext )
@@ -81,24 +74,21 @@ DEPEND="${CDEPEND}
 PATCHES=(
 	# Restore Java viewer
 	"${FILESDIR}"/${PN}-1.11.0-install-java-viewer.patch
-	"${FILESDIR}"/${PN}-1.12.0-xsession-path.patch
 )
 
 src_prepare() {
 	if use server; then
 		cp -r "${WORKDIR}"/xorg-server-${XSERVER_VERSION}/. unix/xserver || die
-		eapply "${FILESDIR}"/${P}-xorg-1.21.patch
-		eapply "${DISTDIR}"/${P}-xserver-21.patch
 	fi
 
 	cmake_src_prepare
 
 	if use server; then
 		cd unix/xserver || die
-		eapply ../xserver${XSERVER_VERSION}.patch
+		eapply "${FILESDIR}"/xserver120.patch
+		eapply "${FILESDIR}"/xserver120-drmfourcc-header.patch
+		sed -i -e 's/"gl >= .*"/"gl"/' configure.ac || die
 		eautoreconf
-		sed -i 's:\(present.h\):../present/\1:' os/utils.c || die
-		sed -i '/strcmp.*-fakescreenfps/,/^        \}/d' os/utils.c || die
 	fi
 }
 
@@ -110,6 +100,7 @@ src_configure() {
 	local mycmakeargs=(
 		-DENABLE_GNUTLS=$(usex gnutls)
 		-DENABLE_NLS=$(usex nls)
+		-DENABLE_PAM=$(usex pam)
 		-DBUILD_JAVA=$(usex java)
 	)
 
@@ -123,6 +114,7 @@ src_configure() {
 			--disable-config-hal \
 			--disable-config-udev \
 			--disable-devel-docs \
+			--disable-dmx \
 			--disable-dri \
 			$(use_enable dri3) \
 			--disable-glamor \
@@ -139,6 +131,7 @@ src_configure() {
 			--disable-xorg \
 			--disable-xvfb \
 			--disable-xwin \
+			--disable-xwayland \
 			--enable-dri2 \
 			--with-pic \
 			--without-dtrace \
@@ -173,14 +166,10 @@ src_install() {
 			rm -v "${ED}"/usr/$(get_libdir)/xorg/modules/extensions/libvnc.la || die
 		fi
 
-		newconfd "${FILESDIR}"/${PN}-${PV}.confd ${PN}
-		newinitd "${FILESDIR}"/${PN}-${PV}.initd ${PN}
+		newconfd "${FILESDIR}"/${PN}.confd ${PN}
+		newinitd "${FILESDIR}"/${PN}.initd ${PN}
 
 		systemd_douserunit unix/vncserver/vncserver@.service
-
-		# comment out pam_selinux.so, the server does not start if missing
-		# part of bug #746227
-		sed -i -e '/pam_selinux/s/^/#/' "${ED}"/etc/pam.d/tigervnc || die
 	else
 		local f
 		for f in x0vncserver vncconfig; do
@@ -191,12 +180,3 @@ src_install() {
 		rm -r "${ED}"/usr/share/man/man8 || die
 	fi
 }
-
-pkg_postinst() {
-	local OPTIONAL_DM="gnome-base/gdm x11-misc/lightdm x11-misc/sddm x11-misc/slim"
-
-	use server && \
-		optfeature_header "Install any additional display manager package:" && \
-		optfeature "proper session support" ${OPTIONAL_DM}
-}
-
