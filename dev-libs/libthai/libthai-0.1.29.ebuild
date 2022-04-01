@@ -30,7 +30,8 @@ src_prepare() {
 	# From upstreams autogen.sh, to make it utilize the autotools eclass
 	# Here translate the autogen.sh, equivalent to the following code
 	# > sh autogen.sh
-
+	# Fix html doc path
+	sed -i -e "s|share/doc/libthai/html|share/doc/libthai-${PV}/html|g" configure.ac || die
 	_elibtoolize --force
 	eaclocal
 	eautomake --add-missing
