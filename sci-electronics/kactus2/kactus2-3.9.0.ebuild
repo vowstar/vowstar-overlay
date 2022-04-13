@@ -1,7 +1,7 @@
 # Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="7"
+EAPI="8"
 
 inherit xdg
 
@@ -36,6 +36,13 @@ RDEPEND="
 DEPEND="
 	${RDEPEND}
 "
+
+src_prepare() {
+	default
+
+	# Fix QTBIN_PATH
+	sed -i -e "s|QTBIN_PATH=.*|QTBIN_PATH=\"/usr/$(get_libdir)/qt5/bin/\"|" configure || die
+}
 
 src_install() {
 	# Can't use default, set INSTALL_ROOT and workaround parallel install bug
