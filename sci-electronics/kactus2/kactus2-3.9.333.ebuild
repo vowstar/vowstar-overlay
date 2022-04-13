@@ -8,7 +8,7 @@ inherit xdg
 
 DESCRIPTION="A open source IP-XACT-based tool"
 HOMEPAGE="
-	http://funbase.cs.tut.fi
+	https://research.tuni.fi/system-on-chip/tools/
 	https://github.com/kactus2/kactus2dev
 "
 
@@ -50,6 +50,6 @@ src_prepare() {
 }
 
 src_install() {
-	# Can't use default, set INSTALL_ROOT
-	emake INSTALL_ROOT="${D}" install
+	# Can't use default, set INSTALL_ROOT and workaround parallel install bug
+	emake -j1 INSTALL_ROOT="${D}" install
 }

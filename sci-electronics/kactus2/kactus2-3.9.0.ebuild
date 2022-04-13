@@ -7,7 +7,7 @@ inherit xdg
 
 DESCRIPTION="A open source IP-XACT-based tool"
 HOMEPAGE="
-	http://funbase.cs.tut.fi
+	https://research.tuni.fi/system-on-chip/tools/
 	https://github.com/kactus2/kactus2dev
 "
 
