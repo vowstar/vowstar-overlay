@@ -1,7 +1,7 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="7"
+EAPI="8"
 
 inherit xdg
 
@@ -36,6 +36,17 @@ RDEPEND="
 DEPEND="
 	${RDEPEND}
 "
+
+PATCHES=(
+	"${FILESDIR}"/${PN}-3.9.333-install.patch # Fix install problem
+)
+
+src_prepare() {
+	default
+
+	# Fix QTBIN_PATH
+	sed -i -e "s|QTBIN_PATH=.*|QTBIN_PATH=\"$(get_libdir)\"/qt5/bin/|" configure || die
+}
 
 src_install() {
 	# Can't use default, set INSTALL_ROOT
