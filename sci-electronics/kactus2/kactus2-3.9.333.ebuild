@@ -46,7 +46,7 @@ src_prepare() {
 	default
 
 	# Fix QTBIN_PATH
-	sed -i -e "s|QTBIN_PATH=.*|QTBIN_PATH=\"$(get_libdir)\"/qt5/bin/|" configure || die
+	sed -i -e "s|QTBIN_PATH=.*|QTBIN_PATH=\"/usr/$(get_libdir)/qt5/bin/\"|" configure || die
 }
 
 src_install() {
