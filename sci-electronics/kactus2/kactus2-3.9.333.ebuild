@@ -4,7 +4,7 @@
 EAPI="8"
 RELEASE_HASH="239cc83cb9cd4441174959a58dbadc1b941f76dc"
 
-inherit xdg
+inherit qmake-utils xdg
 
 DESCRIPTION="A open source IP-XACT-based tool"
 HOMEPAGE="
@@ -46,7 +46,7 @@ src_prepare() {
 	default
 
 	# Fix QTBIN_PATH
-	sed -i -e "s|QTBIN_PATH=.*|QTBIN_PATH=\"/usr/$(get_libdir)/qt5/bin/\"|" configure || die
+	sed -i -e "s|QTBIN_PATH=.*|QTBIN_PATH=\"$(qt5_get_bindir)/\"|" configure || die
 }
 
 src_install() {

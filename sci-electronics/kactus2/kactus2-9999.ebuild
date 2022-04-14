@@ -3,7 +3,7 @@
 
 EAPI="8"
 
-inherit xdg
+inherit qmake-utils xdg
 
 DESCRIPTION="A open source IP-XACT-based tool"
 HOMEPAGE="
@@ -37,15 +37,11 @@ DEPEND="
 	${RDEPEND}
 "
 
-PATCHES=(
-	"${FILESDIR}"/${PN}-3.9.333-install.patch # Fix install problem
-)
-
 src_prepare() {
 	default
 
 	# Fix QTBIN_PATH
-	sed -i -e "s|QTBIN_PATH=.*|QTBIN_PATH=\"/usr/$(get_libdir)/qt5/bin/\"|" configure || die
+	sed -i -e "s|QTBIN_PATH=.*|QTBIN_PATH=\"$(qt5_get_bindir)/\"|" configure || die
 }
 
 src_install() {

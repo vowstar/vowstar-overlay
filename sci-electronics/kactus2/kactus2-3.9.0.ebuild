@@ -1,9 +1,9 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="8"
 
-inherit xdg
+inherit qmake-utils xdg
 
 DESCRIPTION="A open source IP-XACT-based tool"
 HOMEPAGE="
@@ -37,11 +37,15 @@ DEPEND="
 	${RDEPEND}
 "
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-3.9.3-python.patch # Fix install problem
+)
+
 src_prepare() {
 	default
 
 	# Fix QTBIN_PATH
-	sed -i -e "s|QTBIN_PATH=.*|QTBIN_PATH=\"/usr/$(get_libdir)/qt5/bin/\"|" configure || die
+	sed -i -e "s|QTBIN_PATH=.*|QTBIN_PATH=\"$(qt5_get_bindir)/\"|" configure || die
 }
 
 src_install() {
