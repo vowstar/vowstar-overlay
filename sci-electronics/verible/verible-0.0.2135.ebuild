@@ -42,7 +42,7 @@ bazel_external_uris="
 	https://mirror.bazel.build/github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
 	https://mirror.bazel.build/openjdk/azul-zulu11.50.19-ca-jdk11.0.12/zulu11.50.19-ca-jdk11.0.12-linux_x64.tar.gz
 	https://zlib.net/zlib-1.2.12.tar.gz
-	mirror://gnu/m4/m4-1.4.18.tar.xz
+	https://mirror.bazel.build/ftp.gnu.org/gnu/m4/m4-1.4.18.tar.xz
 "
 
 SRC_URI="
