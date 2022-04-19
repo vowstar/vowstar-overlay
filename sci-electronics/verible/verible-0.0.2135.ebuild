@@ -18,7 +18,6 @@ HOMEPAGE="
 bazel_external_uris="
 	https://files.pythonhosted.org/packages/6b/34/415834bfdafca3c5f451532e8a8d9ba89a21c9743a0c59fbd0205c7f9426/six-1.15.0.tar.gz
 	https://github.com/abseil/abseil-cpp/archive/refs/tags/20211102.0.zip
-	https://github.com/bazelbuild/bazel-skylib/releases/download/1.0.2/bazel-skylib-1.0.2.tar.gz
 	https://github.com/bazelbuild/bazel-toolchains/releases/download/3.4.0/bazel-toolchains-3.4.0.tar.gz
 	https://github.com/bazelbuild/rules_cc/archive/e7c97c3af74e279a5db516a19f642e862ff58548.zip
 	https://github.com/bazelbuild/rules_proto/archive/97d8af4dc474595af3900dd85cb3a29ad28cc313.zip
@@ -35,6 +34,8 @@ bazel_external_uris="
 	https://github.com/lexxmark/winflexbison/releases/download/v2.5.18/win_flex_bison-2.5.18.zip
 	https://github.com/nlohmann/json/archive/refs/tags/v3.10.2.tar.gz
 	https://github.com/protocolbuffers/protobuf/archive/v3.13.0.zip
+	https://mirror.bazel.build/bazel_coverage_output_generator/releases/coverage_output_generator-v2.5.zip
+	https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.0.2/bazel-skylib-1.0.2.tar.gz
 "
 
 SRC_URI="
