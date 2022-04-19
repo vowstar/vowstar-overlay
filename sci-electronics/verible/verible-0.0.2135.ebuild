@@ -38,12 +38,12 @@ bazel_external_uris="
 	https://mirror.bazel.build/bazel_coverage_output_generator/releases/coverage_output_generator-v2.5.zip
 	https://mirror.bazel.build/bazel_java_tools/releases/java/v11.6/java_tools_linux-v11.6.zip
 	https://mirror.bazel.build/bazel_java_tools/releases/java/v11.6/java_tools-v11.6.zip
-	https://mirror.bazel.build/ftp.gnu.org/gnu/m4/m4-1.4.18.tar.xz
 	https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.0.2/bazel-skylib-1.0.2.tar.gz
 	https://mirror.bazel.build/github.com/bazelbuild/rules_java/archive/7cf3cefd652008d0a64a419c34c13bdca6c8f178.zip
 	https://mirror.bazel.build/github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
 	https://mirror.bazel.build/openjdk/azul-zulu11.50.19-ca-jdk11.0.12/zulu11.50.19-ca-jdk11.0.12-linux_x64.tar.gz
 	https://zlib.net/zlib-1.2.12.tar.gz
+	mirror://gnu/m4/m4-1.4.18.tar.xz
 "
 
 SRC_URI="
