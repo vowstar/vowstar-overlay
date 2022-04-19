@@ -30,6 +30,7 @@ bazel_external_uris="
 	https://github.com/grailbio/bazel-compilation-database/archive/ace73b04e76111afa09934f8771a2798847e724e.tar.gz
 	https://github.com/jmillikin/rules_bison/releases/download/v0.2/rules_bison-v0.2.tar.xz
 	https://github.com/jmillikin/rules_flex/releases/download/v0.2/rules_flex-v0.2.tar.xz
+	https://github.com/jmillikin/rules_m4/releases/download/v0.1/m4-gnulib-788db09a9f88abbef73c97e8d7291c40455336d8.tar.xz
 	https://github.com/jmillikin/rules_m4/releases/download/v0.2/rules_m4-v0.2.tar.xz
 	https://github.com/lexxmark/winflexbison/releases/download/v2.5.18/win_flex_bison-2.5.18.zip
 	https://github.com/nlohmann/json/archive/refs/tags/v3.10.2.tar.gz
