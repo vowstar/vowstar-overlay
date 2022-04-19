@@ -74,6 +74,7 @@ src_prepare() {
 }
 
 src_compile() {
+	export JAVA_HOME=$(java-config --jre-home)
 	ebazel build -c opt --//bazel:use_local_flex_bison //...
 	ebazel shutdown
 }
