@@ -86,7 +86,7 @@ src_prepare() {
 src_compile() {
 	export JAVA_HOME=$(java-config --jre-home)
 	export GIT_DATE="$(date -r WORKSPACE "+%Y-%m-%d")"
-	export GIT_DESCRIBE="v${MY_PV}"
+	export GIT_VERSION="v${MY_PV}"
 
 	ebazel build -c opt --//bazel:use_local_flex_bison //...
 	ebazel shutdown
