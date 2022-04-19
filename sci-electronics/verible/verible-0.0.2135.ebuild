@@ -5,6 +5,8 @@ EAPI="8"
 
 # From release tag name
 MY_PV="0.0-2135-gb534c1fe"
+GIT_DATE="2022-04-07"
+GIT_DESCRIBE="v${MY_PV}"
 
 inherit bazel
 
@@ -85,6 +87,8 @@ src_prepare() {
 
 src_compile() {
 	export JAVA_HOME=$(java-config --jre-home)
+	export GIT_DATE=${GIT_DATE}
+	export GIT_DESCRIBE=${GIT_DESCRIBE}
 	ebazel build -c opt --//bazel:use_local_flex_bison //...
 	ebazel shutdown
 }
