@@ -106,7 +106,11 @@ pkg_postinst() {
 		ewarn "make sure the smfp is listed in /etc/sane.d/dll.conf."
 		ewarn "If the geniusvp2 is listed in /etc/sane.d/dll.conf,"
 		ewarn "please comment out it."
-	fi
+
+		ewarn "You should restart cupsd service after installed $P."
+		ewarn "OpenRC: rc-service cupsd restart"
+		ewarn "systemd: systemctl restart cups.service"
+
 }
 
 pkg_postrm() {
