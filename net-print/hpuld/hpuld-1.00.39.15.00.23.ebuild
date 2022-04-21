@@ -73,19 +73,17 @@ src_install() {
 	sed -i "s#\$(hal_rules)#${D}/\$(hal_rules)#g" noarch/scanner-script.pkg || die
 	sed -i "s#\${USERMAP}#${D}/\${USERMAP}#g" noarch/scanner-script.pkg || die
 	sed -i "s#		trigger_libusbscanner_hotplug##g" noarch/scanner-script.pkg || die
-	mkdir -p ${D}/etc/hotplug/usb || die
+	mkdir -p "${D}"/etc/hotplug/usb || die
 
 	if use scanner ; then
 		local SCDIR="/etc/sane.d"
 
 		if [ -f ${SCDIR}/dll.conf ] ; then
-			cat ${SCDIR}/dll.conf > ${D}/${SCDIR}/dll.conf
+			cat ${SCDIR}/dll.conf > ${D}/${SCDIR}/dll.conf || die
 			if ! grep -q '^smfp$' ${D}/${SCDIR}/dll.conf ; then
 				echo "smfp" >> ${D}/${SCDIR}/dll.conf || die
 			fi
-			if grep -q "#geniusvp2" ${D}/${SCDIR}/dll.conf ; then
-				# Already commented out geniusvp2 backend
-			elif grep -q geniusvp2 ${D}/${SCDIR}/dll.conf ; then
+			if grep -q '^geniusvp2' ${D}/${SCDIR}/dll.conf ; then
 				# Comment out geniusvp2 backend
 				sed -i 's/geniusvp2/#geniusvp2/' > ${D}/${SCDIR}/dll.conf || die
 			fi
@@ -110,7 +108,7 @@ pkg_postinst() {
 		ewarn "You should restart cupsd service after installed $P."
 		ewarn "OpenRC: rc-service cupsd restart"
 		ewarn "systemd: systemctl restart cups.service"
-
+	fi
 }
 
 pkg_postrm() {
