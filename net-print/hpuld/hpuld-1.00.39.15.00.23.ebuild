@@ -81,10 +81,10 @@ src_install() {
 		if [ -f ${SCDIR}/dll.conf ] ; then
 			mkdir -p ${D}/${SCDIR} || die
 			cat ${SCDIR}/dll.conf > ${D}/${SCDIR}/dll.conf || die
-			if [ ! grep -q '^smfp$' ${D}/${SCDIR}/dll.conf ] ; then
+			if ! grep -q '^smfp$' ${D}/${SCDIR}/dll.conf ; then
 				echo "smfp" >> ${D}/${SCDIR}/dll.conf || die
 			fi
-			if [ grep -q '^geniusvp2' ${D}/${SCDIR}/dll.conf ]; then
+			if grep -q '^geniusvp2' ${D}/${SCDIR}/dll.conf ; then
 				# Comment out geniusvp2 backend
 				sed -i 's/geniusvp2/#geniusvp2/' > ${D}/${SCDIR}/dll.conf || die
 			fi
