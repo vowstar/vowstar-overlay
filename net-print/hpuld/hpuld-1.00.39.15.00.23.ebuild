@@ -82,6 +82,7 @@ src_install() {
 			mkdir -p ${D}/${SCDIR} || die
 			cat ${SCDIR}/dll.conf > ${D}/${SCDIR}/dll.conf || die
 			if ! grep -q '^smfp$' ${D}/${SCDIR}/dll.conf ; then
+				echo "# Add support for the HP-ULD specific backend.  Needs net-print/hpuld installed." >> ${D}/${SCDIR}/dll.conf || die
 				echo "smfp" >> ${D}/${SCDIR}/dll.conf || die
 			fi
 			if grep -q '^geniusvp2' ${D}/${SCDIR}/dll.conf ; then
