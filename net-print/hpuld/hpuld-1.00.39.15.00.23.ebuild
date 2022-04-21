@@ -49,8 +49,8 @@ src_install() {
 	export PAGER="$(which cat)"
 
 	# Fix install path
-	sed -i 's#"/opt"#"${D}/opt"' noarch/package_utils
-	sed -i 's#"/opt"#"${D}/opt"' noarch/pre_install.sh
+	sed -i "s#\"/opt\"#\"${D}/opt\"#g" noarch/package_utils
+	sed -i "s#\"/opt\"#\"${D}/opt\"#g" noarch/pre_install.sh
 
 	if use scanner ; then
 		sh ./install.sh || die
