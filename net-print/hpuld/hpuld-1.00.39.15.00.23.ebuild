@@ -44,5 +44,8 @@ src_unpack() {
 }
 
 src_install() {
+	export AGREE_EULA="y"
+	export CONTINUE_INSTALL="y"
+	export PAGER="$(which cat)"
 	sh ./install.sh || die
 }
