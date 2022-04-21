@@ -48,7 +48,7 @@ src_install() {
 	export CONTINUE_INSTALL="y"
 	export PAGER="$(which cat)"
 
-	# Fix install path
+	# Fix printer install path
 	sed -i "s#\"/opt\"#\"${D}/opt\"#g" noarch/package_utils
 	sed -i "s#\"/opt\"#\"${D}/opt\"#g" noarch/pre_install.sh
 	sed -i "s#\"\$INSTDIR_CUPS_BACKENDS\"#\"${D}/\$INSTDIR_CUPS_BACKENDS\"#g" noarch/printer.pkg
@@ -56,9 +56,30 @@ src_install() {
 	sed -i "s#\"\$INSTDIR_CUPS_PPD\"#\"${D}/\$INSTDIR_CUPS_PPD\"#g" noarch/printer-script.pkg
 	sed -i "s#\"\$INSTDIR_LSB_PPD\"#\"${D}/\$INSTDIR_LSB_PPD\"#g" noarch/printer-script.pkg
 
+	# Fix scanner install path
+	sed -i "s#SANE_DIR=/usr/lib\${LIBSFX}/sane#SANE_DIR=${D}/usr/lib\${LIBSFX}/sane#g" noarch/scanner.pkg
+	sed -i "s#/usr/lib/sane#${D}/usr/lib\${LIBSFX}/sane#g" noarch/scanner.pkg
+	sed -i "s#\"\$INSTDIR_COMMON_SCANNER_SHARE\"#\"${D}/\$INSTDIR_COMMON_SCANNER_SHARE\"#g" noarch/scanner.pkg
+
 	if use scanner ; then
 		sh ./install.sh || die
 	else
 		sh ./install-printer.sh || die
+	fi
+}
+
+pkg_postinst() {
+	if use scanner ; then
+		ewarn "If you want to use the scanner,"
+		ewarn "make sure the smfp is listed in /etc/sane.d/dll.conf."
+		ewarn "If the geniusvp2 is listed in /etc/sane.d/dll.conf,"
+		ewarn "please comment out it."
+	fi
+}
+
+pkg_postrm() {
+	if use scanner ; then
+		ewarn "If the smfp is listed in /etc/sane.d/dll.conf,"
+		ewarn "please remove it."
 	fi
 }
