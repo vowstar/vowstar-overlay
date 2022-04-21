@@ -16,7 +16,7 @@ S="${WORKDIR}/uld"
 
 LICENSE="all-rights-reserved"
 SLOT="0"
-KEYWORDS="amd64"
+KEYWORDS="~amd64 ~arm64 ~mips ~x86"
 
 IUSE="+scanner"
 
@@ -47,5 +47,14 @@ src_install() {
 	export AGREE_EULA="y"
 	export CONTINUE_INSTALL="y"
 	export PAGER="$(which cat)"
-	sh ./install.sh || die
+
+	# Fix install path
+	sed -i 's#"/opt"#"${D}/opt"' noarch/package_utils
+	sed -i 's#"/opt"#"${D}/opt"' noarch/pre_install.sh
+
+	if use scanner ; then
+		sh ./install.sh || die
+	else
+		sh ./install-printer.sh || die
+	fi
 }
