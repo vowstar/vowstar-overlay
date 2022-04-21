@@ -1,9 +1,9 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-inherit desktop multilib unpacker xdg
+inherit desktop unpacker xdg
 
 DESCRIPTION="Wolfram Mathematica"
 SRC_URI="Mathematica_${PV}_LINUX.sh"
@@ -42,7 +42,7 @@ src_unpack() {
 src_prepare() {
 	pushd "${S}/unpack" > /dev/null || die
 	# fix ACCESS DENIED issue when installer check the avahi-daemon
-	sed -e "s:avahi-daemon -c:true:g" -i "Unix/Installer/MathInstaller" || die
+	sed -e "s/avahi-daemon -c/true/g" -i "Unix/Installer/MathInstaller" || die
 	/bin/sh "Unix/Installer/MathInstaller" -auto "-targetdir=${S}/${M_TARGET}" "-execdir=${S}/opt/bin" || die
 	popd > /dev/null || die
 	eapply_user
