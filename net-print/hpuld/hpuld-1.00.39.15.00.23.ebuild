@@ -35,6 +35,14 @@ BDEPEND="
 	app-arch/unzip
 "
 
+QA_FLAGS_IGNORED="
+	/opt/smfp-common/scanner/lib/libsane-smfp.*
+	/opt/smfp-common/printer/bin/pstosecps
+	/opt/smfp-common/printer/bin/rastertospl
+	/opt/smfp-common/printer/bin/smfpnetdiscovery
+"
+QA_PRESTRIPPED="${QA_FLAGS_IGNORED}"
+
 src_unpack() {
 	default
 
