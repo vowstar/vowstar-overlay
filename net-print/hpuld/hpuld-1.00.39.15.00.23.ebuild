@@ -59,7 +59,12 @@ src_install() {
 	# Fix scanner install path
 	sed -i "s#SANE_DIR=/usr/lib\${LIBSFX}/sane#SANE_DIR=${D}/usr/lib\${LIBSFX}/sane#g" noarch/scanner.pkg
 	sed -i "s#/usr/lib/sane#${D}/usr/lib\${LIBSFX}/sane#g" noarch/scanner.pkg
-	sed -i "s#\"\$INSTDIR_COMMON_SCANNER_SHARE\"#\"${D}/\$INSTDIR_COMMON_SCANNER_SHARE\"#g" noarch/scanner.pkg
+	sed -i "s#\$INSTDIR_COMMON_SCANNER_SHARE#${D}/\$INSTDIR_COMMON_SCANNER_SHARE#g" noarch/scanner.pkg
+	sed -i "s#\$(sane_config)#${D}/\$(sane_config)#g" noarch/scanner-script.pkg
+	sed -i "s#\$(udev_rules)#${D}/\$(udev_rules)#g" noarch/scanner-script.pkg
+	sed -i "s#\$(hal_rules)#${D}/\$(hal_rules)#g" noarch/scanner-script.pkg
+	sed -i "s#\${INSTALL_DIR}/share#${D}/\${INSTALL_DIR}/share#g" noarch/scanner-script.pkg
+	sed -i "s#\${USERMAP}#${D}/\${USERMAP}#g" noarch/scanner-script.pkg
 
 	if use scanner ; then
 		sh ./install.sh || die
