@@ -1,21 +1,21 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-DESCRIPTION="Basic Octave implementation of the matlab arduino extension, allowing communication to a programmed arduino board to control its hardware"
-HOMEPAGE="https://octave.sourceforge.io/arduino"
+DESCRIPTION="Package using OpenCL for parallelization of (SIMD) computations, selectively using available OpenCL hardware"
+HOMEPAGE="https://octave.sourceforge.io/ocl"
 SRC_URI="https://downloads.sourceforge.net/octave/${P/octave-/}.tar.gz -> ${P}.tar.gz"
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~x86"
+KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~riscv ~x86"
 RESTRICT="test"
 
 RDEPEND="sci-mathematics/octave"
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 
-S="${WORKDIR}/${P/octave-/}"
+S="${WORKDIR}/${PN/octave-/}"
 
 src_install() {
 	local INST_PREFIX="${D}/usr/share/octave/packages"
