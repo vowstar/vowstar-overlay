@@ -27,11 +27,12 @@ fi
 LICENSE="GPL-3"
 SLOT="0"
 
-IUSE="unicode"
+IUSE="unicode video_cards_amdgpu video_cards_nvidia"
 
 RDEPEND="
+	video_cards_amdgpu? ( x11-libs/libdrm[video_cards_amdgpu] )
+	video_cards_nvidia? ( x11-drivers/nvidia-drivers )
 	sys-libs/ncurses:0=
-	x11-drivers/nvidia-drivers
 "
 
 DEPEND="${RDEPEND}"
@@ -45,6 +46,8 @@ src_configure() {
 		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/usr"
 		-DNVML_INCLUDE_DIRS="${S}/include"
 		-DCURSES_NEED_WIDE=$(usex unicode)
+		-DNVIDIA_SUPPORT=$(usex video_cards_nvidia)
+		-DAMDGPU_SUPPORT=$(usex video_cards_amdgpu)
 	)
 
 	cp "${WORKDIR}/nvidia-settings-${NVIDIA_PV}/src/nvml.h" "${S}/include/nvml.h" || die
