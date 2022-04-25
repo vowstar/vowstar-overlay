@@ -42,6 +42,7 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-10.3-fno-common.patch #706366
 	"${FILESDIR}"/${PN}-10.3-gen-bison-header.patch #734760
 	"${FILESDIR}"/${PN}-10.3-call-nm.patch #731906
+	"${FILESDIR}"/${PN}-10.3-configure-ac.patch #426262
 )
 
 src_prepare() {
@@ -50,6 +51,9 @@ src_prepare() {
 	# From upstreams autoconf.sh, to make it utilize the autotools eclass
 	# Here translate the autoconf.sh, equivalent to the following code
 	# > sh autoconf.sh
+
+	# Move configure.in to configure.ac (bug #426262)
+	mv configure.in configure.ac || die
 
 	# Autoconf in root ...
 	eautoconf --force
