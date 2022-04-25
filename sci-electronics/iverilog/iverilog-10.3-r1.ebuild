@@ -1,7 +1,7 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 inherit autotools
 
@@ -26,23 +26,22 @@ LICENSE="LGPL-2.1"
 SLOT="0"
 IUSE="examples"
 
-# If you are building from git, you will also need gperf to generate
-# the configure scripts.
-RDEPEND="
+DEPEND="
 	sys-libs/readline:=
 	sys-libs/zlib
 "
-
-DEPEND="
+RDEPEND="${DEPEND}"
+BDEPEND="
 	dev-util/gperf
 	sys-devel/bison
 	sys-devel/flex
-	${RDEPEND}
 "
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-10.3-file-missing.patch #705412
 	"${FILESDIR}"/${PN}-10.3-fno-common.patch #706366
+	"${FILESDIR}"/${PN}-10.3-gen-bison-header.patch #734760
+	"${FILESDIR}"/${PN}-10.3-call-nm.patch #731906
 )
 
 src_prepare() {
