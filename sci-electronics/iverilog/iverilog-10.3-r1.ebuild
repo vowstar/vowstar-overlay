@@ -43,6 +43,7 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-10.3-gen-bison-header.patch #734760
 	"${FILESDIR}"/${PN}-10.3-call-nm.patch #731906
 	"${FILESDIR}"/${PN}-10.3-configure-ac.patch #426262
+	"${FILESDIR}"/${PN}-10.3-override-var.patch #730096
 )
 
 src_prepare() {
