@@ -1,6 +1,6 @@
 https://bugs.gentoo.org/730096
---- vpi/Makefile.in	2022-04-25 18:39:03.748939186 +0800
-+++ vpi/Makefile.in.new	2022-04-25 18:38:43.754679053 +0800
+--- a/vpi/Makefile.in	2022-04-25 18:39:03.748939186 +0800
++++ b/vpi/Makefile.in	2022-04-25 18:38:43.754679053 +0800
 @@ -71,7 +71,7 @@
  M = sys_clog2.o v2005_math.o
  
