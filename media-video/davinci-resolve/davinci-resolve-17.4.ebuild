@@ -3,12 +3,11 @@
 
 EAPI="8"
 
-MAJOR_VER="$(ver_cut 1-2)"
 if [[ "${PN}" == "davinci-resolve-studio" ]] ; then
-	BASE_NAME="DaVinci_Resolve_Studio_${MAJOR_VER}_Linux"
+	BASE_NAME="DaVinci_Resolve_Studio_${PV}_Linux"
 	CONFLICT_PKG="!!media-video/davinci-resolve"
 else
-	BASE_NAME="DaVinci_Resolve_${MAJOR_VER}_Linux"
+	BASE_NAME="DaVinci_Resolve_${PV}_Linux"
 	CONFLICT_PKG="!!media-video/davinci-resolve-studio"
 fi
 ARC_NAME="${BASE_NAME}.zip"
