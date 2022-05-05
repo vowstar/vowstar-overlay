@@ -1,19 +1,18 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="7"
+EAPI="8"
 
-MAJOR_VER="$(ver_cut 1-2)"
 if [[ "${PN}" == "davinci-resolve-studio" ]] ; then
-	BASE_NAME="DaVinci_Resolve_Studio_${MAJOR_VER}_Linux"
+	BASE_NAME="DaVinci_Resolve_Studio_${PV}_Linux"
 	CONFLICT_PKG="!!media-video/davinci-resolve"
 else
-	BASE_NAME="DaVinci_Resolve_${MAJOR_VER}_Linux"
+	BASE_NAME="DaVinci_Resolve_${PV}_Linux"
 	CONFLICT_PKG="!!media-video/davinci-resolve-studio"
 fi
 ARC_NAME="${BASE_NAME}.zip"
 
-inherit udev xdg
+inherit desktop udev xdg
 
 DESCRIPTION="Professional A/V post-production software suite"
 HOMEPAGE="
@@ -31,10 +30,6 @@ RESTRICT="strip mirror bindist fetch"
 RDEPEND="
 	virtual/glu
 	x11-libs/gtk+:=
-	${CONFLICT_PKG}
-"
-
-DEPEND="
 	app-arch/libarchive
 	dev-libs/openssl-compat
 	dev-qt/qtcore:5
@@ -47,10 +42,17 @@ DEPEND="
 	udev? ( virtual/udev )
 	virtual/opencl
 	x11-misc/xdg-user-dirs
+	${CONFLICT_PKG}
+"
+
+DEPEND="
 	${RDEPEND}
 "
 
-BDEPEND="dev-util/patchelf"
+BDEPEND="
+	app-arch/unzip
+	dev-util/patchelf
+"
 
 S="${WORKDIR}"
 
@@ -150,41 +152,40 @@ src_install() {
 
 	ln -s "${D}"/opt/"${PKG_NAME}"/BlackmagicRAWPlayer/BlackmagicRawAPI "${D}"/opt/"${PKG_NAME}"/bin/ || die
 
-	dodir "/opt/${PKG_NAME}/configs"
 	insinto "/opt/${PKG_NAME}/configs"
+	dodir "/opt/${PKG_NAME}/configs"
 	insopts -m0666
 	doins share/default-config.dat
 	doins share/log-conf.xml
-	dodir "/opt/${PKG_NAME}/DolbyVision"
 	insinto "/opt/${PKG_NAME}/DolbyVision"
+	dodir "/opt/${PKG_NAME}/DolbyVision"
 	insopts -m0666
 	doins share/default_cm_config.bin
-	dodir /usr/share/applications
-	insinto /usr/share/applications
-	insopts -m0644
 	# This will help adding the app to favorites and prevent glitches on many desktops.
 	echo "StartupWMClass=resolve" >> share/DaVinciResolve.desktop || die
-	doins share/DaVinciResolve.desktop
-	doins share/DaVinciControlPanelsSetup.desktop
-	doins share/DaVinciResolveInstaller.desktop
-	doins share/DaVinciResolveCaptureLogs.desktop
-	doins share/blackmagicraw-player.desktop
-	doins share/blackmagicraw-speedtest.desktop
-	dodir /usr/share/desktop-directories
+	domenu share/DaVinciResolve.desktop
+	domenu share/DaVinciControlPanelsSetup.desktop
+	domenu share/DaVinciResolveInstaller.desktop
+	domenu share/DaVinciResolveCaptureLogs.desktop
+	domenu share/blackmagicraw-player.desktop
+	domenu share/blackmagicraw-speedtest.desktop
 	insinto /usr/share/desktop-directories
+	dodir /usr/share/desktop-directories
 	insopts -m0644
 	doins share/DaVinciResolve.directory
-	dodir /etc/xdg/menus
 	insinto /etc/xdg/menus
+	dodir /etc/xdg/menus
 	insopts -m0644
 	doins share/DaVinciResolve.menu
-	dodir /usr/share/icons/hicolor/64x64/apps
-	insinto /usr/share/icons/hicolor/64x64/apps
-	insopts -m0644
+	local x
+	for x in 64; do
+		doicon -s ${x} graphics/DV_Resolve.png
+		doicon -s ${x} graphics/DV_ResolveProj.png
+	done
 	doins graphics/DV_Resolve.png
 	doins graphics/DV_ResolveProj.png
-	dodir /usr/share/mime/packages
 	insinto /usr/share/mime/packages
+	dodir /usr/share/mime/packages
 	insopts -m0644
 	doins share/resolve.xml
 
