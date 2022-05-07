@@ -31,9 +31,12 @@ RDEPEND="
 	dev-qt/qtgui:5
 	dev-qt/qtwidgets:5
 	python? (
-		dev-python/PyQt5[gui,widgets,${PYTHON_USEDEP}]
 		${PYTHON_DEPS}
-		)
+		$(python_gen_cond_dep '
+			dev-python/PyQt5[gui,widgets,${PYTHON_USEDEP}]
+			<dev-python/sip-5:=[${PYTHON_USEDEP}]
+		')
+	)
 "
 DEPEND="${RDEPEND}"
 
@@ -54,7 +57,7 @@ src_compile() {
 }
 
 python_compile() {
-	use python && distutils-r1_python_compile build_ext
+	use python && distutils-r1_python_compile build_ext --qmake-bin=$(qt5_get_bindir)/qmake
 }
 
 src_test() {
