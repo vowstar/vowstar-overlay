@@ -53,7 +53,6 @@ src_prepare() {
 	sed -i -e '/^unix:DESTDIR/ d' -e "\$atarget.path = /usr/$(get_libdir)" \
 		-e "\$aINSTALLS += target" src/qhexedit.pro \
 		|| die "src/qhexedit.pro: sed failed"
-	use python && distutils-r1_src_prepare
 }
 
 src_configure() {
