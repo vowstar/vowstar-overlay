@@ -3,8 +3,9 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{8..10} )
 DISTUTILS_USE_PEP517=standalone
+PYTHON_COMPAT=( python3_{8..10} pypy3 )
+
 inherit distutils-r1 qmake-utils
 
 EGIT_COMMIT="541139125be034b90b6811a84faa1413e357fd94"
@@ -66,13 +67,14 @@ src_configure() {
 src_compile() {
 	default
 	use gui && emake -C example
-}
-
-python_compile() {
 	if use python; then
 		export PATH="$(qt5_get_bindir):${PATH}"
 		sip-build || die
 	fi
+}
+
+python_compile() {
+	;
 }
 
 src_test() {
