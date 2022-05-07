@@ -65,16 +65,12 @@ src_configure() {
 }
 
 src_compile() {
-	default
+	emake
 	use gui && emake -C example
 	if use python; then
 		export PATH="$(qt5_get_bindir):${PATH}"
 		sip-build || die
 	fi
-}
-
-python_compile() {
-	;;
 }
 
 src_test() {
@@ -89,10 +85,10 @@ src_test() {
 src_install() {
 	doheader src/*.h
 	dolib.so libqhexedit.so*
-	# if use python; then
-	# 	export PATH="$(qt5_get_bindir):${PATH}"
-	# 	sip-install || die
-	# fi
+	if use python; then
+		export PATH="$(qt5_get_bindir):${PATH}"
+		sip-install || die
+	fi
 	if use gui; then
 		dobin example/qhexedit
 		insinto /usr/share/${PN}/
