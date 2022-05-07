@@ -4,7 +4,7 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{8..10} )
-DISTUTILS_USE_PEP517=setuptools
+DISTUTILS_USE_PEP517=standalone
 inherit distutils-r1 qmake-utils
 
 EGIT_COMMIT="541139125be034b90b6811a84faa1413e357fd94"
@@ -65,12 +65,14 @@ src_configure() {
 
 src_compile() {
 	default
-	use python && distutils-r1_src_compile
 	use gui && emake -C example
 }
 
 python_compile() {
-	use python && distutils-r1_python_compile build_ext --library-dirs="${S}"
+	if use python; then
+		export PATH="$(qt5_get_bindir):${PATH}"
+		sip-build || die
+	fi
 }
 
 src_test() {
@@ -85,7 +87,10 @@ src_test() {
 src_install() {
 	doheader src/*.h
 	dolib.so libqhexedit.so*
-	use python && distutils-r1_src_install
+	if use python; then
+		export PATH="$(qt5_get_bindir):${PATH}"
+		sip-install || die
+	fi
 	if use gui; then
 		dobin example/qhexedit
 		insinto /usr/share/${PN}/
