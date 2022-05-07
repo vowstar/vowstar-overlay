@@ -34,7 +34,7 @@ RDEPEND="
 		${PYTHON_DEPS}
 		$(python_gen_cond_dep '
 			dev-python/PyQt5[gui,widgets,${PYTHON_USEDEP}]
-			<dev-python/sip-5:=[${PYTHON_USEDEP}]
+			>=dev-python/sip-5:=[${PYTHON_USEDEP}]
 		')
 	)
 "
@@ -48,6 +48,7 @@ src_configure() {
 		cd example || die "can't cd example"
 		eqmake5 qhexedit.pro
 	fi
+	rm setup.py || die
 }
 
 src_compile() {
@@ -57,7 +58,7 @@ src_compile() {
 }
 
 python_compile() {
-	use python && distutils-r1_python_compile build_ext --qmake-bin=$(qt5_get_bindir)/qmake
+	use python && distutils-r1_python_compile build_ext
 }
 
 src_test() {
