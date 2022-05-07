@@ -21,7 +21,10 @@ KEYWORDS="~amd64 ~riscv ~x86"
 IUSE="doc +gui python"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
-PATCHES=( "${FILESDIR}/${PN}-0.8.9.patch" )
+PATCHES=(
+	"${FILESDIR}/${PN}-0.8.9.patch"
+	"${FILESDIR}/${PN}-0.8.9-sip5.patch"
+)
 
 RDEPEND="
 	dev-qt/qtcore:5
