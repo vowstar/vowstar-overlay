@@ -5,8 +5,7 @@ EAPI=8
 
 PYTHON_COMPAT=( python3_{8,9,10} )
 
-#DISTUTILS_OPTIONAL=1
-#DISTUTILS_USE_PEP517=p
+DISTUTILS_USE_SETUPTOOLS=pyproject.toml
 
 inherit distutils-r1 qmake-utils
 
