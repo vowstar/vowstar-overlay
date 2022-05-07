@@ -4,7 +4,7 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{8..10} )
-DISTUTILS_USE_PEP517=standalone
+DISTUTILS_USE_PEP517=setuptools
 inherit distutils-r1 qmake-utils
 
 EGIT_COMMIT="541139125be034b90b6811a84faa1413e357fd94"
