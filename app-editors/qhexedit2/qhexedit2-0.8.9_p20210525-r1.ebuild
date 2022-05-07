@@ -74,7 +74,7 @@ src_compile() {
 }
 
 python_compile() {
-	;
+	;;
 }
 
 src_test() {
