@@ -48,7 +48,7 @@ src_configure() {
 		cd example || die "can't cd example"
 		eqmake5 qhexedit.pro
 	fi
-	rm setup.py || die
+	rm ${S}/setup.py || die
 }
 
 src_compile() {
