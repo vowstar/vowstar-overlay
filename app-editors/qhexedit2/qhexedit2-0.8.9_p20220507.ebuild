@@ -5,8 +5,6 @@ EAPI=8
 
 PYTHON_COMPAT=( python3_{8,9,10} )
 
-DISTUTILS_USE_SETUPTOOLS=pyproject.toml
-
 inherit distutils-r1 qmake-utils
 
 EGIT_COMMIT="3477064039454ee4da10683bfd32e04d3c5a0de2"
@@ -22,7 +20,7 @@ REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
 PATCHES=(
 	"${FILESDIR}/${PN}-0.8.9.patch"
-	"${FILESDIR}/${PN}-0.8.9-sip5.patch"
+	"${FILESDIR}/${PN}-0.8.9-sip.patch" #820473
 )
 
 RDEPEND="
@@ -33,7 +31,7 @@ RDEPEND="
 		${PYTHON_DEPS}
 		$(python_gen_cond_dep '
 			dev-python/PyQt5[gui,widgets,${PYTHON_USEDEP}]
-			>=dev-python/sip-5:=[${PYTHON_USEDEP}]
+			<dev-python/sip-5:=[${PYTHON_USEDEP}]
 		')
 	)
 "
