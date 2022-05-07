@@ -24,13 +24,4 @@ index 2a94016..55d7bc2 100644
 +
 +target.path = /usr/lib64
 +INSTALLS += target
-diff --git a/src/qhexedit.sip b/src/qhexedit.sip
-index 082621e..a7ef4e7 100644
---- a/src/qhexedit.sip
-+++ b/src/qhexedit.sip
-@@ -1,4 +1,4 @@
--%Module(name=qhexedit, version=1)
-+%Module(name=qhexedit)
- 
- %Import QtCore/QtCoremod.sip
- %Import QtGui/QtGuimod.sip
+

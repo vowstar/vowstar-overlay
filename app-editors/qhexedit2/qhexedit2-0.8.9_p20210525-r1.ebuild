@@ -3,14 +3,14 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{8,9,10} )
-
+PYTHON_COMPAT=( python3_{8..10} )
+DISTUTILS_USE_SETUPTOOLS=pyproject.toml
 inherit distutils-r1 qmake-utils
 
 EGIT_COMMIT="541139125be034b90b6811a84faa1413e357fd94"
 DESCRIPTION="Hex editor library, Qt application written in C++ with Python bindings"
-HOMEPAGE="https://github.com/lancos/qhexedit2/"
-SRC_URI="https://github.com/lancos/${PN}/archive/${EGIT_COMMIT}.tar.gz -> ${P}.tar.gz"
+HOMEPAGE="https://github.com/Simsys/qhexedit2/"
+SRC_URI="https://github.com/Simsys/${PN}/archive/${EGIT_COMMIT}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -21,6 +21,8 @@ REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 PATCHES=(
 	"${FILESDIR}/${PN}-0.8.9.patch"
 	"${FILESDIR}/${PN}-0.8.9-sip.patch" #820473
+	"${FILESDIR}/${PN}-0.8.9-sip5.patch" #820473
+	"${FILESDIR}/${PN}-0.8.9-fix-crash.patch"
 )
 
 RDEPEND="
@@ -31,11 +33,20 @@ RDEPEND="
 		${PYTHON_DEPS}
 		$(python_gen_cond_dep '
 			dev-python/PyQt5[gui,widgets,${PYTHON_USEDEP}]
-			<dev-python/sip-5:=[${PYTHON_USEDEP}]
 		')
 	)
 "
 DEPEND="${RDEPEND}"
+BDEPEND="
+	python? (
+		${PYTHON_DEPS}
+		$(python_gen_cond_dep '
+			dev-python/PyQt5[gui,widgets,${PYTHON_USEDEP}]
+			>=dev-python/PyQt-builder-1.10[${PYTHON_USEDEP}]
+			>=dev-python/sip-6:=[${PYTHON_USEDEP}]
+		')
+	)
+"
 
 S="${WORKDIR}/${PN}-${EGIT_COMMIT}"
 
