@@ -69,7 +69,10 @@ src_compile() {
 	use gui && emake -C example
 	if use python; then
 		export PATH="$(qt5_get_bindir):${PATH}"
-		sip-build || die
+		python_build() {
+			sip-build || die
+		}
+		python_foreach_impl run_in_build_dir python_build
 	fi
 }
 
@@ -86,9 +89,12 @@ src_install() {
 	doheader src/*.h
 	dolib.so libqhexedit.so*
 	if use python; then
-		pushd build || die
-		emake install
-		popd || die
+		python_install() {
+			pushd build || die
+			emake INSTALL_ROOT="${D}" install
+			popd || die
+		}
+		python_foreach_impl run_in_build_dir python_install
 	fi
 	if use gui; then
 		dobin example/qhexedit
