@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=standalone
-PYTHON_COMPAT=( python3_{8..10} pypy3 )
+PYTHON_COMPAT=( python3_{8..10} )
 
 inherit distutils-r1 qmake-utils
 
@@ -86,8 +86,9 @@ src_install() {
 	doheader src/*.h
 	dolib.so libqhexedit.so*
 	if use python; then
-		export PATH="$(qt5_get_bindir):${PATH}"
-		sip-install || die
+		pushd build || die
+		emake install
+		popd || die
 	fi
 	if use gui; then
 		dobin example/qhexedit
