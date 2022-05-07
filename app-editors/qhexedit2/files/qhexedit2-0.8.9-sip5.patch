@@ -1,5 +1,7 @@
 https://bugs.gentoo.org/820473
+https://bugs.gentoo.org/815133
 https://github.com/Simsys/qhexedit2/pull/137
+https://src.fedoraproject.org/rpms/qhexedit2/blob/rawhide/f/sip5.patch
 From ce17d35586de1b9fdc21e3f8450dd1d2b76d5bcc Mon Sep 17 00:00:00 2001
 From: Scott Talbert <swt@techie.net>
 Date: Mon, 18 Jan 2021 21:06:46 -0500

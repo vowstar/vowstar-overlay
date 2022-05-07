@@ -19,7 +19,7 @@ IUSE="doc +gui python"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
 PATCHES=(
-	"${FILESDIR}/${PN}-0.8.9.patch"
+	"${FILESDIR}/${PN}-0.8.4-setup.py.patch"
 	"${FILESDIR}/${PN}-0.8.9-sip.patch" #820473
 	"${FILESDIR}/${PN}-0.8.9-sip5.patch" #820473
 	"${FILESDIR}/${PN}-0.8.9-fix-crash.patch"
@@ -39,16 +39,22 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 BDEPEND="
 	python? (
-		${PYTHON_DEPS}
 		$(python_gen_cond_dep '
-			dev-python/PyQt5[gui,widgets,${PYTHON_USEDEP}]
 			>=dev-python/PyQt-builder-1.10[${PYTHON_USEDEP}]
-			>=dev-python/sip-6:=[${PYTHON_USEDEP}]
+			>=dev-python/sip-5:=[${PYTHON_USEDEP}]
 		')
 	)
 "
 
 S="${WORKDIR}/${PN}-${EGIT_COMMIT}"
+
+src_prepare() {
+	default
+	sed -i -e '/^unix:DESTDIR/ d' -e "\$atarget.path = /usr/$(get_libdir)" \
+		-e "\$aINSTALLS += target" src/qhexedit.pro \
+		|| die "src/qhexedit.pro: sed failed"
+	use python && distutils-r1_src_prepare
+}
 
 src_configure() {
 	eqmake5 src/qhexedit.pro
@@ -65,7 +71,7 @@ src_compile() {
 }
 
 python_compile() {
-	use python && distutils-r1_python_compile build_ext
+	use python && distutils-r1_python_compile build_ext --library-dirs="${S}"
 }
 
 src_test() {
