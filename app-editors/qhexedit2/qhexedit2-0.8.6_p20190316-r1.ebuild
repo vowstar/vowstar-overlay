@@ -21,9 +21,7 @@ REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
 PATCHES=(
 	"${FILESDIR}/${PN}-0.8.4-setup.py.patch"
-	"${FILESDIR}/${PN}-0.8.6-sip.patch" #820473
 	"${FILESDIR}/${PN}-0.8.6-sip5.patch" #820473
-	"${FILESDIR}/${PN}-0.8.9-fix-crash.patch"
 )
 
 RDEPEND="
