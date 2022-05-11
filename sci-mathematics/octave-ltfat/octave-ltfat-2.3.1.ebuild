@@ -12,7 +12,12 @@ KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~riscv ~x86"
 RESTRICT="test"
 
 RDEPEND="
+	media-libs/portaudio
+	sci-libs/fftw
 	sci-mathematics/octave
+	virtual/blas
+	virtual/jre
+	virtual/lapack
 "
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"

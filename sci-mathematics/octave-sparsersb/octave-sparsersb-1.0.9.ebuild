@@ -13,6 +13,7 @@ RESTRICT="test"
 
 RDEPEND="
 	sci-mathematics/octave
+	sys-libs/librsb
 "
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"

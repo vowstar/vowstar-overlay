@@ -13,6 +13,7 @@ RESTRICT="test"
 
 RDEPEND="
 	sci-mathematics/octave
+	sci-mathematics/octave-matgeom
 "
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"

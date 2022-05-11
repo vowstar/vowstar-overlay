@@ -12,6 +12,8 @@ KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~riscv ~x86"
 RESTRICT="test"
 
 RDEPEND="
+	dev-python/ffcx
+	sci-libs/dolfin
 	sci-mathematics/octave
 "
 DEPEND="${RDEPEND}"

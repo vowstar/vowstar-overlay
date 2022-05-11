@@ -12,7 +12,10 @@ KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~riscv ~x86"
 RESTRICT="test"
 
 RDEPEND="
+	sci-calculators/units
 	sci-mathematics/octave
+	sys-libs/libtermcap-compat
+	sys-libs/ncurses
 "
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"

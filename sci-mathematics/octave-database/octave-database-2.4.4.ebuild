@@ -12,7 +12,9 @@ KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~riscv ~x86"
 RESTRICT="test"
 
 RDEPEND="
+	dev-db/postgresql
 	sci-mathematics/octave
+	sci-mathematics/octave-struct
 "
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"

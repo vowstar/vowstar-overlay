@@ -13,6 +13,7 @@ RESTRICT="test"
 
 RDEPEND="
 	sci-mathematics/octave
+	sci-mathematics/octave-signal
 "
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
