@@ -17,7 +17,7 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 
-S="${WORKDIR}/${PN/octave-/}"
+S="${WORKDIR}/${P/octave-/}"
 
 src_install() {
 	local INST_PREFIX="${D}/usr/share/octave/packages"
