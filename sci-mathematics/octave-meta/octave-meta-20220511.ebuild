@@ -31,7 +31,6 @@ RDEPEND="
 	sci-mathematics/octave-general
 	sci-mathematics/octave-generate_html
 	sci-mathematics/octave-gsl
-	sci-mathematics/octave-image-acquisition
 	sci-mathematics/octave-instrument-control
 	sci-mathematics/octave-interval
 	sci-mathematics/octave-io
@@ -94,7 +93,6 @@ pkg_postinst() {
 	elog "pkg load general"
 	elog "pkg load generate_html"
 	elog "pkg load gsl"
-	elog "pkg load image-acquisition"
 	elog "pkg load instrument-control"
 	elog "pkg load interval"
 	elog "pkg load io"
@@ -155,7 +153,6 @@ pkg_postrm() {
 	elog "pkg load general"
 	elog "pkg load generate_html"
 	elog "pkg load gsl"
-	elog "pkg load image-acquisition"
 	elog "pkg load instrument-control"
 	elog "pkg load interval"
 	elog "pkg load io"
