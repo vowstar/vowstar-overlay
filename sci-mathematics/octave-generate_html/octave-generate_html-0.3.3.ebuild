@@ -3,8 +3,8 @@
 
 EAPI=8
 
-DESCRIPTION="ZeroMQ bindings for GNU Octave"
-HOMEPAGE="https://octave.sourceforge.io/zeromq"
+DESCRIPTION="This package provides functions for generating HTML pages that contain the help texts for a set of functions"
+HOMEPAGE="https://octave.sourceforge.io/generate_html"
 SRC_URI="https://downloads.sourceforge.net/octave/${P/octave-/}.tar.gz -> ${P}.tar.gz"
 LICENSE="GPL-3"
 SLOT="0"
@@ -20,6 +20,10 @@ S="${WORKDIR}/${P/octave-/}"
 src_install() {
 	local INST_PREFIX="${D}/usr/share/octave/packages"
 	local ARCH_PREFIX="${D}/usr/$(get_libdir)/octave/packages"
+	local OCTAVE_VER="$(best_version sci-mathematics/octave)"
+	OCTAVE_VER_FULL=${OCTAVE_VER#sci-mathematics/octave-}
+	OCTAVE_VER=${OCTAVE_VER_FULL%-*}
+	export LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/$(get_libdir)/octave/${OCTAVE_VER}:/usr/$(get_libdir)/octave/${OCTAVE_VER_FULL}"
 
 	octave --no-history --no-init-file --no-site-file --no-window-system -q -f \
 		--eval "warning off all;\
