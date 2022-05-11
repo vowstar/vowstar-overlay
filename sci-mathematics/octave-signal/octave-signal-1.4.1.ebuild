@@ -22,7 +22,7 @@ src_install() {
 	local ARCH_PREFIX="${D}/usr/$(get_libdir)/octave/packages"
 	local OCTAVE_VER="$(best_version sci-mathematics/octave)"
 	OCTAVE_VER_FULL=${OCTAVE_VER#sci-mathematics/octave-}
-	OCTAVE_VER=${OCTAVE_VER%-*}
+	OCTAVE_VER=${OCTAVE_VER_FULL%-*}
 	export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/$(get_libdir)/octave/${OCTAVE_VER}:/usr/$(get_libdir)/octave/${OCTAVE_VER_FULL}"
 
 	octave --no-history --no-init-file --no-site-file --no-window-system -q -f \
