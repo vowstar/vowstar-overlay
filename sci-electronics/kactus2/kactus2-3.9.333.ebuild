@@ -17,7 +17,7 @@ if [[ "${PV}" == "9999" ]] ; then
 	EGIT_REPO_URI="https://github.com/${PN}/${PN}dev.git"
 else
 	SRC_URI="https://github.com/${PN}/${PN}dev/archive/${RELEASE_HASH}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~m68k ~mips ~ppc ~ppc64 ~s390 ~sparc ~x86"
+	KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~riscv ~x86"
 	S="${WORKDIR}/${PN}dev-${RELEASE_HASH}"
 fi
 
