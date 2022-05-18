@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="8"
-RELEASE_HASH="239cc83cb9cd4441174959a58dbadc1b941f76dc"
+RELEASE_HASH="7a96a4bcfdded622bb62f8ff610246136e23f326"
 
 inherit qmake-utils xdg
 
@@ -37,10 +37,6 @@ RDEPEND="
 DEPEND="
 	${RDEPEND}
 "
-
-PATCHES=(
-	"${FILESDIR}"/${PN}-3.9.333-install.patch # Fix install problem
-)
 
 src_prepare() {
 	default
