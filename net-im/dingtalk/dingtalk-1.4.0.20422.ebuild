@@ -47,15 +47,13 @@ src_install() {
 	# Dingtalk will use the system libs instead
 	MY_VERSION=$(cat "${S}"/opt/apps/"${MY_PGK_NAME}"/files/version)
 	# Use system stdc++
-	rm "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libstdc++* || die
+	rm -f "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libstdc++* || die
 	# Use system glibc
-	rm "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libm.so* || die
+	rm -f "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libm.so* || die
 	# Use system zlib
-	rm "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libz* || die
-	# Use system gtk+, or it can't be switch input method on popup window
-	rm "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libgtk-x11* || die
+	rm -f "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libz* || die
 	# Use system libcurl, fix preserved depend problem
-	rm "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libcurl.so* || die
+	rm -f "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libcurl.so* || die
 
 	# Set RPATH for preserve-libs handling
 	pushd "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}" || die
