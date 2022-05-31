@@ -70,10 +70,10 @@ src_install() {
 	popd || die
 
 	# Fix desktop files
-	sed -E -i 's/^Exec=.*$/Exec=zwcad %F/g' "${S}/opt/apps/${MY_PGK_NAME}/com.zwsoft.zwcad.desktop" || die
-	sed -E -i 's/^Icon=.*$/Icon=ZWCAD/g' "${S}/opt/apps/${MY_PGK_NAME}/com.zwsoft.zwcad.desktop" || die
-	sed -E -i 's/Application;//g' "${S}/opt/apps/${MY_PGK_NAME}/com.zwsoft.zwcad.desktop" || die
-	domenu "${S}/opt/apps/${MY_PGK_NAME}/com.zwsoft.zwcad.desktop"
+	sed -E -i 's/^Exec=.*$/Exec=zwcad %F/g' "${S}/opt/apps/${MY_PGK_NAME}/entries/applications/com.zwsoft.zwcad.desktop" || die
+	sed -E -i 's/^Icon=.*$/Icon=ZWCAD/g' "${S}/opt/apps/${MY_PGK_NAME}/entries/applications/com.zwsoft.zwcad.desktop" || die
+	sed -E -i 's/Application;//g' "${S}/opt/apps/${MY_PGK_NAME}/entries/applications/com.zwsoft.zwcad.desktop" || die
+	domenu "${S}/opt/apps/${MY_PGK_NAME}/entries/applications/com.zwsoft.zwcad.desktop"
 
 	# Add zw3d command
 	mkdir -p "${S}"/usr/bin/ || die
