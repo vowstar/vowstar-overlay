@@ -6,7 +6,7 @@ EAPI=8
 MY_PN="jd-gui"
 MY_P="jd-gui-${PV}"
 
-inherit desktop rpm xdg
+inherit edos2unix desktop rpm xdg
 
 DESCRIPTION="A standalone graphical utility that displays Java source codes of .class file"
 HOMEPAGE="http://jd.benow.ca/"
@@ -43,5 +43,7 @@ src_install() {
 	fi
 	sed -i "s|Exec=.*$|Exec=java -jar /opt/${MY_PN}/${MY_P}.jar|g" "${MY_PN}".desktop
 	sed -i "s|Icon=.*$|Icon=${MY_PN}|g" "${MY_PN}".desktop
+	# Fix QA: lines should only be separated by a line feed character
+	edos2unix "${MY_PN}".desktop
 	domenu "${MY_PN}".desktop
 }
