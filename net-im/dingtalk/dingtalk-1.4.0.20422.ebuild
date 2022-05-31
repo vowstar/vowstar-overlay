@@ -105,7 +105,7 @@ fi
 
 	# Install package and fix permissions
 	insinto /opt
-	doins -r opt/${MY_PGK_NAME}
+	doins -r opt/app/${MY_PGK_NAME}
 	insinto /usr
 	doins -r usr/*
 
