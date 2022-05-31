@@ -17,19 +17,10 @@ KEYWORDS="-* ~amd64"
 RESTRICT="strip mirror bindist"
 
 RDEPEND="
-	dev-libs/glib:2
 	media-libs/fontconfig
 	media-libs/libglvnd
-	net-print/cups
 	sys-apps/util-linux
 	sys-libs/zlib
-	x11-libs/libICE
-	x11-libs/libSM
-	x11-libs/libX11
-	x11-libs/libxcb
-	x11-libs/libXi
-	x11-libs/libxkbcommon
-	x11-libs/libXrender
 "
 
 DEPEND="${RDEPEND}"
