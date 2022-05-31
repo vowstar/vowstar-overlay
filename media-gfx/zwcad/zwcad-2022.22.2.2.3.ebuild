@@ -4,7 +4,7 @@
 EAPI=8
 
 MY_PGK_NAME="com.zwsoft.zwcad2022"
-inherit unpacker xdg
+inherit desktop unpacker xdg
 
 DESCRIPTION="CAD software for 2D drawing, reviewing and printing work"
 HOMEPAGE="https://www.zwsoft.cn/product/zwcad/linux"
@@ -54,8 +54,7 @@ QA_PREBUILT="*"
 
 src_install() {
 	# Install scalable icons
-	mkdir -p "${S}"/usr/share/icons/hicolor/scalable/apps || die
-	mv "${S}"/opt/apps/${MY_PGK_NAME}/files/Icons/ZWCAD.svg "${pkgdir}"/usr/share/icons/hicolor/scalable/apps || die
+	doicon -s scalable "${S}"/opt/apps/${MY_PGK_NAME}/files/Icons/ZWCAD.svg
 
 	# Set RPATH for preserve-libs handling
 	pushd "${S}"/opt/apps/${MY_PGK_NAME}/files || die
@@ -64,32 +63,27 @@ src_install() {
 		# Use \x7fELF header to separate ELF executables and libraries
 		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
 		local RPATH_ROOT="/opt/apps/${MY_PGK_NAME}/files"
-		local RPATH_S="${RPATH_ROOT}/:${RPATH_ROOT}/lib/:${RPATH_ROOT}/lib/xlator/:${RPATH_ROOT}/lib/xlator/InterOp/:${RPATH_ROOT}/libqt/:${RPATH_ROOT}/libqt/plugins/designer/:${RPATH_ROOT}/lib3rd/"
+		local RPATH_S="${RPATH_ROOT}/:${RPATH_ROOT}/lib/:${RPATH_ROOT}/plugins/:${RPATH_ROOT}/zh-CN/"
 		patchelf --set-rpath "${RPATH_S}" "${x}" || \
-			die "patchelf failed on ${x}"
-		patchelf --replace-needed libMagickCore-6.Q16.so.7 libMagickCore-7.Q16.so "${x}" || \
 			die "patchelf failed on ${x}"
 	done
 	popd || die
 
 	# Fix desktop files
-	sed -E -i 's/^Exec=.*$/Exec=zw3d %F/g' "${S}/usr/share/applications/${MY_PGK_NAME}.desktop" || die
-	sed -E -i 's/^Icon=.*$/Icon=ZW3Dprofessional/g' "${S}/usr/share/applications/${MY_PGK_NAME}.desktop" || die
-	sed -E -i 's/Application;//g' "${S}/usr/share/applications/${MY_PGK_NAME}.desktop" || die
+	sed -E -i 's/^Exec=.*$/Exec=zwcad %F/g' "${S}/opt/apps/${MY_PGK_NAME}/com.zwsoft.zwcad.desktop" || die
+	sed -E -i 's/^Icon=.*$/Icon=ZWCAD/g' "${S}/opt/apps/${MY_PGK_NAME}/com.zwsoft.zwcad.desktop" || die
+	sed -E -i 's/Application;//g' "${S}/opt/apps/${MY_PGK_NAME}/com.zwsoft.zwcad.desktop" || die
+	domenu "${S}/opt/apps/${MY_PGK_NAME}/com.zwsoft.zwcad.desktop"
 
 	# Add zw3d command
 	mkdir -p "${S}"/usr/bin/ || die
 
-	cat >> "${S}"/opt/apps/${MY_PGK_NAME}/zw3d <<- EOF || die
+	cat >> "${S}"/opt/apps/${MY_PGK_NAME}/zwcad <<- EOF || die
 #!/bin/sh
-sh /opt/apps/${MY_PGK_NAME}/files/zw3drun.sh \$*
+sh /opt/apps/${MY_PGK_NAME}/files/ZWCADRUN.sh \$*
 	EOF
 
-	ln -s /opt/apps/${MY_PGK_NAME}/zw3d "${S}"/usr/bin/zw3d || die
-
-	# Use system libraries
-	rm -rf "${S}"/opt/apps/${MY_PGK_NAME}/files/lib3rd/libMagickCore* || die
-	rm -rf "${S}"/opt/apps/${MY_PGK_NAME}/files/lib3rd/libjpeg* || die
+	ln -s /opt/apps/${MY_PGK_NAME}/zwcad "${S}"/usr/bin/zwcad || die
 
 	# Install package and fix permissions
 	insinto /opt/apps/
@@ -97,7 +91,7 @@ sh /opt/apps/${MY_PGK_NAME}/files/zw3drun.sh \$*
 	insinto /usr
 	doins -r usr/*
 
-	fperms 0755 /opt/apps/${MY_PGK_NAME}/zw3d
+	fperms 0755 /opt/apps/${MY_PGK_NAME}/zwcad
 
 	pushd "${S}" || die
 	for x in $(find "opt/apps/${MY_PGK_NAME}") ; do
