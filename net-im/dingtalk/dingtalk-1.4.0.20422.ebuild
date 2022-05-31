@@ -104,13 +104,13 @@ fi
 	mv "${S}"/opt/apps/"${MY_PGK_NAME}"/entries/applications/"${MY_PGK_NAME}".desktop usr/share/applications/ || die
 
 	# Install package and fix permissions
-	insinto /opt/app
-	doins -r opt/app/${MY_PGK_NAME}
+	insinto /opt/apps
+	doins -r opt/apps/${MY_PGK_NAME}
 	insinto /usr
 	doins -r usr/*
 
 	pushd "${S}" || die
-	for x in $(find "opt/app/${MY_PGK_NAME}") ; do
+	for x in $(find "opt/apps/${MY_PGK_NAME}") ; do
 		# Fix shell script permissions
 		[[ "${x: -3}" == ".sh" ]] && fperms 0755 "/${x}"
 		# Use \x7fELF header to separate ELF executables and libraries
