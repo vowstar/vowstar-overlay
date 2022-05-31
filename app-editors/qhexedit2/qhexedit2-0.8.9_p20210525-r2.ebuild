@@ -8,10 +8,10 @@ PYTHON_COMPAT=( python3_{8..10} )
 
 inherit distutils-r1 qmake-utils
 
-EGIT_COMMIT="ba5af8616b3a6c916e718914225a483267c01356"
+EGIT_COMMIT="541139125be034b90b6811a84faa1413e357fd94"
 DESCRIPTION="Hex editor library, Qt application written in C++ with Python bindings"
-HOMEPAGE="https://github.com/lancos/qhexedit2/"
-SRC_URI="https://github.com/lancos/${PN}/archive/${EGIT_COMMIT}.tar.gz -> ${P}.tar.gz"
+HOMEPAGE="https://github.com/Simsys/qhexedit2/"
+SRC_URI="https://github.com/Simsys/${PN}/archive/${EGIT_COMMIT}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -21,7 +21,9 @@ REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
 PATCHES=(
 	"${FILESDIR}/${PN}-0.8.4-setup.py.patch"
+	"${FILESDIR}/${PN}-0.8.6-sip.patch" #820473
 	"${FILESDIR}/${PN}-0.8.6-sip5.patch" #820473
+	"${FILESDIR}/${PN}-0.8.9-fix-crash.patch"
 )
 
 RDEPEND="
