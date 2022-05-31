@@ -40,40 +40,39 @@ S=${WORKDIR}
 QA_PREBUILT="*"
 
 src_install() {
-	# Move ${MY_PGK_NAME} out from /opt/apps
+	# Install scalable icon
 	mkdir -p "${S}"/usr/share/icons/hicolor/scalable/apps || die
-	mv "${S}"/opt/apps/"${MY_PGK_NAME}" "${S}"/opt/"${MY_PGK_NAME}" || die
 	cp "${FILESDIR}"/dingtalk.svg "${S}"/usr/share/icons/hicolor/scalable/apps || die
 	# Remove the libraries that break compatibility in modern systems
 	# Dingtalk will use the system libs instead
-	MY_VERSION=$(cat "${S}"/opt/"${MY_PGK_NAME}"/files/version)
+	MY_VERSION=$(cat "${S}"/opt/apps/"${MY_PGK_NAME}"/files/version)
 	# Use system stdc++
-	rm "${S}"/opt/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libstdc++* || die
+	rm "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libstdc++* || die
 	# Use system glibc
-	rm "${S}"/opt/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libm.so* || die
+	rm "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libm.so* || die
 	# Use system zlib
-	rm "${S}"/opt/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libz* || die
+	rm "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libz* || die
 	# Use system gtk+, or it can't be switch input method on popup window
-	rm "${S}"/opt/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libgtk-x11* || die
+	rm "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libgtk-x11* || die
 	# Use system libcurl, fix preserved depend problem
-	rm "${S}"/opt/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libcurl.so* || die
+	rm "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libcurl.so* || die
 
 	# Set RPATH for preserve-libs handling
-	pushd "${S}"/opt/"${MY_PGK_NAME}"/files/"${MY_VERSION}" || die
+	pushd "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}" || die
 	local x
 	for x in $(find) ; do
 		# Use \x7fELF header to separate ELF executables and libraries
 		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
-		local RPATH_ROOT="/opt/${MY_PGK_NAME}/files/${MY_VERSION}"
+		local RPATH_ROOT="/opt/apps/${MY_PGK_NAME}/files/${MY_VERSION}"
 		patchelf --set-rpath "${RPATH_ROOT}/:${RPATH_ROOT}/swiftshader/:${RPATH_ROOT}/platforminputcontexts/:${RPATH_ROOT}/imageformats/" "${x}" || \
 			die "patchelf failed on ${x}"
 	done
 	popd || die
 	# Fix fcitx5
-	sed -i "s/export XMODIFIERS/#export XMODIFIERS/g" "${S}"/opt/"${MY_PGK_NAME}"/files/Elevator.sh || die
-	sed -i "s/export QT_IM_MODULE/#export QT_IM_MODULE/g" "${S}"/opt/"${MY_PGK_NAME}"/files/Elevator.sh || die
+	sed -i "s/export XMODIFIERS/#export XMODIFIERS/g" "${S}"/opt/apps/"${MY_PGK_NAME}"/files/Elevator.sh || die
+	sed -i "s/export QT_IM_MODULE/#export QT_IM_MODULE/g" "${S}"/opt/apps/"${MY_PGK_NAME}"/files/Elevator.sh || die
 
-	cat >> "${S}"/opt/"${MY_PGK_NAME}"/files/Elevator.sh.head <<- EOF || die
+	cat >> "${S}"/opt/apps/"${MY_PGK_NAME}"/files/Elevator.sh.head <<- EOF || die
 #!/bin/sh
 if [ -z "\${QT_IM_MODULE}" ]
 then
@@ -92,21 +91,19 @@ then
 fi
 	EOF
 
-	cat "${S}"/opt/"${MY_PGK_NAME}"/files/Elevator.sh.head "${S}"/opt/"${MY_PGK_NAME}"/files/Elevator.sh > "${S}"/opt/"${MY_PGK_NAME}"/files/Elevator.sh.new || die
-	cat "${S}"/opt/"${MY_PGK_NAME}"/files/Elevator.sh.new > "${S}"/opt/"${MY_PGK_NAME}"/files/Elevator.sh || die
-	rm "${S}"/opt/"${MY_PGK_NAME}"/files/Elevator.sh.head "${S}"/opt/"${MY_PGK_NAME}"/files/Elevator.sh.new || die
+	cat "${S}"/opt/apps/"${MY_PGK_NAME}"/files/Elevator.sh.head "${S}"/opt/apps/"${MY_PGK_NAME}"/files/Elevator.sh > "${S}"/opt/apps/"${MY_PGK_NAME}"/files/Elevator.sh.new || die
+	cat "${S}"/opt/apps/"${MY_PGK_NAME}"/files/Elevator.sh.new > "${S}"/opt/apps/"${MY_PGK_NAME}"/files/Elevator.sh || die
+	rm "${S}"/opt/apps/"${MY_PGK_NAME}"/files/Elevator.sh.head "${S}"/opt/apps/"${MY_PGK_NAME}"/files/Elevator.sh.new || die
 
 	# Add dingtalk command
 	mkdir -p "${S}"/usr/bin/ || die
-	ln -s  /opt/"${MY_PGK_NAME}"/files/Elevator.sh "${S}"/usr/bin/dingtalk || die
+	ln -s  /opt/apps/"${MY_PGK_NAME}"/files/Elevator.sh "${S}"/usr/bin/dingtalk || die
 
 	# Fix file path and desktop files
-	sed -E -i 's|/opt/apps|/opt|g' "${S}"/opt/"${MY_PGK_NAME}"/entries/applications/*.desktop || die
-	sed -E -i 's|/opt/apps|/opt|g' "${S}"/opt/"${MY_PGK_NAME}"//files/Elevator.sh || die
-	sed -E -i 's/^Icon=.*$/Icon=dingtalk/g' "${S}"/opt/"${MY_PGK_NAME}"/entries/applications/*.desktop || die
+	sed -E -i 's/^Icon=.*$/Icon=dingtalk/g' "${S}"/opt/apps/"${MY_PGK_NAME}"/entries/applications/*.desktop || die
 
 	mkdir -p usr/share/applications || die
-	mv "${S}"/opt/"${MY_PGK_NAME}"/entries/applications/"${MY_PGK_NAME}".desktop usr/share/applications/ || die
+	mv "${S}"/opt/apps/"${MY_PGK_NAME}"/entries/applications/"${MY_PGK_NAME}".desktop usr/share/applications/ || die
 
 	# Install package and fix permissions
 	insinto /opt
