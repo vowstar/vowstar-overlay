@@ -93,7 +93,7 @@ sh /opt/apps/${MY_PGK_NAME}/files/zw3drun.sh \$*
 
 	# Install package and fix permissions
 	insinto /opt/apps
-	doins -r opt/${MY_PGK_NAME}
+	doins -r opt/apps/${MY_PGK_NAME}
 	insinto /usr
 	doins -r usr/*
 
