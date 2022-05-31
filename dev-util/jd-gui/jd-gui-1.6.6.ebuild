@@ -25,7 +25,7 @@ S="${WORKDIR}/opt/jd-gui"
 src_install() {
 	insinto /opt/"${MY_PN}"
 	dodir /opt/"${MY_PN}"
-	mv "${MY_P}"*.jar "${MY_P}.jar" || die
+	mv jd_*.jar "${MY_P}.jar" || die
 	doins "${MY_P}.jar"
 
 	echo -e "#!/bin/sh\njava -jar /opt/${MY_PN}/${MY_P}.jar >/dev/null 2>&1 &\n" > "${MY_PN}"
@@ -34,7 +34,8 @@ src_install() {
 	mv jd_*.png "${MY_PN}.png" || die
 	doicon -s 128 "${MY_PN}.png"
 
-	sed -i "s|Exec=.*$|Exec=java -jar /opt/${MY_PN}/${MY_P}.jar|g" jd-gui.desktop
-	sed -i "s|Icon=.*$|Icon=${MY_PN}|g" jd-gui.desktop
-	domenu jd-gui.desktop
+	mv jd_*.desktop "${MY_PN}.desktop" || die
+	sed -i "s|Exec=.*$|Exec=java -jar /opt/${MY_PN}/${MY_P}.jar|g" "${MY_PN}".desktop
+	sed -i "s|Icon=.*$|Icon=${MY_PN}|g" "${MY_PN}".desktop
+	domenu "${MY_PN}".desktop
 }
