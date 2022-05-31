@@ -110,7 +110,7 @@ fi
 	doins -r usr/*
 
 	pushd "${S}" || die
-	for x in $(find "opt/${MY_PGK_NAME}") ; do
+	for x in $(find "opt/app/${MY_PGK_NAME}") ; do
 		# Fix shell script permissions
 		[[ "${x: -3}" == ".sh" ]] && fperms 0755 "/${x}"
 		# Use \x7fELF header to separate ELF executables and libraries
