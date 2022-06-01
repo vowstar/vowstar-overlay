@@ -35,18 +35,18 @@ src_install() {
 	# Install scalable icons
 	doicon -s scalable "${S}"/opt/apps/${MY_PGK_NAME}/files/Icons/ZWCAD.svg
 
-	# # Set RPATH for preserve-libs handling
-	# pushd "${S}"/opt/apps/${MY_PGK_NAME}/files || die
-	# local x
-	# for x in $(find) ; do
-	# 	# Use \x7fELF header to separate ELF executables and libraries
-	# 	[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
-	# 	local RPATH_ROOT="/opt/apps/${MY_PGK_NAME}/files"
-	# 	local RPATH_S="${RPATH_ROOT}/:${RPATH_ROOT}/lib/:${RPATH_ROOT}/lib/mono/lib/:${RPATH_ROOT}/plugins/:${RPATH_ROOT}/zh-CN/"
-	# 	patchelf --set-rpath "${RPATH_S}" "${x}" || \
-	# 		die "patchelf failed on ${x}"
-	# done
-	# popd || die
+	# Set RPATH for preserve-libs handling
+	pushd "${S}"/opt/apps/${MY_PGK_NAME}/files || die
+	local x
+	for x in $(find) ; do
+		# Use \x7fELF header to separate ELF executables and libraries
+		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
+		local RPATH_ROOT="/opt/apps/${MY_PGK_NAME}/files"
+		local RPATH_S="${RPATH_ROOT}/:${RPATH_ROOT}/lib/:${RPATH_ROOT}/lib/mono/lib/:${RPATH_ROOT}/plugins/:${RPATH_ROOT}/zh-CN/"
+		patchelf --set-rpath "${RPATH_S}" "${x}" || \
+			die "patchelf failed on ${x}"
+	done
+	popd || die
 
 	# Fix desktop files
 	sed -E -i 's/^Exec=.*$/Exec=zwcad %F/g' "${S}/opt/apps/${MY_PGK_NAME}/entries/applications/com.zwsoft.zwcad.desktop" || die
@@ -59,6 +59,7 @@ src_install() {
 
 	cat >> "${S}"/opt/apps/${MY_PGK_NAME}/zwcad <<- EOF || die
 #!/bin/sh
+export MONO_PATH=/opt/apps/${MY_PGK_NAME}/files/lib/mono/lib/mono/4.5
 sh /opt/apps/${MY_PGK_NAME}/files/ZWCADRUN.sh \$*
 	EOF
 
