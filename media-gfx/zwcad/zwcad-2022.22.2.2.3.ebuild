@@ -35,8 +35,8 @@ S=${WORKDIR}
 QA_PREBUILT="*"
 
 src_unpack() {
-	unpack "${P}.deb"
-	tar -xf "${PN}-python-3.7.13.tar.bz2" -C "${S}/opt/apps/"${MY_PGK_NAME}"/files/ZwPyRuntime/python3.7/"
+	unpack_deb "${DISTDIR}/${P}.deb"
+	tar -xf "${DISTDIR}/${PN}-python-3.7.13.tar.bz2" -C "${S}/opt/apps/"${MY_PGK_NAME}"/files/ZwPyRuntime/python3.7/"
 }
 
 src_install() {
