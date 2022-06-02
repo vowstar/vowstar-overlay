@@ -24,6 +24,7 @@ RDEPEND="
 	media-libs/libglvnd
 	sys-apps/util-linux
 	sys-libs/zlib
+	virtual/libcrypt:=
 "
 
 DEPEND="${RDEPEND}"
@@ -44,12 +45,13 @@ src_install() {
 	doicon -s scalable "${S}"/opt/apps/${MY_PGK_NAME}/files/Icons/ZWCAD.svg
 
 	# Fix python and QA problems about python
-	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/ZwPyRuntime/python3.6/"
-	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/libZwPythonLoad6.so"
-	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/ZwPyRuntime/python3.5/"
-	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/libZwPythonLoad5.so"
-	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/ZwPyRuntime/python3.4/"
-	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/libZwPythonLoad4.so"
+	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/ZwPyRuntime/python3.6/" || die
+	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/libZwPythonLoad6.so" || die
+	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/ZwPyRuntime/python3.5/" || die
+	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/libZwPythonLoad5.so" || die
+	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/ZwPyRuntime/python3.4/" || die
+	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/libZwPythonLoad4.so" || die
+	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/ZwPyRuntime/python3.7/compiler_compat" || die
 
 	# Set RPATH for preserve-libs handling
 	pushd "${S}"/opt/apps/${MY_PGK_NAME}/files || die
@@ -68,6 +70,11 @@ src_install() {
 	sed -E -i 's/^Exec=.*$/Exec=zwcad %F/g' "${S}/opt/apps/${MY_PGK_NAME}/entries/applications/com.zwsoft.zwcad.desktop" || die
 	sed -E -i 's/^Icon=.*$/Icon=ZWCAD/g' "${S}/opt/apps/${MY_PGK_NAME}/entries/applications/com.zwsoft.zwcad.desktop" || die
 	sed -E -i 's/Application;//g' "${S}/opt/apps/${MY_PGK_NAME}/entries/applications/com.zwsoft.zwcad.desktop" || die
+	# The Version entry in a .desktop file doesn't refer to the version of the
+	# target program. It's the version of the desktop file specification that
+	# this desktop file conforms to.
+	sed -E -i 's/^Version=.*$/Version=1.0/g' "${S}/opt/apps/${MY_PGK_NAME}/entries/applications/com.zwsoft.zwcad.desktop" || die
+	sed -E -i 's/^Categories=.*$/Categories=Graphics;VectorGraphics;Engineering;Construction;2DGraphics;/g' "${S}/opt/apps/${MY_PGK_NAME}/entries/applications/com.zwsoft.zwcad.desktop" || die
 	domenu "${S}/opt/apps/${MY_PGK_NAME}/entries/applications/com.zwsoft.zwcad.desktop"
 
 	# Add zw3d command
