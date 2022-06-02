@@ -9,8 +9,8 @@ inherit desktop unpacker xdg
 DESCRIPTION="CAD software for 2D drawing, reviewing and printing work"
 HOMEPAGE="https://www.zwsoft.cn/product/zwcad/linux"
 SRC_URI="
-	https://download.zwcad.com/zwcad/cad_linux/2022/SP2/signed_com.zwsoft.zwcad2022_22.2.2.3_amd64.deb
-	https://anaconda.org/anaconda/python/3.7.13/download/linux-64/python-3.7.13-h12debd9_0.tar.bz2
+	https://download.zwcad.com/zwcad/cad_linux/2022/SP2/signed_com.zwsoft.zwcad2022_22.2.2.3_amd64.deb -> ${P}.deb
+	https://anaconda.org/anaconda/python/3.7.13/download/linux-64/python-3.7.13-h12debd9_0.tar.bz2 -> ${PN}-python-3.7.13.tar.bz2
 "
 
 LICENSE="all-rights-reserved"
@@ -34,9 +34,22 @@ S=${WORKDIR}
 
 QA_PREBUILT="*"
 
+src_unpack() {
+	unpack "${P}.deb"
+	tar -xf "${PN}-python-3.7.13.tar.bz2" -C "${S}/opt/apps/"${MY_PGK_NAME}"/files/ZwPyRuntime/python3.7/"
+}
+
 src_install() {
 	# Install scalable icons
 	doicon -s scalable "${S}"/opt/apps/${MY_PGK_NAME}/files/Icons/ZWCAD.svg
+
+	# Fix python and QA problems about python
+	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/ZwPyRuntime/python3.6/"
+	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/libZwPythonLoad6.so"
+	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/ZwPyRuntime/python3.5/"
+	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/libZwPythonLoad5.so"
+	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/ZwPyRuntime/python3.4/"
+	rm -rf "${S}/opt/apps/"${MY_PGK_NAME}"/files/libZwPythonLoad4.so"
 
 	# Set RPATH for preserve-libs handling
 	pushd "${S}"/opt/apps/${MY_PGK_NAME}/files || die
@@ -45,7 +58,7 @@ src_install() {
 		# Use \x7fELF header to separate ELF executables and libraries
 		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
 		local RPATH_ROOT="/opt/apps/${MY_PGK_NAME}/files"
-		local RPATH_S="${RPATH_ROOT}/:${RPATH_ROOT}/lib/:${RPATH_ROOT}/lib/mono/lib/:${RPATH_ROOT}/plugins/:${RPATH_ROOT}/zh-CN/"
+		local RPATH_S="${RPATH_ROOT}/:${RPATH_ROOT}/lib/:${RPATH_ROOT}/lib/mono/lib/:${RPATH_ROOT}/plugins/:${RPATH_ROOT}/zh-CN/:${RPATH_ROOT}/ZwPyRuntime/python3.7/lib"
 		patchelf --set-rpath "${RPATH_S}" "${x}" || \
 			die "patchelf failed on ${x}"
 	done
