@@ -8,7 +8,10 @@ inherit desktop unpacker xdg
 
 DESCRIPTION="CAD software for 2D drawing, reviewing and printing work"
 HOMEPAGE="https://www.zwsoft.cn/product/zwcad/linux"
-SRC_URI="https://download.zwcad.com/zwcad/cad_linux/2022/SP2/signed_com.zwsoft.zwcad2022_22.2.2.3_amd64.deb"
+SRC_URI="
+	https://download.zwcad.com/zwcad/cad_linux/2022/SP2/signed_com.zwsoft.zwcad2022_22.2.2.3_amd64.deb
+	https://anaconda.org/anaconda/python/3.7.13/download/linux-64/python-3.7.13-h12debd9_0.tar.bz2
+"
 
 LICENSE="all-rights-reserved"
 SLOT="0"
