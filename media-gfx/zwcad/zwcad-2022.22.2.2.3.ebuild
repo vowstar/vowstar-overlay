@@ -95,7 +95,7 @@ then
 	then
 		export XMODIFIERS="@im=ibus"
 		export QT_IM_MODULE=ibus
-	if [ -n "\$(pidof fcitx)" ]
+	elif [ -n "\$(pidof fcitx)" ]
 	then
 		export XMODIFIERS="@im=fcitx"
 		export QT_IM_MODULE=fcitx
