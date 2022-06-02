@@ -56,7 +56,7 @@ src_install() {
 	local x
 	for x in $(find) ; do
 		# Use \x7fELF header to separate ELF executables and libraries
-		[[ -f "${x}" && "${x}" != "*.o" && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
+		[[ -f "${x}" && "${x: -2}" != ".o" && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
 		local RPATH_ROOT="/opt/apps/${MY_PGK_NAME}/files"
 		local RPATH_S="${RPATH_ROOT}/:${RPATH_ROOT}/lib/:${RPATH_ROOT}/lib/mono/lib/:${RPATH_ROOT}/plugins/:${RPATH_ROOT}/zh-CN/:${RPATH_ROOT}/ZwPyRuntime/python3.7/lib"
 		patchelf --set-rpath "${RPATH_S}" "${x}" || \
