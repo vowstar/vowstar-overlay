@@ -18,7 +18,7 @@ SRC_URI="
 	${_MIRROR}/appstore/pool/appstore/c/${DEB_PN}/${DEB_PN}_${DP_WECHAT_VER}_i386.deb
 	${_MIRROR_LIB}/o/openldap/libldap-2.4-2_2.4.47+dfsg.4-1+eagle_i386.deb
 	${_MIRROR_LIB}/c/cyrus-sasl2/libsasl2-2_2.1.27.1-1+dde_i386.deb
-	https://github.com/oatiz/lyraile-overlay/releases/download/tempfile/${WECHAT_INSTALLER}-${PV}.exe -> ${P}-${WECHAT_INSTALLER}.exe
+	https://github.com/vufa/deepin-wine-wechat-arch/releases/download/v${PV}-1/${P}-1-x86_64.pkg.tar.zst
 "
 
 LICENSE="Tencent"
