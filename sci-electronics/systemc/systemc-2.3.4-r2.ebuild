@@ -5,11 +5,11 @@ EAPI=7
 
 MY_PV="${PV}_pub_rev_20190614"
 
-inherit autotools
+inherit autotools toolchain-funcs
 
 DESCRIPTION="A C++ based modeling platform for VLSI and system-level co-design"
 HOMEPAGE="
-	https://accellera.org/community/systemc
+	https://systemc.org
 	https://github.com/accellera-official/systemc
 "
 
@@ -18,7 +18,7 @@ if [[ "${PV}" == "9999" ]] ; then
 	inherit git-r3
 else
 	SRC_URI="https://github.com/accellera-official/${PN}/archive/${MY_PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~arm ~arm64 ~x86"
+	KEYWORDS="~amd64 ~arm ~arm64 ~riscv ~x86"
 	S="${WORKDIR}/${PN}-${MY_PV}"
 fi
 
