@@ -51,4 +51,8 @@ src_install() {
 	else
 		rm -r "${ED}"/usr/share/doc/"${PF}" || die
 	fi
+
+	if ! use static-libs; then
+		find "${ED}" -name "*.la" -delete || die
+	fi
 }
