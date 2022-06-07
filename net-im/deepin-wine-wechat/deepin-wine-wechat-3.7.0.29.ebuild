@@ -44,7 +44,11 @@ RDEPEND="
 
 DEPEND="${RDEPEND}"
 
-BDEPEND="app-arch/p7zip"
+BDEPEND="
+	app-arch/p7zip
+	sys-apps/coreutils
+	virtual/awk
+"
 
 S=${WORKDIR}
 
@@ -70,6 +74,9 @@ src_prepare() {
 	cp -rf "${FILESDIR}"/run.sh "${S}"/run.sh || die
 	sed -i "s/APPVER=.*/APPVER=\"${DP_WECHAT_VER}\"/g" "${S}"/run.sh
 	sed -i "s/WECHAT_VER=.*/WECHAT_VER=\"${PV}\"/g" "${S}"/run.sh
+	# Generate files.md5sum to fit DeployApp in run.sh
+	# https://github.com/vufa/deepin-wine-wechat-arch/issues/217
+	md5sum "${S}/files.7z" | awk '{ print $1 }' >  "${S}/opt/apps/${DEB_PN}/files/files.md5sum" || die
 }
 
 src_install() {
@@ -78,7 +85,7 @@ src_install() {
 	insinto "${OPN}"/files
 	exeinto "${OPN}"/files
 
-	doins -r "${S}"/"${OPN}"/files/dlls "${S}"/"${OPN}"/files/lib32 "${S}"/files.7z
+	doins -r "${S}"/"${OPN}"/files/dlls "${S}"/"${OPN}"/files/lib32 "${S}"/"${OPN}"/files/files.md5sum "${S}"/files.7z
 	doexe "${S}"/run.sh
 
 	insinto /usr/share/icons
