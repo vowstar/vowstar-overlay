@@ -62,7 +62,10 @@ src_prepare() {
 
 	7z x -aoa "${S}/opt/apps/${DEB_PN}/files/files.7z" -o"${S}/deepinwechatdir" || die
 	rm -rf "${S}/deepinwechatdir/drive_c/Program Files/Tencent/WeChat" || die
-	patch -p1 -d "${S}/deepinwechatdir/" < "${FILESDIR}/reg.patch" || die
+	if ! grep -q "\"wechatbrowser.exe\"=\"\"" "${FILESDIR}/reg.patch"; then
+		# patch only wechatbrowser.exe was not found
+		patch -p1 -d "${S}/deepinwechatdir/" < "${FILESDIR}/reg.patch" || die
+	fi
 	ln -sf "/usr/share/fonts/wqy-microhei/wqy-microhei.ttc" "${S}/deepinwechatdir/drive_c/windows/Fonts/wqy-microhei.ttc" || die
 	if [ -f "${DISTDIR}/${P}-${WECHAT_INSTALLER}.exe" ]; then
 		# User provided ${P}-${WECHAT_INSTALLER}.exe" installer
