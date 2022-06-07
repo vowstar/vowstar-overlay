@@ -97,3 +97,8 @@ src_install() {
 
 	domenu "${S}"/"${OPN}"/entries/applications/"${DEB_PN}".desktop
 }
+
+pkg_postinst() {
+	ewarn "Because deepin changed DeployApp, WeChat will be reinstalled after"
+	ewarn "upgrading from the old version."
+}

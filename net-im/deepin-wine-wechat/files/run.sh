@@ -21,7 +21,7 @@ WECHAT_INSTALLER="WeChatSetup"
 WECHAT_INSTALLER_PATH="c:/Program Files/Tencent/$WECHAT_INSTALLER-$WECHAT_VER.exe"
 export MIME_TYPE=""
 export DEB_PACKAGE_NAME="com.qq.weixin.deepin"
-export APPRUN_CMD="deepin-wine6-stable"
+export APPRUN_CMD="LC_ALL=zh_CN.UTF-8 deepin-wine6-stable"
 DISABLE_ATTACH_FILE_DIALOG=""
 EXPORT_ENVS=""
 
