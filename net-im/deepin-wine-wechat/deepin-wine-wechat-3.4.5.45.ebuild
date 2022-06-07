@@ -64,7 +64,7 @@ src_prepare() {
 	rm -r "${S}/deepinwechatdir/drive_c/Program Files/Tencent/WeChat" || die
 	patch -p1 -d "${S}/deepinwechatdir/" < "${FILESDIR}/reg.patch" || die
 	ln -sf "/usr/share/fonts/wqy-microhei/wqy-microhei.ttc" "${S}/deepinwechatdir/drive_c/windows/Fonts/wqy-microhei.ttc" || die
-	install -m644 "${DISTDIR}/${P}-${WECHAT_INSTALLER}.exe" "${S}/deepinwechatdir/drive_c/Program Files/Tencent/${WECHAT_INSTALLER}-${PV}.exe" || die
+	#install -m644 "${DISTDIR}/${P}-${WECHAT_INSTALLER}.exe" "${S}/deepinwechatdir/drive_c/Program Files/Tencent/${WECHAT_INSTALLER}-${PV}.exe" || die
 	7z a -t7z -r "${S}"/files.7z "${S}"/deepinwechatdir/* || die
 	# Fix to avoid downgrading openldap
 	mkdir -p "${S}/opt/apps/${DEB_PN}/files/lib32" || die
