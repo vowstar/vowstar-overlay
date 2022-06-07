@@ -16,7 +16,6 @@ _MIRROR="https://com-store-packages.uniontech.com"
 _MIRROR_LIB="https://community-packages.deepin.com/deepin/pool/main"
 SRC_URI="
 	${_MIRROR}/appstore/pool/appstore/c/${DEB_PN}/${DEB_PN}_${DP_WECHAT_VER}_i386.deb
-	https://dldir1.qq.com/weixin/Windows/${WECHAT_INSTALLER}.exe -> ${P}-${WECHAT_INSTALLER}.exe
 	${_MIRROR_LIB}/o/openldap/libldap-2.4-2_2.4.47+dfsg.4-1+eagle_i386.deb
 	${_MIRROR_LIB}/c/cyrus-sasl2/libsasl2-2_2.1.27.1-1+dde_i386.deb
 	https://github.com/oatiz/lyraile-overlay/releases/download/tempfile/${WECHAT_INSTALLER}-${PV}.exe -> ${P}-${WECHAT_INSTALLER}.exe
