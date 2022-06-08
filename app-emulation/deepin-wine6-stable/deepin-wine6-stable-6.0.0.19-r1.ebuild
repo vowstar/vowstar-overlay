@@ -71,12 +71,13 @@ src_install() {
 	# Install missing lib/lib64
 	mv "${S}"/usr/lib/i386-linux-gnu/* "${S}"/opt/"${PN}"/lib/ || die
 	mv "${S}"/usr/lib/x86_64-linux-gnu/* "${S}"/opt/"${PN}"/lib64/ || die
-	# remove executable bit from all *.a files
-	find "${S}" -type f -name "*.a" -exec chmod -x {} +
 
 	insinto /
 	doins -r usr opt
 
 	fperms 755 -R /opt/"${PN}"/
 	fperms 755 -R /usr/bin/
+
+	# remove executable bit from all *.a files
+	find "${S}" -type f -name "*.a" -exec chmod -x {} +
 }
