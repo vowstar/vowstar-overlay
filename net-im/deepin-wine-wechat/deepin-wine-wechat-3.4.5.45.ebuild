@@ -76,7 +76,7 @@ src_prepare() {
 	mkdir -p "${S}/opt/apps/${DEB_PN}/files/lib32" || die
 	cp -rf "${S}"/usr/lib/i386-linux-gnu/* "${S}/opt/apps/${DEB_PN}/files/lib32" || die
 	# Generate run.sh
-	cp -rf "${FILESDIR}"/run.sh "${S}"/run.sh || die
+	cp -rf "${FILESDIR}"/${P}-run.sh "${S}"/run.sh || die
 	sed -i "s/APPVER=.*/APPVER=\"${DP_WECHAT_VER}\"/g" "${S}"/run.sh
 	sed -i "s/WECHAT_VER=.*/WECHAT_VER=\"${PV}\"/g" "${S}"/run.sh
 	# Generate files.md5sum to fit DeployApp in run.sh
