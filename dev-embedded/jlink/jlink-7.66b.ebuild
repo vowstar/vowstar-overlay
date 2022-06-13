@@ -112,3 +112,9 @@ pkg_postinst() {
 		udev_reload
 	fi
 }
+
+pkg_postrm() {
+	if use udev ; then
+		udev_reload
+	fi
+}
