@@ -16,7 +16,7 @@ KEYWORDS="-* amd64"
 IUSE=""
 QA_PREBUILT="*"
 
-RESTRICT=" strip"
+RESTRICT="fetch strip"
 RDEPEND="
 	media-libs/fontconfig
 	media-libs/freetype
