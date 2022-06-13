@@ -16,7 +16,7 @@ KEYWORDS="-* amd64"
 IUSE=""
 QA_PREBUILT="*"
 
-RESTRICT="strip"
+RESTRICT="fetch strip"
 RDEPEND="
 	media-libs/fontconfig
 	media-libs/freetype
@@ -98,4 +98,9 @@ src_install() {
 		GDBServer
 
 	udev_dorules 99-jlink.rules
+}
+
+pkg_nofetch() {
+	einfo "Please place the ${P} installation file ${SRC_URI}"
+	einfo "in your \$\{DISTDIR\}."
 }
