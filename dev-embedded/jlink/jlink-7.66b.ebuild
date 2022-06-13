@@ -97,7 +97,9 @@ src_install() {
 		ETC \
 		GDBServer
 
-	udev_dorules 99-jlink.rules
+	if use udev ; then
+		udev_dorules 99-jlink.rules
+	fi
 }
 
 pkg_nofetch() {
