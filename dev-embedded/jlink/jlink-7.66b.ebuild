@@ -13,7 +13,7 @@ SRC_URI="JLink_Linux_V${PV/./}_x86_64.tgz"
 LICENSE="SEGGER"
 SLOT="0"
 KEYWORDS="-* amd64"
-IUSE=""
+IUSE="udev"
 QA_PREBUILT="*"
 
 RESTRICT="fetch strip"
