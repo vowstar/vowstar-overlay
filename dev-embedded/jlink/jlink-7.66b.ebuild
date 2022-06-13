@@ -104,3 +104,9 @@ pkg_nofetch() {
 	einfo "Please place the ${P} installation file ${SRC_URI}"
 	einfo "in your \$\{DISTDIR\}."
 }
+
+pkg_postinst() {
+	if use udev ; then
+		udev_reload
+	fi
+}
