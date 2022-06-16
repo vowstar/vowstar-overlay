@@ -26,7 +26,7 @@ fi
 
 LICENSE="GPL-3"
 SLOT="0"
-
+IUSE="static-libs"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 RDEPEND="${PYTHON_DEPS}
@@ -57,6 +57,14 @@ src_configure() {
 	)
 
 	cmake_src_configure
+}
+
+src_install() {
+	default
+	if ! use static-libs; then
+		find "${ED}" -name "*.la" -delete || die
+		find "${ED}" -name "*.a" -delete || die
+	fi
 }
 
 pkg_postinst() {
