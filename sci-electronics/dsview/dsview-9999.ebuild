@@ -6,7 +6,7 @@ EAPI=8
 PYTHON_COMPAT=( python3_{7..11} )
 GITHUB_PN="DSView"
 
-inherit autotools cmake python-r1 toolchain-funcs udev xdg
+inherit cmake python-r1 toolchain-funcs udev xdg
 
 DESCRIPTION="An open source multi-function instrument"
 HOMEPAGE="
