@@ -59,6 +59,11 @@ src_configure() {
 }
 
 pkg_postinst() {
-	xdg_pkg_postinst
 	udev_reload
+	xdg_pkg_postinst
+}
+
+pkg_postrm() {
+	udev_reload
+	xdg_pkg_postrm
 }
