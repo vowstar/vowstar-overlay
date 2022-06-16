@@ -24,9 +24,8 @@ fi
 
 LICENSE="Apache-2.0"
 SLOT="0"
-IUSE="debug doc examples static-libs test"
+IUSE="debug doc examples static-libs"
 REQUIRED_USE="examples? ( doc )"
-RESTRICT="!test? ( test )"
 
 src_prepare() {
 	default
