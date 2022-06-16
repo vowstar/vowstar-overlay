@@ -46,54 +46,16 @@ DEPEND="
 	${RDEPEND}
 "
 
-src_prepare() {
-	export CC="$(tc-getCC)"
-	export AR="$(tc-getAR)"
-
-	default
-
-	local LIBDIR="/usr/$(get_libdir)"
-
-	grep -rl "/usr/local/lib" "${S}" | xargs sed -i "s@/usr/local/lib@${LIBDIR}@g" || die
-	grep -rl "/usr/local" "${S}" | xargs sed -i "s@/usr/local@/usr@g" || die
-	cd "${S}/libsigrok4DSL" || die
-	sh ./autogen.sh || die
-	cd "${S}/libsigrokdecode4DSL" || die
-	sh ./autogen.sh || die
-}
+BDEPEND="
+	virtual/pkgconfig
+"
 
 src_configure() {
-	local LIBDIR="/usr/$(get_libdir)"
+	local mycmakeargs=(
+		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/usr"
+	)
 
-	cd "${S}/libsigrok4DSL" || die
-	sh ./configure --libdir=${LIBDIR} --prefix=/usr || die
-	cd "${S}/libsigrokdecode4DSL" || die
-	sh ./configure --libdir=${LIBDIR} --prefix=/usr || die
-}
-
-src_compile() {
-	cd "${S}/libsigrok4DSL" || die
-	emake
-	cd "${S}/libsigrokdecode4DSL" || die
-	emake
-}
-
-src_install() {
-	local LIBDIR="/usr/$(get_libdir)"
-
-	cd "${S}/libsigrok4DSL" || die
-	emake DESTDIR="${D}" install
-	cd "${S}/libsigrokdecode4DSL" || die
-	emake DESTDIR="${D}" install
-	cd "${S}/DSView" || die
-
-	DESTDIR="${D}" \
-	PKG_CONFIG_PATH="${D}${LIBDIR}/pkgconfig" \
-	CFLAGS="-I${D}/usr/include" \
-	CXXFLAGS="-I${D}/usr/include" \
-	LDFLAGS="-L${D}${LIBDIR}" \
-	cmake -DCMAKE_INSTALL_PREFIX=/usr . || die
-	emake DESTDIR="${D}" install
+	cmake_src_configure
 }
 
 pkg_postinst() {
