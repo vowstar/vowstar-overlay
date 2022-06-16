@@ -59,14 +59,6 @@ src_configure() {
 	cmake_src_configure
 }
 
-src_install() {
-	default
-	if ! use static-libs; then
-		find "${ED}" -name "*.la" -delete || die
-		find "${ED}" -name "*.a" -delete || die
-	fi
-}
-
 pkg_postinst() {
 	udev_reload
 	xdg_pkg_postinst
