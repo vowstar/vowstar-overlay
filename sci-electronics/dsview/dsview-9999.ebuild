@@ -1,9 +1,9 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-PYTHON_COMPAT=( python3_{7..10} )
+PYTHON_COMPAT=( python3_{7..11} )
 GITHUB_PN="DSView"
 
 inherit autotools cmake python-r1 toolchain-funcs udev xdg
@@ -16,7 +16,7 @@ HOMEPAGE="
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/vowstar/${GITHUB_PN}.git"
+	EGIT_REPO_URI="https://github.com/DreamSourceLab/${GITHUB_PN}.git"
 else
 	SRC_URI="https://github.com/DreamSourceLab/${GITHUB_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
