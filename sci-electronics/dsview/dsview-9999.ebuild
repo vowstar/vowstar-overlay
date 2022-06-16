@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{7..11} )
+PYTHON_COMPAT=( python3_{8..11} )
 GITHUB_PN="DSView"
 
 inherit cmake python-r1 toolchain-funcs udev xdg
