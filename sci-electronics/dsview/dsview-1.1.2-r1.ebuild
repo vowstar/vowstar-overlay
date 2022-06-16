@@ -3,8 +3,9 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{8..11} )
 GITHUB_PN="DSView"
+MY_PV="$(ver_rs 2 '')" # 'a.b.c' -> 'a.bc'
+PYTHON_COMPAT=( python3_{8..11} )
 
 inherit cmake python-r1 toolchain-funcs udev xdg
 
@@ -18,9 +19,9 @@ if [[ ${PV} == "9999" ]] ; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/DreamSourceLab/${GITHUB_PN}.git"
 else
-	SRC_URI="https://github.com/DreamSourceLab/${GITHUB_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/DreamSourceLab/${GITHUB_PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
-	S="${WORKDIR}/${GITHUB_PN}-${PV}"
+	S="${WORKDIR}/${GITHUB_PN}-${MY_PV}"
 fi
 
 LICENSE="GPL-3"
