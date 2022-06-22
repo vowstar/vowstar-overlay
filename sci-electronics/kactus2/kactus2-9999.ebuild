@@ -24,6 +24,7 @@ fi
 LICENSE="GPL-2"
 SLOT="0"
 IUSE="+python"
+REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
 RDEPEND="
 	dev-qt/qtcore:5
@@ -33,6 +34,7 @@ RDEPEND="
 	dev-qt/qtsvg:5
 	dev-qt/qtwidgets:5
 	dev-qt/qtxml:5
+	python? ( ${PYTHON_DEPS} )
 "
 
 DEPEND="
