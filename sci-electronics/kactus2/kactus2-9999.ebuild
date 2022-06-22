@@ -64,6 +64,6 @@ src_install() {
 			python_domodule pythonAPI.py
 			popd
 		}
-		python_foreach_impl run_in_build_dir python_install
+		python_foreach_impl python_install
 	fi
 }
