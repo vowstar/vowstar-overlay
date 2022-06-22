@@ -61,6 +61,7 @@ src_install() {
 			emake clean
 			eqmake5 PREFIX="$(python_get_library_path)"
 			emake
+			rm -rf _pythonAPI.so || die
 			cp -rf libPythonAPI.so.1.0.0 _pythonAPI.so || die
 			python_domodule _pythonAPI.so
 			python_domodule pythonAPI.py
