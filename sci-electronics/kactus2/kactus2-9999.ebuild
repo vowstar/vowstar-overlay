@@ -3,7 +3,8 @@
 
 EAPI="8"
 
-inherit qmake-utils xdg
+PYTHON_COMPAT=( python3_{8..11} )
+inherit python-r1 qmake-utils xdg
 
 DESCRIPTION="A open source IP-XACT-based tool"
 HOMEPAGE="
@@ -22,6 +23,7 @@ fi
 
 LICENSE="GPL-2"
 SLOT="0"
+IUSE="+python"
 
 RDEPEND="
 	dev-qt/qtcore:5
@@ -47,4 +49,19 @@ src_prepare() {
 src_install() {
 	# Can't use default, set INSTALL_ROOT and workaround parallel install bug
 	emake -j1 INSTALL_ROOT="${D}" install
+	if use python; then
+		python_install() {
+			export PYTHON_C_FLAGS="$(python_get_CFLAGS)"
+			export PYTHON_LIBS="$(python_get_LIBS)"
+			pushd "PythonAPI" || die
+			emake clean
+			eqmake5 PREFIX="$(python_get_library_path)"
+			emake
+			python_domodule libPythonAPI.so.1.0.0
+			python_domodule _pythonAPI.so
+			python_domodule pythonAPI.py
+			popd
+		}
+		python_foreach_impl run_in_build_dir python_install
+	fi
 }
