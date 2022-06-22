@@ -41,6 +41,8 @@ DEPEND="
 	${RDEPEND}
 "
 
+QA_PRESTRIPPED="usr/share/kactus2/plugins/*"
+
 src_prepare() {
 	default
 
