@@ -64,6 +64,9 @@ src_install() {
 	sed -i "s#\"\$INSTDIR_CUPS_FILTERS\"#\"${D}/\$INSTDIR_CUPS_FILTERS\"#g" noarch/printer.pkg || die
 	sed -i "s#\"\$INSTDIR_CUPS_PPD\"#\"${D}/\$INSTDIR_CUPS_PPD\"#g" noarch/printer-script.pkg || die
 	sed -i "s#\"\$INSTDIR_LSB_PPD\"#\"${D}/\$INSTDIR_LSB_PPD\"#g" noarch/printer-script.pkg || die
+	# Not use rpm and dpkg
+	sed -i "s#which rpm#which not_found_command_${PN}#g" noarch/package_utils || die
+	sed -i "s#which dpkg#which not_found_command_${PN}#g" noarch/package_utils || die
 
 	# Fix scanner install path
 	sed -i "s#SANE_DIR=/usr/lib\${LIBSFX}/sane#SANE_DIR=${D}/usr/lib\${LIBSFX}/sane#g" noarch/scanner.pkg || die
