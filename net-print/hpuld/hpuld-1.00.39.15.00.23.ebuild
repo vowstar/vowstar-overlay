@@ -4,6 +4,7 @@
 EAPI="8"
 
 MY_PV="$(ver_rs 4 _)"
+SANE_CONF_DIR="/etc/sane.d"
 
 DESCRIPTION="HP Unified Linux Driver (for samsung hardware)"
 HOMEPAGE="https://support.hp.com"
@@ -76,11 +77,9 @@ src_install() {
 	mkdir -p "${D}"/etc/hotplug/usb || die
 
 	if use scanner ; then
-		local SCDIR="/etc/sane.d"
-
 		echo "# Add support for the HP-ULD specific backend.  Needs net-print/hpuld installed." > "${S}"/"${PN}".conf || die
 		echo "smfp" > "${S}"/"${PN}".conf || die
-		insinto /etc/sane.d/dll.d
+		insinto ${SANE_CONF_DIR}/dll.d
 		doins "${S}"/"${PN}".conf
 
 		sh ./install.sh || die
@@ -92,8 +91,8 @@ src_install() {
 pkg_postinst() {
 	if use scanner ; then
 		ewarn "If you want to use the scanner,"
-		ewarn "make sure the smfp is listed in "${S}"/"${PN}".conf."
-		ewarn "If the geniusvp2 is listed in /etc/sane.d/dll.conf,"
+		ewarn "make sure the smfp is listed in ${SANE_CONF_DIR}/dll.d/"${PN}".conf."
+		ewarn "If the geniusvp2 is listed in ${SANE_CONF_DIR}/dll.conf,"
 		ewarn "please comment out it."
 
 		ewarn "You should restart cupsd service after installed $P."
