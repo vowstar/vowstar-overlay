@@ -78,21 +78,10 @@ src_install() {
 	if use scanner ; then
 		local SCDIR="/etc/sane.d"
 
-		if [ -f ${SCDIR}/dll.conf ] ; then
-			mkdir -p ${D}/${SCDIR} || die
-			cat ${SCDIR}/dll.conf > ${D}/${SCDIR}/dll.conf || die
-			if ! grep -q '^smfp$' ${D}/${SCDIR}/dll.conf ; then
-				echo "# Add support for the HP-ULD specific backend.  Needs net-print/hpuld installed." >> ${D}/${SCDIR}/dll.conf || die
-				echo "smfp" >> ${D}/${SCDIR}/dll.conf || die
-			fi
-			if grep -q '^geniusvp2' ${D}/${SCDIR}/dll.conf ; then
-				# Comment out geniusvp2 backend
-				sed -i 's/geniusvp2/#geniusvp2/' > ${D}/${SCDIR}/dll.conf || die
-			fi
-		else
-			echo "smfp" >> ${D}/${SCDIR}/dll.conf || die
-		fi
-		chmod 664 ${D}/${SCDIR}/dll.conf
+		echo "# Add support for the HP-ULD specific backend.  Needs net-print/hpuld installed." > "${S}"/"${PN}".conf || die
+		echo "smfp" > "${S}"/"${PN}".conf || die
+		insinto /etc/sane.d/dll.d
+		doins "${S}"/"${PN}".conf
 
 		sh ./install.sh || die
 	else
@@ -103,7 +92,7 @@ src_install() {
 pkg_postinst() {
 	if use scanner ; then
 		ewarn "If you want to use the scanner,"
-		ewarn "make sure the smfp is listed in /etc/sane.d/dll.conf."
+		ewarn "make sure the smfp is listed in "${S}"/"${PN}".conf."
 		ewarn "If the geniusvp2 is listed in /etc/sane.d/dll.conf,"
 		ewarn "please comment out it."
 
@@ -115,9 +104,8 @@ pkg_postinst() {
 
 pkg_postrm() {
 	if use scanner ; then
-		ewarn "After you removed $P,"
-		ewarn "if the smfp is listed in /etc/sane.d/dll.conf"
-		ewarn "you should remove it to keep clean."
-		ewarn "If you are just reinstalling, ignore this message."
+		ewarn "You should restart cupsd service after removed $P."
+		ewarn "OpenRC: rc-service cupsd restart"
+		ewarn "systemd: systemctl restart cups.service"
 	fi
 }
