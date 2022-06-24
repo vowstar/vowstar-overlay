@@ -82,8 +82,8 @@ src_install() {
 	doins -r "${S}"/"${OPN}"/files/dlls "${S}"/"${OPN}"/files/lib32 "${S}"/"${OPN}"/files/files.md5sum "${S}"/files.7z
 	doexe "${S}"/run.sh
 
-	insinto /usr/share/icons
-	doins -r  "${S}"/"${OPN}"/entries/icons/hicolor
+	# Install scalable icons
+	doicon -s scalable "${S}"/"${OPN}"/entries/icons/hicolor/48x48/apps/com.qq.weixin.work.deepin.svg
 
 	domenu "${S}"/"${OPN}"/entries/applications/"${DEB_PN}".desktop
 }
