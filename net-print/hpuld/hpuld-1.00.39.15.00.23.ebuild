@@ -86,6 +86,7 @@ src_install() {
 		doins "${S}"/"${PN}".conf
 
 		sh ./install.sh || die
+		fperms 644 /etc/sane.d/smfp-hewlett-packard.conf
 	else
 		sh ./install-printer.sh || die
 	fi
