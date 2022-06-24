@@ -9,13 +9,13 @@ WECHAT_INSTALLER="WeChatSetup"
 DP_WECHAT_VER="${PV}deepin10"
 DEB_PN="com.qq.weixin.work.deepin"
 
-DESCRIPTION="Tencent WeChat on Deepin Wine(${DEB_PN}) For Gentoo"
+DESCRIPTION="Tencent Wecom on Deepin Wine(${DEB_PN}) For Gentoo"
 HOMEPAGE="https://aur.archlinux.org/packages/deepin-wine-wechat"
 
 _MIRROR="https://com-store-packages.uniontech.com"
 _MIRROR_LIB="https://community-packages.deepin.com/deepin/pool/main"
 SRC_URI="
-	${_MIRROR}/appstore/pool/appstore/c/com.qq.weixin.work.deepin/${DEB_PN}_${DP_WECHAT_VER}_i386.deb
+	${_MIRROR}/appstore/pool/appstore/c/${DEB_PN}/${DEB_PN}_${DP_WECHAT_VER}_i386.deb
 	${_MIRROR_LIB}/o/openldap/libldap-2.4-2_2.4.47+dfsg.4-1+eagle_i386.deb
 	${_MIRROR_LIB}/c/cyrus-sasl2/libsasl2-2_2.1.27.1-1+dde_i386.deb
 "
@@ -83,7 +83,7 @@ src_install() {
 	doexe "${S}"/run.sh
 
 	# Install scalable icons
-	doicon -s scalable "${S}"/"${OPN}"/entries/icons/hicolor/48x48/apps/com.qq.weixin.work.deepin.svg
+	doicon -s scalable "${S}"/"${OPN}"/entries/icons/hicolor/48x48/apps/"${DEB_PN}".svg
 
 	domenu "${S}"/"${OPN}"/entries/applications/"${DEB_PN}".desktop
 }
