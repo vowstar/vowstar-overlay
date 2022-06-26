@@ -75,8 +75,8 @@ src_install() {
 		local RPATH_S="${RPATH_ROOT}/:${RPATH_ROOT}/lib/:${RPATH_ROOT}/lib/xlator/:${RPATH_ROOT}/lib/xlator/InterOp/:${RPATH_ROOT}/libqt/:${RPATH_ROOT}/libqt/plugins/designer/:${RPATH_ROOT}/lib3rd/:/usr/lib64/"
 		patchelf --set-rpath "${RPATH_S}" "${x}" || \
 			die "patchelf failed on ${x}"
-		# patchelf --replace-needed libMagickCore-6.Q16.so.7 libMagickCore-7.Q16.so "${x}" || \
-		# 	die "patchelf failed on ${x}"
+		patchelf --replace-needed libMagickCore-6.Q16.so.7 libMagickCore-7.Q16.so "${x}" || \
+			die "patchelf failed on ${x}"
 		patchelf --replace-needed libjbig.so.0 libjbig.so "${x}" || \
 			die "patchelf failed on ${x}"
 	done
@@ -98,8 +98,8 @@ sh /opt/apps/${MY_PGK_NAME}/files/zw3drun.sh \$*
 	ln -s /opt/apps/${MY_PGK_NAME}/zw3d "${S}"/usr/bin/zw3d || die
 
 	# Use system libraries
-	# rm -rf "${S}"/opt/apps/${MY_PGK_NAME}/files/lib3rd/libMagickCore* || die
-	# rm -rf "${S}"/opt/apps/${MY_PGK_NAME}/files/lib3rd/libjpeg* || die
+	rm -rf "${S}"/opt/apps/${MY_PGK_NAME}/files/lib3rd/libMagickCore* || die
+	rm -rf "${S}"/opt/apps/${MY_PGK_NAME}/files/lib3rd/libjpeg* || die
 
 	# Install package and fix permissions
 	insinto /opt/apps
