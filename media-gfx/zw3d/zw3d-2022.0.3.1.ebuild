@@ -34,6 +34,7 @@ RDEPEND="
 	media-libs/jbigkit
 	media-libs/libglvnd
 	media-libs/libpng
+	media-libs/opencollada
 	media-libs/tiff
 	net-libs/zeromq
 	sys-libs/zlib
