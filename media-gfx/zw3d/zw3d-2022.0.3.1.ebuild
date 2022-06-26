@@ -105,8 +105,9 @@ sh /opt/apps/${MY_PGK_NAME}/files/zw3drun.sh \$*
 	# Fix coredump while draw 2D sketch due to not find fonts
 	# media-fonts/noto-cjk is required
 	# and should linked to /usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc
-	mkdir -p "${S}"/usr/share/fonts/noto-cjk || die
-	ln -s /usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc "${S}"/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc || die
+	local MY_FONT_PATH="/usr/share/fonts/opentype/noto"
+	mkdir -p "${S}"/"{$MY_FONT_PATH}" || die
+	ln -s /usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc "${S}"/"{$MY_FONT_PATH}"/NotoSansCJK-Regular.ttc || die
 
 	# Install package and fix permissions
 	insinto /opt/apps
