@@ -19,11 +19,12 @@ RESTRICT="strip mirror bindist"
 RDEPEND="
 	app-arch/bzip2
 	app-arch/xz-utils
+	app-text/djvu
+	dev-db/sqlite:3
 	dev-libs/atk
 	dev-libs/glib:2
 	dev-libs/libpcre
 	dev-libs/libxml2
-	dev-qt/qtsvg:5
 	dev-qt/qtcore:5
 	dev-qt/qtgui:5
 	dev-qt/qtnetwork:5
@@ -34,6 +35,7 @@ RDEPEND="
 	media-libs/libglvnd
 	media-libs/libpng
 	media-libs/tiff
+	net-libs/zeromq
 	sys-libs/zlib
 	x11-libs/cairo
 	x11-libs/gdk-pixbuf:2
@@ -74,6 +76,8 @@ src_install() {
 			die "patchelf failed on ${x}"
 		# patchelf --replace-needed libMagickCore-6.Q16.so.7 libMagickCore-7.Q16.so "${x}" || \
 		# 	die "patchelf failed on ${x}"
+		patchelf --replace-needed libjbig.so.0 libjbig.so "${x}" || \
+			die "patchelf failed on ${x}"
 	done
 	popd || die
 
