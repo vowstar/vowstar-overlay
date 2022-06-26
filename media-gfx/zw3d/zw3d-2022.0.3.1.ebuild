@@ -26,6 +26,7 @@ RDEPEND="
 	dev-qt/qtsvg:5
 	dev-qt/qtwayland:5
 	media-gfx/imagemagick
+	media-libs/jbigkit
 	media-libs/libglvnd
 	media-libs/libpng
 	media-libs/tiff
