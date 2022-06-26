@@ -8,7 +8,7 @@ inherit unpacker xdg
 
 DESCRIPTION="CAD/CAM software for 3D design and processing"
 HOMEPAGE="https://www.zwsoft.cn/product/zw3d/linux"
-SRC_URI="https://download.zwcad.com/zw3d/3d_linux/2022/ZW3D-2022-Professional-V1.0_amd64.deb"
+SRC_URI="https://home-store-packages.uniontech.com/appstore/pool/appstore/c/${MY_PGK_NAME}/${MY_PGK_NAME}_${PV}_amd64.deb -> ${P}.deb"
 
 LICENSE="all-rights-reserved"
 SLOT="0"
