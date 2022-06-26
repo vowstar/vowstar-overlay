@@ -30,6 +30,7 @@ RDEPEND="
 	dev-qt/qtnetwork:5
 	dev-qt/qtprintsupport:5
 	dev-qt/qtsvg:5
+	media-fonts/noto-cjk
 	media-gfx/imagemagick
 	media-libs/jbigkit
 	media-libs/libglvnd
@@ -100,6 +101,12 @@ sh /opt/apps/${MY_PGK_NAME}/files/zw3drun.sh \$*
 	# Use system libraries
 	# rm -rf "${S}"/opt/apps/${MY_PGK_NAME}/files/lib3rd/libMagickCore* || die
 	# rm -rf "${S}"/opt/apps/${MY_PGK_NAME}/files/lib3rd/libjpeg* || die
+
+	# Fix coredump while draw 2D sketch due to not find fonts
+	# media-fonts/noto-cjk is required
+	# and should linked to /usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc
+	mkdir -p "${S}"/usr/share/fonts/noto-cjk || die
+	ln -s /usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc "${S}"/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc || die
 
 	# Install package and fix permissions
 	insinto /opt/apps
