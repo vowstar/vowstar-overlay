@@ -55,7 +55,10 @@ RDEPEND="
 
 DEPEND="${RDEPEND}"
 
-BDEPEND="dev-util/patchelf"
+BDEPEND="
+	dev-util/bbe
+	dev-util/patchelf
+"
 
 S=${WORKDIR}
 
@@ -104,10 +107,11 @@ sh /opt/apps/${MY_PGK_NAME}/files/zw3drun.sh \$*
 
 	# Fix coredump while draw 2D sketch due to not find fonts
 	# media-fonts/noto-cjk is required
-	# and should linked to /usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc
-	local MY_FONT_PATH="/usr/share/fonts/opentype/noto"
-	mkdir -p "${S}"/"{$MY_FONT_PATH}" || die
-	ln -s /usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc "${S}"/"{$MY_FONT_PATH}"/NotoSansCJK-Regular.ttc || die
+	# and should use /usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc
+	local MY_FONT_PATH_OLD="/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"
+	local MY_FONT_PATH_NEW="//////usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc"
+	bbe -e "s|${MY_FONT_PATH_OLD}|${MY_FONT_PATH_NEW}|" "${S}"/opt/apps/${MY_PGK_NAME}/files/lib/libdisp.so > "${S}"/opt/apps/${MY_PGK_NAME}/files/lib/libdisp.so.tmp && \
+		mv "${S}"/opt/apps/${MY_PGK_NAME}/files/lib/libdisp.so.tmp "${S}"/opt/apps/${MY_PGK_NAME}/files/lib/libdisp.so || die
 
 	# Install package and fix permissions
 	insinto /opt/apps
