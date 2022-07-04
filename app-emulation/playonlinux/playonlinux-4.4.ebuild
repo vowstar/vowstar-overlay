@@ -3,9 +3,9 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{8..9} )
+PYTHON_COMPAT=( python3_{8..10} )
 
-inherit desktop eutils python-single-r1 xdg
+inherit desktop python-single-r1 wrapper xdg
 
 MY_PN="PlayOnLinux"
 
