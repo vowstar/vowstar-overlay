@@ -20,7 +20,7 @@ if [[ ${PV} == "9999" ]] ; then
 else
 	SRC_URI="https://github.com/DreamSourceLab/${GITHUB_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
-	S="${WORKDIR}/${GITHUB_PN}-${MY_PV}"
+	S="${WORKDIR}/${GITHUB_PN}-${PV}"
 fi
 
 LICENSE="GPL-3"
