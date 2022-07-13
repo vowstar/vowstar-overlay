@@ -31,7 +31,7 @@ QA_PREBUILT="opt/deepinwine/*"
 QA_FLAGS_IGNORED="opt/deepinwine/*"
 
 src_install() {
-	"${EPYTHON}" python_fix_shebang -f "opt/deepinwine/tools/add_hotkeys"
+	python_fix_shebang -f "opt/deepinwine/tools/add_hotkeys"
 	python_fix_shebang -f "opt/deepinwine/tools/get_tray_window"
 	insinto /
 	doins -r opt
