@@ -4,7 +4,7 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{8..11} )
-inherit python-r1 unpacker
+inherit python-any-r1 unpacker
 
 DESCRIPTION="Deepin Wine Helper"
 HOMEPAGE="https://www.deepin.org"
@@ -31,7 +31,7 @@ QA_PREBUILT="opt/deepinwine/*"
 QA_FLAGS_IGNORED="opt/deepinwine/*"
 
 src_install() {
-	python_fix_shebang -f "opt/deepinwine/tools/add_hotkeys"
+	"${EPYTHON}" python_fix_shebang -f "opt/deepinwine/tools/add_hotkeys"
 	python_fix_shebang -f "opt/deepinwine/tools/get_tray_window"
 	insinto /
 	doins -r opt
