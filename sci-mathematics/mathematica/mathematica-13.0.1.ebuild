@@ -13,13 +13,16 @@ HOMEPAGE="https://www.wolfram.com/mathematica/"
 LICENSE="all-rights-reserved"
 KEYWORDS="-* ~amd64"
 SLOT="0"
-IUSE="+doc"
+IUSE="cuda +doc"
 
 RESTRICT="strip mirror bindist fetch"
 
 # Mathematica comes with a lot of bundled stuff. We should place here only what we
 # explicitly override with LD_PRELOAD.
+# RLink (libjri.so) requires dev-lang/R
 RDEPEND="
+	dev-lang/R
+	cuda? ( dev-util/nvidia-cuda-toolkit )
 	media-libs/freetype
 	virtual/libcrypt
 "
@@ -61,8 +64,31 @@ src_install() {
 	fi
 
 	einfo 'Removing MacOS- and Windows-specific files'
-	find "${S}"/opt -type d -\( -name Windows -o -name Windows-x86-64 \
-		-o -name MacOSX -o -name MacOSX-x86-64 -\) -exec rm -rv {} + || die
+	find "${S}/${M_TARGET}" -type d -\( -name Windows -o -name Windows-x86-64 \
+		-o -name MacOSX -o -name MacOSX-x86-64 -o -name Macintosh -\) \
+		-exec rm -rv {} + || die
+
+	if ! use cuda; then
+		einfo 'Removing cuda support'
+		rm -r "${S}/${M_TARGET}/SystemFiles/Components/CUDACompileTools/LibraryResources/Linux-x86-64/CUDAExtensions.so" || die
+	fi
+
+	# Linux-x86-64/AllVersions is the supported version, other versions remove
+	einfo 'Removing unsupported RLink versions'
+	rm -rf "${S}/${M_TARGET}/SystemFiles/Links/RLink/SystemFiles/Libraries/Linux-x86-64/3.5.0" || die
+	rm -rf "${S}/${M_TARGET}/SystemFiles/Links/RLink/SystemFiles/Libraries/Linux-x86-64/3.6.0" || die
+	rm -rf "${S}/${M_TARGET}/SystemFiles/Links/RLink/SystemFiles/Libraries/Linux/AllVersions" || die
+
+	# Fix RPATH
+	while IFS= read -r -d '' i; do
+		[[ -f "${i}" && $(od -t x1 -N 4 "${i}") == *"7f 45 4c 46"* ]] || continue
+		patchelf --set-rpath \
+'/'"${M_TARGET}"'/SystemFiles/Libraries/Linux-x86-64:'\
+'/'"${M_TARGET}"'/SystemFiles/Libraries/Linux-x86-64/Qt/lib:'\
+'/'"${M_TARGET}"'/SystemFiles/Java/Linux-x86-64/lib:'\
+'$ORIGIN' "${i}" || \
+		die "patchelf failed on ${i}"
+	done < <(find "${S}/${M_TARGET}" -type f -print0)
 
 	# move all over
 	mv "${S}"/opt "${D}"/opt || die
@@ -86,7 +112,7 @@ src_install() {
 	# fix some embedded paths and install desktop files
 	for filename in $(find "${D}/${M_TARGET}/SystemFiles/Installation" -name "wolfram-mathematica*.desktop") ; do
 		einfo "Fixing ${filename}"
-		sed -e "s:${S}::g" -e 's:^\t\t::g' -i "${filename}" || die
+		sed -e "s/${S}//g" -e 's/^\t\t//g' -i "${filename}" || die
 		echo "Categories=Physics;Science;Engineering;2DGraphics;Graphics;" >> "${filename}" || die
 		domenu "${filename}"
 	done
