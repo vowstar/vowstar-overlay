@@ -133,6 +133,9 @@ src_install() {
 		domenu "${filename}"
 	done
 
+	# install icons
+	doicon -s scalable "${FILESDIR}/wolfram-mathematica.svg"
+
 	# install mime types
 	insinto /usr/share/mime/application
 	for filename in $(find "${D}/${M_TARGET}/SystemFiles/Installation" -name "application-*.xml"); do
