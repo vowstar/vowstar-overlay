@@ -86,8 +86,10 @@ src_install() {
 	# Fix RPATH
 	while IFS= read -r -d '' i; do
 		# Use \x7fELF header to separate ELF executables and libraries
-		# Skip .o files to avoid surprises
+		# Skip .o files and static files to avoid surprises
 		[[ -f "${i}" && "${i: -2}" != ".o" && $(od -t x1 -N 4 "${i}") == *"7f 45 4c 46"* ]] || continue
+		[[ "$(file \"${i}\")" == *"dynamically"* ]] || continue
+		einfo "Fixing RPATH of ${i}"
 		patchelf --set-rpath \
 '/'"${M_TARGET}"'/SystemFiles/Libraries/Linux-x86-64:'\
 '/'"${M_TARGET}"'/SystemFiles/Libraries/Linux-x86-64/Qt/lib:'\
