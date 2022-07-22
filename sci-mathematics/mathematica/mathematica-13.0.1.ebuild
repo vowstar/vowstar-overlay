@@ -4,7 +4,7 @@
 EAPI=8
 
 CHECKREQS_DISK_BUILD=19G
-inherit desktop unpacker xdg
+inherit check-reqs desktop unpacker xdg
 
 DESCRIPTION="Wolfram Mathematica"
 SRC_URI="Mathematica_${PV}_BNDL_LINUX.sh"
@@ -79,9 +79,9 @@ src_install() {
 
 	# Linux-x86-64/AllVersions is the supported version, other versions remove
 	einfo 'Removing unsupported RLink versions'
-	rm -rf "${S}/${M_TARGET}/SystemFiles/Links/RLink/SystemFiles/Libraries/Linux-x86-64/3.5.0" || die
-	rm -rf "${S}/${M_TARGET}/SystemFiles/Links/RLink/SystemFiles/Libraries/Linux-x86-64/3.6.0" || die
-	rm -rf "${S}/${M_TARGET}/SystemFiles/Links/RLink/SystemFiles/Libraries/Linux/AllVersions" || die
+	rm -r "${S}/${M_TARGET}/SystemFiles/Links/RLink/SystemFiles/Libraries/Linux-x86-64/3.5.0" || die
+	rm -r "${S}/${M_TARGET}/SystemFiles/Links/RLink/SystemFiles/Libraries/Linux-x86-64/3.6.0" || die
+	rm -r "${S}/${M_TARGET}/SystemFiles/Links/RLink/SystemFiles/Libraries/Linux/AllVersions" || die
 
 	# fix RPATH
 	while IFS= read -r -d '' i; do
