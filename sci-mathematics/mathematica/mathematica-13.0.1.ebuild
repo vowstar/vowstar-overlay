@@ -61,7 +61,7 @@ src_install() {
 	fi
 
 	einfo 'Removing MacOS- and Windows-specific files'
-	find AddOns SystemFiles -type d -\( -name Windows -o -name Windows-x86-64 \
+	find "${S}"/opt -type d -\( -name Windows -o -name Windows-x86-64 \
 		-o -name MacOSX -o -name MacOSX-x86-64 -\) -delete || die
 
 	# move all over
@@ -85,7 +85,7 @@ src_install() {
 
 	# fix some embedded paths and install desktop files
 	for filename in $(find "${D}/${M_TARGET}/SystemFiles/Installation" -name "wolfram-mathematica*.desktop") ; do
-		echo Fixing "${filename}" || die
+		einfo "Fixing ${filename}"
 		sed -e "s:${S}::g" -e 's:^\t\t::g' -i "${filename}" || die
 		echo "Categories=Physics;Science;Engineering;2DGraphics;Graphics;" >> "${filename}" || die
 		domenu "${filename}"
