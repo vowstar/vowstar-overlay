@@ -87,7 +87,7 @@ src_install() {
 	while IFS= read -r -d '' i; do
 		# Use \x7fELF header to separate ELF executables and libraries
 		# Skip .o files to avoid surprises
-		[[ -f "${x}" && "${x: -2}" != ".o" && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] || continue
+		[[ -f "${i}" && "${i: -2}" != ".o" && $(od -t x1 -N 4 "${i}") == *"7f 45 4c 46"* ]] || continue
 		patchelf --set-rpath \
 '/'"${M_TARGET}"'/SystemFiles/Libraries/Linux-x86-64:'\
 '/'"${M_TARGET}"'/SystemFiles/Libraries/Linux-x86-64/Qt/lib:'\
