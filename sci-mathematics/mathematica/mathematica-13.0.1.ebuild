@@ -103,8 +103,8 @@ src_install() {
 		die "patchelf failed on ${i}"
 	done < <(find "${S}/${M_TARGET}" -type f -print0)
 
-	# fix symbolic link
-	ln -sf "${S}/${M_TARGET}/SystemFiles/Kernel/Binaries/Linux-x86-64/wolframscript" "${S}/${M_TARGET}/Executables/wolframscript" || die
+	# fix broken symbolic link
+	ln -sf "/${M_TARGET}/SystemFiles/Kernel/Binaries/Linux-x86-64/wolframscript" "${S}/${M_TARGET}/Executables/wolframscript" || die
 
 	# move all over
 	mv "${S}"/opt "${ED}"/opt || die
