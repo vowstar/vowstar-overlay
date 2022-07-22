@@ -53,7 +53,7 @@ src_unpack() {
 src_prepare() {
 	pushd "${S}/unpack" > /dev/null || die
 	# fix ACCESS DENIED issue when installer check the avahi-daemon
-	sed -e "s/avahi-daemon -c/true/g" -i "Unix/Installer/MathInstaller" || die
+	sed -e "s|avahi-daemon -c|true|g" -i "Unix/Installer/MathInstaller" || die
 	/bin/sh "Unix/Installer/MathInstaller" -auto "-targetdir=${S}/${M_TARGET}" "-execdir=${S}/opt/bin" || die
 	popd > /dev/null || die
 	eapply_user
@@ -118,7 +118,7 @@ src_install() {
 	# fix some embedded paths and install desktop files
 	for filename in $(find "${D}/${M_TARGET}/SystemFiles/Installation" -name "wolfram-mathematica*.desktop") ; do
 		einfo "Fixing ${filename}"
-		sed -e "s/${S}//g" -e 's/^\t\t//g' -i "${filename}" || die
+		sed -e "s|${S}||g" -e 's|^\t\t||g' -i "${filename}" || die
 		echo "Categories=Physics;Science;Engineering;2DGraphics;Graphics;" >> "${filename}" || die
 		domenu "${filename}"
 	done
