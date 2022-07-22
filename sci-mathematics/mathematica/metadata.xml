@@ -15,5 +15,6 @@
 	</longdescription>
 	<use>
 		<flag name="cuda">Install with cuda support</flag>
+		<flag name="R">Enable <pkg>dev-lang/R</pkg> backend support</flag>
 	</use>
 </pkgmetadata>
