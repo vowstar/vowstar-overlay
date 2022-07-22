@@ -3,6 +3,7 @@
 
 EAPI=8
 
+CHECKREQS_DISK_BUILD=19G
 inherit desktop unpacker xdg
 
 DESCRIPTION="Wolfram Mathematica"
@@ -16,12 +17,15 @@ IUSE="+doc"
 
 RESTRICT="strip mirror bindist fetch"
 
-DEPEND=""
-
 # Mathematica comes with a lot of bundled stuff. We should place here only what we
 # explicitly override with LD_PRELOAD.
 RDEPEND="
 	media-libs/freetype
+	virtual/libcrypt
+"
+
+DEPEND="
+	${RDEPEND}
 "
 
 # we need this a few times
@@ -53,12 +57,12 @@ src_install() {
 
 	if ! use doc; then
 		einfo "Removing documentation"
-		rm -r "${S}/${M_TARGET}/Documentation"
+		rm -r "${S}/${M_TARGET}/Documentation" || die
 	fi
 
 	einfo 'Removing MacOS- and Windows-specific files'
 	find AddOns SystemFiles -type d -\( -name Windows -o -name Windows-x86-64 \
-		-o -name MacOSX -o -name MacOSX-x86-64 -\) -delete
+		-o -name MacOSX -o -name MacOSX-x86-64 -\) -delete || die
 
 	# move all over
 	mv "${S}"/opt "${D}"/opt || die
@@ -69,9 +73,9 @@ src_install() {
 	# install wrappers instead
 	for name in ${M_BINARIES} ; do
 		einfo "Generating wrapper for ${name}"
-		echo '#!/bin/sh' >> "${T}/${name}"
+		echo '#!/bin/sh' >> "${T}/${name}" || die
 		echo "LD_PRELOAD=/usr/$(get_libdir)/libfreetype.so.6:/$(get_libdir)/libz.so.1 /${M_TARGET}/Executables/${name} \$*" \
-			>> "${T}/${name}"
+			>> "${T}/${name}" || die
 		dobin "${T}/${name}"
 	done
 	for name in ${M_BINARIES} ; do
@@ -81,9 +85,9 @@ src_install() {
 
 	# fix some embedded paths and install desktop files
 	for filename in $(find "${D}/${M_TARGET}/SystemFiles/Installation" -name "wolfram-mathematica*.desktop") ; do
-		echo Fixing "${filename}"
-		sed -e "s:${S}::g" -e 's:^\t\t::g' -i "${filename}"
-		echo "Categories=Physics;Science;Engineering;2DGraphics;Graphics;" >> "${filename}"
+		echo Fixing "${filename}" || die
+		sed -e "s:${S}::g" -e 's:^\t\t::g' -i "${filename}" || die
+		echo "Categories=Physics;Science;Engineering;2DGraphics;Graphics;" >> "${filename}" || die
 		domenu "${filename}"
 	done
 
@@ -91,7 +95,7 @@ src_install() {
 	insinto /usr/share/mime/application
 	for filename in $(find "${D}/${M_TARGET}/SystemFiles/Installation" -name "application-*.xml"); do
 		basefilename=$(basename "${filename}")
-		mv "${filename}" "${T}/${basefilename#application-}"
+		mv "${filename}" "${T}/${basefilename#application-}" || die
 		doins "${T}/${basefilename#application-}"
 	done
 }
