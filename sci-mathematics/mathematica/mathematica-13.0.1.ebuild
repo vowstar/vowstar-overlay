@@ -62,7 +62,7 @@ src_install() {
 
 	einfo 'Removing MacOS- and Windows-specific files'
 	find "${S}"/opt -type d -\( -name Windows -o -name Windows-x86-64 \
-		-o -name MacOSX -o -name MacOSX-x86-64 -\) -delete || die
+		-o -name MacOSX -o -name MacOSX-x86-64 -\) -exec rm -rv {} + || die
 
 	# move all over
 	mv "${S}"/opt "${D}"/opt || die
