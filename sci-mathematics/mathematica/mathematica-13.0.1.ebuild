@@ -31,6 +31,10 @@ DEPEND="
 	${RDEPEND}
 "
 
+BDEPEND="
+	dev-util/patchelf
+"
+
 # we need this a few times
 MPN="Mathematica"
 MPV=$(ver_cut 1-2)
