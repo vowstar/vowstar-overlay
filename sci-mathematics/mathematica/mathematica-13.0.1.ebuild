@@ -38,7 +38,7 @@ BDEPEND="
 # we need this a few times
 MPN="Mathematica"
 MPV=$(ver_cut 1-2)
-M_BINARIES="MathKernel Mathematica MathematicaScript WolframKernel WolframScript math mathematica mcc wolfram"
+M_BINARIES="MathKernel Mathematica WolframKernel wolframscript math mathematica mcc wolfram"
 M_TARGET="opt/Wolfram/${MPN}/${MPV}"
 
 # we might as well list all files in all QA variables...
@@ -83,7 +83,7 @@ src_install() {
 	rm -rf "${S}/${M_TARGET}/SystemFiles/Links/RLink/SystemFiles/Libraries/Linux-x86-64/3.6.0" || die
 	rm -rf "${S}/${M_TARGET}/SystemFiles/Links/RLink/SystemFiles/Libraries/Linux/AllVersions" || die
 
-	# Fix RPATH
+	# fix RPATH
 	while IFS= read -r -d '' i; do
 		# Use \x7fELF header to separate ELF executables and libraries
 		# Skip .o files and static files to avoid surprises
@@ -98,6 +98,9 @@ src_install() {
 '$ORIGIN' "${i}" || \
 		die "patchelf failed on ${i}"
 	done < <(find "${S}/${M_TARGET}" -type f -print0)
+
+	# fix symbolic link
+	ln -sf "${S}/${M_TARGET}/SystemFiles/Kernel/Binaries/Linux-x86-64/wolframscript" "${S}/${M_TARGET}/Executables/wolframscript" || die
 
 	# move all over
 	mv "${S}"/opt "${D}"/opt || die
