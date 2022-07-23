@@ -5,6 +5,13 @@
 		<email>dilfridge@gentoo.org</email>
 		<name>Andreas K. Huettel</name>
 	</maintainer>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	<maintainer type="project">
+		<email>proxy-maint@gentoo.org</email>
+		<name>Proxy Maintainers</name>
+	</maintainer>
 	<longdescription lang="en">
 		Wolfram Mathematica is a software system with built-in libraries for
 		several areas of technical computing that allow machine learning,
