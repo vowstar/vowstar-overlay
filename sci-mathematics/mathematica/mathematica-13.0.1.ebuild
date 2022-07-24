@@ -99,6 +99,7 @@ src_install() {
 '/'"${M_TARGET}"'/SystemFiles/Libraries/Linux-x86-64:'\
 '/'"${M_TARGET}"'/SystemFiles/Libraries/Linux-x86-64/Qt/lib:'\
 '/'"${M_TARGET}"'/SystemFiles/Java/Linux-x86-64/lib:'\
+'/'"${M_TARGET}"'/SystemFiles/Java/Linux-x86-64/lib/jli:'\
 '$ORIGIN' "${i}" || \
 		die "patchelf failed on ${i}"
 	done < <(find "${S}/${M_TARGET}" -type f -print0)
@@ -116,7 +117,7 @@ src_install() {
 	for name in ${M_BINARIES} ; do
 		einfo "Generating wrapper for ${name}"
 		echo '#!/bin/sh' >> "${T}/${name}" || die
-		echo 'QT_QPA_PLATFORM=wayland;xcb' >> "${T}/${name}" || die
+		echo 'QT_QPA_PLATFORM="wayland;xcb"' >> "${T}/${name}" || die
 		echo "LD_PRELOAD=/usr/$(get_libdir)/libfreetype.so.6:/$(get_libdir)/libz.so.1:/$(get_libdir)/libcrypt.so.1 /${M_TARGET}/Executables/${name} \$*" \
 			>> "${T}/${name}" || die
 		dobin "${T}/${name}"
