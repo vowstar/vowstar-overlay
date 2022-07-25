@@ -50,7 +50,7 @@ QA_PREBUILT="opt/*"
 S=${WORKDIR}
 
 src_unpack() {
-	/bin/sh "${DISTDIR}/Mathematica_${PV}_LINUX.sh" --nox11 --keep --target "${S}/unpack" -- "-help" || die
+	/bin/sh "${DISTDIR}/Mathematica_${PV}_LINUX.sh" --nox11 --keep --target "${S}/unpack_app" -- "-help" || die
 	/bin/sh "${DISTDIR}/WLDocs_${PV}_LINUX.sh" --nox11 --keep --target "${S}/unpack_doc" -- "-help" || die
 }
 
@@ -58,7 +58,7 @@ src_install() {
 	local ARCH='-x86-64'
 	# fix missing XDG_DATA_DIRS issue when installer make mime files
 	export XDG_DATA_DIRS="${ED}/usr/share"
-	pushd "${S}/unpack" > /dev/null || die
+	pushd "${S}/unpack_app" > /dev/null || die
 	# fix ACCESS DENIED issue when installer generate desktop files
 	sed -e "s|xdg-desktop-icon|xdg-dummy-command|g" -i "Unix/Installer/MathInstaller" || die
 	sed -e "s|xdg-desktop-menu|xdg-dummy-command|g" -i "Unix/Installer/MathInstaller" || die
@@ -74,10 +74,12 @@ src_install() {
 		rm -r "${S}/${M_TARGET}/Documentation" || die
 	else
 		pushd "${S}/unpack_doc" > /dev/null || die
-		# # fix ACCESS DENIED issue when installer check the avahi-daemon
-		# sed -e "s|avahi-daemon -c|true|g" -i "Unix/Installer/MathInstaller" || die
-		/bin/sh "Unix/Installer/MathInstaller" -auto "-targetdir=${S}/${M_TARGET}" "-execdir=${S}/opt/bin" || die
+		/bin/sh "Unix/Installer/MathInstaller" -auto "-targetdir=${S}/temp_doc" "-execdir=${S}/opt/bin" || die
 		popd > /dev/null || die
+		# Merge contents of Mathematica_docs with Mathematica
+		rm -r ${S}/${M_TARGET}/Documentation/English/{SearchIndex,System} || die
+		mv ${S}/temp_doc/Documentation/English/* ${S}/${M_TARGET}/Documentation/English/ || die
+		rm -r ${S}/temp_doc || die
 	fi
 
 	einfo 'Removing MacOS- and Windows-specific files'
