@@ -113,7 +113,7 @@ src_install() {
 	fi
 	# FFmpegTools can't use if ffmpeg not used
 	if ! use ffmpeg || ! has_version '>=media-video/ffmpeg-5'; then
-		einfo 'Removing FFmpegTools support'
+		einfo 'Removing FFmpegTools support because lack of >=media-video/ffmpeg-5'
 		rm -r "${S}/${M_TARGET}/SystemFiles/Links/FFmpegTools/LibraryResources/Linux-x86-64/FFmpegToolsSystem-5.0.so" || die
 	fi
 
