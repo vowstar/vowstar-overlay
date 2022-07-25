@@ -84,12 +84,10 @@ src_install() {
 		rm -r ${S}/temp_doc || die
 	fi
 
-	# fix world writable file QA problem for documents
+	# fix world writable file QA problem for files
 	while IFS= read -r -d '' i; do
-		[[ $(od -t x1 -N 4 "${i}") != *"7f 45 4c 46"* ]] || continue
-		einfo "Fixing permission of ${i}"
-		chmod 0644 ${i} || die
-	done < <(find "${S}/${M_TARGET}" -type f -iname "*Documentation*" -print0)
+		chmod o-w ${i} || die
+	done < <(find "${S}/${M_TARGET}" -type f -print0)
 
 	einfo 'Removing MacOS- and Windows-specific files'
 	find "${S}/${M_TARGET}" -type d -\( -name Windows -o -name Windows-x86-64 \
