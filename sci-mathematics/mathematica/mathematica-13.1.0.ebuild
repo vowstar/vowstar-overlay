@@ -51,11 +51,13 @@ S=${WORKDIR}
 
 src_unpack() {
 	/bin/sh "${DISTDIR}/Mathematica_${PV}_LINUX.sh" --nox11 --keep --target "${S}/unpack" -- "-help" || die
+	/bin/sh "${DISTDIR}/WLDocs_${PV}_LINUX.sh" --nox11 --keep --target "${S}/unpack_doc" -- "-help" || die
 }
 
 src_install() {
 	local ARCH='-x86-64'
-
+	# fix missing XDG_DATA_DIRS issue when installer make mime files
+	export XDG_DATA_DIRS="${ED}/usr/share"
 	pushd "${S}/unpack" > /dev/null || die
 	# fix ACCESS DENIED issue when installer check the avahi-daemon
 	sed -e "s|avahi-daemon -c|true|g" -i "Unix/Installer/MathInstaller" || die
@@ -66,7 +68,11 @@ src_install() {
 		einfo "Removing documentation"
 		rm -r "${S}/${M_TARGET}/Documentation" || die
 	else
-		/bin/sh "${DISTDIR}/WLDocs_${PV}_LINUX.sh" -auto "-targetdir=${S}/${M_TARGET}" "-execdir=${S}/opt/bin" || die
+		pushd "${S}/unpack_doc" > /dev/null || die
+		# # fix ACCESS DENIED issue when installer check the avahi-daemon
+		# sed -e "s|avahi-daemon -c|true|g" -i "Unix/Installer/MathInstaller" || die
+		/bin/sh "Unix/Installer/MathInstaller" -auto "-targetdir=${S}/${M_TARGET}" "-execdir=${S}/opt/bin" || die
+		popd > /dev/null || die
 	fi
 
 	einfo 'Removing MacOS- and Windows-specific files'
