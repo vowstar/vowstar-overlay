@@ -89,7 +89,7 @@ src_install() {
 		[[ $(od -t x1 -N 4 "${i}") != *"7f 45 4c 46"* ]] || continue
 		einfo "Fixing permission of ${i}"
 		chmod 0644 ${i} || die
-	done < <(find "${S}/${M_TARGET}" -type f -iname Documentation -print0)
+	done < <(find "${S}/${M_TARGET}" -type f -iname "*Documentation*" -print0)
 
 	einfo 'Removing MacOS- and Windows-specific files'
 	find "${S}/${M_TARGET}" -type d -\( -name Windows -o -name Windows-x86-64 \
@@ -172,6 +172,7 @@ src_install() {
 	insinto /usr/share/mime/application
 	for filename in $(find "${ED}/${M_TARGET}/SystemFiles/Installation" -name "application-*.xml"); do
 		basefilename=$(basename "${filename}")
+		sed -e "s|${S}||g" -e 's|^\t\t||g' -i "${filename}" || die
 		mv "${filename}" "${T}/${basefilename#application-}" || die
 		doins "${T}/${basefilename#application-}"
 	done
