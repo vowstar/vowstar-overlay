@@ -23,11 +23,11 @@ RESTRICT="strip mirror bindist fetch"
 # Mathematica comes with a lot of bundled stuff. We should place here only what we
 # explicitly override with LD_PRELOAD.
 # RLink (libjri.so) requires dev-lang/R
-# FFmpegTools (FFmpegToolsSystem-5.0.so) requires >=media-video/ffmpeg-5.0.1
+# FFmpegTools (FFmpegToolsSystem-5.0.so) requires media-video/ffmpeg
 RDEPEND="
 	cuda? ( dev-util/nvidia-cuda-toolkit )
 	media-libs/freetype
-	ffmpeg? ( >=media-video/ffmpeg-5 )
+	ffmpeg? ( media-video/ffmpeg )
 	R? ( dev-lang/R )
 	virtual/libcrypt
 "
@@ -112,7 +112,7 @@ src_install() {
 		rm -r "${S}/${M_TARGET}/SystemFiles/Links/RLink/SystemFiles/Libraries/Linux-x86-64/AllVersions/libjri.so" || die
 	fi
 	# FFmpegTools can't use if ffmpeg not used
-	if ! use ffmpeg; then
+	if ! use ffmpeg || ! has_version '>=media-video/ffmpeg-5'; then
 		einfo 'Removing FFmpegTools support'
 		rm -r "${S}/${M_TARGET}/SystemFiles/Links/FFmpegTools/LibraryResources/Linux-x86-64/FFmpegToolsSystem-5.0.so" || die
 	fi
