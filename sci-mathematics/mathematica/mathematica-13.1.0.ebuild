@@ -58,8 +58,7 @@ src_unpack() {
 
 src_install() {
 	local ARCH='-x86-64'
-	# fix missing XDG_DATA_DIRS issue when installer make mime files
-	export XDG_DATA_DIRS="${ED}/usr/share"
+
 	pushd "${S}/unpack_app" > /dev/null || die
 	# fix ACCESS DENIED issue when installer generate desktop files
 	sed -e "s|xdg-desktop-icon|xdg-dummy-command|g" -i "Unix/Installer/MathInstaller" || die
