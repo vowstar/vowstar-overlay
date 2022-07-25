@@ -16,16 +16,18 @@ HOMEPAGE="https://www.wolfram.com/mathematica/"
 LICENSE="all-rights-reserved"
 KEYWORDS="-* ~amd64"
 SLOT="0"
-IUSE="cuda +doc R"
+IUSE="cuda +doc ffmpeg R"
 
 RESTRICT="strip mirror bindist fetch"
 
 # Mathematica comes with a lot of bundled stuff. We should place here only what we
 # explicitly override with LD_PRELOAD.
 # RLink (libjri.so) requires dev-lang/R
+# FFmpegTools (FFmpegToolsSystem-5.0.so) requires >=media-video/ffmpeg-5.0.1
 RDEPEND="
 	cuda? ( dev-util/nvidia-cuda-toolkit )
 	media-libs/freetype
+	ffmpeg? ( >=media-video/ffmpeg-5.0.1 )
 	R? ( dev-lang/R )
 	virtual/libcrypt
 "
@@ -82,6 +84,13 @@ src_install() {
 		rm -r ${S}/temp_doc || die
 	fi
 
+	# fix world writable file QA problem for documents
+	while IFS= read -r -d '' i; do
+		[[ $(od -t x1 -N 4 "${i}") != *"7f 45 4c 46"* ]] || continue
+		einfo "Fixing permission of ${i}"
+		chmod 0644 ${i} || die
+	done < <(find "${S}/${M_TARGET}" -type f -iname Documentation -print0)
+
 	einfo 'Removing MacOS- and Windows-specific files'
 	find "${S}/${M_TARGET}" -type d -\( -name Windows -o -name Windows-x86-64 \
 		-o -name MacOSX -o -name MacOSX-x86-64 -o -name Macintosh -\) \
@@ -97,9 +106,15 @@ src_install() {
 	rm -r "${S}/${M_TARGET}/SystemFiles/Links/RLink/SystemFiles/Libraries/Linux-x86-64/3.5.0" || die
 	rm -r "${S}/${M_TARGET}/SystemFiles/Links/RLink/SystemFiles/Libraries/Linux-x86-64/3.6.0" || die
 	rm -r "${S}/${M_TARGET}/SystemFiles/Links/RLink/SystemFiles/Libraries/Linux/AllVersions" || die
+	# RLink can't use if R not used
 	if ! use R; then
 		einfo 'Removing RLink support'
 		rm -r "${S}/${M_TARGET}/SystemFiles/Links/RLink/SystemFiles/Libraries/Linux-x86-64/AllVersions/libjri.so" || die
+	fi
+	# FFmpegTools can't use if ffmpeg not used
+	if ! use ffmpeg; then
+		einfo 'Removing FFmpegTools support'
+		rm -r "${S}/${M_TARGET}/SystemFiles/Links/FFmpegTools/LibraryResources/Linux-x86-64/FFmpegToolsSystem-5.0.so" || die
 	fi
 
 	# fix RPATH
