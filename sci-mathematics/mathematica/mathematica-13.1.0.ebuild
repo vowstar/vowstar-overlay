@@ -27,7 +27,7 @@ RESTRICT="strip mirror bindist fetch"
 RDEPEND="
 	cuda? ( dev-util/nvidia-cuda-toolkit )
 	media-libs/freetype
-	ffmpeg? ( >=media-video/ffmpeg-5.0.1 )
+	ffmpeg? ( >=media-video/ffmpeg-5 )
 	R? ( dev-lang/R )
 	virtual/libcrypt
 "
