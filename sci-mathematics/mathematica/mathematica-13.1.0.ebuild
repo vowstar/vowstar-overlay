@@ -59,6 +59,11 @@ src_install() {
 	# fix missing XDG_DATA_DIRS issue when installer make mime files
 	export XDG_DATA_DIRS="${ED}/usr/share"
 	pushd "${S}/unpack" > /dev/null || die
+	# fix ACCESS DENIED issue when installer generate desktop files
+	sed -e "s|xdg-desktop-icon|xdg-dummy-command|g" -i "Unix/Installer/MathInstaller" || die
+	sed -e "s|xdg-desktop-menu|xdg-dummy-command|g" -i "Unix/Installer/MathInstaller" || die
+	sed -e "s|xdg-icon-resource|xdg-dummy-command|g" -i "Unix/Installer/MathInstaller" || die
+	sed -e "s|xdg-mime|xdg-dummy-command|g" -i "Unix/Installer/MathInstaller" || die
 	# fix ACCESS DENIED issue when installer check the avahi-daemon
 	sed -e "s|avahi-daemon -c|true|g" -i "Unix/Installer/MathInstaller" || die
 	/bin/sh "Unix/Installer/MathInstaller" -auto "-targetdir=${S}/${M_TARGET}" "-execdir=${S}/opt/bin" || die
