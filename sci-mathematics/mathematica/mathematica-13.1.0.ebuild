@@ -86,7 +86,7 @@ src_install() {
 
 	# fix world writable file QA problem for files
 	while IFS= read -r -d '' i; do
-		chmod o-w ${i} || die
+		chmod o-w "${i}" || die
 	done < <(find "${S}/${M_TARGET}" -type f -print0)
 
 	einfo 'Removing MacOS- and Windows-specific files'
