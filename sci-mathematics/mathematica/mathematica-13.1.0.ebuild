@@ -170,7 +170,6 @@ src_install() {
 	insinto /usr/share/mime/application
 	for filename in $(find "${ED}/${M_TARGET}/SystemFiles/Installation" -name "application-*.xml"); do
 		basefilename=$(basename "${filename}")
-		sed -e "s|${S}||g" -e 's|^\t\t||g' -i "${filename}" || die
 		mv "${filename}" "${T}/${basefilename#application-}" || die
 		doins "${T}/${basefilename#application-}"
 	done
