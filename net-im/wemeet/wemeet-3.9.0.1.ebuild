@@ -32,12 +32,12 @@ QA_PREBUILT="opt/${PN}/*"
 
 src_install() {
 	# Fix duplicate files causing failures if FEATURES=splitdebug
-	local f
-	for f in libFcitxQt5DBusAddons.so libFcitxQt5WidgetsAddons.so; do
-		rm "opt/${PN}/lib/${f}" "opt/${PN}/lib/${f}.1" || die
-		ln -s "${f}.1.0" "opt/${PN}/lib/${f}.1" || die
-		ln -s "${f}.1" "opt/${PN}/lib/${f}" || die
-	done
+	# local f
+	# for f in libFcitxQt5DBusAddons.so libFcitxQt5WidgetsAddons.so; do
+	# 	rm "opt/${PN}/lib/${f}" "opt/${PN}/lib/${f}.1" || die
+	# 	ln -s "${f}.1.0" "opt/${PN}/lib/${f}.1" || die
+	# 	ln -s "${f}.1" "opt/${PN}/lib/${f}" || die
+	# done
 
 	# Fix RPATHs to ensure the libraries can be found
 	for f in $(find "opt/${PN}/bin" "opt/${PN}/plugins") ; do
