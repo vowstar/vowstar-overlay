@@ -79,6 +79,7 @@ fi;
 	doins -r "opt/${PN}/bin" "opt/${PN}/icons" "opt/${PN}/lib" "opt/${PN}/plugins" "opt/${PN}/resources"  "opt/${PN}/translations"
 	doexe "opt/${PN}/wemeetapp.sh"
 	fperms +x "/opt/${PN}/bin/wemeetapp"
+	fperms +x "/opt/${PN}/bin/QtWebEngineProcess"
 
 	# put launcher into PATH
 	dosym "../../opt/${PN}/wemeetapp.sh" /usr/bin/wemeetapp
