@@ -81,7 +81,6 @@ fi;
 	doins -r "opt/${PN}/bin" "opt/${PN}/icons" "opt/${PN}/lib" "opt/${PN}/plugins"
 	doexe "opt/${PN}/wemeetapp.sh"
 	fperms +x "/opt/${PN}/bin/wemeetapp"
-	fperms +x "/opt/${PN}/bin/crashpad_handler"
 
 	# put launcher into PATH
 	dosym "../../opt/${PN}/wemeetapp.sh" /usr/bin/wemeetapp
