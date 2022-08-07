@@ -13,7 +13,7 @@ HOMEPAGE="https://www.wolfram.com/mathematica/"
 LICENSE="all-rights-reserved"
 KEYWORDS="-* ~amd64"
 SLOT="0"
-IUSE="cuda +doc R"
+IUSE="cuda doc R"
 
 RESTRICT="strip mirror bindist fetch"
 
@@ -136,7 +136,12 @@ src_install() {
 	done
 
 	# install icons
-	doicon -s scalable "${FILESDIR}/wolfram-mathematica.svg"
+	for iconsize in 16 32 64 128 256; do
+		local iconfile="${ED}/${M_TARGET}/SystemFiles/FrontEnd/SystemResources/X/App-${iconsize}.png" wolfram-mathematica.png
+		if [ -e "${png_file}" ]; then
+			newicon -s "${iconsize}" "${iconfile}" wemeetapp
+		fi
+	done
 
 	# install mime types
 	insinto /usr/share/mime/application
