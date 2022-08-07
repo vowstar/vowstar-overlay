@@ -80,9 +80,9 @@ src_install() {
 		/bin/sh "Unix/Installer/MathInstaller" -auto "-targetdir=${S}/temp_doc" "-execdir=${S}/opt/bin" || die
 		popd > /dev/null || die
 		# Merge contents of Mathematica_docs with Mathematica
-		rm -r ${S}/${M_TARGET}/Documentation/English/{SearchIndex,System} || die
-		mv ${S}/temp_doc/Documentation/English/* ${S}/${M_TARGET}/Documentation/English/ || die
-		rm -r ${S}/temp_doc || die
+		rm -r "${S}/${M_TARGET}"/Documentation/English/{SearchIndex,System} || die
+		mv "${S}"/temp_doc/Documentation/English/* "${S}/${M_TARGET}/"Documentation/English/ || die
+		rm -r "${S}"/temp_doc || die
 	fi
 
 	# fix world writable file QA problem for files
