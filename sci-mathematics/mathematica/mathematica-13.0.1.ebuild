@@ -137,7 +137,7 @@ src_install() {
 
 	# install icons
 	for iconsize in 16 32 64 128 256; do
-		local iconfile="${ED}/${M_TARGET}/SystemFiles/FrontEnd/SystemResources/X/App-${iconsize}.png" wolfram-mathematica.png
+		local iconfile="${ED}/${M_TARGET}/SystemFiles/FrontEnd/SystemResources/X/App-${iconsize}.png"
 		if [ -e "${png_file}" ]; then
 			newicon -s "${iconsize}" "${iconfile}" wolfram-mathematica.png
 		fi
