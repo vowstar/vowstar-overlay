@@ -1,9 +1,8 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-CMAKE_ECLASS=cmake
 inherit cmake-multilib
 
 DESCRIPTION="Low bit rate speech codec"
@@ -14,17 +13,19 @@ LICENSE="LGPL-2.1"
 SLOT="0/1.0"
 KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~ppc ~ppc64 ~riscv ~sparc ~x86"
 IUSE="examples test"
+
 # Not yet passing, but infrastructure added to run
+# Needs Octave dependencies like "signal"?
+# https://github.com/drowe67/codec2/commit/9a129f1b3ad12ecbf3df7f4460f496ee11e49c08#diff-b335630551682c19a781afebcf4d07bf978fb1f8ac04c6bf87428ed5106870f5R155
 RESTRICT="test"
 
-PATCHES=(
-	"${FILESDIR}/${P}-fix-freedv-callback.patch" # Bug 816453
-)
+#BDEPEND="test? ( sci-mathematics/octave )"
 
 multilib_src_configure() {
 	local mycmakeargs=(
 		-DUNITTEST=$(usex test)
 		-DINSTALL_EXAMPLES=$(usex examples)
 	)
+
 	cmake_src_configure
 }
