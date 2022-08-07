@@ -23,8 +23,8 @@ REQUIRED_USE="^^ ( pulseaudio portaudio gr-audio )"
 
 DEPEND="
 	|| (
-		<net-wireless/gnuradio-3.10[audio,analog,filter]
-		>=net-wireless/gnuradio-3.10[audio,analog,filter,network]
+		<net-wireless/gnuradio-3.10:0[audio,analog,filter]
+		>=net-wireless/gnuradio-3.10:0[audio,analog,filter,network]
 	)
 	>=net-wireless/gr-osmosdr-0.1.0:=
 	dev-libs/boost:=
