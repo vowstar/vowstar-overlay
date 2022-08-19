@@ -88,7 +88,7 @@ src_install() {
 	chrpath -d "${ED}/usr/bin/lib${PN}/lib${PN}.so"
 	exeinto "/usr/$(get_libdir)/${PN}/plugins"
 	for plugin in builtin; do
-		doexe "build/plugins/${plugin}.hexplug"
+		doexe "${BUILD_DIR}/plugins/${plugin}.hexplug"
 		chrpath -d "/usr/$(get_libdir)/${PN}/plugins/${plugin}.hexplug"
 	done
 	# Desktop and icon files
