@@ -37,6 +37,7 @@ DEPEND="
 	net-misc/curl
 	sys-apps/dbus
 	sys-apps/file
+	sys-apps/xdg-desktop-portal
 	virtual/libiconv
 	virtual/libintl
 "
@@ -54,6 +55,7 @@ PATCHES=(
 	"${FILESDIR}/${PN}-1.21.2-fix-dedup-resources-directories.patch"
 	"${FILESDIR}/${PN}-1.21.2-fix-copy-elision-not-applying.patch"
 	"${FILESDIR}/${PN}-1.21.2-fix-use-c-23-standard.patch"
+	"${FILESDIR}/${PN}-1.21.2-fix-llvmdemangle.patch"
 )
 
 src_configure() {
