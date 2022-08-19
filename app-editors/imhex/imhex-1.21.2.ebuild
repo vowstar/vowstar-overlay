@@ -96,7 +96,7 @@ src_install() {
 	newicon -s scalable "${S}/resources/icon.svg" "${PN}.svg"
 	for i in 16 22 24 32 36 48 64 72 96 128 192 256 512; do
 		mkdir "${T}/${i}x${i}" || die
-		rsvg-convert -a -f png -w "${i}" -o "${T}/${i}x${i}/${PN}.png" || die
+		rsvg-convert -a -f png -w "${i}" -o "${T}/${i}x${i}/${PN}.png" "${S}/resources/icon.svg" || die
 		doicon -s "${i}" "${T}/${i}x${i}/${PN}.png"
 	done
 
