@@ -11,8 +11,10 @@ inherit cmake desktop llvm python-single-r1 xdg
 
 DESCRIPTION="A hex editor for reverse engineers, programmers, and eyesight"
 HOMEPAGE="https://github.com/WerWolv/ImHex"
-SRC_URI="https://github.com/WerWolv/ImHex/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-S="${WORKDIR}/ImHex-${PV}"
+SRC_URI="
+	https://github.com/WerWolv/ImHex/releases/download/v${PV}/Full.Sources.tar.gz -> ${P}.tar.gz
+"
+S="${WORKDIR}/ImHex"
 
 LICENSE="GPL-2"
 SLOT="0"
