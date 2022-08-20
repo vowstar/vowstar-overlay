@@ -102,7 +102,7 @@ src_install() {
 
 	mypythondir="${D}/$(python_get_sitedir)/${PN}"
 	mkdir -p "${mypythondir}" || die
-	mv "${S}"/python_libs/lib/* "${mypythondir}" || die
+	mv "${S}"/resources/lib/python/lib/* "${mypythondir}" || die
 	python_optimize "${mypythondir}"
 
 	# install docs
