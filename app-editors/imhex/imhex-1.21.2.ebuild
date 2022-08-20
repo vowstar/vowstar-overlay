@@ -7,7 +7,7 @@ CMAKE_BUILD_TYPE="Release"
 CMAKE_MAKEFILE_GENERATOR="emake"
 PYTHON_COMPAT=( python3_{8..11} )
 
-inherit cmake desktop llvm python-single-r1 xdg
+inherit cmake desktop llvm python-r1 xdg
 
 DESCRIPTION="A hex editor for reverse engineers, programmers, and eyesight"
 HOMEPAGE="https://github.com/WerWolv/ImHex"
@@ -19,11 +19,11 @@ S="${WORKDIR}/ImHex"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64"
-
-REQUIRED_USE="${PYTHON_REQUIRED_USE}"
+IUSE="python"
+REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
 DEPEND="
-	${PYTHON_DEPS}
+	python? ( ${PYTHON_DEPS} )
 	app-forensics/yara
 	dev-libs/capstone
 	>=dev-libs/libfmt-8.0.0
@@ -59,7 +59,8 @@ PATCHES=(
 )
 
 src_configure() {
-	python-single-r1_pkg_setup
+	use python && python_setup
+
 	local mycmakeargs=(
 		-D CMAKE_SKIP_RPATH=ON \
 		-D IMHEX_IGNORE_BAD_CLONE=ON \
@@ -67,7 +68,6 @@ src_configure() {
 		-D IMHEX_STRIP_RELEASE=OFF \
 		-D IMHEX_VERSION="${PV}" \
 		-D PROJECT_VERSION="${PV}" \
-		-D PYTHON_VERSION_MAJOR_MINOR="\"${EPYTHON/python/}\"" \
 		-D USE_SYSTEM_CAPSTONE=ON \
 		-D USE_SYSTEM_CURL=ON \
 		-D USE_SYSTEM_FMT=ON \
@@ -75,6 +75,9 @@ src_configure() {
 		-D USE_SYSTEM_NLOHMANN_JSON=ON \
 		-D USE_SYSTEM_YARA=ON
 	)
+	if use python; then
+		mycmakeargs+=( -D PYTHON_VERSION_MAJOR_MINOR="\"${EPYTHON/python/}\"" )
+	fi
 	cmake_src_configure
 }
 
@@ -84,8 +87,8 @@ src_install() {
 	dobin "${BUILD_DIR}/${PN}"
 	chrpath -d "${ED}/usr/bin/${PN}"
 	# Shared lib and plugins
-	dolib.so "${BUILD_DIR}/lib/lib${PN}/lib${PN}.so*"
-	chrpath -d "${ED}/usr/bin/lib${PN}/lib${PN}.so*"
+	dolib.so "${BUILD_DIR}"/lib/lib"${PN}"/lib"${PN}".so*
+	chrpath -d "${ED}"/usr/bin/lib"${PN}"/lib"${PN}".so*
 	exeinto "/usr/$(get_libdir)/${PN}/plugins"
 	for plugin in builtin; do
 		doexe "${BUILD_DIR}/plugins/${plugin}.hexplug"
@@ -100,10 +103,15 @@ src_install() {
 		doicon -s "${i}" "${T}/${i}x${i}/${PN}.png"
 	done
 
-	mypythondir="${D}/$(python_get_sitedir)/${PN}"
-	mkdir -p "${mypythondir}" || die
-	mv "${S}"/resources/lib/python/lib/* "${mypythondir}" || die
-	python_optimize "${mypythondir}"
+	if use python; then
+		installation() {
+			mypythondir="${D}/$(python_get_sitedir)/${PN}"
+			mkdir -p "${mypythondir}" || die
+			cp -r "${S}"/resources/lib/python/lib/* "${mypythondir}" || die
+			python_optimize "${mypythondir}"
+		}
+		python_foreach_impl installation
+	fi
 
 	# install docs
 	einstalldocs
