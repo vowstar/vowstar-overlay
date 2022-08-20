@@ -84,8 +84,8 @@ src_install() {
 	dobin "${BUILD_DIR}/${PN}"
 	chrpath -d "${ED}/usr/bin/${PN}"
 	# Shared lib and plugins
-	dolib.so "${BUILD_DIR}/lib/lib${PN}/lib${PN}.so"
-	chrpath -d "${ED}/usr/bin/lib${PN}/lib${PN}.so"
+	dolib.so "${BUILD_DIR}/lib/lib${PN}/lib${PN}.so*"
+	chrpath -d "${ED}/usr/bin/lib${PN}/lib${PN}.so*"
 	exeinto "/usr/$(get_libdir)/${PN}/plugins"
 	for plugin in builtin; do
 		doexe "${BUILD_DIR}/plugins/${plugin}.hexplug"
