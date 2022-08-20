@@ -92,7 +92,7 @@ src_install() {
 	exeinto "/usr/$(get_libdir)/${PN}/plugins"
 	for plugin in builtin; do
 		doexe "${BUILD_DIR}/plugins/${plugin}.hexplug"
-		chrpath -d "/usr/$(get_libdir)/${PN}/plugins/${plugin}.hexplug"
+		chrpath -d "${ED}/usr/$(get_libdir)/${PN}/plugins/${plugin}.hexplug"
 	done
 	# Desktop and icon files
 	domenu "${S}/dist/${PN}.desktop"
