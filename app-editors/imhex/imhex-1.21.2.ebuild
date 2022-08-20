@@ -120,5 +120,5 @@ src_install() {
 
 	# Install patterns
 	insinto /usr/share/imhex
-	doins "${S_PATTERNS}"/*
+	doins -r "${S_PATTERNS}"/*
 }
