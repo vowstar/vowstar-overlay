@@ -120,6 +120,5 @@ src_install() {
 
 	# Install patterns
 	insinto /usr/share/imhex
-	rm -r "${S_PATTERNS}"/{.*,LICENSE,*.md} || die
 	doins "${S_PATTERNS}"/*
 }
