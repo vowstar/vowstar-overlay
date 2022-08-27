@@ -109,7 +109,7 @@ src_compile() {
 	cmake_src_build
 	popd
 
-	eninja -C "${BUILD_DIR}" firtool
+	# eninja -C "${BUILD_DIR}" firtool
 }
 
 src_install() {
