@@ -55,6 +55,15 @@ DOCS=(
 	"${S_CIRCT}/LICENSE"
 )
 
+src_prepare() {
+	default
+	if [[ "${PV}" != "9999" ]] ; then
+		rm -r "${S_CIRCT}"/llvm || die
+		ln -s "${S_LLVM}" "${S}"/llvm || die
+	fi
+	cmake_src_prepare
+}
+
 src_configure() {
 	python_setup
 
