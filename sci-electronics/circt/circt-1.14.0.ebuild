@@ -33,10 +33,17 @@ fi
 
 LICENSE="Apache-2.0-with-LLVM-exceptions UoI-NCSA BSD public-domain rc"
 SLOT="0"
+IUSE="test"
 REQUIRED_USE=" ${PYTHON_REQUIRED_USE} "
+
+RESTRICT="!test? ( test )"
 
 RDEPEND="
 	${PYTHON_DEPS}
+	test? (
+		dev-python/psutil[${PYTHON_USEDEP}]
+		sci-electronics/verilator
+	)
 	sys-libs/ncurses:0=
 "
 
@@ -59,7 +66,7 @@ src_configure() {
 	python_setup
 
 	local mycmakeargs=(
-		-D CMAKE_BUILD_TYPE=Release \
+		-D PYTHON_EXECUTABLE="${PYTHON}" \
 		-D CMAKE_INSTALL_PREFIX=/usr \
 		-D LLVM_BINUTILS_INCDIR=/usr/include \
 		-D LLVM_ENABLE_PROJECTS=mlir \
@@ -75,6 +82,14 @@ src_configure() {
 		-D LLVM_BUILD_TOOLS=ON
 	)
 	cmake_src_configure
+}
+
+src_test() {
+	pushd "${BUILD_DIR}" || die
+	ninja check-mlir
+	ninja check-circt
+	ninja check-circt-integration
+	popd || die
 }
 
 src_install() {
