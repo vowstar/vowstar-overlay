@@ -77,15 +77,23 @@ src_configure() {
 	cmake_src_configure
 }
 
-src_compile() {
-	eninja -C "${BUILD_DIR}" firtool
-}
-
 src_install() {
 	mv "${S_LLVM}/llvm/LICENSE.TXT" "${S_LLVM}/llvm/llvm-LICENSE.TXT" || die
 	mv "${S_LLVM}/mlir/LICENSE.TXT" "${S_LLVM}/mlir/mlir-LICENSE.TXT" || die
 	mv "${S_CIRCT}/LICENSE" "${S_CIRCT}/circt-LICENSE" || die
 	einstalldocs
 	exeinto /usr/bin
+	doexe "${BUILD_DIR}"/bin/circt-capi-ir-test
+	doexe "${BUILD_DIR}"/bin/circt-lsp-server
+	doexe "${BUILD_DIR}"/bin/circt-opt
+	doexe "${BUILD_DIR}"/bin/circt-reduce
+	doexe "${BUILD_DIR}"/bin/circt-rtl-sim.py
+	doexe "${BUILD_DIR}"/bin/circt-translate
+	doexe "${BUILD_DIR}"/bin/esi_cosim.py
+	doexe "${BUILD_DIR}"/bin/esi-cosim-runner.py
+	doexe "${BUILD_DIR}"/bin/esi-tester
 	doexe "${BUILD_DIR}"/bin/firtool
+	doexe "${BUILD_DIR}"/bin/handshake-runner
+	doexe "${BUILD_DIR}"/bin/llhd-sim
+	doexe "${BUILD_DIR}"/bin/py-split-input-file.py
 }
