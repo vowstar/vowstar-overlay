@@ -27,8 +27,8 @@ else
 	"
 	KEYWORDS="~amd64 ~arm64 ~riscv ~x86"
 	S_CIRCT="${WORKDIR}/${PN}-sifive-$(ver_cut 1)-$(ver_cut 2)-$(ver_cut 3)"
-	S_LLVM="${WORKDIR}/llvm-project-${MY_LLVM_PV}/llvm"
-	S="${S_LLVM}"
+	S_LLVM="${WORKDIR}/llvm-project-${MY_LLVM_PV}"
+	S="${S_LLVM}/llvm"
 fi
 
 LICENSE="Apache-2.0-with-LLVM-exceptions UoI-NCSA BSD public-domain rc"
@@ -50,19 +50,10 @@ BDEPEND="
 "
 
 DOCS=(
-	"${S}/circt/llvm/llvm/LICENSE.TXT"
-	"${S}/circt/llvm/mlir/LICENSE.TXT"
-	"${S}/circt/LICENSE"
+	"${S_LLVM}/llvm/LICENSE.TXT"
+	"${S_LLVM}/mlir/LICENSE.TXT"
+	"${S_CIRCT}/LICENSE"
 )
-
-src_prepare() {
-	default
-	if [[ "${PV}" != "9999" ]] ; then
-		rm -r "${S}"/llvm || die
-		ln -s "${S_LLVM}" "${S}"/llvm || die
-	fi
-	cmake_src_prepare
-}
 
 src_configure() {
 	python_setup
