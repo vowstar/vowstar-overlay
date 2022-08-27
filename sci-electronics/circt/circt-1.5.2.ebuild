@@ -78,7 +78,6 @@ src_configure() {
 }
 
 src_compile() {
-	cmake_build
 	eninja -C "${BUILD_DIR}" firtool
 }
 
