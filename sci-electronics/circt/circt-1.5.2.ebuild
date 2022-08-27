@@ -27,7 +27,7 @@ else
 	"
 	KEYWORDS="~amd64 ~arm64 ~riscv ~x86"
 	S_CIRCT="${WORKDIR}/${PN}-sifive-$(ver_cut 1)-$(ver_cut 2)-$(ver_cut 3)"
-	S_LLVM="${WORKDIR}/llvm-project-${MY_LLVM_PV}"
+	S_LLVM="${WORKDIR}/llvm-project-${MY_LLVM_PV}/llvm"
 	S="${S_LLVM}"
 fi
 
