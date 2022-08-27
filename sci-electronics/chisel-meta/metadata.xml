@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">chipsalliance/playground</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		This is a meta-package to install the dependencies for chisel playground,
+		for those who want to develop RTL based on rocket-chip and even chipyard.
+	</longdescription>
+</pkgmetadata>
