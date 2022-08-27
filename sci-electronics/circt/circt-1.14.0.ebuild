@@ -86,9 +86,9 @@ src_configure() {
 
 src_test() {
 	pushd "${BUILD_DIR}" || die
-	ninja check-mlir
-	ninja check-circt
-	ninja check-circt-integration
+	eninja check-mlir
+	eninja check-circt
+	eninja check-circt-integration
 	popd || die
 }
 
