@@ -66,7 +66,7 @@ src_configure() {
 	python_setup
 
 	local mycmakeargs=(
-		-D PYTHON_EXECUTABLE="${PYTHON}" \
+		-D Python3_EXECUTABLE="${PYTHON}" \
 		-D CMAKE_INSTALL_PREFIX=/usr \
 		-D LLVM_BINUTILS_INCDIR=/usr/include \
 		-D LLVM_ENABLE_PROJECTS=mlir \
@@ -111,4 +111,6 @@ src_install() {
 	doexe "${BUILD_DIR}"/bin/handshake-runner
 	doexe "${BUILD_DIR}"/bin/llhd-sim
 	doexe "${BUILD_DIR}"/bin/py-split-input-file.py
+	# llhd-sim not static linked
+	dolib.so "${BUILD_DIR}"/lib/libcirct-llhd-signals-runtime-wrappers.so
 }
