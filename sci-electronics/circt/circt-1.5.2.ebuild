@@ -26,8 +26,9 @@ else
 		https://github.com/llvm/llvm-project/archive/${MY_LLVM_PV}.tar.gz -> llvm-project-${MY_LLVM_PV}.tar.gz
 	"
 	KEYWORDS="~amd64 ~arm64 ~riscv ~x86"
-	S="${WORKDIR}/${PN}-sifive-$(ver_cut 1)-$(ver_cut 2)-$(ver_cut 3)"
+	S_CIRCT="${WORKDIR}/${PN}-sifive-$(ver_cut 1)-$(ver_cut 2)-$(ver_cut 3)"
 	S_LLVM="${WORKDIR}/llvm-project-${MY_LLVM_PV}"
+	S="${S_LLVM}"
 fi
 
 LICENSE="Apache-2.0-with-LLVM-exceptions UoI-NCSA BSD public-domain rc"
@@ -67,7 +68,6 @@ src_configure() {
 	python_setup
 
 	local mycmakeargs=(
-		-S "${S}"/circt/llvm/llvm \
 		-D CMAKE_BUILD_TYPE=Release \
 		-D CMAKE_INSTALL_PREFIX=/usr \
 		-D LLVM_BINUTILS_INCDIR=/usr/include \
@@ -80,7 +80,7 @@ src_configure() {
 		-D LLVM_ENABLE_OCAMLDOC=OFF \
 		-D LLVM_OPTIMIZED_TABLEGEN=ON \
 		-D LLVM_EXTERNAL_PROJECTS=circt \
-		-D LLVM_EXTERNAL_CIRCT_SOURCE_DIR="${S}"/circt \
+		-D LLVM_EXTERNAL_CIRCT_SOURCE_DIR="${S_CIRCT}" \
 		-D LLVM_BUILD_TOOLS=ON
 	)
 	cmake_src_configure
