@@ -15,12 +15,13 @@ if [[ ${PV} != *_rc* ]] ; then
 fi
 
 RDEPEND="
-	sys-devel/make
 	dev-java/antlr:4
 	dev-java/mill-bin
 	dev-libs/protobuf
 	dev-vcs/git
 	net-misc/wget
 	sys-apps/dtc
+	sys-devel/make
 	sys-process/parallel
+	sci-electronics/circt
 "
