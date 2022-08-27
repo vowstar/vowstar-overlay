@@ -57,8 +57,8 @@ DOCS=(
 src_prepare() {
 	default
 	if [[ "${PV}" != "9999" ]] ; then
-		rm -r ${S}/llvm || die
-		ln -s ${S_LLVM} ${S}/llvm || die
+		rm -r "${S}"/llvm || die
+		ln -s "${S_LLVM}" "${S}"/llvm || die
 	fi
 	cmake_src_prepare
 }
@@ -67,7 +67,7 @@ src_configure() {
 	python_setup
 
 	local mycmakeargs=(
-		-S ${S}/circt/llvm/llvm \
+		-S "${S}"/circt/llvm/llvm \
 		-D CMAKE_BUILD_TYPE=Release \
 		-D CMAKE_INSTALL_PREFIX=/usr \
 		-D LLVM_BINUTILS_INCDIR=/usr/include \
@@ -80,7 +80,7 @@ src_configure() {
 		-D LLVM_ENABLE_OCAMLDOC=OFF \
 		-D LLVM_OPTIMIZED_TABLEGEN=ON \
 		-D LLVM_EXTERNAL_PROJECTS=circt \
-		-D LLVM_EXTERNAL_CIRCT_SOURCE_DIR=${S}/circt \
+		-D LLVM_EXTERNAL_CIRCT_SOURCE_DIR="${S}"/circt \
 		-D LLVM_BUILD_TOOLS=ON
 	)
 	cmake_src_configure
