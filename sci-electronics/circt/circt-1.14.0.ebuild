@@ -50,19 +50,10 @@ BDEPEND="
 "
 
 DOCS=(
-	"${S_LLVM}/llvm/LICENSE.TXT"
-	"${S_LLVM}/mlir/LICENSE.TXT"
-	"${S_CIRCT}/LICENSE"
+	"${S_LLVM}/llvm/llvm-LICENSE.TXT"
+	"${S_LLVM}/mlir/mlir-LICENSE.TXT"
+	"${S_CIRCT}/circt-LICENSE"
 )
-
-# src_prepare() {
-# 	default
-# 	if [[ "${PV}" != "9999" ]] ; then
-# 		rm -r "${S_CIRCT}"/llvm || die
-# 		cp -rf "${S_LLVM}" "${S_CIRCT}"/llvm || die
-# 	fi
-# 	cmake_src_prepare
-# }
 
 src_configure() {
 	python_setup
@@ -91,6 +82,9 @@ src_compile() {
 }
 
 src_install() {
+	mv "${S_LLVM}/llvm/LICENSE.TXT" "${S_LLVM}/llvm/llvm-LICENSE.TXT" || die
+	mv "${S_LLVM}/mlir/LICENSE.TXT" "${S_LLVM}/mlir/mlir-LICENSE.TXT" || die
+	mv "${S_CIRCT}/LICENSE" "${S_CIRCT}/circt-LICENSE" || die
 	einstalldocs
 	exeinto /usr/bin
 	doexe "${BUILD_DIR}"/bin/firtool
