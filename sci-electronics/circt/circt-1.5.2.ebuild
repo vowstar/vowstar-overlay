@@ -60,6 +60,7 @@ src_prepare() {
 		rm -r ${S}/llvm || die
 		ln -s ${S_LLVM} ${S}/llvm || die
 	fi
+	cmake_src_prepare
 }
 
 src_configure() {
