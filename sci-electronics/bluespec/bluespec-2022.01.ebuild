@@ -109,9 +109,6 @@ src_install() {
 	local PREFIX="${ED}"/usr/share/bsc/bsc-"${PV}"
 	mkdir -p "${PREFIX}" || die
 	cp -dr --preserve=mode,timestamp "${S}"/inst/* "${PREFIX}"/ || die
-	insinto /usr/share/vim/vimfiles
+	insinto "${PREFIX}"/vimfiles
 	doins -r "${S}"/util/vim/{ftdetect,indent,syntax}
-	if use doc; then
-		einstalldocs
-	fi
 }
