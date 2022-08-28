@@ -3,6 +3,8 @@
 
 EAPI=8
 
+inherit multiprocessing
+
 DESCRIPTION="Toolchain for the Bluespec Hardware Definition Language"
 HOMEPAGE="https://github.com/B-Lang-org/bsc"
 
@@ -20,7 +22,7 @@ else
 fi
 
 LICENSE="BSD GPL-3+ MIT"
-SLOT="0"
+SLOT="${PV}"
 IUSE="doc test"
 RESTRICT="!test? ( test )"
 
@@ -78,17 +80,15 @@ src_prepare() {
 	default
 }
 
-# The upstream will install while compiling, even if we don't execute
-# make install here, this seems to be an upstream bug.
-src_compile() { :; }
-
-src_install() {
+src_compile() {
 	# PREFIX="${EPREFIX}"/usr/share/bsc/bsc-"${PV}": https://github.com/B-Lang-org/bsc/blob/main/INSTALL.md
 	# NO_DEPS_CHECKS=1: skip the subrepo check (this deriviation uses yices.src instead of the subrepo)
 	# NOGIT=1: https://github.com/B-Lang-org/bsc/issues/12
 	# LDCONFIG=ldconfig: https://github.com/B-Lang-org/bsc/pull/43
 	# STP_STUB=1: https://github.com/B-Lang-org/bsc/pull/278
-	emake PREFIX="${ED}"/usr/share/bsc/bsc-"${PV}" \
+	emake \
+		"GHCJOBS=$(makeopts_jobs)" \
+		"GHCRTSFLAGS='+RTS -M5G -A128m -RTS'" \
 		"NO_DEPS_CHECKS=1" \
 		"NOGIT=1" \
 		"LDCONFIG=ldconfig" \
@@ -98,8 +98,20 @@ src_install() {
 		$(usex doc "install-release" "") \
 		install-src \
 		$(usex doc "release" "")
-	emake -C src/comp PREFIX="${ED}"/usr/share/bsc/bsc-"${PV}" \
+	emake -C src/comp \
 		install-extra
+}
 
-	einstalldocs
+src_test() {
+	emake check-smoke
+	emake -c testsuite check
+}
+
+src_install() {
+	local PREFIX="${ED}"/usr/share/bsc/bsc-"${PV}"
+	mkdir -p "${PREFIX}" || die
+	cp -dr --preserve=mode,timestamp ${S}/inst/* "${PREFIX}"/
+	if use doc; then
+		einstalldocs
+	fi
 }
