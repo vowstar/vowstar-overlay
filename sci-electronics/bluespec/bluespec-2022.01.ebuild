@@ -54,6 +54,7 @@ BDEPEND="
 		dev-texlive/texlive-fontutils
 		dev-texlive/texlive-latex
 		dev-texlive/texlive-latexextra
+		dev-texlive/texlive-latexrecommended
 		dev-texlive/texlive-plaingeneric
 	)
 	sys-devel/autoconf
@@ -88,7 +89,6 @@ src_install() {
 	# LDCONFIG=ldconfig: https://github.com/B-Lang-org/bsc/pull/43
 	# STP_STUB=1: https://github.com/B-Lang-org/bsc/pull/278
 	emake PREFIX="${ED}"/usr/share/bsc/bsc-"${PV}" \
-		"release" \
 		"NO_DEPS_CHECKS=1" \
 		"NOGIT=1" \
 		"LDCONFIG=ldconfig" \
