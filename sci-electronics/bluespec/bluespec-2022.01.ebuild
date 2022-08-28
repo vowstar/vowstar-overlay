@@ -87,6 +87,7 @@ src_compile() {
 	# STP_STUB=1: https://github.com/B-Lang-org/bsc/pull/278
 	emake \
 		"GHCJOBS=$(makeopts_jobs)" \
+		"GHCRTSFLAGS=\"+RTS -M5G -A128m -RTS\"" \
 		"NO_DEPS_CHECKS=1" \
 		"NOGIT=1" \
 		"LDCONFIG=ldconfig" \
