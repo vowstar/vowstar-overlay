@@ -124,7 +124,7 @@ src_install() {
 	for f in "${S}"/inst/bin/*; do
 		if [[ ! -d "${f}" ]] ; then
 			local b=$(basename ${f})
-			sed -i "s|ABSNAME=*|ABSNAME=\$(readlink -f -- \"\$0\")|g" "${f}" || die
+			sed -i "s|ABSNAME=.*\$|ABSNAME=\$(readlink -f -- \"\$0\")|g" "${f}" || die
 		fi
 	done
 	cp -dr --preserve=mode,timestamp "${S}"/inst/* "${ED_INSTALL_PATH}"/ || die
