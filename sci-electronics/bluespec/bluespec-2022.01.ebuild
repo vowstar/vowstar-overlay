@@ -48,7 +48,7 @@ BDEPEND="
 	dev-lang/perl
 	dev-util/gperf
 	doc? (
-		app-text/asciidoc
+		dev-ruby/asciidoctor
 		dev-texlive/texlive-bibtexextra
 		dev-texlive/texlive-fontsextra
 		dev-texlive/texlive-fontutils
