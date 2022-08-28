@@ -21,7 +21,3 @@ ruby_add_bdepend "test? ( dev-ruby/mocha
 	>=dev-ruby/pdf-reader-1.2
 	>=dev-ruby/prawn-1.3.0
 	)"
-
-# all_ruby_prepare() {
-# 	sed -i -e "/[Bb]undler/s/^/#/" spec/spec_helper.rb || die
-# }
