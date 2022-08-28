@@ -99,7 +99,7 @@ src_compile() {
 
 src_test() {
 	emake check-smoke
-	emake -c testsuite check
+	emake -C testsuite check
 }
 
 src_install() {
