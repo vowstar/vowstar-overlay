@@ -107,9 +107,10 @@ src_install() {
 	# From https://github.com/B-Lang-org/bsc/blob/main/INSTALL.md,
 	# upstream recommend placing the inst directory at
 	# the path /usr/share/bsc/bsc-<VERSION> for multi-version.
-	local PREFIX="${ED}"/usr/share/bsc/bsc-"${PV}"
-	mkdir -p "${PREFIX}" || die
-	cp -dr --preserve=mode,timestamp "${S}"/inst/* "${PREFIX}"/ || die
-	insinto "${PREFIX}"/vimfiles
+	local INSTALL_PATH=/usr/share/bsc/bsc-"${PV}"
+	local ED_INSTALL_PATH="${ED}${INSTALL_PATH}"
+	mkdir -p "${ED_INSTALL_PATH}" || die
+	cp -dr --preserve=mode,timestamp "${S}"/inst/* "${ED_INSTALL_PATH}"/ || die
+	insinto "${INSTALL_PATH}"/vimfiles
 	doins -r "${S}"/util/vim/{ftdetect,indent,syntax}
 }
