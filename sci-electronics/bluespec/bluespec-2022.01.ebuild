@@ -77,21 +77,16 @@ src_prepare() {
 	default
 }
 
-src_compile() {
+# The upstream will install while compiling, even if we don't execute
+# make install here, this seems to be an upstream bug.
+src_compile() { :; }
+
+src_install() {
 	# PREFIX="${EPREFIX}"/usr/share/bsc/bsc-"${PV}": https://github.com/B-Lang-org/bsc/blob/main/INSTALL.md
 	# NO_DEPS_CHECKS=1: skip the subrepo check (this deriviation uses yices.src instead of the subrepo)
 	# NOGIT=1: https://github.com/B-Lang-org/bsc/issues/12
 	# LDCONFIG=ldconfig: https://github.com/B-Lang-org/bsc/pull/43
 	# STP_STUB=1: https://github.com/B-Lang-org/bsc/pull/278
-	emake PREFIX="${EPREFIX}"/usr/share/bsc/bsc-"${PV}" \
-		"release" \
-		"NO_DEPS_CHECKS=1" \
-		"NOGIT=1" \
-		"LDCONFIG=ldconfig" \
-		"STP_STUB=1"
-}
-
-src_install() {
 	emake PREFIX="${ED}"/usr/share/bsc/bsc-"${PV}" \
 		"release" \
 		"NO_DEPS_CHECKS=1" \
