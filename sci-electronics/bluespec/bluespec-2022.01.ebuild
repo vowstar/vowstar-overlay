@@ -93,6 +93,7 @@ src_install() {
 		"NOGIT=1" \
 		"LDCONFIG=ldconfig" \
 		"STP_STUB=1" \
+		"NOASCIIDOCTOR=1" \
 		install install-extra
 	einstalldocs
 }
