@@ -12,9 +12,10 @@ if [[ ${PV} == "9999" ]] ; then
 else
 	SRC_URI="
 		https://github.com/B-Lang-org/bsc/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz
-		https://github.com/B-Lang-org/bsc/releases/download/${PV}/yices-src-for-bsc-${PV}.tar.gz
+		https://github.com/SRI-CSL/yices2/archive/refs/tags/Yices-2.6.4.tar.gz -> yices-2.6.4.tar.gz
 	"
-	S="${WORKDIR}/bsc-${EGIT_COMMIT}"
+	S="${WORKDIR}/bsc-${PV}"
+	S_YICES="${WORKDIR}/yices2-Yices-2.6.4"
 	KEYWORDS="~amd64 ~x86"
 fi
 
@@ -66,6 +67,13 @@ PATCHES=(
 )
 
 DOCS=( "README.md" "COPYING" )
+
+src_prepare() {
+	if [[ ${PV} != "9999" ]] ; then
+		rm -r ${S}/src/vendor/yices/v2.6/yices2 || die
+		ln -s ${S_YICES} ${S}/src/vendor/yices/v2.6/yices2 || die
+	fi
+}
 
 src_compile() {
 	# PREFIX="${EPREFIX}"/usr/share/bsc/bsc-"${PV}": https://github.com/B-Lang-org/bsc/blob/main/INSTALL.md
