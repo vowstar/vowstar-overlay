@@ -59,6 +59,7 @@ BDEPEND="
 		dev-texlive/texlive-latexrecommended
 		dev-texlive/texlive-plaingeneric
 	)
+	sys-apps/coreutils
 	sys-devel/autoconf
 	sys-devel/bison
 	sys-devel/flex
@@ -119,6 +120,13 @@ src_install() {
 	local INSTALL_PATH=/usr/share/bsc/bsc-"${PV}"
 	local ED_INSTALL_PATH="${ED}${INSTALL_PATH}"
 	mkdir -p "${ED_INSTALL_PATH}" || die
+	local f
+	for f in "${S}"/inst/bin/*; do
+		if [[ ! -d "${f}" ]] ; then
+			local b=$(basename ${f})
+			sed -i "s|ABSNAME=*|ABSNAME=\$(readlink -f -- \"\$0\")|g" "${f}" || die
+		fi
+	done
 	cp -dr --preserve=mode,timestamp "${S}"/inst/* "${ED_INSTALL_PATH}"/ || die
 	insinto "${INSTALL_PATH}"/vimfiles
 	doins -r "${S}"/util/vim/{ftdetect,indent,syntax}
