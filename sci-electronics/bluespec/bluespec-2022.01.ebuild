@@ -73,6 +73,8 @@ src_prepare() {
 		rm -r ${S}/src/vendor/yices/v2.6/yices2 || die
 		ln -s ${S_YICES} ${S}/src/vendor/yices/v2.6/yices2 || die
 	fi
+
+	default
 }
 
 src_compile() {
