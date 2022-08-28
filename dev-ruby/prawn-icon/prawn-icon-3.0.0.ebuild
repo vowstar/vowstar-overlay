@@ -7,6 +7,8 @@ USE_RUBY="ruby26 ruby27 ruby30"
 RUBY_FAKEGEM_RECIPE_DOC="yard"
 RUBY_FAKEGEM_RECIPE_TEST="rspec3"
 
+RUBY_FAKEGEM_EXTRAINSTALL="data"
+
 inherit ruby-fakegem
 
 DESCRIPTION="Provides support for icons in Prawn"
