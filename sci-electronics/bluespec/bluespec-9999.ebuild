@@ -12,14 +12,15 @@ if [[ ${PV} == "9999" ]] ; then
 else
 	SRC_URI="
 		https://github.com/B-Lang-org/bsc/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz
-		https://github.com/B-Lang-org/bsc/releases/download/${PV}/yices-src-for-bsc-${PV}.tar.gz
+		https://github.com/SRI-CSL/yices2/archive/refs/tags/Yices-2.6.4.tar.gz -> yices-2.6.4.tar.gz
 	"
-	S="${WORKDIR}/bsc-${EGIT_COMMIT}"
+	S="${WORKDIR}/bsc-${PV}"
+	S_YICES="${WORKDIR}/yices2-Yices-2.6.4"
 	KEYWORDS="~amd64 ~x86"
 fi
 
 LICENSE="BSD GPL-3+ MIT"
-SLOT="0"
+SLOT="${PV}"
 IUSE="doc test"
 RESTRICT="!test? ( test )"
 
@@ -53,6 +54,7 @@ BDEPEND="
 		dev-texlive/texlive-fontutils
 		dev-texlive/texlive-latex
 		dev-texlive/texlive-latexextra
+		dev-texlive/texlive-latexrecommended
 		dev-texlive/texlive-plaingeneric
 	)
 	sys-devel/autoconf
@@ -67,27 +69,49 @@ PATCHES=(
 
 DOCS=( "README.md" "COPYING" )
 
+src_prepare() {
+	if [[ ${PV} != "9999" ]] ; then
+		rm -r "${S}"/src/vendor/yices/v2.6/yices2 || die
+		ln -s "${S_YICES}" "${S}"/src/vendor/yices/v2.6/yices2 || die
+	fi
+
+	default
+}
+
 src_compile() {
-	# PREFIX="${EPREFIX}"/usr/share/bsc/bsc-"${PV}": https://github.com/B-Lang-org/bsc/blob/main/INSTALL.md
 	# NO_DEPS_CHECKS=1: skip the subrepo check (this deriviation uses yices.src instead of the subrepo)
 	# NOGIT=1: https://github.com/B-Lang-org/bsc/issues/12
 	# LDCONFIG=ldconfig: https://github.com/B-Lang-org/bsc/pull/43
 	# STP_STUB=1: https://github.com/B-Lang-org/bsc/pull/278
-	emake PREFIX="${EPREFIX}"/usr/share/bsc/bsc-"${PV}" \
-		"release" \
-		"NO_DEPS_CHECKS=1" \
-		"NOGIT=1" \
-		"LDCONFIG=ldconfig" \
-		"STP_STUB=1"
-}
-
-src_install() {
-	emake PREFIX="${ED}"/usr/share/bsc/bsc-"${PV}" \
-		"release" \
+	emake \
 		"NO_DEPS_CHECKS=1" \
 		"NOGIT=1" \
 		"LDCONFIG=ldconfig" \
 		"STP_STUB=1" \
-		install install-extra
-	einstalldocs
+		$(usex doc "" "NOASCIIDOCTOR=1") \
+		$(usex doc "install-doc" "") \
+		$(usex doc "install-release" "") \
+		install-src \
+		$(usex doc "release" "")
+	emake -C src/comp \
+		install-extra
+}
+
+src_test() {
+	emake check-smoke
+	emake -c testsuite check
+}
+
+src_install() {
+	# From https://github.com/B-Lang-org/bsc/blob/main/INSTALL.md,
+	# upstream recommend placing the inst directory at
+	# the path /usr/share/bsc/bsc-<VERSION> for multi-version.
+	local PREFIX="${ED}"/usr/share/bsc/bsc-"${PV}"
+	mkdir -p "${PREFIX}" || die
+	cp -dr --preserve=mode,timestamp "${S}"/inst/* "${PREFIX}"/ || die
+	insinto /usr/share/vim/vimfiles
+	doins -r "${S}"/util/vim/{ftdetect,indent,syntax}
+	if use doc; then
+		einstalldocs
+	fi
 }
