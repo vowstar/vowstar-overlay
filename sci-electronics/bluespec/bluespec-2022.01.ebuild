@@ -49,6 +49,7 @@ BDEPEND="
 	dev-util/gperf
 	doc? (
 		dev-ruby/asciidoctor
+		dev-ruby/asciidoctor-pdf
 		dev-texlive/texlive-bibtexextra
 		dev-texlive/texlive-fontsextra
 		dev-texlive/texlive-fontutils
