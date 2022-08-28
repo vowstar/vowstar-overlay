@@ -81,7 +81,6 @@ src_prepare() {
 }
 
 src_compile() {
-	# PREFIX="${EPREFIX}"/usr/share/bsc/bsc-"${PV}": https://github.com/B-Lang-org/bsc/blob/main/INSTALL.md
 	# NO_DEPS_CHECKS=1: skip the subrepo check (this deriviation uses yices.src instead of the subrepo)
 	# NOGIT=1: https://github.com/B-Lang-org/bsc/issues/12
 	# LDCONFIG=ldconfig: https://github.com/B-Lang-org/bsc/pull/43
@@ -107,9 +106,12 @@ src_test() {
 }
 
 src_install() {
+	# From https://github.com/B-Lang-org/bsc/blob/main/INSTALL.md,
+	# upstream recommend placing the inst directory at
+	# the path /usr/share/bsc/bsc-<VERSION> for multi-version.
 	local PREFIX="${ED}"/usr/share/bsc/bsc-"${PV}"
 	mkdir -p "${PREFIX}" || die
-	cp -dr --preserve=mode,timestamp ${S}/inst/* "${PREFIX}"/
+	cp -dr --preserve=mode,timestamp "${S}"/inst/* "${PREFIX}"/ || die
 	if use doc; then
 		einstalldocs
 	fi
