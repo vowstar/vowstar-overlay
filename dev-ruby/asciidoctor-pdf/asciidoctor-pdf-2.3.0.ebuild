@@ -19,22 +19,24 @@ SRC_URI="https://github.com/asciidoctor/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~riscv ~x86"
+KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-ruby_add_bdepend "test? (
+ruby_add_rdepend "
 	>=dev-ruby/asciidoctor-2.0
-	>=dev-ruby/chunky_png-1.4.0
 	>=dev-ruby/concurrent-ruby-1.1
 	>=dev-ruby/matrix-0.4
-	>=dev-ruby/pdf-inspector-1.3.0
 	>=dev-ruby/prawn-2.4.0
 	>=dev-ruby/prawn-icon-3.0.0
 	>=dev-ruby/prawn-svg-0.32.0
 	>=dev-ruby/prawn-table-0.2.0
 	>=dev-ruby/prawn-templates-0.1.0
-	dev-ruby/rspec-expectations:*
 	>=dev-ruby/treetop-1.6.0
+	"
+ruby_add_bdepend "test? (
+	>=dev-ruby/chunky_png-1.4.0
+	>=dev-ruby/pdf-inspector-1.3.0
+	dev-ruby/rspec-expectations:*
 	)"
 
 all_ruby_prepare() {
