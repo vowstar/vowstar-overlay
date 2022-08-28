@@ -93,7 +93,7 @@ src_install() {
 		"NOGIT=1" \
 		"LDCONFIG=ldconfig" \
 		"STP_STUB=1" \
-		"NOASCIIDOCTOR=1" \
-		install install-extra
+		$(usex doc "" "NOASCIIDOCTOR=1") \
+		install-src install-release install-extra $(usex doc "install-doc" "")
 	einstalldocs
 }
