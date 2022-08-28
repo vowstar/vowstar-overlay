@@ -3,8 +3,6 @@
 
 EAPI=8
 
-inherit multiprocessing
-
 DESCRIPTION="Toolchain for the Bluespec Hardware Definition Language"
 HOMEPAGE="https://github.com/B-Lang-org/bsc"
 
@@ -86,8 +84,6 @@ src_compile() {
 	# LDCONFIG=ldconfig: https://github.com/B-Lang-org/bsc/pull/43
 	# STP_STUB=1: https://github.com/B-Lang-org/bsc/pull/278
 	emake \
-		"GHCJOBS=$(makeopts_jobs)" \
-		"GHCRTSFLAGS=\"+RTS -M5G -A128m -RTS\"" \
 		"NO_DEPS_CHECKS=1" \
 		"NOGIT=1" \
 		"LDCONFIG=ldconfig" \
