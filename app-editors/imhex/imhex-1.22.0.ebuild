@@ -51,14 +51,6 @@ BDEPEND="
 	sys-devel/llvm
 "
 
-PATCHES=(
-	"${FILESDIR}/${PN}-1.21.2-fix-build-with-clang.patch"
-	"${FILESDIR}/${PN}-1.21.2-fix-dedup-resources-directories.patch"
-	"${FILESDIR}/${PN}-1.21.2-fix-copy-elision-not-applying.patch"
-	"${FILESDIR}/${PN}-1.21.2-fix-use-c-23-standard.patch"
-	"${FILESDIR}/${PN}-1.21.2-fix-llvmdemangle.patch"
-)
-
 src_configure() {
 	use python && python_setup
 
