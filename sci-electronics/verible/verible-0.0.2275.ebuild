@@ -17,23 +17,28 @@ HOMEPAGE="
 # From $(cat WORKSPACE | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | sort -u)
 bazel_external_uris="
 	https://files.pythonhosted.org/packages/6b/34/415834bfdafca3c5f451532e8a8d9ba89a21c9743a0c59fbd0205c7f9426/six-1.15.0.tar.gz
-	https://github.com/abseil/abseil-cpp/archive/refs/tags/20211102.0.tar.gz -> abseil-cpp-20211102.0.tar.gz
+	https://github.com/abseil/abseil-cpp/archive/refs/tags/20220623.0.tar.gz -> abseil-cpp-20220623.0.tar.gz
+	https://github.com/abseil/abseil-py/archive/refs/tags/v1.2.0.tar.gz -> abseil-py-1.2.0.tar.gz
 	https://github.com/bazelbuild/bazel-toolchains/releases/download/3.4.0/bazel-toolchains-3.4.0.tar.gz
+	https://github.com/bazelbuild/platforms/archive/da5541f26b7de1dc8e04c075c99df5351742a4a2.tar.gz -> platforms-da5541f26b7de1dc8e04c075c99df5351742a4a2.tar.gz
 	https://github.com/bazelbuild/rules_cc/archive/e7c97c3af74e279a5db516a19f642e862ff58548.tar.gz -> rules_cc-e7c97c3af74e279a5db516a19f642e862ff58548.tar.gz
 	https://github.com/bazelbuild/rules_proto/archive/97d8af4dc474595af3900dd85cb3a29ad28cc313.tar.gz -> rules_proto-97d8af4dc474595af3900dd85cb3a29ad28cc313.tar.gz
+	https://github.com/bazelbuild/rules_proto/archive/refs/tags/4.0.0-3.20.0.tar.gz -> rules_proto-4.0.0-3.20.0.tar.gz
 	https://github.com/bazelbuild/rules_python/releases/download/0.2.0/rules_python-0.2.0.tar.gz
 	https://github.com/c0fec0de/anytree/archive/2.8.0.tar.gz -> anytree-2.8.0.tar.gz
 	https://github.com/gflags/gflags/archive/827c769e5fc98e0f2a34c47cef953cc6328abced.tar.gz -> gflags-827c769e5fc98e0f2a34c47cef953cc6328abced.tar.gz
-	https://github.com/google/bazel_rules_install/archive/4cd8ab0b5d8a0117bb5b8c89a0024508d5d4d5ed.tar.gz -> bazel_rules_install-4cd8ab0b5d8a0117bb5b8c89a0024508d5d4d5ed.tar.gz
+	https://github.com/google/bazel_rules_install/archive/5ae7c2a8d22de2558098e3872fc7f3f7edc61fb4.zip -> bazel_rules_install-5ae7c2a8d22de2558098e3872fc7f3f7edc61fb4.tar.gz
 	https://github.com/google/glog/archive/v0.5.0-rc2.tar.gz -> glog-v0.5.0-rc2.tar.gz
-	https://github.com/google/googletest/archive/refs/tags/release-1.11.0.tar.gz -> googletest-release-1.11.0.tar.gz
+	https://github.com/google/googletest/archive/refs/tags/release-1.12.1.tar.gz -> googletest-release-1.12.1.tar.gz
+	https://github.com/google/re2/archive/215bf4aa0bdc081862590463bc98a00bb2be48f2.tar.gz -> re2-215bf4aa0bdc081862590463bc98a00bb2be48f2.tar.gz
 	https://github.com/grailbio/bazel-compilation-database/archive/ace73b04e76111afa09934f8771a2798847e724e.tar.gz -> bazel-compilation-database-ace73b04e76111afa09934f8771a2798847e724e.tar.gz
-	https://github.com/jmillikin/rules_bison/releases/download/v0.2/rules_bison-v0.2.tar.xz
+	https://github.com/jmillikin/rules_bison/releases/download/v0.2.1/rules_bison-v0.2.1.tar.xz
 	https://github.com/jmillikin/rules_flex/releases/download/v0.2/rules_flex-v0.2.tar.xz
 	https://github.com/jmillikin/rules_m4/releases/download/v0.1/m4-gnulib-788db09a9f88abbef73c97e8d7291c40455336d8.tar.xz
-	https://github.com/jmillikin/rules_m4/releases/download/v0.2/rules_m4-v0.2.tar.xz
+	https://github.com/jmillikin/rules_m4/releases/download/v0.2.2/rules_m4-v0.2.2.tar.xz
 	https://github.com/lexxmark/winflexbison/releases/download/v2.5.18/win_flex_bison-2.5.18.zip
 	https://github.com/nlohmann/json/archive/refs/tags/v3.10.2.tar.gz -> json-v3.10.2.tar.gz
+	https://github.com/protocolbuffers/protobuf/archive/v21.5.tar.gz -> protobuf-v21.5.tar.gz
 	https://github.com/protocolbuffers/protobuf/archive/v3.13.0.tar.gz -> protobuf-v3.13.0.tar.gz
 	https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
 	https://mirror.bazel.build/bazel_coverage_output_generator/releases/coverage_output_generator-v2.5.zip -> bazel_coverage_output_generator-v2.5.zip
