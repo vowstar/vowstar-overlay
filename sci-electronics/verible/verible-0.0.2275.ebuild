@@ -24,6 +24,7 @@ bazel_external_uris="
 	https://github.com/bazelbuild/rules_cc/archive/e7c97c3af74e279a5db516a19f642e862ff58548.zip -> rules_cc-e7c97c3af74e279a5db516a19f642e862ff58548.zip
 	https://github.com/bazelbuild/rules_proto/archive/97d8af4dc474595af3900dd85cb3a29ad28cc313.tar.gz -> rules_proto-97d8af4dc474595af3900dd85cb3a29ad28cc313.tar.gz
 	https://github.com/bazelbuild/rules_proto/archive/refs/tags/4.0.0-3.20.0.tar.gz -> rules_proto-4.0.0-3.20.0.tar.gz
+	https://github.com/bazelbuild/rules_python/archive/refs/tags/0.8.0.tar.gz -> rules_python-0.8.0.tar.gz
 	https://github.com/bazelbuild/rules_python/releases/download/0.2.0/rules_python-0.2.0.tar.gz
 	https://github.com/c0fec0de/anytree/archive/2.8.0.tar.gz -> anytree-2.8.0.tar.gz
 	https://github.com/gflags/gflags/archive/827c769e5fc98e0f2a34c47cef953cc6328abced.zip -> gflags-827c769e5fc98e0f2a34c47cef953cc6328abced.zip
