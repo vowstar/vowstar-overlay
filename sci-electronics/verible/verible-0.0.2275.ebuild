@@ -22,6 +22,7 @@ bazel_external_uris="
 	https://github.com/bazelbuild/bazel-toolchains/releases/download/3.4.0/bazel-toolchains-3.4.0.tar.gz
 	https://github.com/bazelbuild/platforms/archive/da5541f26b7de1dc8e04c075c99df5351742a4a2.zip -> platforms-da5541f26b7de1dc8e04c075c99df5351742a4a2.zip
 	https://github.com/bazelbuild/rules_cc/archive/e7c97c3af74e279a5db516a19f642e862ff58548.zip -> rules_cc-e7c97c3af74e279a5db516a19f642e862ff58548.zip
+	https://github.com/bazelbuild/rules_java/archive/981f06c3d2bd10225e85209904090eb7b5fb26bd.zip -> bazel_rules_java-981f06c3d2bd10225e85209904090eb7b5fb26bd.zip
 	https://github.com/bazelbuild/rules_proto/archive/97d8af4dc474595af3900dd85cb3a29ad28cc313.tar.gz -> rules_proto-97d8af4dc474595af3900dd85cb3a29ad28cc313.tar.gz
 	https://github.com/bazelbuild/rules_proto/archive/refs/tags/4.0.0-3.20.0.tar.gz -> rules_proto-4.0.0-3.20.0.tar.gz
 	https://github.com/bazelbuild/rules_python/archive/refs/tags/0.8.0.tar.gz -> rules_python-0.8.0.tar.gz
@@ -45,7 +46,6 @@ bazel_external_uris="
 	https://mirror.bazel.build/bazel_java_tools/releases/java/v11.6/java_tools_linux-v11.6.zip -> bazel_java_tools_linux-v11.6.zip
 	https://mirror.bazel.build/bazel_java_tools/releases/java/v11.6/java_tools-v11.6.zip -> bazel_java_tools-v11.6.zip
 	https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.0.2/bazel-skylib-1.0.2.tar.gz
-	https://mirror.bazel.build/github.com/bazelbuild/rules_java/archive/7cf3cefd652008d0a64a419c34c13bdca6c8f178.zip -> bazel_rules_java-7cf3cefd652008d0a64a419c34c13bdca6c8f178.zip
 	https://mirror.bazel.build/openjdk/azul-zulu11.50.19-ca-jdk11.0.12/zulu11.50.19-ca-jdk11.0.12-linux_x64.tar.gz
 	https://zlib.net/zlib-1.2.12.tar.gz
 	mirror://gnu/m4/m4-1.4.18.tar.xz
