@@ -32,7 +32,7 @@ bazel_external_uris="
 	https://github.com/google/bazel_rules_install/archive/5ae7c2a8d22de2558098e3872fc7f3f7edc61fb4.zip -> bazel_rules_install-5ae7c2a8d22de2558098e3872fc7f3f7edc61fb4.zip
 	https://github.com/google/glog/archive/v0.5.0-rc2.tar.gz -> glog-v0.5.0-rc2.tar.gz
 	https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip -> googletest-release-1.12.1.zip
-	https://github.com/google/re2/archive/215bf4aa0bdc081862590463bc98a00bb2be48f2.tar.gz -> re2-215bf4aa0bdc081862590463bc98a00bb2be48f2.tar.gz
+	https://github.com/google/re2/archive/215bf4aa0bdc081862590463bc98a00bb2be48f2.zip -> re2-215bf4aa0bdc081862590463bc98a00bb2be48f2.zip
 	https://github.com/grailbio/bazel-compilation-database/archive/ace73b04e76111afa09934f8771a2798847e724e.tar.gz -> bazel-compilation-database-ace73b04e76111afa09934f8771a2798847e724e.tar.gz
 	https://github.com/jmillikin/rules_bison/releases/download/v0.2.1/rules_bison-v0.2.1.tar.xz
 	https://github.com/jmillikin/rules_flex/releases/download/v0.2/rules_flex-v0.2.tar.xz
