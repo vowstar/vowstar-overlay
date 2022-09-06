@@ -39,6 +39,7 @@ bazel_external_uris="
 	https://github.com/jmillikin/rules_m4/releases/download/v0.1/m4-gnulib-788db09a9f88abbef73c97e8d7291c40455336d8.tar.xz
 	https://github.com/jmillikin/rules_m4/releases/download/v0.2.2/rules_m4-v0.2.2.tar.xz
 	https://github.com/lexxmark/winflexbison/releases/download/v2.5.18/win_flex_bison-2.5.18.zip
+	https://github.com/madler/zlib/archive/v1.2.11.tar.gz -> zlib-v1.2.11.tar.gz
 	https://github.com/nlohmann/json/archive/refs/tags/v3.10.2.tar.gz -> json-v3.10.2.tar.gz
 	https://github.com/protocolbuffers/protobuf/archive/v21.5.zip -> protobuf-v21.5.zip
 	https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
@@ -50,7 +51,6 @@ bazel_external_uris="
 	https://mirror.bazel.build/openjdk/azul-zulu11.50.19-ca-jdk11.0.12/zulu11.50.19-ca-jdk11.0.12-linux_x64.tar.gz
 	https://zlib.net/fossils/zlib-1.2.11.tar.gz
 	https://zlib.net/fossils/zlib-1.2.12.tar.gz
-	https://github.com/madler/zlib/archive/v1.2.11.tar.gz -> zlib-v1.2.11.tar.gz
 	mirror://gnu/m4/m4-1.4.18.tar.xz
 "
 
