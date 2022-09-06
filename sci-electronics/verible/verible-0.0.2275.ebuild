@@ -27,7 +27,7 @@ bazel_external_uris="
 	https://github.com/bazelbuild/rules_python/releases/download/0.2.0/rules_python-0.2.0.tar.gz
 	https://github.com/c0fec0de/anytree/archive/2.8.0.tar.gz -> anytree-2.8.0.tar.gz
 	https://github.com/gflags/gflags/archive/827c769e5fc98e0f2a34c47cef953cc6328abced.tar.gz -> gflags-827c769e5fc98e0f2a34c47cef953cc6328abced.tar.gz
-	https://github.com/google/bazel_rules_install/archive/5ae7c2a8d22de2558098e3872fc7f3f7edc61fb4.zip -> bazel_rules_install-5ae7c2a8d22de2558098e3872fc7f3f7edc61fb4.tar.gz
+	https://github.com/google/bazel_rules_install/archive/5ae7c2a8d22de2558098e3872fc7f3f7edc61fb4.tar.gz -> bazel_rules_install-5ae7c2a8d22de2558098e3872fc7f3f7edc61fb4.tar.gz
 	https://github.com/google/glog/archive/v0.5.0-rc2.tar.gz -> glog-v0.5.0-rc2.tar.gz
 	https://github.com/google/googletest/archive/refs/tags/release-1.12.1.tar.gz -> googletest-release-1.12.1.tar.gz
 	https://github.com/google/re2/archive/215bf4aa0bdc081862590463bc98a00bb2be48f2.tar.gz -> re2-215bf4aa0bdc081862590463bc98a00bb2be48f2.tar.gz
