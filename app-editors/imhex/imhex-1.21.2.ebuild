@@ -52,6 +52,7 @@ BDEPEND="
 "
 
 PATCHES=(
+	"${FILESDIR}/${PN}-1.21.2-fix-compiler-check.patch"
 	"${FILESDIR}/${PN}-1.21.2-fix-build-with-clang.patch"
 	"${FILESDIR}/${PN}-1.21.2-fix-dedup-resources-directories.patch"
 	"${FILESDIR}/${PN}-1.21.2-fix-copy-elision-not-applying.patch"
