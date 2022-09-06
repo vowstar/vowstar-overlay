@@ -50,6 +50,7 @@ bazel_external_uris="
 	https://mirror.bazel.build/openjdk/azul-zulu11.50.19-ca-jdk11.0.12/zulu11.50.19-ca-jdk11.0.12-linux_x64.tar.gz
 	https://zlib.net/fossils/zlib-1.2.11.tar.gz
 	https://zlib.net/fossils/zlib-1.2.12.tar.gz
+	https://github.com/madler/zlib/archive/v1.2.11.tar.gz -> zlib-v1.2.11.tar.gz
 	mirror://gnu/m4/m4-1.4.18.tar.xz
 "
 
