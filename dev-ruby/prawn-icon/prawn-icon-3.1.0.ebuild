@@ -15,7 +15,7 @@ DESCRIPTION="Provides support for icons in Prawn"
 HOMEPAGE="https://github.com/jessedoyle/prawn-icon"
 LICENSE="|| ( GPL-2+ GPL-3 Ruby )"
 SLOT="0"
-KEYWORDS="~amd64 ~arm64 ~ppc ~ppc64 ~x86"
+KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~x86"
 IUSE=""
 
 # Tests blocks many keywords and new dependencies, skipping for now
