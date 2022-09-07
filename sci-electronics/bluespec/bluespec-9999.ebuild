@@ -73,9 +73,9 @@ PATCHES=(
 
 # Do not complain about CFLAGS etc since we don't use them
 QA_FLAGS_IGNORED="
-	usr/share/bsc/bsc-${PV}/bin/core/*
-	usr/share/bsc/bsc-${PV}/lib/SAT/*
-	usr/share/bsc/bsc-${PV}/lib/VPI/*
+	usr/share/bsc/bsc-${PV}/bin/core/.*
+	usr/share/bsc/bsc-${PV}/lib/SAT/.*
+	usr/share/bsc/bsc-${PV}/lib/VPI/.*
 "
 
 src_prepare() {
