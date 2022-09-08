@@ -58,7 +58,7 @@ src_prepare() {
 		-e 's/StoreAPI$/#StoreAPI/' \
 		-e 's/TipsAPI$/#TipsAPI/' \
 		-e 's/ContentAPI$/#ContentAPI/' \
-		"${S}/src/tests/helpers/CMakeLists.txt" || die
+		"${S}/tests/helpers/CMakeLists.txt" || die
 }
 
 src_configure() {
