@@ -59,6 +59,7 @@ src_prepare() {
 		-e 's/TipsAPI$/#TipsAPI/' \
 		-e 's/ContentAPI$/#ContentAPI/' \
 		"${S}/tests/helpers/CMakeLists.txt" || die
+	cmake_src_prepare
 }
 
 src_configure() {
