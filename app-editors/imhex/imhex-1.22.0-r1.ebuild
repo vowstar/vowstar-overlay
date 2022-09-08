@@ -74,6 +74,13 @@ src_configure() {
 	cmake_src_configure
 }
 
+src_test() {
+	pushd "${BUILD_DIR}" || die
+	emake unit_tests
+	popd || die
+	cmake_src_test
+}
+
 src_install() {
 	# Can't use cmake_src_install, doing it manual
 	# Executable
