@@ -44,9 +44,20 @@ src_configure() {
 
 	local mycmakeargs=(
 		-D CMAKE_INSTALL_LIBDIR="${EPREFIX}/usr/$(get_libdir)"
-		-D BUILD_SHARED_LIBS=OFF
+		-D BUILD_SHARED_LIBS=ON
 		-D SLANG_INCLUDE_DOCS=$(usex doc)
 		-D SLANG_INCLUDE_PYLIB=$(usex python)
 	)
 	cmake_src_configure
+}
+
+src_install() {
+	# fix libdir path
+	if [[ "$(get_libdir)" != "lib" ]] ; then
+		mv "${D}"/usr/lib "${D}"/usr/"$(get_libdir)" || die
+	fi
+	# file collisions of internal fmt
+	rm -r "${D}"/usr/include/fmt || die
+
+	cmake_src_install
 }
