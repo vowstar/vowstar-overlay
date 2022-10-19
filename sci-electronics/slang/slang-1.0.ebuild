@@ -23,7 +23,7 @@ fi
 
 LICENSE="MIT"
 SLOT="0"
-IUSE="doc python test"
+IUSE="python test"
 REQUIRED_USE=" ${PYTHON_REQUIRED_USE} "
 RESTRICT="!test? ( test )"
 
@@ -35,17 +35,12 @@ DEPEND="
 	${RDEPEND}
 "
 
-BDEPEND="
-	doc? ( app-doc/doxygen )
-"
-
 src_configure() {
 	python_setup
 
 	local mycmakeargs=(
 		-D CMAKE_INSTALL_LIBDIR="${EPREFIX}/usr/$(get_libdir)"
 		-D BUILD_SHARED_LIBS=ON
-		-D SLANG_INCLUDE_DOCS=$(usex doc)
 		-D SLANG_INCLUDE_PYLIB=$(usex python)
 		-D SLANG_INCLUDE_TESTS=$(usex test)
 	)
