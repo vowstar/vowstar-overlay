@@ -47,6 +47,7 @@ src_configure() {
 		-D BUILD_SHARED_LIBS=ON
 		-D SLANG_INCLUDE_DOCS=$(usex doc)
 		-D SLANG_INCLUDE_PYLIB=$(usex python)
+		-D SLANG_INCLUDE_TESTS=$(usex test)
 	)
 	cmake_src_configure
 }
