@@ -44,7 +44,7 @@ src_configure() {
 
 	local mycmakeargs=(
 		-D CMAKE_INSTALL_LIBDIR="${EPREFIX}/usr/$(get_libdir)"
-		-D BUILD_SHARED_LIBS=ON
+		-D BUILD_SHARED_LIBS=OFF
 		-D SLANG_INCLUDE_DOCS=$(usex doc)
 		-D SLANG_INCLUDE_PYLIB=$(usex python)
 	)
