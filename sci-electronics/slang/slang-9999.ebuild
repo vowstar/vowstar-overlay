@@ -29,6 +29,7 @@ RESTRICT="!test? ( test )"
 
 RDEPEND="
 	${PYTHON_DEPS}
+	dev-libs/libfmt
 "
 
 DEPEND="
