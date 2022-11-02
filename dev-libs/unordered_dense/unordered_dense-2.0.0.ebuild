@@ -29,15 +29,9 @@ DEPEND="
 "
 
 src_configure() {
-	python_setup
-
 	local mycmakeargs=(
 		-D CMAKE_INSTALL_LIBDIR="${EPREFIX}/usr/$(get_libdir)"
 		-D BUILD_SHARED_LIBS=ON
 	)
 	cmake_src_configure
-}
-
-src_install() {
-	cmake_src_install
 }
