@@ -63,8 +63,8 @@ src_install() {
 	pushd "${D}"/usr/"$(get_libdir)" || die
 	mv libslang.so.2.0.0 libsvlang.so.2.0.0 || die
 	rm libslang* -r || die
-	ln -s libsvlang.so.2 libsvlang.so.2.0.0 || die
-	ln -s libsvlang.so libsvlang.so.2.0.0 || die
+	ln -s libsvlang.so.2.0.0 libsvlang.so.2 || die
+	ln -s libsvlang.so.2.0.0 libsvlang.so || die
 	popd || die
 	sed -i "s/slang/svlang/g" "${D}"/usr/share/pkgconfig/sv-lang.pc || die
 	sed -i "s/libslang/libsvlang/g" "${D}"/usr/"$(get_libdir)"/cmake/slang/slangTargets-relwithdebinfo.cmake || die
