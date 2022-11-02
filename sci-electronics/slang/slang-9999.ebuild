@@ -69,5 +69,6 @@ src_install() {
 	sed -i "s/slang/svlang/g" "${D}"/usr/share/pkgconfig/sv-lang.pc || die
 	sed -i "s/libslang/libsvlang/g" "${D}"/usr/"$(get_libdir)"/cmake/slang/slangTargets-relwithdebinfo.cmake || die
 	# fix python unexpected paths QA
-	mv "${D}"/usr/pyslang* "$(python_get_sitedir)" || die
+	mkdir -p "${D}/$(python_get_sitedir)" || die
+	mv "${D}"/usr/pyslang* "${D}/$(python_get_sitedir)" || die
 }
