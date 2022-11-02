@@ -4,7 +4,7 @@
 EAPI="8"
 
 PYTHON_COMPAT=( python3_{8..11} )
-inherit cmake python-r1
+inherit cmake python-single-r1
 
 DESCRIPTION="SystemVerilog compiler and language services"
 HOMEPAGE="
@@ -53,4 +53,19 @@ src_configure() {
 		-D SLANG_INCLUDE_TESTS=$(usex test)
 	)
 	cmake_src_configure
+}
+
+src_install() {
+	cmake_src_install
+	# file collisions of libslang
+	pushd "${D}"/usr/"$(get_libdir)" || die
+	mv libslang.so.2.0.0 libsvlang.so.2.0.0 || die
+	rm libslang* -r || die
+	ln -s libsvlang.so.2 libsvlang.so.2.0.0 || die
+	ln -s libsvlang.so libsvlang.so.2.0.0 || die
+	popd || die
+	sed -i "s/slang/svlang/g" "${D}"/usr/share/pkgconfig/sv-lang.pc || die
+	sed -i "s/libslang/libsvlang/g" "${D}"/usr/"$(get_libdir)"/cmake/slang/slangTargets-relwithdebinfo.cmake || die
+	# fix python unexpected paths QA
+	mv "${D}"/usr/pyslang* "$(python_get_library_path)" || die
 }
