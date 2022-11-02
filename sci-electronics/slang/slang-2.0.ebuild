@@ -39,6 +39,10 @@ DEPEND="
 	${RDEPEND}
 "
 
+PATCHES=(
+	"${FILESDIR}/${PN}-2.0-fix-lib-path.patch"
+)
+
 src_configure() {
 	python_setup
 
