@@ -57,10 +57,6 @@ src_configure() {
 
 src_install() {
 	cmake_src_install
-	# fix libdir path
-	if [[ "$(get_libdir)" != "lib" ]] ; then
-		mv "${D}"/usr/lib "${D}"/usr/"$(get_libdir)" || die
-	fi
 	# file collisions of internal fmt
 	rm -r "${D}"/usr/include/fmt || die
 }
