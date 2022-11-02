@@ -41,6 +41,8 @@ DEPEND="
 	${RDEPEND}
 "
 
+BDEPEND="dev-util/patchelf"
+
 PATCHES=(
 	"${FILESDIR}/${PN}-2.0-fix-lib-path.patch"
 )
@@ -68,6 +70,7 @@ src_install() {
 	popd || die
 	sed -i "s/slang/svlang/g" "${D}"/usr/share/pkgconfig/sv-lang.pc || die
 	sed -i "s/libslang/libsvlang/g" "${D}"/usr/"$(get_libdir)"/cmake/slang/slangTargets-relwithdebinfo.cmake || die
+	patchelf --replace-needed libslang.so.2 libsvlang.so.2 "${D}"/usr/bin/slang || die
 	# fix python unexpected paths QA
 	mkdir -p "${D}/$(python_get_sitedir)" || die
 	mv "${D}"/usr/pyslang* "${D}/$(python_get_sitedir)" || die
