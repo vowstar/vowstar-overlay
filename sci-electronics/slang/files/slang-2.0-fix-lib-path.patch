@@ -1,5 +1,5 @@
 diff --git a/external/CMakeLists.txt b/external/CMakeLists.txt
-index 97e0e79c..92904ae5 100644
+index 97e0e79c..255e0ba0 100644
 --- a/external/CMakeLists.txt
 +++ b/external/CMakeLists.txt
 @@ -27,12 +27,13 @@ if((SLANG_INCLUDE_PYLIB OR BUILD_SHARED_LIBS) AND NOT fmt_FOUND)
@@ -22,6 +22,21 @@ index 97e0e79c..92904ae5 100644
  
  if(SLANG_INCLUDE_INSTALL)
    install(
+@@ -44,10 +45,10 @@ if(SLANG_INCLUDE_INSTALL)
+           ${PROJECT_SOURCE_DIR}/external/span.hpp
+     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+     COMPONENT slang_Development)
+-  install(
+-    DIRECTORY ${unordered_dense_SOURCE_DIR}/include/ankerl
+-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+-    COMPONENT slang_Development)
++#  install(
++#    DIRECTORY ${unordered_dense_SOURCE_DIR}/include/ankerl
++#    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
++#    COMPONENT slang_Development)
+ 
+   if(NOT fmt_FOUND)
+     install(
 @@ -59,5 +60,5 @@ if(SLANG_INCLUDE_INSTALL)
        PRIVATE_HEADER EXCLUDE_FROM_ALL)
    endif()
