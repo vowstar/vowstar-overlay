@@ -9,7 +9,7 @@
 		<remote-id type="github">martinus/unordered_dense</remote-id>
 	</upstream>
 	<longdescription lang="en">
-		A fast & densely stored hashmap and hashset based on robin-hood
+		A fast and densely stored hashmap and hashset based on robin-hood
 		backward shift deletion.
 		The classes ankerl::unordered_dense::map and
 		ankerl::unordered_dense::set are (almost) drop-in replacements of
