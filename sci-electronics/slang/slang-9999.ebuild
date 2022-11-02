@@ -54,9 +54,3 @@ src_configure() {
 	)
 	cmake_src_configure
 }
-
-src_install() {
-	cmake_src_install
-	# file collisions of internal fmt
-	rm -r "${D}"/usr/include/fmt || die
-}
