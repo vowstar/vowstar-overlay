@@ -41,18 +41,17 @@ DEPEND="
 	${RDEPEND}
 "
 
-BDEPEND="dev-util/patchelf"
-
 PATCHES=(
 	"${FILESDIR}/${PN}-2.0-fix-lib-path.patch"
 )
 
 src_configure() {
 	python_setup
-
+	# BUILD_SHARED_LIBS=OFF because of name collision
+	# https://github.com/MikePopoloski/slang/issues/646
 	local mycmakeargs=(
 		-D CMAKE_INSTALL_LIBDIR="${EPREFIX}/usr/$(get_libdir)"
-		-D BUILD_SHARED_LIBS=ON
+		-D BUILD_SHARED_LIBS=OFF
 		-D SLANG_INCLUDE_PYLIB=$(usex python)
 		-D SLANG_INCLUDE_TESTS=$(usex test)
 	)
@@ -61,17 +60,7 @@ src_configure() {
 
 src_install() {
 	cmake_src_install
-	# file collisions of libslang
-	pushd "${D}"/usr/"$(get_libdir)" || die
-	mv libslang.so.2.0.0 libsvlang.so.2.0.0 || die
-	rm libslang.so.2 -r || die
-	rm libslang.so -r || die
-	ln -s libsvlang.so.2.0.0 libsvlang.so.2 || die
-	ln -s libsvlang.so.2.0.0 libsvlang.so || die
-	popd || die
-	sed -i "s/slang/svlang/g" "${D}"/usr/share/pkgconfig/sv-lang.pc || die
-	sed -i "s/libslang/libsvlang/g" "${D}"/usr/"$(get_libdir)"/cmake/slang/slangTargets-relwithdebinfo.cmake || die
-	patchelf --replace-needed libslang.so.2 libsvlang.so.2.0.0 "${D}"/usr/bin/slang || die
+
 	# fix python unexpected paths QA
 	mkdir -p "${D}/$(python_get_sitedir)" || die
 	mv "${D}"/usr/pyslang* "${D}/$(python_get_sitedir)" || die
