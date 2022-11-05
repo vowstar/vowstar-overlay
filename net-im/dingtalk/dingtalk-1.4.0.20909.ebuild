@@ -59,7 +59,7 @@ src_install() {
 	rm -f "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/libcurl.so* || die
 	# Fix cairo version mismatch
 	mv "${WORKDIR}"/usr/lib/libcairo.* "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}"/ || die
-	rm -rf ${WORKDIR}/usr || die
+	rm -rf "${WORKDIR}"/usr || die
 	# Set RPATH for preserve-libs handling
 	pushd "${S}"/opt/apps/"${MY_PGK_NAME}"/files/"${MY_VERSION}" || die
 	local x
