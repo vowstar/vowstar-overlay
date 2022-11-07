@@ -42,7 +42,8 @@ DEPEND="
 "
 
 PATCHES=(
-	"${FILESDIR}/${PN}-2.0-fix-lib-path.patch"
+	"${FILESDIR}/${PN}-2.0-fix-unordered-dense.patch"
+	"${FILESDIR}/${PN}-2.0-renamed-svlang.patch"
 )
 
 src_configure() {
