@@ -19,7 +19,7 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="amd64 ~arm64 ~mips ppc ppc64 ~riscv x86"
 IUSE="alsa doc ffmpeg +flac id3tag jack +ladspa +lv2 mad ogg oss
-	portmidi +portmixer portsmf sbsms twolame vamp +vorbis +vst"
+	portmidi +portmixer portsmf sbsms twolame vamp +vorbis -vst"
 
 RESTRICT="test"
 
@@ -104,7 +104,7 @@ src_configure() {
 		-Daudacity_use_vamp=$(usex vamp system off)
 		-Daudacity_use_vorbis=$(usex vorbis system off)
 		-Daudacity_use_vst=$(usex vst)
-		#-Daudacity_use_vst3sdk=system
+		#-Daudacity_use_vst3sdk=system vst3sdk not packaged in ::gentoo
 		-Daudacity_use_wxwidgets=system
 	)
 
