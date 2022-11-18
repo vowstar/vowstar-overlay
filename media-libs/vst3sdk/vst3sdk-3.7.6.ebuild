@@ -33,6 +33,7 @@ S_GUI="${WORKDIR}/vstgui-vstgui4_11_2"
 DOCS=( "${S}/LICENSE.txt" )
 
 src_prepare() {
+	default
 	mv -f ${S_BASE}/* "${S}"/base/ || die
 	mv -f ${S_CMAKE}/* "${S}"/cmake/ || die
 	mv -f ${S_DOC}/* "${S}"/doc/ || die
