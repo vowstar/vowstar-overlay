@@ -61,7 +61,7 @@ src_install() {
 	fi
 
 	insinto /usr/share/vst3sdk
-	doins -r "${S}"
+	doins -r "${S}"/*
 
 	insinto /usr/"$(get_libdir)"/cmake/${PN}
 	doins "${S}"/cmake/modules/*.cmake
