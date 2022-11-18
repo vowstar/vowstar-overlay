@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-WX_GTK_VER="3.0-gtk3"
+WX_GTK_VER="3.2-gtk3"
 
 inherit cmake flag-o-matic wxwidgets xdg
 
@@ -19,7 +19,7 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64 ~mips ~ppc ~ppc64 ~riscv ~x86"
 IUSE="alsa doc ffmpeg +flac id3tag jack +ladspa +lv2 mad ogg oss
-	portmidi +portmixer portsmf sbsms twolame vamp +vorbis +vst"
+	+portmidi +portmixer +portsmf sbsms twolame vamp +vorbis +vst"
 
 RESTRICT="test"
 
