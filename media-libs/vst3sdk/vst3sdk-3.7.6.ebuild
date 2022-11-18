@@ -5,8 +5,6 @@ EAPI=8
 
 MY_BUILD_PV="18"
 
-inherit cmake
-
 DESCRIPTION="VST 3 Plug-In SDK"
 HOMEPAGE="https://github.com/steinbergmedia/vst3sdk"
 SRC_URI="
@@ -45,6 +43,10 @@ src_prepare() {
 	cmake_src_prepare
 }
 
+# vst3sdk is a source code only package and does not need to be compiled
+src_configure() { :; }
+src_compile() { :; }
+
 src_install() {
 	insinto /usr/"$(get_libdir)"/pkgconfig
 	doins "${FILESDIR}"/vst3sdk.pc
@@ -55,7 +57,12 @@ src_install() {
 		newdoc "${S}"/public.sdk/LICENSE.txt LICENSE.public.sdk.txt
 		find "${S}"/doc -name ".git*" -exec rm -R {} \; || die
 		dodoc -r "${S}"/doc/*
+	else
+		rm -r "${S}"/doc || die
 	fi
+
+	insinto /usr/share/vst3sdk
+	doins -r "${S}"
 
 	insinto /usr/"$(get_libdir)"/cmake/${PN}
 	doins "${S}"/cmake/modules/*.cmake
