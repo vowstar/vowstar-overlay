@@ -35,14 +35,14 @@ S_GUI="${WORKDIR}/vstgui-vstgui4_11_2"
 DOCS=( "${S}/LICENSE.txt" )
 
 src_prepare() {
-	default
-
 	mv -f ${S_BASE} "${S}"/base || die
 	mv -f ${S_CMAKE} "${S}"/cmake || die
 	mv -f ${S_DOC} "${S}"/doc || die
 	mv -f ${S_PLUG} "${S}"/pluginterfaces || die
 	mv -f ${S_PUB} "${S}"/public.sdk || die
 	mv -f ${S_GUI} "${S}"/vstgui4 || die
+
+	cmake_src_prepare
 }
 
 src_install() {
