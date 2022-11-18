@@ -17,7 +17,7 @@ S="${WORKDIR}/${PN}-${MY_P}"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 ~arm64 ~mips ppc ppc64 ~riscv x86"
+KEYWORDS="~amd64 ~arm64 ~mips ~ppc ~ppc64 ~riscv ~x86"
 IUSE="alsa doc ffmpeg +flac id3tag jack +ladspa +lv2 mad ogg oss
 	portmidi +portmixer portsmf sbsms twolame vamp +vorbis +vst"
 
@@ -94,7 +94,7 @@ src_configure() {
 		-Daudacity_use_pa_jack=$(usex jack linked off)
 		-Daudacity_use_pa_oss=$(usex oss)
 		#-Daudacity_use_pch leaving it to the default behavior
-		-Daudacity_use_portaudio=local # only 'local' option is present
+		-Daudacity_use_portaudio=system
 		-Daudacity_use_portmixer=$(usex portmixer local off)
 		-Daudacity_use_portsmf=$(usex portsmf local off)
 		-Daudacity_use_sbsms=$(usex sbsms local off) # no 'system' option in configuration?
