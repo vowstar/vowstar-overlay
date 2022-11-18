@@ -39,8 +39,6 @@ src_prepare() {
 	mv -f ${S_PLUG}/* "${S}"/pluginterfaces/ || die
 	mv -f ${S_PUB}/* "${S}"/public.sdk/ || die
 	mv -f ${S_GUI}/* "${S}"/vstgui4/ || die
-
-	cmake_src_prepare
 }
 
 # vst3sdk is a source code only package and does not need to be compiled
