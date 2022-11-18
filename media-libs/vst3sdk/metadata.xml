@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">steinbergmedia/vst3sdk</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		A VST plug-in is an audio processing component that is utilized within
+		a host application. This host application provides the audio or/and
+		event streams that are processed by the plug-in's code. Generally
+		speaking, a VST plug-in can take a stream of audio data, apply a
+		process to the audio, and return the result to the host application.
+		A VST Plug-in performs its process normally using the processor of the
+		computer. The audio stream is broken down into a series of blocks.
+		The host supplies the blocks in sequence. The host and its current
+		environment control the block-size. The VST Plug-in maintains the
+		status of all its own parameters relating to the running process:
+		The host does not maintain any information about what the Plug-in did
+		with the last block of data it processed.
+	</longdescription>
+</pkgmetadata>
