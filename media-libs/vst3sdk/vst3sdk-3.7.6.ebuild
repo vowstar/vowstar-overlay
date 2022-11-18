@@ -3,19 +3,19 @@
 
 EAPI=8
 
-MY_BUILD_PV="18"
+MY_BUILD_PV="${MY_BUILD_PV}"
 
 inherit cmake
 
 DESCRIPTION="VST 3 Plug-In SDK"
 HOMEPAGE="https://github.com/steinbergmedia/vst3sdk"
 SRC_URI="
-	https://github.com/steinbergmedia/vst3sdk/archive/refs/tags/v${PV}_build_18.tar.gz -> ${P}.tar.gz
-	https://github.com/steinbergmedia/vst3_base/archive/refs/tags/v${PV}_build_18.tar.gz -> vst3_base-${PV}.tar.gz
-	https://github.com/steinbergmedia/vst3_cmake/archive/refs/tags/v3.7.6_build_18.tar.gz -> vst3_cmake-${PV}.tar.gz
-	https://github.com/steinbergmedia/vst3_doc/archive/refs/tags/v3.7.6_build_18.tar.gz -> vst3_doc-${PV}.tar.gz
-	https://github.com/steinbergmedia/vst3_pluginterfaces/archive/refs/tags/v3.7.6_build_18.tar.gz -> vst3_pluginterfaces-${PV}.tar.gz
-	https://github.com/steinbergmedia/vst3_public_sdk/archive/refs/tags/v3.7.6_build_18.tar.gz -> vst3_public_sdk-${PV}.tar.gz
+	https://github.com/steinbergmedia/vst3sdk/archive/refs/tags/v${PV}_build_${MY_BUILD_PV}.tar.gz -> ${P}.tar.gz
+	https://github.com/steinbergmedia/vst3_base/archive/refs/tags/v${PV}_build_${MY_BUILD_PV}.tar.gz -> vst3_base-${PV}.tar.gz
+	https://github.com/steinbergmedia/vst3_cmake/archive/refs/tags/v${PV}_build_${MY_BUILD_PV}.tar.gz -> vst3_cmake-${PV}.tar.gz
+	https://github.com/steinbergmedia/vst3_doc/archive/refs/tags/v${PV}_build_${MY_BUILD_PV}.tar.gz -> vst3_doc-${PV}.tar.gz
+	https://github.com/steinbergmedia/vst3_pluginterfaces/archive/refs/tags/v${PV}_build_${MY_BUILD_PV}.tar.gz -> vst3_pluginterfaces-${PV}.tar.gz
+	https://github.com/steinbergmedia/vst3_public_sdk/archive/refs/tags/v${PV}_build_${MY_BUILD_PV}.tar.gz -> vst3_public_sdk-${PV}.tar.gz
 	https://github.com/steinbergmedia/vstgui/archive/refs/tags/vstgui4_11_2.tar.gz -> vstgui-4.11.2.tar.gz
 "
 
