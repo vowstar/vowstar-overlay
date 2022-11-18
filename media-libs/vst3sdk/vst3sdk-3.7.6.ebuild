@@ -3,7 +3,7 @@
 
 EAPI=8
 
-MY_BUILD_PV="${MY_BUILD_PV}"
+MY_BUILD_PV="18"
 
 inherit cmake
 
