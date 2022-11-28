@@ -12,10 +12,9 @@ if [[ -z ${PV%%*9999} ]]; then
 	EGIT_REPO_URI="https://github.com/mgalgs/${PN}.git"
 	SRC_URI=""
 else
-	MY_PV="fc9dc00"
-	[[ -n ${PV%%*_p*} ]] && MY_PV="v${PV}"
+	MY_PV="fc9dc005e8a7be01221190e202a7b0b9e6a2dd67"
 	SRC_URI="
-		mirror://githubcl/mgalgs/${PN}/tar.gz/${MY_PV} -> ${P}.tar.gz
+		https://github.com/mgalgs/${PN}/archive/${MY_PV}.tar.gz -> ${P}.tar.gz
 	"
 	RESTRICT="primaryuri"
 	KEYWORDS="~amd64 ~x86"
