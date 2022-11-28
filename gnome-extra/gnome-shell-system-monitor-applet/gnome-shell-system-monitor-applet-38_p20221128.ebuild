@@ -16,7 +16,6 @@ else
 	SRC_URI="
 		https://github.com/mgalgs/${PN}/archive/${MY_PV}.tar.gz -> ${P}.tar.gz
 	"
-	RESTRICT="primaryuri"
 	KEYWORDS="~amd64 ~x86"
 	S="${WORKDIR}/${PN}-${MY_PV#v}"
 fi
