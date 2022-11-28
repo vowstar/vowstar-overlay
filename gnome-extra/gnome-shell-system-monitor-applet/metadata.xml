@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>4nykey@gmail.com</email>
+		<name>Aleksei Kaveshnikov</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">mgalgs/gnome-shell-system-monitor-applet</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		System information such as memory usage, cpu usage, network rates and
+		more can be displayed in the notification area in GNOME Shell.
+		Settings can be accessed via gnome-shell-extensions where monitoring
+		settings can be adjusted.
+	</longdescription>
+</pkgmetadata>
