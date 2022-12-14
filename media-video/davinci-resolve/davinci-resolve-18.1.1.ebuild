@@ -194,9 +194,7 @@ src_install() {
 		mkdir -p "${D}/$(get_udevdir)" || die
 		# Creating and installing udev rules
 		insinto "$(get_udevdir)"/rules.d
-		doins share/etc/udev/rules.d/99-BlackmagicDevices.rules
-		doins share/etc/udev/rules.d/99-ResolveKeyboardHID.rules
-		doins share/etc/udev/rules.d/99-DavinciPanel.rules
+		doins share/etc/udev/rules.d/*.rules
 	fi
 
 	popd || die
