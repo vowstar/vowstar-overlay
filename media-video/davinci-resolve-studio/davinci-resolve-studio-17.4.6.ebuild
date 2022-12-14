@@ -31,7 +31,7 @@ RDEPEND="
 	virtual/glu
 	x11-libs/gtk+:=
 	app-arch/libarchive
-	dev-libs/openssl-compat
+	dev-libs/openssl:=
 	dev-qt/qtcore:5
 	dev-qt/qtsvg:5
 	dev-qt/qtwebengine:5
