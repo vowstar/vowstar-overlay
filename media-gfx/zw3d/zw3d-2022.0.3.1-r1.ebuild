@@ -36,7 +36,7 @@ RDEPEND="
 	media-libs/libglvnd
 	media-libs/libpng
 	media-libs/opencollada
-	media-libs/tiff
+	<media-libs/tiff-4.5.0
 	net-libs/zeromq
 	sys-libs/zlib
 	x11-libs/cairo
