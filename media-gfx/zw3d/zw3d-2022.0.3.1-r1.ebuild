@@ -71,8 +71,8 @@ src_install() {
 	mv "${S}"/opt/apps/${MY_PGK_NAME}/entries/icons/hicolor/scalable/apps/*.svg "${S}"/usr/share/icons/hicolor/scalable/apps || die
 
 	# Copy old system libraries to makes them available to the application
-	pushd /opt/apps/${MY_PGK_NAME}/files/lib || die
-	cp "${S}"/usr/lib/x86_64-linux-gnu/* /opt/apps/${MY_PGK_NAME}/files/lib/ || die
+	pushd "${S}"/opt/apps/${MY_PGK_NAME}/files/lib || die
+	cp "${S}"/usr/lib/x86_64-linux-gnu/* "${S}"/opt/apps/${MY_PGK_NAME}/files/lib/ || die
 	rm -r "${S}"/usr/share/{doc,lintian} || die
 	rm -r "${S}"/usr/lib/x86_64-linux-gnu || die
 	popd || die
