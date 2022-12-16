@@ -8,11 +8,7 @@ inherit unpacker xdg
 
 DESCRIPTION="CAD/CAM software for 3D design and processing"
 HOMEPAGE="https://www.zwsoft.cn/product/zw3d/linux"
-SRC_URI="
-	https://home-store-packages.uniontech.com/appstore/pool/appstore/c/${MY_PGK_NAME}/${MY_PGK_NAME}_${PV}_amd64.deb -> ${P}.deb
-	https://community-packages.deepin.com/deepin/pool/main/t/tiff/libtiff5_4.1.0.6-1+deepin_amd64.deb -> libtiff5_4.1.0.6-1+deepin_amd64.deb
-	https://community-packages.deepin.com/deepin/pool/main/libw/libwebp/libwebp6_0.6.1.2-1+dde_amd64.deb -> libwebp6_0.6.1.2-1+dde_amd64.deb
-"
+SRC_URI="https://home-store-packages.uniontech.com/appstore/pool/appstore/c/${MY_PGK_NAME}/${MY_PGK_NAME}_${PV}_amd64.deb -> ${P}.deb"
 
 LICENSE="all-rights-reserved"
 SLOT="0"
@@ -39,6 +35,7 @@ RDEPEND="
 	media-libs/libglvnd
 	media-libs/libpng
 	media-libs/opencollada
+	<media-libs/tiff-4.5.0
 	net-libs/zeromq
 	sys-libs/zlib
 	x11-libs/cairo
@@ -70,13 +67,6 @@ src_install() {
 	# Install scalable icons
 	mkdir -p "${S}"/usr/share/icons/hicolor/scalable/apps || die
 	mv "${S}"/opt/apps/${MY_PGK_NAME}/entries/icons/hicolor/scalable/apps/*.svg "${S}"/usr/share/icons/hicolor/scalable/apps || die
-
-	# Copy old system libraries to makes them available to the application
-	pushd "${S}"/opt/apps/${MY_PGK_NAME}/files/lib || die
-	cp "${S}"/usr/lib/x86_64-linux-gnu/* "${S}"/opt/apps/${MY_PGK_NAME}/files/lib/ || die
-	rm -r "${S}"/usr/share/{doc,lintian} || die
-	rm -r "${S}"/usr/lib/x86_64-linux-gnu || die
-	popd || die
 
 	# Set RPATH for preserve-libs handling
 	pushd "${S}"/opt/apps/${MY_PGK_NAME}/files || die
