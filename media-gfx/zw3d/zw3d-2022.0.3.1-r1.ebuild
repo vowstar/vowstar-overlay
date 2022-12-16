@@ -21,7 +21,6 @@ RDEPEND="
 	app-arch/xz-utils
 	app-text/djvu
 	dev-db/sqlite:3
-	dev-libs/atk
 	dev-libs/glib:2
 	dev-libs/libpcre
 	dev-libs/libxml2
