@@ -11,6 +11,7 @@ HOMEPAGE="https://www.zwsoft.cn/product/zw3d/linux"
 SRC_URI="
 	https://home-store-packages.uniontech.com/appstore/pool/appstore/c/${MY_PGK_NAME}/${MY_PGK_NAME}_${PV}_amd64.deb -> ${P}.deb
 	https://community-packages.deepin.com/deepin/pool/main/t/tiff/libtiff5_4.1.0.6-1+deepin_amd64.deb -> libtiff5_4.1.0.6-1+deepin_amd64.deb
+	https://community-packages.deepin.com/deepin/pool/main/libw/libwebp/libwebp6_0.6.1.2-1+dde_amd64.deb -> libwebp6_0.6.1.2-1+dde_amd64.deb
 "
 
 LICENSE="all-rights-reserved"
