@@ -29,6 +29,8 @@ DEPEND="
 	dev-qt/qtprintsupport:5
 	dev-qt/qtwebchannel:5
 	dev-qt/qtwebengine:5
+	dev-qt/qtwebsockets:5
+	dev-qt/qtwebview:5
 	dev-qt/qtwidgets:5
 	dev-qt/qtx11extras:5
 	dev-qt/qtxml:5
