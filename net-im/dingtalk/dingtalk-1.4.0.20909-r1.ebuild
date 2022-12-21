@@ -22,10 +22,11 @@ RESTRICT="strip mirror bindist"
 RDEPEND="
 	dev-libs/libthai
 	dev-qt/qtgui
-	net-nds/openldap
+	|| ( <media-libs/tiff-4.5.0 media-libs/tiff-compat:4 )
 	media-sound/pulseaudio
 	media-video/rtmpdump
 	net-misc/curl
+	net-nds/openldap
 	sys-libs/zlib
 	sys-process/procps
 	x11-libs/gtk+:2
