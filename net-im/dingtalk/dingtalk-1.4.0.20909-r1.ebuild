@@ -44,7 +44,7 @@ QA_PREBUILT="*"
 
 src_install() {
 	# Install scalable icon
-	doicon -s scalable cp "${FILESDIR}"/dingtalk.svg
+	doicon -s scalable "${FILESDIR}"/dingtalk.svg
 	# Remove the libraries that break compatibility in modern systems
 	# Dingtalk will use the system libs instead
 	MY_VERSION=$(cat "${S}"/opt/apps/"${MY_PGK_NAME}"/files/version)
