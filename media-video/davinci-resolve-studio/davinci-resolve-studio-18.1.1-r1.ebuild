@@ -36,6 +36,7 @@ RDEPEND="
 	dev-qt/qtwebsockets:5
 	media-libs/gstreamer
 	media-libs/libpng
+	|| ( <media-libs/tiff-4.5.0 media-libs/tiff-compat:4 )
 	sys-fs/fuse
 	sys-libs/libxcrypt
 	udev? ( virtual/udev )
