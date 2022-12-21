@@ -4,7 +4,7 @@
 EAPI=8
 
 MY_PGK_NAME="com.alibabainc.dingtalk"
-inherit unpacker xdg
+inherit desktop unpacker xdg
 
 DESCRIPTION="Communication platform that supports video and audio conferencing"
 HOMEPAGE="https://gov.dingtalk.com"
