@@ -6,13 +6,15 @@ EAPI="8"
 if [[ "${PN}" == "davinci-resolve-studio" ]] ; then
 	BASE_NAME="DaVinci_Resolve_Studio_${PV}_Linux"
 	CONFLICT_PKG="!!media-video/davinci-resolve"
+	CHECKREQS_DISK_BUILD=20G
 else
 	BASE_NAME="DaVinci_Resolve_${PV}_Linux"
 	CONFLICT_PKG="!!media-video/davinci-resolve-studio"
+	CHECKREQS_DISK_BUILD=15G
 fi
 ARC_NAME="${BASE_NAME}.zip"
 
-inherit desktop udev xdg
+inherit check-reqs desktop udev xdg
 
 DESCRIPTION="Professional A/V post-production software suite"
 HOMEPAGE="
