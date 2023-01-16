@@ -15,7 +15,7 @@ if [[ ${PV} == "9999" ]] ; then
 	EGIT_REPO_URI="https://gitlab.inria.fr/${PN}/${PN}.git"
 	inherit git-r3
 else
-	SRC_URI="https://gitlab.inria.fr/${PN}/${PN}/-/archive/${PV}/${P}.tar.gz"
+	SRC_URI="https://gitlab.inria.fr/${PN}/${PN}/-/archive/${PV}/${P}.tar.bz2"
 	KEYWORDS="~amd64 ~arm64 ~riscv ~x86"
 fi
 
