@@ -1,28 +1,37 @@
 # Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-PYTHON_COMPAT=( python{2_7,3_7,3_8} )
+PYTHON_COMPAT=( python3_{8..11} )
 PYTHON_REQ_USE="sqlite"
 CMAKE_MAKEFILE_GENERATOR="emake"
 inherit cmake python-r1
 
 DESCRIPTION="Number Field Sieve (NFS) implementation for factoring integers"
 HOMEPAGE="http://cado-nfs.gforge.inria.fr"
+
+if [[ ${PV} == "9999" ]] ; then
+	EGIT_REPO_URI="https://gitlab.inria.fr/${PN}/${PN}.git"
+	inherit git-r3
+else
+	SRC_URI="https://gitlab.inria.fr/${PN}/${PN}/-/archive/${PV}/${P}.tar.gz"
+	KEYWORDS="~amd64 ~arm64 ~riscv ~x86"
+fi
+
 LICENSE="LGPL-2.1"
 SLOT="0"
 IUSE="mpi mysql +curl +hwloc"
+REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 RDEPEND="
+	${PYTHON_DEPS}
 	!sci-mathematics/ggnfs
-	!sci-biology/shrimp
 	mpi? ( virtual/mpi )
 	mysql? ( virtual/mysql )
 	curl? ( net-misc/curl )
 	hwloc? ( >=sys-apps/hwloc-2.0.0 )
 	dev-libs/gmp:0=
-	${PYTHON_DEPS}
 "
 
 DEPEND="
@@ -31,15 +40,6 @@ DEPEND="
 "
 
 BUILD_DIR="${WORKDIR}/build"
-
-if [[ ${PV} == "9999" ]] ; then
-	EGIT_REPO_URI="https://gitlab.inria.fr/${PN}/${PN}.git"
-	inherit git-r3
-else
-	SRC_URI="https://gforge.inria.fr/frs/download.php/file/37058/${P}.tar.gz -> ${P}.tar.gz"
-	RESTRICT="primaryuri"
-	KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~riscv ~x86"
-fi
 
 src_prepare() {
 	default
