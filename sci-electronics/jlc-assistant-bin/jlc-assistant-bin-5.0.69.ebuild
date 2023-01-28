@@ -25,7 +25,6 @@ RDEPEND="
 	app-crypt/libsecret
 	dev-libs/expat
 	dev-libs/glib
-	sys-libs/glibc
 	dev-libs/nspr
 	dev-libs/nss
 	media-libs/alsa-lib
