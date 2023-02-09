@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -46,7 +46,7 @@ DEPEND="${RDEPEND}"
 BDEPEND="
 	app-arch/p7zip
 	sys-apps/coreutils
-	virtual/awk
+	app-alternatives/awk
 "
 
 S=${WORKDIR}
@@ -66,19 +66,21 @@ src_prepare() {
 		# patch only wechatbrowser.exe was not found
 		patch -p1 -d "${S}/deepinwechatdir/" < "${FILESDIR}/reg.patch" || die
 	fi
-	ln -sf "/usr/share/fonts/wqy-microhei/wqy-microhei.ttc" "${S}/deepinwechatdir/drive_c/windows/Fonts/wqy-microhei.ttc" || die
+	ln -sf "/usr/share/fonts/wqy-microhei/wqy-microhei.ttc" \
+		"${S}/deepinwechatdir/drive_c/windows/Fonts/wqy-microhei.ttc" || die
 	if [ -f "${DISTDIR}/${P}-${WECHAT_INSTALLER}.exe" ]; then
 		# User provided ${P}-${WECHAT_INSTALLER}.exe" installer
-		install -m644 "${DISTDIR}/${P}-${WECHAT_INSTALLER}.exe" "${S}/deepinwechatdir/drive_c/Program Files/Tencent/${WECHAT_INSTALLER}-${PV}.exe" || die
+		install -m644 "${DISTDIR}/${P}-${WECHAT_INSTALLER}.exe" \
+			"${S}/deepinwechatdir/drive_c/Program Files/Tencent/${WECHAT_INSTALLER}-${PV}.exe" || die
 	fi
 	7z a -t7z -r "${S}"/files.7z "${S}"/deepinwechatdir/* || die
 	# Fix to avoid downgrading openldap
 	mkdir -p "${S}/opt/apps/${DEB_PN}/files/lib32" || die
 	cp -rf "${S}"/usr/lib/i386-linux-gnu/* "${S}/opt/apps/${DEB_PN}/files/lib32" || die
 	# Generate run.sh
-	cp -rf "${FILESDIR}"/${P}-run.sh "${S}"/run.sh || die
-	sed -i "s/APPVER=.*/APPVER=\"${DP_WECHAT_VER}\"/g" "${S}"/run.sh
-	sed -i "s/WECHAT_VER=.*/WECHAT_VER=\"${PV}\"/g" "${S}"/run.sh
+	cp -rf "${FILESDIR}"/${PN}-3.4.5.45-run.sh "${S}"/run.sh || die
+	sed -i "s/APPVER=.*/APPVER=\"${DP_WECHAT_VER}\"/g" "${S}"/run.sh || die
+	sed -i "s/WECHAT_VER=.*/WECHAT_VER=\"${PV}\"/g" "${S}"/run.sh || die
 	# Generate files.md5sum to fit DeployApp in run.sh
 	# https://github.com/vufa/deepin-wine-wechat-arch/issues/217
 	md5sum "${S}/files.7z" | awk '{ print $1 }' >  "${S}/opt/apps/${DEB_PN}/files/files.md5sum" || die
