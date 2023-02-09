@@ -24,7 +24,7 @@ export DEB_PACKAGE_NAME="com.qq.weixin.deepin"
 export APPRUN_CMD="deepin-wine6-stable"
 DISABLE_ATTACH_FILE_DIALOG=""
 EXPORT_ENVS=""
-
+export LANG=zh_CN.utf8
 export SPECIFY_SHELL_DIR=`dirname $START_SHELL_PATH`
 
 ARCHIVE_FILE_DIR="/opt/apps/$DEB_PACKAGE_NAME/files"
