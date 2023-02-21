@@ -97,6 +97,7 @@ src_configure() {
 		-DKICAD_DOCS="${EPREFIX}/usr/share/doc/${PN}-doc-${PV}"
 
 		-DKICAD_SCRIPTING_WXPYTHON=ON
+		-DKICAD_USE_EGL=ON
 
 		-DKICAD_BUILD_I18N="$(usex nls)"
 		-DKICAD_I18N_UNIX_STRICT_PATH="$(usex nls)"
