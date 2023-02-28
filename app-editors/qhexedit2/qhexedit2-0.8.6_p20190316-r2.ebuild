@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{8..10} )
+PYTHON_COMPAT=( python3_{8..11} )
 inherit python-r1 qmake-utils
 
 EGIT_COMMIT="ba5af8616b3a6c916e718914225a483267c01356"
@@ -66,7 +66,7 @@ src_compile() {
 	if use python; then
 		export PATH="$(qt5_get_bindir):${PATH}"
 		python_build() {
-			pushd ${S} || die
+			pushd "${S}" || die
 			sip-build || die
 			popd || die
 		}
@@ -88,7 +88,7 @@ src_install() {
 	dolib.so libqhexedit.so*
 	if use python; then
 		python_install() {
-			pushd ${S}/build || die
+			pushd "${S}"/build || die
 			emake INSTALL_ROOT="${D}" install
 			popd || die
 		}
