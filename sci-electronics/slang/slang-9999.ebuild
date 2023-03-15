@@ -41,11 +41,6 @@ DEPEND="
 	${RDEPEND}
 "
 
-PATCHES=(
-	"${FILESDIR}/${PN}-2.0-fix-unordered-dense.patch"
-	"${FILESDIR}/${PN}-2.0-renamed-svlang.patch"
-)
-
 src_configure() {
 	python_setup
 	# SLANG_SHARED_LIB_NAME=svlang because of name collision
