@@ -9,8 +9,8 @@ DESCRIPTION="Wemeet - Tencent Video Conferencing"
 HOMEPAGE="https://wemeet.qq.com"
 
 SRC_URI="
-	amd64? ( mirror+https://updatecdn.meeting.qq.com/cos/c62a1d83f5b1a2f4a4f2d189960fc02c/TencentMeeting_0300000000_${PV}_arm64_default.publish.deb -> ${P}_amd64.deb )
-	arm64? ( mirror+https://updatecdn.meeting.qq.com/cos/1b001ef75914a1d6948decb8c2550b47/TencentMeeting_0300000000_${PV}_x86_64_default.publish.deb -> ${P}_arm64.deb )
+	amd64? ( mirror+https://updatecdn.meeting.qq.com/cos/1b001ef75914a1d6948decb8c2550b47/TencentMeeting_0300000000_${PV}_x86_64_default.publish.deb -> ${P}_amd64.deb )
+	arm64? ( mirror+https://updatecdn.meeting.qq.com/cos/c62a1d83f5b1a2f4a4f2d189960fc02c/TencentMeeting_0300000000_${PV}_arm64_default.publish.deb -> ${P}_arm64.deb )
 "
 
 LICENSE="wemeet_license"
