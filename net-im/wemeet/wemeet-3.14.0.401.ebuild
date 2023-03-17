@@ -49,7 +49,9 @@ src_install() {
 	# To fix bug, remove unused lib, use system lib instead
 	mv opt/${PN}/lib opt/${PN}/lib.orig || die
 	mkdir opt/${PN}/lib || die
-	cp -rf opt/${PN}/lib.orig/lib{bugly,crbase,desktop_common,ImSDK,nxui*,qt_*,service*,tms_*,ui*,wemeet*,xcast*,xnn*}.so opt/${PN}/lib/ || die
+	cp -rf opt/${PN}/lib.orig/lib*.so opt/${PN}/lib/ || die
+	# Remove libQt5*, use system QT5 instead
+	rm -rf opt/${PN}/lib/libQt5* || die
 	rm -r opt/${PN}/lib.orig || die
 	# Fix SEGFAULT with libqxcb-glx-integration
 	rm -r opt/wemeet/plugins/xcbglintegrations || die
