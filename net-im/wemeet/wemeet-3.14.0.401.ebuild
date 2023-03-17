@@ -94,7 +94,7 @@ fi;
 
 	insinto "/opt/${PN}"
 	exeinto "/opt/${PN}"
-	doins -r /opt/"${PN}"/*
+	doins -r opt/"${PN}"/*
 	doexe "opt/${PN}/wemeetapp.sh"
 	fperms +x "/opt/${PN}/bin/wemeetapp"
 	fperms +x "/opt/${PN}/bin/QtWebEngineProcess"
