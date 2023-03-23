@@ -26,5 +26,7 @@ PATCHES=(
 )
 
 src_prepare() {
+	# Disable update-mime-database command, shouldn't be doing this here.
+	sed -i "s/NAMES update-mime-database/NAMES echo/g" "${S}"/src/CMakeLists.txt || die
 	cmake_src_prepare
 }
