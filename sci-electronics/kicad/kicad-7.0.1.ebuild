@@ -75,9 +75,6 @@ fi
 CHECKREQS_DISK_BUILD="900M"
 
 PATCHES=(
-	# https://bugs.gentoo.org/895188
-	"${FILESDIR}"/${PN}-7.0.0-wxwidgets-version.patch
-
 	"${FILESDIR}"/${PN}-7.0.0-werror.patch
 )
 
