@@ -53,10 +53,10 @@ each_ruby_configure() {
 
 each_ruby_compile() {
 	emake -Cext/${PN} V=1
-	patchelf --set-rpath "${EROOT}/$(ruby_fakegem_gemsdir)/gems/${RUBY_FAKEGEM_NAME}-${RUBY_FAKEGEM_VERSION}/lib" \
-		"ext/${PN}/${PN}$(get_modname)" || die
-	cp "ext/${PN}/${PN}$(get_modname)" lib/ || die
-	cp "ext/${PN}/lib/lib${PN_LASEM}$(get_modname)" lib/ || die
+	local MY_RPATH="${EROOT}/$(ruby_fakegem_gemsdir)/gems/${RUBY_FAKEGEM_NAME}-${RUBY_FAKEGEM_VERSION}/lib/${PN}"
+	patchelf --set-rpath "${MY_RPATH}" "ext/${PN}/${PN}$(get_modname)" || die
+	cp "ext/${PN}/${PN}$(get_modname)" "lib/${PN}" || die
+	cp "ext/${PN}/lib/lib${PN_LASEM}$(get_modname)" "lib/${PN}" || die
 }
 
 each_ruby_test() {
