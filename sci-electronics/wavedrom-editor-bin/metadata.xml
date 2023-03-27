@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">wavedrom/wavedrom.github.io</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		WaveDromEditor is real-time editor of digital timing diagrams based on
+		WaveDrom engine and WaveJSON format. WaveDrom draws your Timing Diagram
+		or Waveform from simple textual description.
+		It comes with description language, rendering engine and the editor.
+		WaveDrom editor works in the browser or can be installed on your system.
+		Rendering engine can be embeded into any webpage.
+	</longdescription>
+	<longdescription lang="zh">
+		WaveDromEditor 是基于 WaveDrom 引擎和 WaveJSON 格式的数字时序图的实时
+		编辑器。
+		WaveDrom 从简单的文本描述中绘制您的时序图或波形。它附带描述语言，
+		渲染引擎和编辑器。WaveDrom 编辑器在浏览器中工作，也可以安装在您的系统上，
+		其渲染引擎可以嵌入到任何网页中。
+	</longdescription>
+</pkgmetadata>
