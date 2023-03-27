@@ -16,7 +16,7 @@ HOMEPAGE="https://rubyworks.github.io/ansi/"
 
 LICENSE="BSD-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~sparc ~x86"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~riscv ~sparc ~x86"
 IUSE=""
 
 # Tests cause circular dependencies with dev-ruby/qed & dev-ruby/rubytest
