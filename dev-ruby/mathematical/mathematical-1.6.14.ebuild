@@ -23,11 +23,3 @@ ruby_add_bdepend ">=dev-ruby/math-to-itex-0.3
 	>=dev-ruby/nokogiri-1.10
 	>=dev-ruby/pry-byebug-3.9.0
 	"
-
-all_ruby_prepare() {
-	rm Gemfile || die
-}
-
-all_ruby_install() {
-	all_fakegem_install
-}
