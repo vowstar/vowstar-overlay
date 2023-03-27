@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">dblock/ruby-enum</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		Enum-like behavior for Ruby. Enums can be defined and accessed either
+		as constants, or class methods, which is a matter of preference.
+		The value is optional. If unspecified, the value will default to the
+		key. Enums support all Enumerable methods.
+	</longdescription>
+</pkgmetadata>
