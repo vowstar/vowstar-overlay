@@ -9,6 +9,8 @@ PV_LASEM="0.5.1"
 PN_MTEX2MML="mtex2MML"
 PV_MTEX2MML="1.3.1"
 
+RUBY_FAKEGEM_EXTENSIONS=("ext/${PN}/extconf.rb")
+RUBY_FAKEGEM_EXTENSION_LIBDIR="lib/${PN}"
 RUBY_FAKEGEM_EXTRADOC="LICENSE.txt README.md"
 RUBY_FAKEGEM_GEMSPEC="${PN}.gemspec"
 
@@ -34,8 +36,16 @@ ruby_add_bdepend ">=dev-ruby/math-to-itex-0.3
 	>=dev-ruby/pry-byebug-3.9.0
 	"
 
-RDEPEND+=" dev-libs/libxml2 x11-libs/pango"
-BDEPEND+=" dev-util/patchelf"
+RDEPEND+="
+	dev-libs/libxml2
+	dev-libs/libffi:=
+	x11-libs/gdk-pixbuf:2
+	x11-libs/pango
+	"
+BDEPEND+="
+	sys-devel/bison
+	sys-devel/flex
+	"
 
 all_ruby_prepare() {
 	rm -rf "${WORKDIR}/all/${P}/ext/${PN}/lasem" || die
@@ -47,16 +57,18 @@ all_ruby_prepare() {
 		"${WORKDIR}/all/${P}/ext/${PN}/${PN_MTEX2MML}" || die
 }
 
-each_ruby_configure() {
-	"${RUBY}" -Cext/${PN} extconf.rb || die
-}
-
 each_ruby_compile() {
 	emake -Cext/${PN} V=1
-	local MY_RPATH="${EROOT}/$(ruby_fakegem_gemsdir)/gems/${RUBY_FAKEGEM_NAME}-${RUBY_FAKEGEM_VERSION}/lib/${PN}"
-	patchelf --set-rpath "${MY_RPATH}" "ext/${PN}/${PN}$(get_modname)" || die
-	cp "ext/${PN}/${PN}$(get_modname)" "lib/${PN}" || die
-	cp "ext/${PN}/lib/lib${PN_LASEM}$(get_modname)" "lib/${PN}" || die
+	# add dependencies libraries to the install script
+	sed -i  \
+		-e "/	\$(INSTALL_PROG) \$(DLLIB) \$(RUBYARCHDIR)/a\\" \
+		-e "	\$(INSTALL_PROG) lib/lib${PN_LASEM}$(get_modname) \$(RUBYARCHDIR)" \
+		"ext/${PN}/Makefile" || die
+	# fix rpath
+	local MY_RPATH="${EROOT}/$(ruby_fakegem_extensionsdir)/${RUBY_FAKEGEM_EXTENSION_LIBDIR}"
+	sed -i \
+		-e "s|-Wl,-rpath,.*mathematical/lib|-Wl,-rpath,${MY_RPATH}|g" \
+		"ext/${PN}/Makefile" || die
 }
 
 each_ruby_test() {
