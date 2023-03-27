@@ -91,7 +91,7 @@ src_install() {
 	doicon -s scalable "${FILESDIR}"/"${MY_PN}".svg
 	for i in 16 22 24 32 36 48 64 72 96 128 192 256 512; do
 		mkdir "${T}/${i}x${i}" || die
-		rsvg-convert -a -f png -w "${i}" -o "${T}/${i}x${i}/${PN}.png" "${FILESDIR}"/"${MY_PN}".svg || die
+		rsvg-convert -a -f png -w "${i}" -o "${T}/${i}x${i}/${MY_PN}.png" "${FILESDIR}"/"${MY_PN}".svg || die
 		doicon -s "${i}" "${T}/${i}x${i}/${MY_PN}.png"
 	done
 }
