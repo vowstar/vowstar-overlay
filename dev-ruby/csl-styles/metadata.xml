@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">inukshuk/csl-styles</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		The csl-styles gem includes all Citation Style Language (CSL) styles and
+		locale files from the official styles and locales repositories packaged
+		for use with the CSL RubyGem.
+		All styles and locales are copyright of their respective authors and
+		released under the Creative Commons Attribution-ShareAlike license.
+	</longdescription>
+</pkgmetadata>
