@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">asciidoctor/asciidoctor-bibtex</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		asciidoctor-bibtex adds bibtex integration to AsciiDoc documents by
+		introducing three new macros: cite:[KEY], bibitem:[KEY] and
+		bibliography::[]. Citations are parsed and replaced with formatted
+		inline texts, and reference lists are automatically generated and
+		inserted into where bibliography::[] is placed. bibitem:[KEY] will
+		insert a rendered bibliography item directly into the text.
+	</longdescription>
+</pkgmetadata>
