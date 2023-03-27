@@ -5,8 +5,8 @@ EAPI=8
 USE_RUBY="ruby27 ruby30 ruby31"
 
 RUBY_FAKEGEM_EXTRADOC="README.adoc"
-RUBY_FAKEGEM_EXTRAINSTALL="lib"
 RUBY_FAKEGEM_GEMSPEC="asciidoctor-bibtex.gemspec"
+RUBY_FAKEGEM_RECIPE_TEST="rspec3"
 
 inherit ruby-fakegem
 
@@ -19,9 +19,6 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-# rake have no task test, skipping for now
-RESTRICT=test
-
 ruby_add_rdepend "
 	>=dev-ruby/asciidoctor-2.0
 	>=dev-ruby/bibtex-ruby-4
@@ -33,3 +30,13 @@ ruby_add_rdepend "
 ruby_add_bdepend "test? (
 	dev-ruby/minitest:5
 	)"
+
+all_ruby_prepare() {
+	rm Gemfile || die
+
+	sed -i -e "s:_relative ': './:" ${RUBY_FAKEGEM_GEMSPEC} || die
+}
+
+all_ruby_install() {
+	all_fakegem_install
+}
