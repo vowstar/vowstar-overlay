@@ -13,7 +13,7 @@ DESCRIPTION="Provides support for SVG in Prawn"
 HOMEPAGE="https://github.com/mogest/prawn-svg"
 LICENSE="|| ( MIT Ruby )"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~x86"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~riscv ~sparc ~x86"
 IUSE=""
 
 ruby_add_rdepend "
