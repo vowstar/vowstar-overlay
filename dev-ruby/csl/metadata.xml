@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">inukshuk/bibtex-ruby</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		BibTeX-Ruby is the Rubyist's swiss-army-knife for all things BibTeX.
+		It includes a parser for all common BibTeX objects (@string, @preamble,
+		@comment and regular entries) and a sophisticated name parser that
+		tokenizes correctly formatted names; BibTeX-Ruby recognizes BibTeX
+		string replacements, joins values containing multiple strings or
+		variables, supports cross-references, and decodes common LaTeX
+		formatting instructions to unicode; if you are in a hurry, it also
+		allows for easy export/conversion to formats such as YAML, JSON,
+		CiteProc/CSL, XML (BibTeXML, requires rexml), and RDF (experimental).
+	</longdescription>
+</pkgmetadata>
