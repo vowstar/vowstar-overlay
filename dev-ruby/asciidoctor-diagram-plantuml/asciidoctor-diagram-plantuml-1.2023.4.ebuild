@@ -14,7 +14,7 @@ RUBY_FAKEGEM_EXTRADOC="plantuml-license.txt jlatexmath-license.txt batik-all-lic
 
 RUBY_FAKEGEM_GEMSPEC="${PN}.gemspec"
 
-inherit multilib ruby-fakegem
+inherit ruby-fakegem
 
 DESCRIPTION="A set of Asciidoctor extensions that enable you to add diagrams"
 HOMEPAGE="https://github.com/asciidoctor/asciidoctor-diagram"
