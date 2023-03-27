@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">inukshuk/latex-decode</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		LaTeX::Decode is a Ruby gem to convert LaTeX input to Unicode.
+		Its original use was as an input filter for [BibTeX-Ruby][] but it can
+		be used independently to decode LaTeX. Many of the patterns used by this
+		Ruby gem are based on François Charette's equivalent Perl module
+		LaTeX::Decode.
+	</longdescription>
+</pkgmetadata>
