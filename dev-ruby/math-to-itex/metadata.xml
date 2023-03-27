@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">gjtorikian/math-to-itex</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		Parse a string and convert math equations to the itex notation.
+		Convert strings into a proper itex format.
+		Due to fancy regexes, this gem only works with Ruby 2.0+.
+	</longdescription>
+</pkgmetadata>
