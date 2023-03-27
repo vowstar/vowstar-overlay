@@ -8,7 +8,7 @@ RUBY_FAKEGEM_EXTRADOC="README.md"
 RUBY_FAKEGEM_GEMSPEC="namae.gemspec"
 RUBY_FAKEGEM_RECIPE_TEST="rspec3"
 
-COMMIT=bfe0422871cb30c50b6008fadafa50dd9dcda806
+COMMIT="bfe0422871cb30c50b6008fadafa50dd9dcda806"
 
 inherit ruby-fakegem
 
