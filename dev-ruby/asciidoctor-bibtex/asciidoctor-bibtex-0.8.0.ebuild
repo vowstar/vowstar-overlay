@@ -21,7 +21,7 @@ IUSE=""
 
 ruby_add_rdepend "
 	>=dev-ruby/asciidoctor-2.0
-	>=dev-ruby/bibtex-ruby-4
+	>=dev-ruby/bibtex-ruby-4 <dev-ruby/bibtex-ruby-6
 	>=dev-ruby/citeproc-ruby-1
 	>=dev-ruby/csl-styles-1
 	>=dev-ruby/latex-decode-0.2
