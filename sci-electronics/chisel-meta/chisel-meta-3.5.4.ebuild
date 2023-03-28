@@ -18,10 +18,16 @@ RDEPEND="
 	dev-java/antlr:4
 	dev-java/mill-bin
 	dev-libs/protobuf
+	dev-ruby/asciidoctor
+	dev-ruby/asciidoctor-bibtex
+	dev-ruby/asciidoctor-diagram
+	dev-ruby/asciidoctor-mathematical
+	dev-ruby/asciidoctor-pdf
 	dev-vcs/git
 	net-misc/wget
+	sci-electronics/circt
+	sci-electronics/wavedrom-cli
 	sys-apps/dtc
 	sys-devel/make
 	sys-process/parallel
-	sci-electronics/circt
 "
