@@ -17,6 +17,7 @@ fi
 RDEPEND="
 	dev-java/antlr:4
 	dev-java/mill-bin
+	dev-java/sbt-bin
 	dev-libs/protobuf
 	dev-ruby/asciidoctor
 	dev-ruby/asciidoctor-bibtex
