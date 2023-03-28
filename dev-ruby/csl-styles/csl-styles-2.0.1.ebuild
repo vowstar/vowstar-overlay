@@ -12,6 +12,7 @@ RUBY_FAKEGEM_RECIPE_TEST="rspec3"
 COMMIT="678a9e811e272940af595326b4dc0437695c5b3c"
 COMMIT_LOCALES="2e904f3197e960cd54fb758eb8d747153a597fe0"
 COMMIT_STYLES="948c48ae5d1014946daad2e7dea6f316b0ac7928"
+CSL_URI="https://github.com/citation-style-language"
 
 inherit ruby-fakegem
 
@@ -19,8 +20,8 @@ DESCRIPTION="CSL styles and locales as a RubyGem"
 HOMEPAGE="https://github.com/inukshuk/csl-styles"
 SRC_URI="
 	https://github.com/inukshuk/csl-styles/archive/${COMMIT}.tar.gz -> ${P}.tar.gz
-	https://github.com/citation-style-language/locales/archive/${COMMIT_LOCALES}.tar.gz -> ${PN}-locales-${COMMIT_LOCALES}.tar.gz
-	https://github.com/citation-style-language/styles/archive/${COMMIT_STYLES}.tar.gz -> ${PN}-styles-${COMMIT_STYLES}.tar.gz
+	${CSL_URI}/locales/archive/${COMMIT_LOCALES}.tar.gz -> ${PN}-locales-${COMMIT_LOCALES}.tar.gz
+	${CSL_URI}/styles/archive/${COMMIT_STYLES}.tar.gz -> ${PN}-styles-${COMMIT_STYLES}.tar.gz
 "
 RUBY_S="${PN}-${COMMIT}"
 
