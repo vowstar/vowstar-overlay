@@ -43,7 +43,7 @@ src_install() {
 		--progress false
 		--verbose
 	)
-	npm info ms "${DISTDIR}/${P}.tgz" || die "npm info failed"
+	# npm info ms "${DISTDIR}/${P}.tgz" || die "npm info failed"
 	npm ${myopts[@]} install "${DISTDIR}/${P}.tgz" || die "npm install failed"
 
 	if use elibc_musl; then
