@@ -35,6 +35,6 @@ ruby_add_rdepend ">=dev-ruby/csl-1.0 <dev-ruby/csl-2"
 all_ruby_prepare() {
 	rm -rf "${WORKDIR}/all/${RUBY_S}/vendor/locales" || die
 	rm -rf "${WORKDIR}/all/${RUBY_S}/vendor/styles" || die
-	ln -s "${WORKDIR}/all/locales-${COMMIT_LOCALES}" "${WORKDIR}/all/${RUBY_S}/vendor/locales" || die
-	ln -s "${WORKDIR}/all/styles-${COMMIT_STYLES}" "${WORKDIR}/all/${RUBY_S}/vendor/styles" || die
+	cp -rf "${WORKDIR}/all/locales-${COMMIT_LOCALES}" "${WORKDIR}/all/${RUBY_S}/vendor/locales" || die
+	cp -rf "${WORKDIR}/all/styles-${COMMIT_STYLES}" "${WORKDIR}/all/${RUBY_S}/vendor/styles" || die
 }
