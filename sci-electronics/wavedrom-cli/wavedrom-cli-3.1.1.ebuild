@@ -4,7 +4,6 @@
 EAPI=8
 
 MY_PN="${PN%-bin}"
-inherit desktop unpacker xdg
 
 DESCRIPTION="WaveDrom command-line interface"
 HOMEPAGE="
