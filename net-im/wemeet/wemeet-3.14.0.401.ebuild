@@ -110,8 +110,9 @@ fi;
 
 	sed -i "s/^Icon=.*/Icon=wemeetapp/g" "usr/share/applications/wemeetapp.desktop" || die
 	sed -i "s/^Exec=.*/Exec=wemeetapp %u/g" "usr/share/applications/wemeetapp.desktop" || die
-	sed -i -e '/Comment=Tencent Meeting Linux Client/a\' \
-		-e 'Comment[zh_CN]=腾讯会议Linux客户端\nKeywords=wemeet;tencent;meeting;' \
+	sed -i -e '$a Comment=Tencent Meeting Linux Client\n\' \
+		-e 'Comment[zh_CN]=腾讯会议Linux客户端\n\' \
+		-e 'Keywords=wemeet;tencent;meeting;\n' \
 		"usr/share/applications/wemeetapp.desktop" || die
 	domenu "usr/share/applications/wemeetapp.desktop"
 	newicon -s scalable "opt/${PN}/wemeet.svg" "wemeetapp.svg"
