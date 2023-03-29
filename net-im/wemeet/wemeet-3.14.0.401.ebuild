@@ -9,8 +9,10 @@ DESCRIPTION="Wemeet - Tencent Video Conferencing"
 HOMEPAGE="https://wemeet.qq.com"
 
 SRC_URI="
-	amd64? ( mirror+https://updatecdn.meeting.qq.com/cos/1b001ef75914a1d6948decb8c2550b47/TencentMeeting_0300000000_${PV}_x86_64_default.publish.deb -> ${P}_amd64.deb )
-	arm64? ( mirror+https://updatecdn.meeting.qq.com/cos/c62a1d83f5b1a2f4a4f2d189960fc02c/TencentMeeting_0300000000_${PV}_arm64_default.publish.deb -> ${P}_arm64.deb )
+	amd64? ( mirror+https://updatecdn.meeting.qq.com/cos/\
+1b001ef75914a1d6948decb8c2550b47/TencentMeeting_0300000000_${PV}_x86_64_default.publish.deb -> ${P}_amd64.deb )
+	arm64? ( mirror+https://updatecdn.meeting.qq.com/cos/\
+c62a1d83f5b1a2f4a4f2d189960fc02c/TencentMeeting_0300000000_${PV}_arm64_default.publish.deb -> ${P}_arm64.deb )
 "
 
 LICENSE="wemeet_license"
@@ -52,6 +54,9 @@ src_install() {
 	cp -rf opt/${PN}/lib.orig/lib*.so opt/${PN}/lib/ || die
 	# Remove libQt5*, use system QT5 instead
 	rm -rf opt/${PN}/lib/libQt5* || die
+	# Add libQt5Pdf* to fix bug
+	cp -rf opt/${PN}/lib.orig/libQt5Pdf* opt/${PN}/lib/ || die
+	# Clean up
 	rm -r opt/${PN}/lib.orig || die
 	# Fix SEGFAULT with libqxcb-glx-integration
 	rm -r opt/wemeet/plugins/xcbglintegrations || die
@@ -67,7 +72,8 @@ src_install() {
 
 	# Force X11
 	# If wayland is used, wemeet will just die:
-	# /opt/wemeet/bin/wemeetapp: symbol lookup error: /usr/lib64/libwayland-cursor.so.0: undefined symbol: wl_proxy_marshal_flags
+	# /opt/wemeet/bin/wemeetapp: symbol lookup error:
+	# /usr/lib64/libwayland-cursor.so.0: undefined symbol: wl_proxy_marshal_flags
 	# tested with 2.8.0.3 and dev-libs/wayland-1.20.0
 	cat > "opt/${PN}/wemeetapp.sh" <<- EOF || die
 #!/bin/sh
@@ -104,7 +110,9 @@ fi;
 
 	sed -i "s/^Icon=.*/Icon=wemeetapp/g" "usr/share/applications/wemeetapp.desktop" || die
 	sed -i "s/^Exec=.*/Exec=wemeetapp %u/g" "usr/share/applications/wemeetapp.desktop" || die
-	sed -i '$i Comment=Tencent Meeting Linux Client\nComment[zh_CN]=腾讯会议Linux客户端\nKeywords=wemeet;tencent;meeting;' "usr/share/applications/wemeetapp.desktop" || die
+	sed -i -e '/Comment=Tencent Meeting Linux Client/a\' \
+		-e 'Comment[zh_CN]=腾讯会议Linux客户端\nKeywords=wemeet;tencent;meeting;' \
+		"usr/share/applications/wemeetapp.desktop" || die
 	domenu "usr/share/applications/wemeetapp.desktop"
 	newicon -s scalable "opt/${PN}/wemeet.svg" "wemeetapp.svg"
 	for i in 16 32 64 128 256; do
