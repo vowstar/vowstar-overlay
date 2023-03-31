@@ -1,11 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-inherit cmake
-
-NVIDIA_PV="455.38"
+inherit cmake xdg
 
 DESCRIPTION="NVIDIA GPUs htop like monitoring tool"
 HOMEPAGE="https://github.com/Syllo/nvtop"
@@ -13,23 +11,18 @@ HOMEPAGE="https://github.com/Syllo/nvtop"
 if [[ "${PV}" == "9999" ]] ; then
 	EGIT_REPO_URI="https://github.com/Syllo/${PN}.git"
 	inherit git-r3
-	SRC_URI="
-		https://download.nvidia.com/XFree86/nvidia-settings/nvidia-settings-${NVIDIA_PV}.tar.bz2
-	"
 else
-	SRC_URI="
-		https://github.com/Syllo/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz
-		https://download.nvidia.com/XFree86/nvidia-settings/nvidia-settings-${NVIDIA_PV}.tar.bz2
-	"
+	SRC_URI="https://github.com/Syllo/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
 fi
 
 LICENSE="GPL-3"
 SLOT="0"
 
-IUSE="unicode video_cards_amdgpu video_cards_nvidia"
+IUSE="unicode video_cards_intel video_cards_amdgpu video_cards_nvidia"
 
 RDEPEND="
+	video_cards_intel?  ( virtual/udev )
 	video_cards_amdgpu? ( x11-libs/libdrm[video_cards_amdgpu] )
 	video_cards_nvidia? ( x11-drivers/nvidia-drivers )
 	sys-libs/ncurses:0=
@@ -45,11 +38,10 @@ src_configure() {
 	local mycmakeargs=(
 		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/usr"
 		-DCURSES_NEED_WIDE=$(usex unicode)
+		-DINTEL_SUPPORT=$(usex video_cards_intel)
 		-DNVIDIA_SUPPORT=$(usex video_cards_nvidia)
 		-DAMDGPU_SUPPORT=$(usex video_cards_amdgpu)
 	)
-
-	cp "${WORKDIR}/nvidia-settings-${NVIDIA_PV}/src/nvml.h" "${S}/include/nvml.h" || die
 
 	cmake_src_configure
 }
