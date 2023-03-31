@@ -11,7 +11,7 @@ RUBY_FAKEGEM_RECIPE_TEST="rspec3"
 
 COMMIT="ec26358947824de26ec8b13c63436d1e3122c1a6"
 COMMIT_LOCALES="bd8d2dbc85713b192d426fb02749475df30f0d2c"
-COMMIT_STYLES="f8524f9b9df60e94e98f824f242a1fb27cc9fc59"
+COMMIT_STYLES="9b9c74d04fbaab04fa942a932289f2b2e9b9d4ab"
 CSL_URI="https://github.com/citation-style-language"
 
 inherit ruby-fakegem
@@ -36,5 +36,5 @@ all_ruby_prepare() {
 	rm -rf "${WORKDIR}/all/${RUBY_S}/vendor/locales" || die
 	rm -rf "${WORKDIR}/all/${RUBY_S}/vendor/styles" || die
 	cp -rf "${WORKDIR}/all/locales-${COMMIT_LOCALES}" "${WORKDIR}/all/${RUBY_S}/vendor/locales" || die
-	cp -rf "${WORKDIR}/all/styles-distribution-${COMMIT_STYLES}" "${WORKDIR}/all/${RUBY_S}/vendor/styles" || die
+	cp -rf "${WORKDIR}/all/styles-${COMMIT_STYLES}" "${WORKDIR}/all/${RUBY_S}/vendor/styles" || die
 }
