@@ -35,7 +35,7 @@ RDEPEND="
 	media-libs/libglvnd
 	media-libs/libpng
 	media-libs/opencollada
-	|| ( media-libs/tiff:0/0 media-libs/tiff-compat:4 )
+	|| ( media-libs/tiff:0 media-libs/tiff-compat:4 )
 	net-libs/zeromq
 	sys-libs/zlib
 	x11-libs/cairo
@@ -109,8 +109,9 @@ sh /opt/apps/${MY_PGK_NAME}/files/zw3drun.sh \$*
 	# and should use /usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc
 	local MY_FONT_PATH_OLD="/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"
 	local MY_FONT_PATH_NEW="//////usr/share/fonts/noto-cjk/NotoSansCJK-Regular.ttc"
-	bbe -e "s|${MY_FONT_PATH_OLD}|${MY_FONT_PATH_NEW}|" "${S}/opt/apps/${MY_PGK_NAME}/files/lib/libdisp.so" > "${S}/opt/apps/${MY_PGK_NAME}/files/lib/libdisp.so.tmp" && \
-		mv "${S}/opt/apps/${MY_PGK_NAME}/files/lib/libdisp.so.tmp" "${S}/opt/apps/${MY_PGK_NAME}/files/lib/libdisp.so" || die
+	bbe -e "s|${MY_FONT_PATH_OLD}|${MY_FONT_PATH_NEW}|" "${S}/opt/apps/${MY_PGK_NAME}/files/lib/libdisp.so" \
+		> "${S}/opt/apps/${MY_PGK_NAME}/files/lib/libdisp.so.tmp" && \
+	mv "${S}/opt/apps/${MY_PGK_NAME}/files/lib/libdisp.so.tmp" "${S}/opt/apps/${MY_PGK_NAME}/files/lib/libdisp.so" || die
 
 	# Install package and fix permissions
 	insinto /opt/apps
