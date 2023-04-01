@@ -53,6 +53,7 @@ bazel_external_uris="
 	https://github.com/bazelbuild/rules_java/archive/981f06c3d2bd10225e85209904090eb7b5fb26bd.zip
 	https://mirror.bazel.build/bazel_coverage_output_generator/releases/coverage_output_generator-v2.5.zip
 	https://github.com/protocolbuffers/upb/archive/1fb480bc76bc0e331564d672e60b97a388aa3f76.zip
+	https://github.com/madler/zlib/releases/download/v1.2.13/zlib-1.2.13.tar.xz
 "
 
 SRC_URI="
