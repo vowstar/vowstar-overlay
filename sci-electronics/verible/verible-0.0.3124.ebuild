@@ -48,6 +48,7 @@ bazel_external_uris="
 	https://mirror.bazel.build/github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
 	https://github.com/bazelbuild/rules_python/archive/912a5051f51581784fd64094f6bdabf93f6d698f.zip
 	https://github.com/protocolbuffers/utf8_range/archive/de0b4a8ff9b5d4c98108bdfe723291a33c52c54f.zip
+	https://github.com/protocolbuffers/rules_ruby/archive/5cf6ff74161d7f985b9bf86bb3c5fb16cef6337b.zip
 "
 
 SRC_URI="
