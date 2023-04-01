@@ -1,0 +1,105 @@
+# Copyright 1999-2023 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+EAPI="8"
+
+# From release tag name
+MY_PV="0.0-3124-gd7297f5b"
+
+inherit bazel
+
+DESCRIPTION="SystemVerilog parser, style-linter, and formatter"
+HOMEPAGE="
+	https://chipsalliance.github.io/verible/
+	https://github.com/chipsalliance/verible
+"
+
+# Generated with:
+# git clone git@github.com:chipsalliance/verible.git
+# git checkout v${MY_PV}
+# cd verible
+# cat WORKSPACE | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | sort -u
+bazel_external_uris="
+	https://files.pythonhosted.org/packages/6b/34/415834bfdafca3c5f451532e8a8d9ba89a21c9743a0c59fbd0205c7f9426/six-1.15.0.tar.gz
+	https://github.com/abseil/abseil-cpp/archive/35e8e3f7a2c6972d4c591448e8bbe4f9ed9f815a.zip
+	https://github.com/bazelbuild/bazel-skylib/releases/download/1.3.0/bazel-skylib-1.3.0.tar.gz
+	https://github.com/bazelbuild/platforms/releases/download/0.0.6/platforms-0.0.6.tar.gz
+	https://github.com/bazelbuild/rules_cc/archive/e7c97c3af74e279a5db516a19f642e862ff58548.zip
+	https://github.com/bazelbuild/rules_license/releases/download/0.0.4/rules_license-0.0.4.tar.gz
+	https://github.com/bazelbuild/rules_proto/archive/refs/tags/4.0.0-3.20.0.tar.gz
+	https://github.com/bazelbuild/rules_python/releases/download/0.2.0/rules_python-0.2.0.tar.gz
+	https://github.com/c0fec0de/anytree/archive/2.8.0.tar.gz
+	https://github.com/google/bazel_rules_install/archive/5ae7c2a8d22de2558098e3872fc7f3f7edc61fb4.zip
+	https://github.com/google/bazel_rules_install/issues/31
+	https://github.com/google/boringssl/archive/d345d68d5c4b5471290ebe13f090f1fd5b7e8f58.zip
+	https://github.com/google/boringssl/tree/master-with-bazel
+	https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip
+	https://github.com/google/re2/archive/215bf4aa0bdc081862590463bc98a00bb2be48f2.zip
+	https://github.com/google/re2/tree/abseil
+	https://github.com/grailbio/bazel-compilation-database/archive/940cedacdb8a1acbce42093bf67f3a5ca8b265f7.tar.gz
+	https://github.com/jmillikin/rules_bison/releases/download/v0.2.1/rules_bison-v0.2.1.tar.xz
+	https://github.com/jmillikin/rules_flex/releases/download/v0.2/rules_flex-v0.2.tar.xz
+	https://github.com/jmillikin/rules_m4/releases/download/v0.2.2/rules_m4-v0.2.2.tar.xz
+	https://github.com/lexxmark/winflexbison/releases/download/v2.5.25/win_flex_bison-2.5.25.zip
+	https://github.com/nlohmann/json/archive/refs/tags/v3.10.2.tar.gz
+	https://github.com/protocolbuffers/protobuf/releases/download/v22.0/protobuf-22.0.tar.gz
+	https://zlib.net/fossils/zlib-1.2.13.tar.gz
+	mirror://gnu/m4/m4-1.4.18.tar.xz
+	https://mirror.bazel.build/github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
+"
+
+SRC_URI="
+	https://github.com/chipsalliance/${PN}/archive/v${MY_PV}.tar.gz -> ${P}.tar.gz
+	${bazel_external_uris}
+"
+
+S="${WORKDIR}/${PN}-${MY_PV}"
+
+LICENSE="Apache-2.0"
+SLOT="0"
+KEYWORDS="~amd64"
+IUSE="test"
+RESTRICT="!test? ( test )"
+
+RDEPEND="
+	sys-libs/zlib
+"
+
+DEPEND="
+	${RDEPEND}
+"
+
+BDEPEND="
+	app-arch/unzip
+	sys-devel/bison
+	sys-devel/flex
+	sys-devel/m4
+"
+
+src_unpack() {
+	unpack "${P}.tar.gz"
+	bazel_load_distfiles "${bazel_external_uris}"
+}
+
+src_prepare() {
+	bazel_setup_bazelrc
+	default
+}
+
+src_compile() {
+	export JAVA_HOME=$(java-config --jre-home)
+	export GIT_DATE="$(date -r WORKSPACE "+%Y-%m-%d")"
+	export GIT_VERSION="v${MY_PV}"
+
+	ebazel build -c opt --//bazel:use_local_flex_bison //...
+	ebazel shutdown
+}
+
+src_test() {
+	ebazel test -c opt --//bazel:use_local_flex_bison //...
+}
+
+src_install() {
+	ebazel run -c opt --//bazel:use_local_flex_bison //:install -- "${D}/usr/bin"
+	ebazel shutdown
+}
