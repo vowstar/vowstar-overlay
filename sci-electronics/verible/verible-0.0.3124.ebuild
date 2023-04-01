@@ -56,6 +56,7 @@ bazel_external_uris="
 	https://github.com/madler/zlib/releases/download/v1.2.13/zlib-1.2.13.tar.xz
 	https://mirror.bazel.build/bazel_java_tools/releases/java/v11.7.1/java_tools-v11.7.1.zip
 	https://mirror.bazel.build/openjdk/azul-zulu11.50.19-ca-jdk11.0.12/zulu11.50.19-ca-jdk11.0.12-linux_x64.tar.gz
+	https://mirror.bazel.build/bazel_java_tools/releases/java/v11.7.1/java_tools_linux-v11.7.1.zip
 "
 
 SRC_URI="
