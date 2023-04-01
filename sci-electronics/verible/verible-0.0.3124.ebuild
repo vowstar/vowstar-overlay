@@ -50,6 +50,7 @@ bazel_external_uris="
 	https://github.com/protocolbuffers/utf8_range/archive/de0b4a8ff9b5d4c98108bdfe723291a33c52c54f.zip
 	https://github.com/protocolbuffers/rules_ruby/archive/5cf6ff74161d7f985b9bf86bb3c5fb16cef6337b.zip
 	https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/0.7.0/rules_pkg-0.7.0.tar.gz
+	https://github.com/bazelbuild/rules_java/archive/981f06c3d2bd10225e85209904090eb7b5fb26bd.zip
 "
 
 SRC_URI="
