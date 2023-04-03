@@ -75,7 +75,7 @@ cat >> "${T}"/zw3d.c <<- EOF || die
 extern int DiModuleEntryPoint(uint64_t argc, uint64_t argv, uint64_t envp);
 int main(int argc, char* argv[], char* envp[])
 {
-    return DiModuleEntryPoint((uint64_t)(uintptr_t)&argc, (uint64_t)(uintptr_t)argv, (uint64_t)(uintptr_t)envp);
+return DiModuleEntryPoint((uint64_t)(uintptr_t)&argc, (uint64_t)(uintptr_t)argv, (uint64_t)(uintptr_t)envp);
 }
 	EOF
 	${CC} -o "${S}"/opt/apps/${MY_PGK_NAME}/files/zw3d \
