@@ -64,11 +64,8 @@ S=${WORKDIR}
 
 QA_PREBUILT="*"
 
-src_install() {
-	# Install scalable icons, desktop files, mimes
-	mkdir -p "${S}"/usr/share || die
-	mv "${S}"/opt/apps/${MY_PGK_NAME}/entries/* "${S}"/usr/share || die
-
+src_compile() {
+	default
 	# Fix zw3d coredump when run
 cat >> "${T}"/zw3d.c <<- EOF || die
 #include <stdint.h>
@@ -78,16 +75,29 @@ int main(int argc, char* argv[], char* envp[])
 return DiModuleEntryPoint((uint64_t)(uintptr_t)&argc, (uint64_t)(uintptr_t)argv, (uint64_t)(uintptr_t)envp);
 }
 	EOF
-	${CC} -o "${S}"/opt/apps/${MY_PGK_NAME}/files/zw3d \
-		"${T}"/zw3d.c \
-		-L/opt/apps/com.zwsoft.zw3dprofessional/files/lib \
-		-lDrawingInstance \
-		-lstdc++ \
-		-lm \
-		-lgcc_s \
-		-l:libtiff.so.6 \
-		-lharfbuzz \
-		|| die
+
+TAB=$'\t'
+cat >> "${T}"/Makefile <<- EOF || die
+.PHONY: all
+all:
+${TAB}\$(CC) \$(LDFLAGS) \
+-o "\$(S)/opt/apps/\$(MY_PGK_NAME)/files/zw3d" \
+zw3d.c \
+-L"\$(S)/opt/apps/\$(MY_PGK_NAME)/files/lib" \
+-lDrawingInstance \
+-lstdc++ \
+-lm \
+-lgcc_s \
+-Wl,--unresolved-symbols=ignore-all
+	EOF
+
+	emake S="${S}" MY_PGK_NAME="${MY_PGK_NAME}" -C "${T}" || die
+}
+
+src_install() {
+	# Install scalable icons, desktop files, mimes
+	mkdir -p "${S}"/usr/share || die
+	mv "${S}"/opt/apps/${MY_PGK_NAME}/entries/* "${S}"/usr/share || die
 
 	# Set RPATH for preserve-libs handling
 	pushd "${S}"/opt/apps/${MY_PGK_NAME}/files || die
