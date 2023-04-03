@@ -35,6 +35,7 @@ RDEPEND="
 	media-libs/libglvnd
 	media-libs/libpng
 	media-libs/opencollada
+	media-libs/tiff
 	media-libs/tiff-compat:4
 	net-libs/zeromq
 	sys-libs/zlib
@@ -67,6 +68,26 @@ src_install() {
 	# Install scalable icons, desktop files, mimes
 	mkdir -p "${S}"/usr/share || die
 	mv "${S}"/opt/apps/${MY_PGK_NAME}/entries/* "${S}"/usr/share || die
+
+	# Fix zw3d coredump when run
+cat >> "${T}"/zw3d.c <<- EOF || die
+#include <stdint.h>
+extern int DiModuleEntryPoint(uint64_t argc, uint64_t argv, uint64_t envp);
+int main(int argc, char* argv[], char* envp[])
+{
+    return DiModuleEntryPoint((uint64_t)(uintptr_t)&argc, (uint64_t)(uintptr_t)argv, (uint64_t)(uintptr_t)envp);
+}
+	EOF
+	${CC} -o "${S}"/opt/apps/${MY_PGK_NAME}/files/zw3d \
+		"${T}"/zw3d.c \
+		-L/opt/apps/com.zwsoft.zw3dprofessional/files/lib \
+		-lDrawingInstance \
+		-lstdc++ \
+		-lm \
+		-lgcc_s \
+		-l:libtiff.so.6 \
+		-lharfbuzz \
+		|| die
 
 	# Set RPATH for preserve-libs handling
 	pushd "${S}"/opt/apps/${MY_PGK_NAME}/files || die
