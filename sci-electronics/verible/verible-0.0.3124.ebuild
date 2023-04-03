@@ -30,7 +30,6 @@ bazel_external_uris="
 	https://github.com/bazelbuild/rules_python/releases/download/0.2.0/rules_python-0.2.0.tar.gz
 	https://github.com/c0fec0de/anytree/archive/2.8.0.tar.gz
 	https://github.com/google/bazel_rules_install/archive/5ae7c2a8d22de2558098e3872fc7f3f7edc61fb4.zip
-	https://github.com/google/bazel_rules_install/issues/31
 	https://github.com/google/boringssl/archive/d345d68d5c4b5471290ebe13f090f1fd5b7e8f58.zip
 	https://github.com/google/boringssl/tree/master-with-bazel
 	https://github.com/google/googletest/archive/refs/tags/release-1.12.1.zip
