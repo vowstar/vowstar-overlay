@@ -16,9 +16,8 @@ SLOT=0
 KEYWORDS="-* ~amd64"
 RESTRICT="bindist mirror"
 
-RDEPEND="app-accessibility/at-spi2-atk:2
+RDEPEND="
 	app-accessibility/at-spi2-core:2
-	dev-libs/atk:0
 	dev-libs/expat:0
 	dev-libs/glib:2
 	dev-libs/nspr:0
