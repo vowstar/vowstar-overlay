@@ -39,7 +39,7 @@ src_configure() {
 	local mycmakeargs=(
 		-DUSE_EXTERNAL_SINGLEAPPLICATION=1
 		-DENABLE_CACHE=0
-		-DUSE_WAYLAND_CLIPBOARD:BOOL=ON
+		-DUSE_WAYLAND_CLIPBOARD=1
 	)
 
 	cmake_src_configure
