@@ -22,8 +22,8 @@ DEPEND="
 	dev-qt/qtnetwork:5
 	dev-qt/qtsvg:5
 	dev-qt/qtwidgets:5
-	wayland? ( kde-frameworks/kguiaddons )
 	sys-apps/dbus
+	wayland? ( kde-frameworks/kguiaddons )
 "
 BDEPEND="
 	dev-qt/linguist-tools:5
