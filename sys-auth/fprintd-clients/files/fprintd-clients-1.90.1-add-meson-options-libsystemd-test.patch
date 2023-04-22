@@ -1,9 +1,13 @@
 --- a/meson_options.txt	2021-06-07 19:22:20.945443791 +0800
 +++ b/meson_options.txt	2021-06-07 19:24:54.202639206 +0800
-@@ -6,6 +6,10 @@
+@@ -6,6 +6,14 @@
      description: 'Generate the man files',
      type: 'boolean',
      value: true)
++option('systemd',
++    description: 'Install system service files',
++    type: 'boolean',
++    value: true)
 +option('libsystemd',
 +    description: 'Libsystemd provider (libsystemd or libelogind)',
 +    type: 'string',
