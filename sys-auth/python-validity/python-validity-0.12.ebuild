@@ -3,7 +3,7 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{7..10} pypy )
+PYTHON_COMPAT=( python3_{7..11} pypy )
 
 inherit distutils-r1 systemd udev
 
