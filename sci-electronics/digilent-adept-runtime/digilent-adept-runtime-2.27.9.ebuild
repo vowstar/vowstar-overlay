@@ -36,11 +36,13 @@ src_install() {
 	mv "${S}/etc/udev" "${T}" || die
 	mv "${S}/usr/share/doc" "${T}" || die
 	mv "${S}/usr/sbin" "${T}" || die
+	gunzip "${T}"/doc/${MY_PN}/*.gz || die
 	insinto /
 	doins -r "${S}/usr"
 	doins -r "${S}/etc"
 	udev_dorules "${T}"/udev/rules.d/*.rules
 	dosbin "${T}"/sbin/*
+	dodoc "${T}"/doc/${MY_PN}/*
 }
 
 pkg_postinst() {
