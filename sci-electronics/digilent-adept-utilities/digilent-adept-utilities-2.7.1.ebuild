@@ -4,7 +4,7 @@
 EAPI=8
 
 MY_PN="${PN//-/.}"
-inherit udev unpacker
+inherit unpacker
 
 DESCRIPTION="The Adept Utilities to communicate with Digilent's devices"
 HOMEPAGE="https://digilent.com/shop/software/digilent-adept"
@@ -41,12 +41,4 @@ src_install() {
 	doins -r "${S}/usr"
 	doman "${T}"/man/man1/*.1
 	dodoc "${T}"/doc/${MY_PN}/*
-}
-
-pkg_postinst() {
-	udev_reload
-}
-
-pkg_postrm() {
-	udev_reload
 }
