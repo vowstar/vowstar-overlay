@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+	Digilent Adept is a unique and powerful solution which allows you to
+	communicate with Digilent system boards and a wide assortment of logic
+	devices.
+	Features:
+	Configure Xilinx® logic devices. Initialize a scan chain, program FPGAs,
+	CPLDs, and PROMs, organize and keep track of your configuration files.
+	Transfer data to and from the onboard FPGA on your system board. Read from
+	and write to specified registers. Load a stream of data to a register or
+	read a stream of data from a register.
+	Organize and quickly connect to your communications modules.
+	Program Xilinx XCFS Platform Flash devices using .bit or .mcs files.
+	Program Xilinx CoolRunner2 CPLDs using .jed files.
+	Program most Spartan and Virtex series FPGAs with .bit files.
+	</longdescription>
+</pkgmetadata>
