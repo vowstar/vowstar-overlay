@@ -35,10 +35,12 @@ QA_PREBUILT="*"
 src_install() {
 	mv "${S}/usr/share/doc" "${T}" || die
 	mv "${S}/usr/share/man" "${T}" || die
+	mv "${S}/usr/bin" "${T}" || die
 	gunzip "${T}"/man/man1/*.gz || die
 	gunzip "${T}"/doc/${MY_PN}/*.gz || die
 	insinto /
 	doins -r "${S}/usr"
+	dobin "${T}"/bin/*
 	doman "${T}"/man/man1/*.1
 	dodoc "${T}"/doc/${MY_PN}/*
 }
