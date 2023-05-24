@@ -2,22 +2,18 @@
 
 Shared ebuild files.
 
-## How to add using layman
+## How to add using eselect/repository
+
+[https://wiki.gentoo.org/wiki/Eselect/Repository](https://wiki.gentoo.org/wiki/Eselect/Repository)
 
 ```bash
-layman -a vowstar
-```
-
-Or
-
-```bash
-layman --add=vowstar
-```
-
-Or
-
-```bash
-layman -o https://raw.githubusercontent.com/vowstar/vowstar-overlay/master/metadata/vowstar.xml -f -a vowstar
+# install app-eselect/eselect-repository
+emerge --ask app-eselect/eselect-repository
+mkdir -p /etc/portage/repos.conf
+# enable vowstar overlay
+eselect repository enable vowstar
+# sync vowstar overlay
+emaint sync -r vowstar
 ```
 
 ## How to use nvidia-docker2 under gentoo
