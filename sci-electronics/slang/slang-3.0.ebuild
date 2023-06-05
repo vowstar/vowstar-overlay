@@ -31,7 +31,7 @@ RDEPEND="
 	${PYTHON_DEPS}
 	>=dev-cpp/catch-3.0.1
 	>=dev-libs/libfmt-9.1.0
-	>=dev-libs/unordered_dense-2.0.0 <dev-libs/unordered_dense-3.0.0
+	>=dev-libs/unordered_dense-2.0.1 <dev-libs/unordered_dense-2.0.2
 	$(python_gen_cond_dep '
 		>=dev-python/pybind11-2.10[${PYTHON_USEDEP}]
 	')
@@ -46,6 +46,7 @@ src_configure() {
 	local mycmakeargs=(
 		-D CMAKE_INSTALL_LIBDIR="${EPREFIX}/usr/$(get_libdir)"
 		-D BUILD_SHARED_LIBS=ON
+		-D SLANG_USE_BOOST=OFF
 		-D SLANG_INCLUDE_PYLIB=$(usex python)
 		-D SLANG_INCLUDE_TESTS=$(usex test)
 	)
