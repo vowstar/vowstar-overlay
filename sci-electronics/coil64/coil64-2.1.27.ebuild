@@ -43,7 +43,7 @@ src_configure() {
 src_install() {
 	default
 	dobin "${S}/${MY_PN}"
-	dosym "${PN}" "/usr/bin/${MY_PN}"
+	dosym "${MY_PN}" "/usr/bin/${PN}"
 	doicon -s scalable "${FILESDIR}/${PN}.svg"
 	domenu "${FILESDIR}/${PN}.desktop"
 }
