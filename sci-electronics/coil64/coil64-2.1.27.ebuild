@@ -16,7 +16,7 @@ if [[ "${PV}" == "9999" ]] ; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/radioacoustick/${MY_PN}.git"
 else
-	SRC_URI="https://github.com/radioacoustick/${MY_PN}/archive/v${PV}.tar.gz"
+	SRC_URI="https://github.com/radioacoustick/${MY_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~arm ~arm64 ~riscv ~x86"
 	S="${WORKDIR}/${MY_PN}-${PV}"
 fi
