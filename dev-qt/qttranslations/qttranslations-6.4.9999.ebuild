@@ -11,6 +11,8 @@ if [[ ${QT6_BUILD_TYPE} == release ]]; then
 	KEYWORDS="~amd64"
 fi
 
+KEYWORDS="~amd64"
+
 DEPEND="
 	=dev-qt/qtbase-${PV}*
 	=dev-qt/qttools-${PV}*
