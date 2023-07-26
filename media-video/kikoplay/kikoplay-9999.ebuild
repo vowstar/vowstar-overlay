@@ -1,9 +1,11 @@
 # Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="7"
+EAPI="8"
 
 GIT_PN="KikoPlay"
+GIT_SCRIPT_PN="KikoPlayScript"
+GIT_SCRIPT_PV="38f98d24133132f99b61dbeca26178aad45917e2"
 
 inherit cmake xdg
 
@@ -15,18 +17,25 @@ HOMEPAGE="
 
 if [[ "${PV}" == "9999" ]] ; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/KikoPlayProject/${GIT_PN}.git"
+	EGIT_REPO_URI="
+		https://github.com/KikoPlayProject/${GIT_PN}.git
+		https://github.com/KikoPlayProject/${GIT_SCRIPT_PN}.git
+	"
+	S_SCRIPT="${WORKDIR}/${GIT_SCRIPT_PN}"
 else
-	SRC_URI="https://github.com/KikoPlayProject/${GIT_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~arm ~m68k ~mips ~ppc ~ppc64 ~s390 ~x86"
+	SRC_URI="
+		https://github.com/KikoPlayProject/${GIT_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz
+		https://github.com/KikoPlayProject/${GIT_SCRIPT_PN}/archive/${GIT_SCRIPT_PV}.tar.gz -> kikoplayscript-${GIT_SCRIPT_PV}.tar.gz
+	"
+	KEYWORDS="~amd64 ~arm ~m68k ~mips ~ppc ~ppc64 ~x86"
 	S="${WORKDIR}/${GIT_PN}-${PV}"
+	S_SCRIPT="${WORKDIR}/${GIT_SCRIPT_PN}-${GIT_SCRIPT_PV}"
 fi
 
 LICENSE="GPL-3"
 SLOT="0"
 
 RDEPEND="
-	${LUA_DEPS}
 	dev-libs/qhttpengine:5
 	dev-qt/qtconcurrent:5
 	dev-qt/qtcore:5
@@ -47,6 +56,7 @@ BDEPEND="
 "
 
 PATCHES=(
+	"${FILESDIR}/${PN}-0.9.3-qmake-fix.patch"
 	"${FILESDIR}/${PN}-0.9.3-cmake-fix.patch"
 )
 
@@ -58,6 +68,8 @@ src_configure() {
 }
 
 src_install() {
-	# Can't use default, set INSTALL_ROOT
-	emake INSTALL_ROOT="${D}" install
+	default
+	cmake_src_install
+	insinto "/usr/share/${PN}/script"
+	doins -r "${S_SCRIPT}"/*
 }

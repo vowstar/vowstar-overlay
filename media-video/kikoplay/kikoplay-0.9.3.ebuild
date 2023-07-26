@@ -56,6 +56,7 @@ BDEPEND="
 "
 
 PATCHES=(
+	"${FILESDIR}/${PN}-0.9.3-qmake-fix.patch"
 	"${FILESDIR}/${PN}-0.9.3-cmake-fix.patch"
 )
 
