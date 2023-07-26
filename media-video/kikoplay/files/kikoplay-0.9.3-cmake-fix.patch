@@ -1,7 +1,7 @@
 From e22ef4e28a8f38c19845381cc3fb3589739c9621 Mon Sep 17 00:00:00 2001
 From: Huang Rui <vowstar@gmail.com>
 Date: Wed, 26 Jul 2023 15:41:55 +0800
-Subject: [PATCH 2/3] CMakeLists.txt: Simplify the script and fix build issues
+Subject: [PATCH 2/4] CMakeLists.txt: Simplify the script and fix build issues
  under linux
 
 - Simplifies scripts, eliminates synchronization issues
@@ -237,7 +237,7 @@ index d16e14a..18f6572 100644
 From 6c7efdded98af99c0de8612298eb9972581c83ee Mon Sep 17 00:00:00 2001
 From: Huang Rui <vowstar@gmail.com>
 Date: Wed, 26 Jul 2023 16:42:33 +0800
-Subject: [PATCH 3/3] CMakeLists.txt: set default install dir under linux
+Subject: [PATCH 3/4] CMakeLists.txt: set default install dir under linux
 
 Signed-off-by: Huang Rui <vowstar@gmail.com>
 ---
@@ -267,3 +267,52 @@ index 18f6572..10486aa 100644
 +    install(FILES kikoplay.desktop DESTINATION "${CMAKE_INSTALL_SHAREDIR}/applications")
 +    install(DIRECTORY web DESTINATION "${CMAKE_INSTALL_SHAREDIR}/kikoplay")
  endif()
+
+From 8daede285ba9d0651193e529d7a8805680ee10b5 Mon Sep 17 00:00:00 2001
+From: Huang Rui <vowstar@gmail.com>
+Date: Wed, 26 Jul 2023 17:37:14 +0800
+Subject: [PATCH 4/4] CMakeLists.txt: set CONFIG_UNIX_DATA = ON when linux
+ build
+
+Signed-off-by: Huang Rui <vowstar@gmail.com>
+---
+ CMakeLists.txt | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 10486aa..e4ee0ee 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.16.0)
+ 
+ # If QT is installed in your system, it can be FALSE
+ option(USE_VCPKG_QT "Use vcpkg to add QT dependency" ON)
+-# Set default overridable parameters for "/usr/share"
+-set(CMAKE_INSTALL_SHAREDIR "/usr/share" CACHE STRING "The default share path")
+ 
+ if (USE_VCPKG_QT)
+     list(APPEND VCPKG_MANIFEST_FEATURES "qt-dependencies")
+@@ -100,6 +98,11 @@ if (WIN32)
+ endif()
+ 
+ if (UNIX)
++    # Set default overridable parameters for "/usr/share"
++    set(CMAKE_INSTALL_SHAREDIR "/usr/share" CACHE STRING "The default share path")
++    # Set default unix data option
++    option(CONFIG_UNIX_DATA "Use unix data path" ON)
++
+     include(FindPkgConfig)
+     pkg_check_modules(mpv QUIET mpv)
+ 
+@@ -112,6 +115,11 @@ if (UNIX)
+         ${mpv_LIBRARIES}
+     )
+ 
++    if (CONFIG_UNIX_DATA)
++        message("CONFIG_UNIX_DATA = ON")
++        target_compile_definitions(${PROJECT_NAME} PRIVATE CONFIG_UNIX_DATA=1)
++    endif()
++
+     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+     install(FILES kikoplay.png kikoplay.xpm DESTINATION "${CMAKE_INSTALL_SHAREDIR}/pixmaps")
+     install(FILES kikoplay.desktop DESTINATION "${CMAKE_INSTALL_SHAREDIR}/applications")
