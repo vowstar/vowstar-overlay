@@ -25,7 +25,8 @@ if [[ "${PV}" == "9999" ]] ; then
 else
 	SRC_URI="
 		https://github.com/KikoPlayProject/${GIT_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz
-		https://github.com/KikoPlayProject/${GIT_SCRIPT_PN}/archive/${GIT_SCRIPT_PV}.tar.gz -> kikoplayscript-${GIT_SCRIPT_PV}.tar.gz
+		https://github.com/KikoPlayProject/${GIT_SCRIPT_PN}/archive/${GIT_SCRIPT_PV}.tar.gz \
+		    -> kikoplayscript-${GIT_SCRIPT_PV}.tar.gz
 	"
 	KEYWORDS="~amd64 ~arm ~m68k ~mips ~ppc ~ppc64 ~x86"
 	S="${WORKDIR}/${GIT_PN}-${PV}"
