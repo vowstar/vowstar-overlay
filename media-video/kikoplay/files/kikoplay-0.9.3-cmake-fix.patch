@@ -317,7 +317,7 @@ index 10486aa..e4ee0ee 100644
      install(FILES kikoplay.png kikoplay.xpm DESTINATION "${CMAKE_INSTALL_SHAREDIR}/pixmaps")
      install(FILES kikoplay.desktop DESTINATION "${CMAKE_INSTALL_SHAREDIR}/applications")
 
-From cd2059b4002cf2e8d7f054504a6690da3f8cf5d6 Mon Sep 17 00:00:00 2001
+From 0cf76e451e7a2a4914e2af94c8d32e5984151a13 Mon Sep 17 00:00:00 2001
 From: Huang Rui <vowstar@gmail.com>
 Date: Wed, 26 Jul 2023 19:53:57 +0800
 Subject: [PATCH 5/5] kikoplay.desktop: force QT_QPA_PLATFORM=xcb under linux
@@ -330,7 +330,7 @@ Signed-off-by: Huang Rui <vowstar@gmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/kikoplay.desktop b/kikoplay.desktop
-index 6171559..746d1d3 100644
+index 6171559..cff68d8 100644
 --- a/kikoplay.desktop
 +++ b/kikoplay.desktop
 @@ -3,7 +3,7 @@ Type=Application
@@ -338,7 +338,7 @@ index 6171559..746d1d3 100644
  Comment=KikoPlay is a full-featured danmu player!
  TryExec=KikoPlay
 -Exec=KikoPlay
-+Exec=QT_QPA_PLATFORM=xcb KikoPlay
++Exec=env QT_QPA_PLATFORM=xcb KikoPlay
  Icon=/usr/share/pixmaps/kikoplay.png
  Terminal=false
  StartupNotify=true
