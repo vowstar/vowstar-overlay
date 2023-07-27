@@ -77,10 +77,7 @@ src_install() {
 			cd bindings/python || die
 			"${PYTHON}" setup.py install \
 				--root="${D}" \
-				--prefix="${EPREFIX}/usr" \
-				--libdir="${EPREFIX}/usr/${libdir}" \
-				--staging-root="${ED}/usr" \
-				--staging-libdir="${ED}/usr/${libdir}" || die
+				--prefix="${EPREFIX}/usr" || die
 		}
 		python_foreach_impl run_in_build_dir installation
 		python_foreach_impl python_optimize
