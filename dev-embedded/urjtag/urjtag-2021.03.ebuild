@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{9..12} )
 
 inherit python-single-r1
 
@@ -30,8 +30,7 @@ DEPEND="ftdi? ( dev-embedded/libftdi:1= )
 	python? ( ${PYTHON_DEPS} )
 	readline? ( sys-libs/readline:= )
 	usb? ( virtual/libusb:1 )"
-RDEPEND="${DEPEND}
-	!dev-embedded/jtag"
+RDEPEND="${DEPEND}"
 
 pkg_setup() {
 	use python && python-single-r1_pkg_setup
