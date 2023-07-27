@@ -5,7 +5,7 @@ EAPI=8
 
 PYTHON_COMPAT=( python3_{9..12} )
 
-inherit python-single-r1
+inherit python-r1
 
 if [[ ${PV} == "9999" ]] ; then
 	EGIT_REPO_URI="git://git.code.sf.net/p/urjtag/git"
@@ -32,10 +32,6 @@ DEPEND="ftdi? ( dev-embedded/libftdi:1= )
 	usb? ( virtual/libusb:1 )"
 RDEPEND="${DEPEND}"
 
-pkg_setup() {
-	use python && python-single-r1_pkg_setup
-}
-
 src_prepare() {
 	default
 
@@ -50,14 +46,44 @@ src_configure() {
 	econf \
 		--disable-werror \
 		--disable-static \
-		$(use_enable python) \
+		--disable-python \
 		$(use_with readline) \
 		$(use_with ftdi libftdi) \
 		$(use_with ftd2xx) \
 		$(use_with usb libusb 1.0)
 }
 
+src_compile() {
+	use python && python_copy_sources
+
+	emake
+
+	if use python; then
+		building() {
+			cd bindings || die
+			emake \
+				pyexecdir="$(python_get_sitedir)" \
+				pythondir="$(python_get_sitedir)"
+		}
+		python_foreach_impl run_in_build_dir building
+	fi
+}
+
 src_install() {
 	default
-	find "${ED}" -name '*.la' -delete || die
+
+	if use python; then
+		installation() {
+			cd bindings || die
+			emake \
+				DESTDIR="${D}" \
+				pyexecdir="$(python_get_sitedir)" \
+				pythondir="$(python_get_sitedir)" \
+				install
+		}
+		python_foreach_impl run_in_build_dir installation
+		python_foreach_impl python_optimize
+	fi
+
+	find "${D}" -name '*.la' -type f -delete || die
 }
