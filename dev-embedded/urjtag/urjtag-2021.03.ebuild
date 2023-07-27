@@ -40,9 +40,6 @@ src_prepare() {
 		eautopoint
 		eautoreconf
 	fi
-
-	sed -i "s/setup.py install.*/-m pip install \. /g" "${S}"/bindings/python/Makefile.am || die
-	sed -i "s/setup.py install.*/-m pip install \. /g" "${S}"/bindings/python/Makefile.in || die
 }
 
 src_configure() {
@@ -77,12 +74,13 @@ src_install() {
 
 	if use python; then
 		installation() {
-			cd bindings || die
-			emake \
-				DESTDIR="${D}" \
-				pyexecdir="$(python_get_sitedir)" \
-				pythondir="$(python_get_sitedir)" \
-				install
+			cd bindings/python || die
+			"${PYTHON}" setup.py install \
+				--root="${D}" \
+				--prefix="${EPREFIX}/usr" \
+				--libdir="${EPREFIX}/usr/${libdir}" \
+				--staging-root="${ED}/usr" \
+				--staging-libdir="${ED}/usr/${libdir}" || die
 		}
 		python_foreach_impl run_in_build_dir installation
 		python_foreach_impl python_optimize
