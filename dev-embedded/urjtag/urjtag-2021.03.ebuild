@@ -40,6 +40,9 @@ src_prepare() {
 		eautopoint
 		eautoreconf
 	fi
+
+	sed -i "s/setup.py install.*/-m pip install \. /g" "${S}"/bindings/python/Makefile.am || die
+	sed -i "s/setup.py install.*/-m pip install \. /g" "${S}"/bindings/python/Makefile.in || die
 }
 
 src_configure() {
