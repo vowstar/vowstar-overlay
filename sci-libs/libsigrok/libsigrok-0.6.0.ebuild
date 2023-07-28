@@ -70,6 +70,7 @@ BDEPEND="app-arch/unzip"
 PATCHES=(
 	# https://bugs.gentoo.org/878395
 	"${FILESDIR}/${PN}-0.5.2-swig-4.1.patch"
+	"${FILESDIR}/${PN}-0.5.2-sipeed-slogic.patch"
 )
 
 pkg_setup() {
