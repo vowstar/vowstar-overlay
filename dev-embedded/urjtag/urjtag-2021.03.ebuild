@@ -21,7 +21,6 @@ HOMEPAGE="http://urjtag.sourceforge.net/"
 
 LICENSE="GPL-2"
 SLOT="0"
-# TODO: Figure out if anyone wants the Python bindings
 IUSE="ftdi ftd2xx python readline usb"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
@@ -35,9 +34,9 @@ RDEPEND="${DEPEND}"
 src_prepare() {
 	default
 
-	sed -i "s|setup.py install .*|setup.py install --root=\"${D}\" --prefix=\"${EPREFIX}/usr\" |g" \
+	sed -i "s|setup.py install .*|setup.py install --root=\"\$(DESTDIR)\" --prefix=\"\$(PREFIX)\" |g" \
 		"${S}"/bindings/python/Makefile.am || die
-	sed -i "s|setup.py install .*|setup.py install --root=\"${D}\" --prefix=\"${EPREFIX}/usr\" |g" \
+	sed -i "s|setup.py install .*|setup.py install --root=\"\$(DESTDIR)\" --prefix=\"\$(PREFIX)\" |g" \
 		"${S}"/bindings/python/Makefile.in || die
 
 	if [[ ${PV} == "9999" ]] ; then
@@ -82,6 +81,7 @@ src_install() {
 			cd bindings || die
 			emake \
 				DESTDIR="${D}" \
+				PREFIX="${EPREFIX}/usr" \
 				pyexecdir="$(python_get_sitedir)" \
 				pythondir="$(python_get_sitedir)" \
 				install
