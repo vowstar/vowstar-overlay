@@ -35,6 +35,11 @@ RDEPEND="${DEPEND}"
 src_prepare() {
 	default
 
+	sed -i "s|setup.py install .*|setup.py install --root=\"${D}\" --prefix=\"${EPREFIX}/usr\" |g" \
+		"${S}"/bindings/python/Makefile.am || die
+	sed -i "s|setup.py install .*|setup.py install --root=\"${D}\" --prefix=\"${EPREFIX}/usr\" |g" \
+		"${S}"/bindings/python/Makefile.in || die
+
 	if [[ ${PV} == "9999" ]] ; then
 		mkdir -p m4 || die
 		eautopoint
@@ -74,10 +79,12 @@ src_install() {
 
 	if use python; then
 		installation() {
-			cd bindings/python || die
-			"${PYTHON}" setup.py install \
-				--root="${D}" \
-				--prefix="${EPREFIX}/usr" || die
+			cd bindings || die
+			emake \
+				DESTDIR="${D}" \
+				pyexecdir="$(python_get_sitedir)" \
+				pythondir="$(python_get_sitedir)" \
+				install
 		}
 		python_foreach_impl run_in_build_dir installation
 		python_foreach_impl python_optimize
