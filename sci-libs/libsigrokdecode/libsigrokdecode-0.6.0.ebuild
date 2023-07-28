@@ -30,6 +30,7 @@ RDEPEND="${PYTHON_DEPS}
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
+	app-arch/unzip
 	virtual/pkgconfig
 "
 
