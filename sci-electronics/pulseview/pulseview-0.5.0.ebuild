@@ -24,6 +24,7 @@ SLOT="0"
 IUSE="+decode static"
 
 BDEPEND="
+	app-arch/unzip
 	dev-qt/linguist-tools:5
 	virtual/pkgconfig
 "
