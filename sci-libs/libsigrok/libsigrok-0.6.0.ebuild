@@ -6,7 +6,7 @@ EAPI="8"
 PYTHON_COMPAT=( python3_{9..12} )
 GIT_COMMIT="f6d0f7a"
 
-inherit autotools python-r1 java-pkg-opt-2 udev xdg-utils
+inherit autotools python-r1 java-pkg-opt-2 udev xdg
 
 if [[ ${PV} == *9999* ]]; then
 	EGIT_REPO_URI="git://sigrok.org/${PN}"
@@ -145,13 +145,11 @@ src_install() {
 }
 
 pkg_postinst() {
-	xdg_icon_cache_update
-	xdg_mimeinfo_database_update
 	udev_reload
+	xdg_pkg_postinst
 }
 
 pkg_postrm() {
-	xdg_icon_cache_update
-	xdg_mimeinfo_database_update
 	udev_reload
+	xdg_pkg_postrm
 }
