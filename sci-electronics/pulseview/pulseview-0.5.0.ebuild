@@ -5,7 +5,7 @@ EAPI="8"
 
 GIT_COMMIT="ae8dd87"
 
-inherit cmake xdg-utils
+inherit cmake xdg
 
 if [[ ${PV} == *9999* ]]; then
 	EGIT_REPO_URI="git://sigrok.org/${PN}"
@@ -55,14 +55,4 @@ src_configure() {
 		-DSTATIC_PKGDEPS_LIBS=$(usex static)
 	)
 	cmake_src_configure
-}
-
-pkg_postinst() {
-	xdg_icon_cache_update
-	xdg_desktop_database_update
-}
-
-pkg_postrm() {
-	xdg_icon_cache_update
-	xdg_desktop_database_update
 }
