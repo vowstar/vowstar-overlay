@@ -21,6 +21,7 @@ HOMEPAGE="http://urjtag.sourceforge.net/"
 
 LICENSE="GPL-2"
 SLOT="0"
+
 IUSE="ftdi ftd2xx python readline usb"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
@@ -33,11 +34,6 @@ RDEPEND="${DEPEND}"
 
 src_prepare() {
 	default
-
-	sed -i "s|setup.py install .*|setup.py install --root=\"\$(DESTDIR)\" --prefix=\"\$(PREFIX)\" |g" \
-		"${S}"/bindings/python/Makefile.am || die
-	sed -i "s|setup.py install .*|setup.py install --root=\"\$(DESTDIR)\" --prefix=\"\$(PREFIX)\" |g" \
-		"${S}"/bindings/python/Makefile.in || die
 
 	if [[ ${PV} == "9999" ]] ; then
 		mkdir -p m4 || die
@@ -61,16 +57,6 @@ src_compile() {
 	use python && python_copy_sources
 
 	emake
-
-	if use python; then
-		building() {
-			cd bindings || die
-			emake \
-				pyexecdir="$(python_get_sitedir)" \
-				pythondir="$(python_get_sitedir)"
-		}
-		python_foreach_impl run_in_build_dir building
-	fi
 }
 
 src_install() {
@@ -78,13 +64,11 @@ src_install() {
 
 	if use python; then
 		installation() {
-			cd bindings || die
-			emake \
-				DESTDIR="${D}" \
-				PREFIX="${EPREFIX}/usr" \
-				pyexecdir="$(python_get_sitedir)" \
-				pythondir="$(python_get_sitedir)" \
-				install
+			cd bindings/python || die
+			ln -s "${S}"/src/.libs ../../src/.libs || die
+			"${EPYTHON}" setup.py install \
+				--root="${D}" \
+				--prefix="${EPREFIX}/usr" || die
 		}
 		python_foreach_impl run_in_build_dir installation
 		python_foreach_impl python_optimize
