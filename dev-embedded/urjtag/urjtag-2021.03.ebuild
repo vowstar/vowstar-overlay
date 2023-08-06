@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..12} )
+PYTHON_COMPAT=( python3_{10..12} )
 
 inherit python-r1
 
@@ -31,6 +31,13 @@ DEPEND="ftdi? ( dev-embedded/libftdi:1= )
 	readline? ( sys-libs/readline:= )
 	usb? ( virtual/libusb:1 )"
 RDEPEND="${DEPEND}"
+BDEPEND="
+	python? ( dev-python/setuptools[${PYTHON_USEDEP}] )
+"
+
+PATCHES=(
+	"${FILESDIR}/${PN}-2021.03-fix-python-setup.patch"
+)
 
 src_prepare() {
 	default
@@ -43,6 +50,8 @@ src_prepare() {
 }
 
 src_configure() {
+	# libftd2xx installed into /opt, which is not in the default search path
+	export LD_LIBRARY_PATH="${ED}/opt/$(get_libdir):${ED}/usr/$(get_libdir)${LD_LIBRARY_PATH+:}${LD_LIBRARY_PATH}"
 	econf \
 		--disable-werror \
 		--disable-static \
@@ -54,6 +63,8 @@ src_configure() {
 }
 
 src_compile() {
+	# libftd2xx installed into /opt, which is not in the default search path
+	export LD_LIBRARY_PATH="${ED}/opt/$(get_libdir):${ED}/usr/$(get_libdir)${LD_LIBRARY_PATH+:}${LD_LIBRARY_PATH}"
 	use python && python_copy_sources
 
 	emake
