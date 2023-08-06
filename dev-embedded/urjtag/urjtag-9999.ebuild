@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..12} )
+PYTHON_COMPAT=( python3_{10..12} )
 
 inherit python-r1
 
@@ -31,6 +31,13 @@ DEPEND="ftdi? ( dev-embedded/libftdi:1 )
 	readline? ( sys-libs/readline:= )
 	usb? ( virtual/libusb:1 )"
 RDEPEND="${DEPEND}"
+BDEPEND="
+	python? ( dev-python/setuptools[${PYTHON_USEDEP}] )
+"
+
+PATCHES=(
+	"${FILESDIR}/${PN}-2021.03-fix-python-setup.patch"
+)
 
 src_prepare() {
 	default
