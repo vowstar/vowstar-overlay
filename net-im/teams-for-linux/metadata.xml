@@ -2,10 +2,25 @@
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person">
-		<name>Benjamin Neff</name>
-		<email>gentoo@benjaminneff.ch</email>
+		<name>Huang Rui</name>
+		<email>vowstar@gmail.com</email>
 	</maintainer>
 	<upstream>
 		<remote-id type="github">IsmaelMartinez/teams-for-linux</remote-id>
 	</upstream>
+	<longdescription lang="en">
+	This is an unofficial Microsoft Teams client. The official client for Linux
+	from Microsoft is retired by the end of 2022 and is replaced with PWA.
+	Microsoft Teams is the ultimate messaging app for your organization,
+	a workspace for real-time collaboration and communication, meetings, file
+	and app sharing, and even the occasional emoji! All in one place, all in
+	the open, all accessible to everyone.
+	</longdescription>
+	<longdescription lang="zh">
+	这是非官方的 Microsoft Teams 客户端。 来自Linux 官方客户端 Microsoft 的服务
+	将于 2022 年底退役，并由 PWA 取代。
+	Microsoft Teams 是适合您组织的终极消息传递应用程序，用于实时协作和沟通、
+	会议、文件的工作空间和应用程序共享，甚至偶尔还有表情符号！一切都在一处，
+	一切都在开放，所有人都可以访问。
+	</longdescription>
 </pkgmetadata>
