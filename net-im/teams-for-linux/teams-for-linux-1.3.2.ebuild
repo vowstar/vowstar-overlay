@@ -104,6 +104,6 @@ src_install() {
 	# see https://github.com/electron/electron/issues/17972
 	fperms 4755 "${DESTDIR}"/chrome-sandbox
 
-	dosym "${DESTDIR}"/"${PN}" /opt/bin/"${PN}"
+	dosym "${DESTDIR}"/"${PN}" /usr/bin/"${PN}"
 	popd || die
 }
