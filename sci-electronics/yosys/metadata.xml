@@ -2,4 +2,5 @@
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<!-- Maintainer Needed -->
+	<remote-id type="github">YosysHQ/yosys</remote-id> 
 </pkgmetadata>
