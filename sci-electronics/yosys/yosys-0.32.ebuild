@@ -40,10 +40,6 @@ src_prepare() {
 	default
 }
 
-src_compile() {
-	emake DESTDIR="${D}" PREFIX=/usr
-}
-
 src_install() {
-	emake DESTDIR="${D}" PREFIX=/usr install
+	emake DESTDIR="${D}" PREFIX='/usr' install
 }
