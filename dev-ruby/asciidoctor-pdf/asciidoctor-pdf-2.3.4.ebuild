@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-USE_RUBY="ruby27 ruby30 ruby31"
+USE_RUBY="ruby27 ruby30 ruby31 ruby32"
 
 RUBY_FAKEGEM_TASK_TEST="CUCUMBER_PUBLISH_QUIET=true test features"
 RUBY_FAKEGEM_EXTRADOC="CHANGELOG.adoc README.adoc"
