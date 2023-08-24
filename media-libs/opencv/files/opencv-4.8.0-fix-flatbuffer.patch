@@ -1,5 +1,5 @@
---- modules/dnn/misc/tflite/schema_generated.h	2023-06-28 19:53:33.000000000 +0800
-+++ modules/dnn/misc/tflite/schema_generated.h.new	2023-08-24 15:01:25.221486781 +0800
+--- a/modules/dnn/misc/tflite/schema_generated.h	2023-06-28 19:53:33.000000000 +0800
++++ b/modules/dnn/misc/tflite/schema_generated.h	2023-08-24 15:01:25.221486781 +0800
 @@ -10,7 +10,7 @@
  // generated, otherwise it may not be compatible.
  static_assert(FLATBUFFERS_VERSION_MAJOR == 23 &&
