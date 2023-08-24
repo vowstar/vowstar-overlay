@@ -25,7 +25,7 @@ RESTRICT="bindist mirror preserve-libs strip"
 RDEPEND="
 	media-libs/fontconfig
 	media-libs/libglvnd
-	|| ( media-libs/tiff:0/0 media-libs/tiff-compat:4 )
+	media-libs/tiff-compat:4
 	sys-apps/util-linux
 	sys-libs/zlib
 	virtual/libcrypt:=
