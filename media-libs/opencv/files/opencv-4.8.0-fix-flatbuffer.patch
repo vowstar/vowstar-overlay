@@ -1,10 +1,14 @@
 --- a/modules/dnn/misc/tflite/schema_generated.h	2023-06-28 19:53:33.000000000 +0800
-+++ b/modules/dnn/misc/tflite/schema_generated.h	2023-08-24 15:01:25.221486781 +0800
-@@ -10,7 +10,7 @@
++++ b/modules/dnn/misc/tflite/schema_generated.h	2023-08-24 15:17:19.594480034 +0800
+@@ -8,9 +8,9 @@
+ 
+ // Ensure the included flatbuffers.h is the same version as when this file was
  // generated, otherwise it may not be compatible.
- static_assert(FLATBUFFERS_VERSION_MAJOR == 23 &&
-               FLATBUFFERS_VERSION_MINOR == 5 &&
+-static_assert(FLATBUFFERS_VERSION_MAJOR == 23 &&
+-              FLATBUFFERS_VERSION_MINOR == 5 &&
 -              FLATBUFFERS_VERSION_REVISION == 9,
++static_assert(FLATBUFFERS_VERSION_MAJOR == FLATBUFFERS_VERSION_MAJOR &&
++              FLATBUFFERS_VERSION_MINOR == FLATBUFFERS_VERSION_MINOR &&
 +              FLATBUFFERS_VERSION_REVISION == FLATBUFFERS_VERSION_REVISION,
               "Non-compatible flatbuffers version included");
  
