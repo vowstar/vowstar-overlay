@@ -89,6 +89,7 @@ RDEPEND="
 	dev-libs/protobuf:=[${MULTILIB_USEDEP}]
 	sys-libs/zlib[${MULTILIB_USEDEP}]
 	cuda? ( dev-util/nvidia-cuda-toolkit:0= )
+	contribdnn? ( dev-libs/flatbuffers:= )
 	contribhdf? ( sci-libs/hdf5:= )
 	contribfreetype? (
 		media-libs/freetype:2[${MULTILIB_USEDEP}]
@@ -291,6 +292,7 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-4.4.0-disable-native-cpuflag-detect.patch
 	"${FILESDIR}"/${PN}-4.5.0-link-with-cblas-for-lapack.patch
 	"${FILESDIR}"/${PN}-4.8.0-fix-protobuf.patch
+	"${FILESDIR}"/${PN}-4.8.0-fix-flatbuffer.patch
 )
 
 pkg_pretend() {
