@@ -20,7 +20,7 @@ LICENSE="all-rights-reserved"
 SLOT="0"
 KEYWORDS="-* ~amd64"
 
-RESTRICT="strip mirror bindist"
+RESTRICT="bindist mirror preserve-libs strip"
 
 RDEPEND="
 	media-libs/fontconfig
