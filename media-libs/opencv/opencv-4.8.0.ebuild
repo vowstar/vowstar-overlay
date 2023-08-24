@@ -291,6 +291,7 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-4.4.0-disable-native-cpuflag-detect.patch
 	"${FILESDIR}"/${PN}-4.5.0-link-with-cblas-for-lapack.patch
 	"${FILESDIR}"/${PN}-4.6.0-fix-build-examples.patch # bug 830163, pending upstream PR #22245
+	"${FILESDIR}"/${PN}-4.8.0-fix-protobuf.patch
 )
 
 pkg_pretend() {
