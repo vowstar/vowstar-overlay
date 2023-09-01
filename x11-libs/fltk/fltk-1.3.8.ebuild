@@ -1,7 +1,7 @@
 # Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 inherit autotools flag-o-matic xdg-utils multilib-minimal
 
@@ -15,9 +15,9 @@ KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~loong ~mips ppc ppc64 ~riscv ~s
 IUSE="cairo debug doc examples games +opengl static-libs +threads +xft +xinerama"
 
 RDEPEND="
+	media-libs/libjpeg-turbo:0=[${MULTILIB_USEDEP}]
 	>=media-libs/libpng-1.2:0=[${MULTILIB_USEDEP}]
 	sys-libs/zlib[${MULTILIB_USEDEP}]
-	virtual/jpeg:0=[${MULTILIB_USEDEP}]
 	x11-libs/libICE[${MULTILIB_USEDEP}]
 	x11-libs/libSM[${MULTILIB_USEDEP}]
 	x11-libs/libXcursor[${MULTILIB_USEDEP}]
@@ -25,7 +25,6 @@ RDEPEND="
 	x11-libs/libXfixes[${MULTILIB_USEDEP}]
 	x11-libs/libXt[${MULTILIB_USEDEP}]
 	cairo? ( x11-libs/cairo[${MULTILIB_USEDEP},X] )
-	games? ( !sys-block/blocks )
 	opengl? (
 		virtual/glu[${MULTILIB_USEDEP}]
 		virtual/opengl[${MULTILIB_USEDEP}]
@@ -60,7 +59,7 @@ FLTK_GAMES="
 "
 PATCHES=(
 	"${FILESDIR}"/${PN}-1.3.0-share.patch
-	"${FILESDIR}"/${PN}-1.3.9999-conf-tests.patch
+	"${FILESDIR}"/${PN}-1.3.4-conf-tests.patch
 	"${FILESDIR}"/${PN}-1.3.3-makefile-dirs.patch
 	"${FILESDIR}"/${PN}-1.3.3-visibility.patch
 )
