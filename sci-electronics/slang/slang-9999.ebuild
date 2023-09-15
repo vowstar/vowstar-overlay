@@ -30,7 +30,8 @@ RESTRICT="!test? ( test )"
 RDEPEND="
 	${PYTHON_DEPS}
 	>=dev-cpp/catch-3.0.1
-	>=dev-libs/libfmt-9.1.0
+	>=dev-libs/libfmt-10.0.0
+	>=dev-libs/mimalloc-2.1.2
 	$(python_gen_cond_dep '
 		>=dev-python/pybind11-2.10[${PYTHON_USEDEP}]
 	')
