@@ -1,0 +1,11 @@
+--- a/cmake/Findyaml-cpp.cmake	2023-09-26 10:49:56.411650899 +0800
++++ b/cmake/Findyaml-cpp.cmake	2023-09-26 10:56:09.386695465 +0800
+@@ -6,7 +6,7 @@
+ # If that fails, build and use our copy of it.
+ #
+ 
+-find_package(yaml-cpp 0.5 QUIET NO_MODULE)
++#find_package(yaml-cpp 0.5 QUIET NO_MODULE)
+ if (yaml-cpp_FOUND)
+   # target doesn't set include directory for some reason
+   get_filename_component(yaml_cpp_include_dir "${YAML_CPP_INCLUDE_DIR}" ABSOLUTE)
