@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit autotools flag-o-matic xdg-utils multilib-minimal
+inherit autotools flag-o-matic multilib-minimal xdg
 
 DESCRIPTION="C++ user interface toolkit for X and OpenGL"
 HOMEPAGE="https://www.fltk.org/"
@@ -176,9 +176,10 @@ multilib_src_install_all() {
 	insinto /usr/share/cmake/Modules
 	doins CMake/FLTK*.cmake
 
-	echo "LDPATH=${FLTK_LIBDIRS}" > 99fltk || die
-	echo "FLTK_DOCDIR=${EPREFIX}/usr/share/doc/${PF}/html" >> 99fltk || die
-	doenvd 99fltk
+	newenvd - 99fltk <<- _EOF_
+		LDPATH="${FLTK_LIBDIRS}"
+		FLTK_DOCDIR="${EPREFIX}"/usr/share/doc/"${PF}"/html
+	_EOF_
 
 	# FIXME: This is bad, but building only shared libraries is hardly supported
 	# FIXME: The executables in test/ are linking statically against libfltk
@@ -187,14 +188,4 @@ multilib_src_install_all() {
 	fi
 
 	find "${D}" -name '*.la' -delete || die
-}
-
-pkg_postinst() {
-	xdg_desktop_database_update
-	xdg_icon_cache_update
-}
-
-pkg_postrm() {
-	xdg_desktop_database_update
-	xdg_icon_cache_update
 }
