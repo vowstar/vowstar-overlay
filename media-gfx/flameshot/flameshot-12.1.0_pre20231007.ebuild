@@ -3,12 +3,12 @@
 
 EAPI=8
 
+GIT_COMMIT="ad390603230e424c5c47690d09c4a6bf46d8c5f0"
 inherit cmake xdg
 
 DESCRIPTION="Powerful yet simple to use screenshot software"
 HOMEPAGE="https://flameshot.org https://github.com/flameshot-org/flameshot"
-SRC_URI="https://github.com/flameshot-org/flameshot/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-
+SRC_URI="https://github.com/flameshot-org/flameshot/archive/${GIT_COMMIT}.tar.gz -> ${P}.tar.gz"
 LICENSE="Apache-2.0 Free-Art-1.3 GPL-3+"
 SLOT="0"
 KEYWORDS="amd64 ~arm64 x86"
@@ -30,6 +30,12 @@ BDEPEND="
 "
 RDEPEND="${DEPEND}"
 
+PATCHES=(
+	"${FILESDIR}/${PN}-12.1.0-wayland-adapter.patch"
+)
+
+S="${WORKDIR}/${PN}-${GIT_COMMIT}"
+
 src_prepare() {
 	rm -r external/singleapplication || die
 
@@ -41,6 +47,8 @@ src_configure() {
 		-DUSE_EXTERNAL_SINGLEAPPLICATION=1
 		-DENABLE_CACHE=0
 		-DUSE_WAYLAND_CLIPBOARD=$(usex wayland)
+		-DUSE_WAYLAND_GNOME=$(usex wayland)
+		-DUSE_WAYLAND_GRIM=$(usex wayland)
 	)
 
 	cmake_src_configure

@@ -1,0 +1,113 @@
+From 0c8cdca1ce720c6c615a7437b380e2034516449e Mon Sep 17 00:00:00 2001
+From: jack9603301 <jack9603301@163.com>
+Date: Fri, 2 Jun 2023 17:11:21 +0800
+Subject: [PATCH] Add gnome-based wayland universal screenshot adapter
+
+By default, flameshot uses the program's default dbus protocol interface
+to communicate with gnome's screenshot protocol, but this is now broken
+on some gnome installations, so we'll use gnome-screenshot as gnome's
+wayland screenshot adapter and then communicate directly with the gnome
+screenshot component!
+
+To enable the GNOME-based generic wayland screenshot adapter, enable it
+using the following cmake parameter:
+
+```
+-DUSE_WAYLAND_GNOME=true
+```
+---
+ src/CMakeLists.txt          |  7 +++++++
+ src/utils/screengrabber.cpp | 35 +++++++++++++++++++++++++++++++++++
+ src/utils/screengrabber.h   |  1 +
+ 3 files changed, 43 insertions(+)
+
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index f1f30f1d9b..c2c66ebbc6 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -216,6 +216,9 @@ target_link_libraries(
+ )
+ 
+ if (USE_WAYLAND_CLIPBOARD)
++  if(!USE_WAYLAND_GNOME)
++    message(WARNING "You have activated the USE_WAYLAND_CLIPBOARD option, but not the USE_WAYLAND_GNOME option. flameshot will use the dbus protocol to support wayland. if you are using gnome-based wayland, it is recommended that you enable USE_WAYLAND_GNOME")
++  endif()
+   if(!USE_WAYLAND_GRIM)
+     message(WARNING "You activated the USE_WAYLAND_CLIPBOARD option, but did not activate the USE_WAYLAND_GRIM option. Flameshot will use the dbus protocol to support wayland. If you use wlroots-based wayland, it is recommended to enable USE_WAYLAND_GRIM")
+   endif()
+@@ -223,6 +226,10 @@ if (USE_WAYLAND_CLIPBOARD)
+   target_link_libraries(flameshot KF5::GuiAddons)
+ endif()
+ 
++if(USE_WAYLAND_GNOME)
++    target_compile_definitions(flameshot PRIVATE USE_WAYLAND_GNOME=1)
++endif()
++
+ if (USE_WAYLAND_GRIM)
+     target_compile_definitions(flameshot PRIVATE USE_WAYLAND_GRIM=1)
+ endif()
+diff --git a/src/utils/screengrabber.cpp b/src/utils/screengrabber.cpp
+index 062c4bdeea..384ed8ec0b 100644
+--- a/src/utils/screengrabber.cpp
++++ b/src/utils/screengrabber.cpp
+@@ -26,6 +26,30 @@ ScreenGrabber::ScreenGrabber(QObject* parent)
+   : QObject(parent)
+ {}
+ 
++void ScreenGrabber::generalGnomeScreenshot(bool& ok, QPixmap& res)
++{
++#ifdef USE_WAYLAND_GNOME
++#if defined(Q_OS_LINUX) || defined(Q_OS_UNIX)
++    QProcess Process;
++    QString program = "gnome-screenshot";
++    QStringList arguments;
++    QString tmpFileName = "/tmp/gnome_flameshot_png";
++    arguments << "-f" << tmpFileName;
++    Process.start(program, arguments);
++    if (Process.waitForFinished()) {
++        res.load(tmpFileName);
++        ok = true;
++    } else {
++        ok = false;
++        AbstractLogger::error() << tr(
++          "The GNOME-based Universal wayland Screen Capture Adapter requires "
++          "gnome-screenshot as the screen capture component of wayland. If the "
++          "screen capture component is missing, please install it!");
++    }
++#endif
++#endif
++}
++
+ void ScreenGrabber::generalGrimScreenshot(bool& ok, QPixmap& res)
+ {
+ #ifdef USE_WAYLAND_GRIM
+@@ -125,6 +149,17 @@ QPixmap ScreenGrabber::grabEntireDesktop(bool& ok)
+         // handle screenshot based on DE
+         switch (m_info.windowManager()) {
+             case DesktopInfo::GNOME:
++#ifndef USE_WAYLAND_GNOME
++                AbstractLogger::warning() << tr(
++                  "If the USE_WAYLAND_GNOME option is not enabled, the default "
++                  "dbus protocol will be used directly. Note that it is not "
++                  "recommended to use the default dbus protocol under wayland "
++                  "in gnome environments. It is recommended to recompile with "
++                  "the USE_WAYLAND_GNOME flag to activate the gnome-screenshot "
++                  "based generic wayland screenshot adapter");
++#else
++                generalGnomeScreenshot(ok, res);
++#endif
+             case DesktopInfo::KDE:
+                 freeDesktopPortal(ok, res);
+                 break;
+diff --git a/src/utils/screengrabber.h b/src/utils/screengrabber.h
+index 39be6d5ac2..eca84aadfe 100644
+--- a/src/utils/screengrabber.h
++++ b/src/utils/screengrabber.h
+@@ -17,6 +17,7 @@ class ScreenGrabber : public QObject
+     QPixmap grabScreen(QScreen* screenNumber, bool& ok);
+     void freeDesktopPortal(bool& ok, QPixmap& res);
+     void generalGrimScreenshot(bool& ok, QPixmap& res);
++    void generalGnomeScreenshot(bool& ok, QPixmap& res);
+     QRect desktopGeometry();
+ 
+ private:
