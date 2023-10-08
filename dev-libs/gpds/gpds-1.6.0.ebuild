@@ -13,7 +13,7 @@ if [[ "${PV}" == "9999" ]] ; then
 	EGIT_REPO_URI="https://github.com/simulton/${PN}.git"
 else
 	SRC_URI="https://github.com/simulton/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~x86 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~riscv ~sparc"
+	KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~riscv ~sparc ~x86"
 	S="${WORKDIR}/${PN}-${PV}"
 fi
 
