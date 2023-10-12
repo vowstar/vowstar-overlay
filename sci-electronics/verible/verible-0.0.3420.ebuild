@@ -48,7 +48,7 @@ bazel_external_uris="
 	https://github.com/protocolbuffers/rules_ruby/archive/5cf6ff74161d7f985b9bf86bb3c5fb16cef6337b.zip -> protocolbuffers_rules_ruby-5cf6ff74161d7f985b9bf86bb3c5fb16cef6337b.zip
 	https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/0.7.0/rules_pkg-0.7.0.tar.gz -> bazelbuild_rules_pkg-0.7.0.tar.gz
 	https://github.com/bazelbuild/rules_java/archive/981f06c3d2bd10225e85209904090eb7b5fb26bd.zip -> bazelbuild_rules_java-981f06c3d2bd10225e85209904090eb7b5fb26bd.zip
-	https://mirror.bazel.build/bazel_coverage_output_generator/releases/coverage_output_generator-v2.5.zip ->bazelbuild_bazel_coverage_output_generator-2.5.zip
+	https://mirror.bazel.build/bazel_coverage_output_generator/releases/coverage_output_generator-v2.5.zip -> bazelbuild_bazel_coverage_output_generator-2.5.zip
 	https://github.com/protocolbuffers/upb/archive/1fb480bc76bc0e331564d672e60b97a388aa3f76.zip -> protocolbuffers_upb-1fb480bc76bc0e331564d672e60b97a388aa3f76.zip
 	https://github.com/madler/zlib/releases/download/v1.2.13/zlib-1.2.13.tar.xz
 	https://mirror.bazel.build/bazel_java_tools/releases/java/v11.7.1/java_tools-v11.7.1.zip
