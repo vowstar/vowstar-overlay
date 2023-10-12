@@ -59,6 +59,7 @@ bazel_external_uris="
 	https://github.com/jmillikin/rules_flex/releases/download/v0.2.1/rules_flex-v0.2.1.tar.xz
 	https://github.com/protocolbuffers/protobuf/releases/download/v23.4/protobuf-23.4.tar.gz
 	https://github.com/protocolbuffers/upb/archive/455cfdb8ae60a1763e6d924e36851c6897a781bb.zip -> protocolbuffers_upb-455cfdb8ae60a1763e6d924e36851c6897a781bb.zip
+	https://github.com/google/re2/archive/refs/tags/2023-06-01.tar.gz -> re2-2023-06-01.tar.gz
 "
 
 SRC_URI="
