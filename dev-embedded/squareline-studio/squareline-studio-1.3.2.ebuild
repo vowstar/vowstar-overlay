@@ -39,4 +39,5 @@ src_install() {
 		[[ -f ${x} && $(od -t x1 -N 4 "${x}") == *"7f 45 4c 46"* ]] && fperms 0755 "/opt/${P}/${x}"
 	done
 	domenu "${P}.desktop"
+	dosym ../../opt/"${P}"/"SquareLine_Studio.x86_64" /usr/bin/"${P}"
 }
