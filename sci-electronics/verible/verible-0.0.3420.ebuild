@@ -4,7 +4,7 @@
 EAPI="8"
 
 # From release tag name
-MY_PV="0.0-3124-gd7297f5b"
+MY_PV="0.0-3420-g5be583bb"
 
 inherit bazel
 
