@@ -57,6 +57,7 @@ bazel_external_uris="
 	https://github.com/jmillikin/rules_m4/releases/download/v0.1/m4-gnulib-788db09a9f88abbef73c97e8d7291c40455336d8.tar.xz
 	https://github.com/jmillikin/rules_m4/releases/download/v0.2.3/rules_m4-v0.2.3.tar.xz
 	https://github.com/jmillikin/rules_flex/releases/download/v0.2.1/rules_flex-v0.2.1.tar.xz
+	https://github.com/protocolbuffers/protobuf/releases/download/v23.4/protobuf-23.4.tar.gz
 "
 
 SRC_URI="
