@@ -5,7 +5,7 @@ EAPI=8
 
 inherit unpacker
 
-DESCRIPTION="Deepin Version of Wine"
+DESCRIPTION="Disassembler library for x86 (32-bit shared library)"
 HOMEPAGE="https://www.deepin.org"
 
 COMMON_URI="https://community-packages.deepin.com/deepin/pool/non-free/u"
