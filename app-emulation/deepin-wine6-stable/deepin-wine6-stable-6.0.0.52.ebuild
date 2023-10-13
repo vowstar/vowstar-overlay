@@ -42,7 +42,7 @@ RDEPEND="${DEPEND}
 	x11-libs/libX11[abi_x86_32(-)]
 	x11-libs/libXext[abi_x86_32(-)]
 	>=dev-libs/libxml2-2.9.0[abi_x86_32(-)]
-	|| ( dev-libs/ocl-icd[abi_x86_32(-)]  dev-libs/opencl-icd-loader[abi_x86_32(-)] )
+	dev-libs/opencl-icd-loader[abi_x86_32(-)]
 	app-emulation/deepin-udis86
 	>=sys-libs/zlib-1.1.4[abi_x86_32(-)]
 	|| ( sys-libs/ncurses[abi_x86_32(-)] sys-libs/ncurses-compat:5[abi_x86_32(-)] )
