@@ -5,6 +5,10 @@
 		<email>vowstar@gmail.com</email>
 		<name>Huang Rui</name>
 	</maintainer>
+	<upstream>
+		<remote-id type="launchpad">apparmor</remote-id>
+		<remote-id type="gitlab">apparmor/apparmor</remote-id>
+	</upstream>
 	<longdescription lang="en">
 		This is the AppArmor security policy written for deepinwine. It mainly
 		limits the access of Windows programs based on deepinwine6 to the system
