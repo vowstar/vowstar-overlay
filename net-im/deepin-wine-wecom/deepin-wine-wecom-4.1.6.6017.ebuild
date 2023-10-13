@@ -21,8 +21,8 @@ SLOT="0"
 KEYWORDS="~amd64"
 
 RDEPEND="
-	app-emulation/deepin-wine-helper
-	app-emulation/deepin-wine6-stable
+	>=app-emulation/deepin-wine-helper-5.1.45
+	>=app-emulation/deepin-wine6-stable-6.0.0.52
 	media-fonts/noto-cjk
 	media-fonts/wqy-microhei
 	media-libs/alsa-lib[abi_x86_32]
