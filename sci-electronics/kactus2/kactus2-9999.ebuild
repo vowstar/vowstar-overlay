@@ -17,7 +17,7 @@ if [[ "${PV}" == "9999" ]] ; then
 	EGIT_REPO_URI="https://github.com/${PN}/${PN}dev.git"
 else
 	SRC_URI="https://github.com/${PN}/${PN}dev/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~riscv ~x86"
+	KEYWORDS="~amd64"
 	S="${WORKDIR}/${PN}dev-${PV}"
 fi
 
@@ -27,13 +27,8 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 RDEPEND="
 	${PYTHON_DEPS}
-	dev-qt/qtcore:6
-	dev-qt/qtgui:6
-	dev-qt/qthelp:6
-	dev-qt/qtprintsupport:6
+	dev-qt/qtbase:6=[cups,gui,network,opengl,widgets,xml]
 	dev-qt/qtsvg:6
-	dev-qt/qtwidgets:6
-	dev-qt/qtxml:6
 "
 
 DEPEND="
@@ -42,6 +37,7 @@ DEPEND="
 
 BDEPEND="
 	dev-lang/swig
+	dev-qt/qttools:6[linguist,qdoc]
 "
 
 PATCHES=(
