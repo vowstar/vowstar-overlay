@@ -3,7 +3,7 @@
 
 EAPI="8"
 
-PYTHON_COMPAT=( python3_{8..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 inherit python-r1 qmake-utils xdg
 
 DESCRIPTION="A open source IP-XACT-based tool"
@@ -27,13 +27,13 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 RDEPEND="
 	${PYTHON_DEPS}
-	dev-qt/qtcore:5
-	dev-qt/qtgui:5
-	dev-qt/qthelp:5
-	dev-qt/qtprintsupport:5
-	dev-qt/qtsvg:5
-	dev-qt/qtwidgets:5
-	dev-qt/qtxml:5
+	dev-qt/qtcore:6
+	dev-qt/qtgui:6
+	dev-qt/qthelp:6
+	dev-qt/qtprintsupport:6
+	dev-qt/qtsvg:6
+	dev-qt/qtwidgets:6
+	dev-qt/qtxml:6
 "
 
 DEPEND="
@@ -44,14 +44,18 @@ BDEPEND="
 	dev-lang/swig
 "
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-3.12.0-fix-createhelp.patch
+)
+
 src_prepare() {
 	default
 	# Fix QA pre-stripped warnings, bug 781674
 	while IFS= read -r -d '' i; do
 		echo "CONFIG+=nostrip" >> "${i}" || die
 	done < <(find . -type f '(' -name "*.pro" ')' -print0)
-	# Fix QTBIN_PATH
-	sed -i -e "s|QTBIN_PATH=.*|QTBIN_PATH=\"$(qt5_get_bindir)/\"|" configure || die
+	# # Fix QTBIN_PATH
+	# sed -i -e "s|QTBIN_PATH=.*|QTBIN_PATH=\"$(qt6_get_bindir)/\"|" configure || die
 }
 
 src_install() {
