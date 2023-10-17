@@ -1,0 +1,64 @@
+diff --git a/configure b/configure
+index 82c7b906011b..73eeb87f4c81 100755
+--- a/configure
++++ b/configure
+@@ -20,27 +20,27 @@ print_success() {
+ }
+ 
+ # Auto search QTBIN_PATH when empty and qmake already installed.
+-if [ -z ${QTBIN_PATH} ]; then
++if [ -z "${QTBIN_PATH}" ]; then
+     if command -v qmake6 >/dev/null 2>&1; then
+         # Default to qmake6, which will exist on some linux distributions.
+-        QTBIN_PATH=$(qmake6 -query QT_INSTALL_BINS)/
++        QTBIN_PATH="$(qmake6 -query QT_INSTALL_BINS)/"
+     elif command -v qmake >/dev/null 2>&1; then
+         # qmake exists on the vast majority of linux distributions.
+-        QTBIN_PATH=$(qmake -query QT_INSTALL_BINS)/
++        QTBIN_PATH="$(qmake -query QT_INSTALL_BINS)/"
+     fi
+ fi
+ 
+ # Generate compressed help files.
+ echo "Generating compressed help files..."
+ if command -v ${QTBIN_PATH}qhelpgenerator >/dev/null 2>&1; then
+-    ${QTBIN_PATH}qhelpgenerator Help/kactus2help.qhcp -o Help/Kactus2Help.qhc
++    "${QTBIN_PATH}qhelpgenerator" Help/kactus2help.qhcp -o Help/Kactus2Help.qhc
+ else
+     echo "Qhelpgenerator not found. Please set variable QTBIN_PATH to Qt binary files."
+ fi
+ 
+ if command -v ${QTBIN_PATH}qmake >/dev/null 2>&1; then
+    echo "Running qmake..."
+-   ${QTBIN_PATH}qmake Kactus2_Solution.pro
++   "${QTBIN_PATH}qmake" Kactus2_Solution.pro
+    print_success
+ else
+     echo "Qmake not found. Please set variable QTBIN_PATH to Qt binary files."
+diff --git a/createhelp b/createhelp
+index 72299e655fe0..d726cb2c340f 100755
+--- a/createhelp
++++ b/createhelp
+@@ -1,7 +1,21 @@
+ #!/bin/sh
+ 
++# Change this to your Qt binaries directory.
++QTBIN_PATH=""
++
++# Auto search QTBIN_PATH when empty and qmake already installed.
++if [ -z "${QTBIN_PATH}" ]; then
++    if command -v qmake6 >/dev/null 2>&1; then
++        # Default to qmake6, which will exist on some linux distributions.
++        QTBIN_PATH="$(qmake6 -query QT_INSTALL_BINS)/"
++    elif command -v qmake >/dev/null 2>&1; then
++        # qmake exists on the vast majority of linux distributions.
++        QTBIN_PATH="$(qmake -query QT_INSTALL_BINS)/"
++    fi
++fi
++
+ if [ ! -f Help/Kactus2Help.qch ] || [ ! -f Help/Kactus2Help.qhc ]; then
+-   qhelpgenerator Help/kactus2help.qhp -o Help/Kactus2Help.qch
++   "${QTBIN_PATH}qhelpgenerator" Help/kactus2help.qhp -o Help/Kactus2Help.qch
+ fi
+ 
+ rm -R -f executable/Help
