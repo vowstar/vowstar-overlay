@@ -48,10 +48,10 @@ PATCHES=(
 src_prepare() {
 	default
 	# Fix QA pre-stripped warnings, bug 781674
-	find . -type f -name \*.pro -exec sed -i -e '$a\\nCONFIG+=nostrip' '{}' + \;|| die
+	find . -type f -name \*.pro -exec sed -e '$a\\nCONFIG+=nostrip' -i '{}' + || die
 	# Fix bug 854081
 	python_setup
-	sed -i -e "s|PYTHON_CONFIG=.*|PYTHON_CONFIG=${EPYTHON}-config|" .qmake.conf || die
+	sed -e "s|PYTHON_CONFIG=.*|PYTHON_CONFIG=${EPYTHON}-config|" -i .qmake.conf || die
 }
 
 src_configure() {
@@ -67,7 +67,7 @@ src_compile() {
 		cp -TR "${S}/" "${BUILD_DIR}/" || die
 		# Fix bug 854081
 		python_setup
-		sed -i -e "s|PYTHON_CONFIG=.*|PYTHON_CONFIG=${EPYTHON}-config|" .qmake.conf || die
+		sed -e "s|PYTHON_CONFIG=.*|PYTHON_CONFIG=${EPYTHON}-config|" -i .qmake.conf || die
 		export PYTHON_C_FLAGS="$(python_get_CFLAGS)"
 		export PYTHON_LIBS="$(python_get_LIBS)"
 		pushd "PythonAPI" || die
