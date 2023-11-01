@@ -32,6 +32,7 @@ RESTRICT="strip mirror bindist fetch"
 RDEPEND="
 	app-arch/libarchive
 	dev-libs/glib
+	dev-libs/log4cxx
 	dev-libs/openssl:=
 	dev-qt/qtcore:5
 	dev-qt/qtsvg:5
