@@ -40,7 +40,7 @@ RDEPEND="
 	media-libs/gstreamer
 	media-libs/libpano13
 	media-libs/libpng
-	|| ( media-libs/tiff:0/0 media-libs/tiff-compat:4 )
+	|| ( media-libs/tiff:0/6 media-libs/tiff-compat:4 )
 	sys-fs/fuse
 	sys-libs/libxcrypt
 	udev? ( virtual/udev )
