@@ -42,6 +42,7 @@ RDEPEND="
 	media-libs/libpng
 	|| ( media-libs/tiff:0/6 media-libs/tiff-compat:4 )
 	sys-fs/fuse
+	sys-libs/libcxx
 	sys-libs/libxcrypt
 	udev? ( virtual/udev )
 	virtual/glu
@@ -161,6 +162,7 @@ src_install() {
 	rm "${S}"/squashfs-root/libs/libglib* || die
 	rm "${S}"/squashfs-root/libs/libgmodule* || die
 	rm "${S}"/squashfs-root/libs/libgobject* || die
+	rm "${S}"/squashfs-root/libs/libc++* || die
 
 	# Install the squashfs-root
 	cp -rf "${S}"/squashfs-root/* "${D}/opt/${PKG_NAME}" || die
