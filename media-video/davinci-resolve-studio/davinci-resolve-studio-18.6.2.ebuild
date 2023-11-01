@@ -31,15 +31,19 @@ RESTRICT="strip mirror bindist fetch"
 
 RDEPEND="
 	app-arch/libarchive
+	dev-libs/glib
+	dev-libs/log4cxx
 	dev-libs/openssl:=
 	dev-qt/qtcore:5
 	dev-qt/qtsvg:5
 	dev-qt/qtwebengine:5
 	dev-qt/qtwebsockets:5
 	media-libs/gstreamer
+	media-libs/libpano13
 	media-libs/libpng
-	|| ( media-libs/tiff:0/0 media-libs/tiff-compat:4 )
+	|| ( media-libs/tiff:0/6 media-libs/tiff-compat:4 )
 	sys-fs/fuse
+	sys-libs/libcxx
 	sys-libs/libxcrypt
 	udev? ( virtual/udev )
 	virtual/glu
@@ -145,6 +149,21 @@ src_install() {
 		sed -i "s|RESOLVE_INSTALL_LOCATION|/opt/${PKG_NAME}|g" "${i}" || die
 		elog "chagne ${i}"
 	done < <(find . -type f '(' -name "*.desktop" -o -name "*.directory" -o -name "*.directory" -o -name "*.menu" ')' -print0)
+
+	# Fix StartupWMClass
+	echo "StartupWMClass=resolve" >> "${S}"/squashfs-root/share/DaVinciResolve.desktop || die
+
+	# Fix udev rule
+	echo 'SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTRS{idVendor}=="096e", MODE="0666"' > \
+		"${S}"/squashfs-root/share/etc/udev/rules.d/99-DavinciPanel.rules || die
+
+	# Use system libs
+	# https://github.com/vowstar/vowstar-overlay/issues/17
+	rm "${S}"/squashfs-root/libs/libgio* || die
+	rm "${S}"/squashfs-root/libs/libglib* || die
+	rm "${S}"/squashfs-root/libs/libgmodule* || die
+	rm "${S}"/squashfs-root/libs/libgobject* || die
+	rm "${S}"/squashfs-root/libs/libc++* || die
 
 	# Install the squashfs-root
 	cp -rf "${S}"/squashfs-root/* "${D}/opt/${PKG_NAME}" || die
