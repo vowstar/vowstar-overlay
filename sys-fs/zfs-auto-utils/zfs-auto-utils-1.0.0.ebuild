@@ -9,7 +9,7 @@ if [[ ${PV} == 9999 ]]; then
 else
 	MY_P="${PN}-upstream-${PV}"
 	SRC_URI="https://github.com/vowstar/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="amd64 ~arm64 ~ppc64 ~riscv"
+	KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv"
 fi
 
 DESCRIPTION="ZFS Automatic Scrub/Trim for Linux"
