@@ -392,7 +392,7 @@ declare -A GIT_CRATES=(
 	[iai]="https://github.com/typst/iai;3f0f92736408ebce6545808b98e0cb2aea89b7dd"
 	[oxipng]="https://github.com/typst/oxipng;b8ec65b3ca42dde33c85149b6e402e891527f802"
 )
-inherit cargo desktop shell-completion xdg
+inherit cargo shell-completion
 
 DESCRIPTION="A markup-based typesetting system for the sciences"
 HOMEPAGE="https://typst.app"
@@ -406,12 +406,11 @@ LICENSE="Apache-2.0"
 
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-# IUSE="doc"
+
 BDEPEND="
 	dev-vcs/git
 "
 
-# QA_FLAGS_IGNORED="usr/bin/${PN}"
 DOCS=( README.md )
 
 src_compile() {
