@@ -21,9 +21,7 @@ LICENSE="MIT"
 SLOT="0"
 IUSE="examples +spdlog static-libs test"
 RESTRICT="!test? ( test )"
-RDEPEND=""
 DEPEND="${RDEPEND}"
-BDEPEND=""
 
 DOCS=( license.txt readme.md )
 
