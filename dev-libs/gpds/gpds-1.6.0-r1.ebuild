@@ -19,7 +19,7 @@ fi
 
 LICENSE="MIT"
 SLOT="0"
-IUSE="static-libs test"
+IUSE="examples +spdlog static-libs test"
 RESTRICT="!test? ( test )"
 RDEPEND=""
 DEPEND="${RDEPEND}"
@@ -27,10 +27,16 @@ BDEPEND=""
 
 DOCS=( license.txt readme.md )
 
+src_prepare() {
+	cmake_src_prepare
+	use static-libs || sed -i -e '/TARGET-STATIC/d' "${S}"/lib/CMakeLists.txt || die
+}
+
 src_configure() {
 	local mycmakeargs=(
+		-DGPDS_BUILD_EXAMPLES=$(usex examples)
 		-DGPDS_BUILD_TESTS=$(usex test)
-		-DGPDS_FEATURE_SPDLOG=ON
+		-DGPDS_FEATURE_SPDLOG=$(usex spdlog)
 	)
 
 	cmake_src_configure
@@ -38,5 +44,5 @@ src_configure() {
 
 src_install() {
 	cmake_src_install
-	use static-libs || rm "${ED}"/usr/$(get_libdir)/*.a || die
+	# use static-libs || rm "${ED}"/usr/$(get_libdir)/*.a || die
 }
