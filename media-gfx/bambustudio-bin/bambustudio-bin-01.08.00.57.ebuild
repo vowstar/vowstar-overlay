@@ -44,7 +44,6 @@ RESTRICT="strip"
 S="${WORKDIR}/${P}"
 
 src_unpack() {
-	unpack_deb "${PN}-dep-webkit2gtk.deb"
 	mkdir "${S}" || die
 	cp "${DISTDIR}/${P}.AppImage" "${S}"/ || die
 	pushd "${S}" || die
