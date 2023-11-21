@@ -40,6 +40,8 @@ BDEPEND="
 	dev-vcs/git
 "
 
+QA_PREBUILT="*"
+RESTRICT="strip"
 S="${WORKDIR}/${P}"
 
 src_unpack() {
