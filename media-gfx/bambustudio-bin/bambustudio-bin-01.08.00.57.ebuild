@@ -5,9 +5,8 @@ EAPI=8
 
 MY_PN="BambuStudio"
 WX_GTK_VER="3.0-gtk3"
-CHECKREQS_DISK_BUILD="10G"
 
-inherit check-reqs desktop unpacker wxwidgets xdg
+inherit desktop unpacker xdg
 
 DESCRIPTION="Bambu Studio is a cutting-edge, feature-rich slicing software"
 HOMEPAGE="https://bambulab.com"
