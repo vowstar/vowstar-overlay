@@ -37,7 +37,7 @@ RDEPEND="
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
-	dev-vcs/git
+	dev-util/patchelf
 "
 
 QA_PREBUILT="*"
