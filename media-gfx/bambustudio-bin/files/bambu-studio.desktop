@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=BambuStudio
-Exec=AppRun %U
+Exec=bambu-studio %U
 Icon=BambuStudio
 Type=Application
 Categories=Utility;
