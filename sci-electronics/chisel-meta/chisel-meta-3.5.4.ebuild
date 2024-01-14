@@ -11,10 +11,11 @@ LICENSE="metapackage"
 SLOT="0"
 
 if [[ ${PV} != *_rc* ]] ; then
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="~amd64"
 fi
 
 RDEPEND="
+	dev-build/make
 	dev-java/antlr:4
 	dev-java/mill-bin
 	dev-java/sbt-bin
@@ -29,6 +30,5 @@ RDEPEND="
 	sci-electronics/circt
 	sci-electronics/wavedrom-cli
 	sys-apps/dtc
-	sys-devel/make
 	sys-process/parallel
 "
