@@ -1,0 +1,26 @@
+From 82e4ebba22d4efd90eb385e8925c0595929f59a6 Mon Sep 17 00:00:00 2001
+From: Peng Hailin <unisko@gmail.com>
+Date: Thu, 4 May 2023 11:22:25 +0800
+Subject: [PATCH] Update socks.py
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Change line 65 from `from collections import Callable` to `from collections.abc import Callable`，make `genpac` works with Python3.10.
+---
+ genpac/pysocks/socks.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/genpac/pysocks/socks.py b/genpac/pysocks/socks.py
+index 631d802..3e7f141 100644
+--- a/genpac/pysocks/socks.py
++++ b/genpac/pysocks/socks.py
+@@ -62,7 +62,7 @@
+ import sys
+ import functools
+ import logging
+-from collections import Callable
++from collections.abc import Callable
+ from base64 import b64encode
+ 
+ 

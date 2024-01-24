@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<upstream>
+		<remote-id type="pypi">genpac</remote-id>
+		<remote-id type="github">JinnLynn/genpac</remote-id>
+		<bugs-to>https://github.com/JinnLynn/genpac/issues</bugs-to>
+	</upstream>
+</pkgmetadata>
