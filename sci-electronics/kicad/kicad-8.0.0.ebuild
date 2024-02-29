@@ -28,7 +28,7 @@ fi
 # BSD for bundled pybind
 LICENSE="GPL-2+ GPL-3+ Boost-1.0 BSD"
 SLOT="0"
-IUSE="doc examples nls openmp test"
+IUSE="doc examples nls openmp telemetry test"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
@@ -39,6 +39,7 @@ RESTRICT="!test? ( test )"
 # Depend on opencascade:0 to get unslotted variant (so we know path to it), bug #833301
 # Depend wxGTK version needs to be limited due to switch from EGL to GLX, bug #911120
 COMMON_DEPEND="
+	app-crypt/libsecret
 	dev-db/unixODBC
 	dev-libs/boost:=[context,nls]
 	dev-libs/libgit2:=
@@ -115,6 +116,9 @@ src_configure() {
 		-DOCC_INCLUDE_DIR="${CASROOT}"/include/opencascade
 		-DOCC_LIBRARY_DIR="${CASROOT}"/$(get_libdir)/opencascade
 
+		-DKICAD_USE_SENTRY="$(usex telemetry)"
+
+		-DKICAD_SPICE_QA="$(usex test)"
 		-DKICAD_BUILD_QA_TESTS="$(usex test)"
 	)
 
