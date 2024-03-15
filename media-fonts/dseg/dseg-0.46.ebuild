@@ -13,13 +13,13 @@ HOMEPAGE="https://github.com/lxgw/LxgwNeoZhiSong"
 SRC_URI="
 	https://github.com/keshikan/DSEG/releases/download/v${PV}/${MY_P}.zip -> ${P}.zip
 "
+S="${WORKDIR}/${MY_P}"
 LICENSE="OFL-1.1"
 SLOT="0"
 KEYWORDS="~amd64 ~loong ~riscv ~x86"
 
 BDEPEND="app-arch/unzip"
 
-S="${WORKDIR}/${MY_P}"
 FONT_S="${S}"
 FONT_SUFFIX="ttf"
 
