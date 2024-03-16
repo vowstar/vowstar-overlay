@@ -208,8 +208,10 @@ src_install() {
 		done
 
 		# fix broken RPATHs
-		patchelf --set-rpath '$ORIGIN' "${ED}"/${cudadir}/${ncu_dir}/host/linux-desktop-glibc_2_11_3-x64/{libarrow.so,libparquet.so.500.0.0} || die
-		patchelf --set-rpath '$ORIGIN' "${ED}"/${cudadir}/${nsys_dir}/host-linux-x64/{libarrow.so,libparquet.so.500.0.0} || die
+		patchelf --set-rpath '$ORIGIN' \
+		"${ED}"/${cudadir}/${ncu_dir}/host/linux-desktop-glibc_2_11_3-x64/{libarrow.so,libparquet.so.500.0.0} || die
+		patchelf --set-rpath '$ORIGIN' \
+		"${ED}"/${cudadir}/${nsys_dir}/host-linux-x64/{libarrow.so,libparquet.so.500.0.0} || die
 
 		# remove foreign archs (triggers SONAME warning, #749903)
 		rm -r "${ED}"/${cudadir}/${ncu_dir}/target/linux-desktop-glibc_2_19_0-ppc64le || die
