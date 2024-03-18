@@ -73,8 +73,8 @@ RDEPEND="
 		net-misc/curl
 	)
 	fem? (
-		!qt6? ( sci-libs/vtk:=[qt5,rendering] )
-		qt6? ( sci-libs/vtk:=[-qt5,qt6,rendering] )
+		!qt6? ( sci-libs/vtk:=[opencascade,qt5,rendering] )
+		qt6? ( sci-libs/vtk:=[opencascade,-qt5,qt6,rendering] )
 	)
 	gui? (
 		>=media-libs/coin-4.0.0
