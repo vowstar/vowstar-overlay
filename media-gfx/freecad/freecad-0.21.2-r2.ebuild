@@ -74,16 +74,10 @@ RDEPEND="
 	)
 	fem? (
 		!qt6? (
-			|| (
-				>=sci-libs/vtk-9.3.0[opencascade,qt5,rendering]
-				<sci-libs/vtk-9.3.0[qt5,rendering]
-			)
+			sci-libs/vtk:=[qt5,rendering]
 		)
 		qt6? (
-			|| (
-				>=sci-libs/vtk-9.3.0[opencascade,-qt5,qt6,rendering]
-				<sci-libs/vtk-9.3.0[-qt5,qt6,rendering]
-			)
+			sci-libs/vtk:=[-qt5,qt6,rendering]
 		)
 	)
 	gui? (
