@@ -1,8 +1,9 @@
-From 449207efaf908572633c6218fa711aaf72e88f16 Mon Sep 17 00:00:00 2001
+From 4e83b5a0ec0d311bbebbd58f948fc6e10edbb1d7 Mon Sep 17 00:00:00 2001
 From: bgbsww <120601209+bgbsww@users.noreply.github.com>
 Date: Tue, 9 Jan 2024 20:47:25 -0500
 Subject: [PATCH] Add support for OCCT 7.8.0 (#11909)
 
+Signed-off-by: Huang Rui <vowstar@gmail.com>
 ---
  cMake/FindOCC.cmake                           |  21 +-
  .../inc/SMESHDS_DataMapOfShape.hxx            |  17 +-
@@ -14,7 +15,7 @@ Subject: [PATCH] Add support for OCCT 7.8.0 (#11909)
  .../StdMeshers/StdMeshers_Quadrangle_2D.cpp   |   1 -
  src/Mod/Fem/Gui/TaskCreateNodeSet.cpp         |  49 ++-
  src/Mod/Import/App/ImportOCAF.cpp             | 414 +++++++++++-------
- src/Mod/Import/App/ImportOCAF2.h              |   1 -
+ src/Mod/Import/App/ImportOCAF2.h              |  25 +-
  src/Mod/Import/App/Tools.h                    |  79 ++++
  src/Mod/MeshPart/App/CurveProjector.h         | 181 ++++----
  src/Mod/Part/App/ImportStep.cpp               |   5 +
@@ -33,7 +34,7 @@ Subject: [PATCH] Add support for OCCT 7.8.0 (#11909)
  src/Mod/Path/Gui/PreCompiled.h                |   2 -
  src/Mod/Robot/Gui/PreCompiled.h               |   2 -
  src/Mod/Sketcher/Gui/EditDatumDialog.cpp      |   1 -
- 29 files changed, 550 insertions(+), 298 deletions(-)
+ 29 files changed, 568 insertions(+), 304 deletions(-)
  create mode 100644 src/Mod/Import/App/Tools.h
 
 diff --git a/cMake/FindOCC.cmake b/cMake/FindOCC.cmake
@@ -1121,7 +1122,7 @@ index 2397b62c379b..7277d0fb193e 100644
  
  #if 0
 diff --git a/src/Mod/Import/App/ImportOCAF2.h b/src/Mod/Import/App/ImportOCAF2.h
-index e19b921971e7..a321f154e897 100644
+index e19b921971e7..30003b613ad4 100644
 --- a/src/Mod/Import/App/ImportOCAF2.h
 +++ b/src/Mod/Import/App/ImportOCAF2.h
 @@ -30,7 +30,6 @@
@@ -1132,6 +1133,40 @@ index e19b921971e7..a321f154e897 100644
  #include <TDocStd_Document.hxx>
  #include <TopoDS_Shape.hxx>
  #include <XCAFDoc_ColorTool.hxx>
+@@ -56,15 +55,27 @@ class Feature;
+ 
+ namespace Import {
+ 
+-struct ShapeHasher {
+-    std::size_t operator()(const TopoDS_Shape &s) const {
+-        return s.HashCode(INT_MAX);
++struct ShapeHasher
++{
++    std::size_t operator()(const TopoDS_Shape& shape) const
++    {
++#if OCC_VERSION_HEX >= 0x070800
++        return std::hash<TopoDS_Shape> {}(shape);
++#else
++        return shape.HashCode(INT_MAX);
++#endif
+     }
+ };
+ 
+-struct LabelHasher {
+-    std::size_t operator()(const TDF_Label &l) const {
+-        return TDF_LabelMapHasher::HashCode(l,INT_MAX);
++struct LabelHasher
++{
++    std::size_t operator()(const TDF_Label& label) const
++    {
++#if OCC_VERSION_HEX >= 0x070800
++        return std::hash<TDF_Label> {}(label);
++#else
++        return TDF_LabelMapHasher::HashCode(label, INT_MAX);
++#endif
+     }
+ };
+ 
 diff --git a/src/Mod/Import/App/Tools.h b/src/Mod/Import/App/Tools.h
 new file mode 100644
 index 000000000000..aa05e3067e67
