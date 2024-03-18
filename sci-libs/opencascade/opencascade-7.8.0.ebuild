@@ -71,7 +71,10 @@ RDEPEND="
 	jemalloc? ( dev-libs/jemalloc )
 	tbb? ( dev-cpp/tbb:= )
 	vtk? (
-		sci-libs/vtk:=[opencascade,rendering]
+		|| (
+			>=sci-libs/vtk-9.3.0[opencascade,rendering]
+			<sci-libs/vtk-9.3.0[rendering]
+		)
 		tbb? (
 			sci-libs/vtk:=[tbb,-cuda]
 		)
