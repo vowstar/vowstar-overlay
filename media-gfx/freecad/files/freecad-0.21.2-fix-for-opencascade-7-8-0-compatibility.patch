@@ -1,0 +1,1415 @@
+From 8d94e48921be080de4e0b44abeb642d57d38512f Mon Sep 17 00:00:00 2001
+From: bgbsww <bgbsww@gmail.com>
+Date: Fri, 5 Jan 2024 20:01:46 -0500
+Subject: [PATCH 1/6] Add support for OCC 7.8.0
+
+---
+ cMake/FindOCC.cmake                           | 14 ++---
+ .../inc/SMESHDS_DataMapOfShape.hxx            | 31 +++++++---
+ .../salomesmesh/inc/SMESH_MeshVSLink.hxx      |  3 -
+ src/3rdParty/salomesmesh/inc/SMESH_SMESH.hxx  |  1 +
+ .../salomesmesh/inc/SMESH_SequenceOfNode.hxx  |  3 +-
+ .../salomesmesh/inc/SMESH_TypeDefs.hxx        |  7 +++
+ .../src/DriverSTL/DriverSTL_R_SMDS_Mesh.cpp   | 29 ++++++++-
+ .../StdMeshers/StdMeshers_Quadrangle_2D.cpp   |  1 -
+ src/Mod/Fem/Gui/TaskCreateNodeSet.cpp         |  1 -
+ src/Mod/Import/App/ImportOCAF.cpp             | 60 +++++++++++++++++++
+ src/Mod/Import/App/ImportOCAF2.h              |  1 -
+ src/Mod/Import/App/Tools.h                    | 11 +++-
+ src/Mod/MeshPart/App/CurveProjector.h         |  8 +++
+ src/Mod/Part/App/ImportStep.cpp               |  5 ++
+ src/Mod/Part/App/TopoShapePyImp.cpp           |  9 +++
+ src/Mod/Part/Gui/AppPartGui.cpp               |  3 -
+ src/Mod/Part/Gui/Command.cpp                  |  1 -
+ src/Mod/Part/Gui/CommandSimple.cpp            |  1 -
+ src/Mod/Part/Gui/CrossSections.cpp            |  1 -
+ src/Mod/Part/Gui/ViewProvider2DObject.cpp     |  2 -
+ src/Mod/Part/Gui/ViewProviderExt.cpp          | 12 ++++
+ src/Mod/Part/Gui/ViewProviderExt.h            |  1 -
+ src/Mod/Part/Gui/ViewProviderMirror.cpp       |  1 -
+ src/Mod/Part/Gui/ViewProviderPython.cpp       |  1 -
+ src/Mod/Part/Gui/ViewProviderReference.h      |  1 -
+ src/Mod/Path/App/Voronoi.cpp                  |  3 -
+ src/Mod/Path/Gui/PreCompiled.h                |  2 -
+ src/Mod/Robot/Gui/PreCompiled.h               |  2 -
+ src/Mod/Sketcher/Gui/EditDatumDialog.cpp      |  1 -
+ 29 files changed, 169 insertions(+), 47 deletions(-)
+
+diff --git a/cMake/FindOCC.cmake b/cMake/FindOCC.cmake
+index 32078cf2deaf..c72066f43e2f 100644
+--- a/cMake/FindOCC.cmake
++++ b/cMake/FindOCC.cmake
+@@ -127,8 +127,6 @@ if(OCC_FOUND)
+     TKG2d
+     TKG3d
+     TKMath
+-    TKIGES
+-    TKSTL
+     TKShHealing
+     TKXSBase
+     TKBool
+@@ -139,10 +137,6 @@ if(OCC_FOUND)
+     TKGeomBase
+     TKOffset
+     TKPrim
+-    TKSTEPBase
+-    TKSTEPAttr
+-    TKSTEP209
+-    TKSTEP
+     TKHLR
+     TKFeat
+   )
+@@ -154,8 +148,6 @@ if(OCC_FOUND)
+     TKLCAF
+     TKVCAF
+     TKCDF
+-    TKXDESTEP
+-    TKXDEIGES
+     TKMeshVS
+     TKService
+     TKV3d
+@@ -164,6 +156,12 @@ if(OCC_FOUND)
+   if(NOT OCC_VERSION_STRING VERSION_LESS 7.5.0)
+     list(APPEND OCC_OCAF_LIBRARIES TKRWMesh)
+   endif(NOT OCC_VERSION_STRING VERSION_LESS 7.5.0)
++  if(OCC_VERSION_STRING VERSION_LESS 7.8.0)
++    list(APPEND OCC_LIBRARIES TKIGES TKSTL TKSTEPBase TKSTEPAttr TKSTEP209 TKSTEP)
++    list(APPEND OCC_OCAF_LIBRARIES TKXDESTEP TKXDEIGES)
++  else(OCC_VERSION_STRING VERSION_LESS 7.8.0)
++    list(APPEND OCC_LIBRARIES TKDESTEP TKDEIGES TKDEGLTF TKDESTL)
++  endif(OCC_VERSION_STRING VERSION_LESS 7.8.0)
+   message(STATUS "-- Found OCE/OpenCASCADE version: ${OCC_VERSION_STRING}")
+   message(STATUS "-- OCE/OpenCASCADE include directory: ${OCC_INCLUDE_DIR}")
+   message(STATUS "-- OCE/OpenCASCADE shared libraries directory: ${OCC_LIBRARY_DIR}")
+diff --git a/src/3rdParty/salomesmesh/inc/SMESHDS_DataMapOfShape.hxx b/src/3rdParty/salomesmesh/inc/SMESHDS_DataMapOfShape.hxx
+index 3e083cd84d78..074ff56897e8 100644
+--- a/src/3rdParty/salomesmesh/inc/SMESHDS_DataMapOfShape.hxx
++++ b/src/3rdParty/salomesmesh/inc/SMESHDS_DataMapOfShape.hxx
+@@ -29,22 +29,35 @@
+ 
+ #include <TopoDS_Shape.hxx>
+ 
++#include <Standard_Version.hxx>
++
+ /*
+  * This method needed for instance NCollection_DataMap with TopoDS_Shape as key
+  */
++#if OCC_VERSION_HEX >= 0x070800
+ struct SMESHDS_Hasher
+ {
+-  static inline Standard_Boolean IsEqual(const TopoDS_Shape& S1,
+-                                         const TopoDS_Shape& S2)
+-  {
+-    return S1.IsSame(S2);
++  size_t operator()(const TopoDS_Shape& S) const noexcept {
++    return std::hash<TopoDS_Shape>{}(S);
+   }
+-  static inline Standard_Integer HashCode(const TopoDS_Shape& S,
+-                                          const Standard_Integer Upper)
+-  {
+-    return ::HashCode( S, Upper);
++  size_t operator()(const TopoDS_Shape& S1, const TopoDS_Shape& S2) const noexcept {
++    return S1.IsSame(S2);
+   }
+ };
+-
++#else
++struct SMESHDS_Hasher
++{
++static inline Standard_Boolean IsEqual(const TopoDS_Shape& S1,
++                                       const TopoDS_Shape& S2)
++{
++  return S1.IsSame(S2);
++}
++static inline Standard_Integer HashCode(const TopoDS_Shape& S,
++                                        const Standard_Integer Upper)
++{
++  return ::HashCode( S, Upper);
++}
++};
++#endif
+ 
+ #endif
+diff --git a/src/3rdParty/salomesmesh/inc/SMESH_MeshVSLink.hxx b/src/3rdParty/salomesmesh/inc/SMESH_MeshVSLink.hxx
+index 3bc552eb23d3..6155e2053999 100644
+--- a/src/3rdParty/salomesmesh/inc/SMESH_MeshVSLink.hxx
++++ b/src/3rdParty/salomesmesh/inc/SMESH_MeshVSLink.hxx
+@@ -57,9 +57,6 @@
+ #ifndef _MeshVS_EntityType_HeaderFile
+ #include <MeshVS_EntityType.hxx>
+ #endif
+-#ifndef _Standard_Address_HeaderFile
+-#include <Standard_Address.hxx>
+-#endif
+ #ifndef _TColStd_HArray1OfInteger_HeaderFile
+ #include <TColStd_HArray1OfInteger.hxx>
+ #endif
+diff --git a/src/3rdParty/salomesmesh/inc/SMESH_SMESH.hxx b/src/3rdParty/salomesmesh/inc/SMESH_SMESH.hxx
+index 1094aed0dfdd..a8fe257ea70f 100644
+--- a/src/3rdParty/salomesmesh/inc/SMESH_SMESH.hxx
++++ b/src/3rdParty/salomesmesh/inc/SMESH_SMESH.hxx
+@@ -37,4 +37,5 @@
+  #define SMESH_EXPORT
+ #endif
+ 
++#include <Standard_Version.hxx>
+ #endif
+diff --git a/src/3rdParty/salomesmesh/inc/SMESH_SequenceOfNode.hxx b/src/3rdParty/salomesmesh/inc/SMESH_SequenceOfNode.hxx
+index ada6c8b98bf3..33c7203cc8d6 100644
+--- a/src/3rdParty/salomesmesh/inc/SMESH_SequenceOfNode.hxx
++++ b/src/3rdParty/salomesmesh/inc/SMESH_SequenceOfNode.hxx
+@@ -28,10 +28,11 @@
+ 
+ #include "SMESH_SMESH.hxx"
+ 
+-#include <NCollection_DefineSequence.hxx>
+ #if OCC_VERSION_HEX >= 0x060703
+ #include <NCollection_IncAllocator.hxx>
+ #include <NCollection_Sequence.hxx>
++#else
++#include <NCollection_DefineSequence.hxx>
+ #endif
+ 
+ typedef const SMDS_MeshNode* SMDS_MeshNodePtr;
+diff --git a/src/3rdParty/salomesmesh/inc/SMESH_TypeDefs.hxx b/src/3rdParty/salomesmesh/inc/SMESH_TypeDefs.hxx
+index ac7aa480d80b..7090537c466c 100644
+--- a/src/3rdParty/salomesmesh/inc/SMESH_TypeDefs.hxx
++++ b/src/3rdParty/salomesmesh/inc/SMESH_TypeDefs.hxx
+@@ -185,11 +185,18 @@ typedef std::vector< UVPtStruct > UVPtStructVec;
+ 
+ // --------------------------------------------------------------------------------
+ // class SMESH_SequenceOfElemPtr
++#include <Standard_Version.hxx>
++#if OCC_VERSION_HEX >= 0x060703
++#include <NCollection_Sequence.hxx>
++#else
+ #include <NCollection_DefineSequence.hxx>
++#endif
+ 
+ class SMDS_MeshElement;
+ 
+ typedef const SMDS_MeshElement* SMDS_MeshElementPtr;
++#define DEFINE_SEQUENCE(_ClassName_, _BaseCollection_, TheItemType)            \
++typedef NCollection_Sequence<TheItemType > _ClassName_;
+ 
+ DEFINE_SEQUENCE (SMESH_SequenceOfElemPtr, SMESH_BaseCollectionElemPtr, SMDS_MeshElementPtr)
+ 
+diff --git a/src/3rdParty/salomesmesh/src/DriverSTL/DriverSTL_R_SMDS_Mesh.cpp b/src/3rdParty/salomesmesh/src/DriverSTL/DriverSTL_R_SMDS_Mesh.cpp
+index ec3ea2e8e394..4b3791292a74 100644
+--- a/src/3rdParty/salomesmesh/src/DriverSTL/DriverSTL_R_SMDS_Mesh.cpp
++++ b/src/3rdParty/salomesmesh/src/DriverSTL/DriverSTL_R_SMDS_Mesh.cpp
+@@ -33,10 +33,33 @@
+ #include "SMDS_MeshNode.hxx"
+ #include "SMESH_File.hxx"
+ 
++#include <Standard_Version.hxx>
++
+ namespace
+ {
+   struct Hasher
+   {
++#if OCC_VERSION_HEX >= 0x070800
++    size_t operator()(const gp_Pnt& point) const noexcept
++    {
++      union
++      {
++        Standard_Real    R[3];
++        Standard_Integer I[6];
++      } U;
++
++      point.Coord( U.R[0], U.R[1], U.R[2] );
++      return std::hash<Standard_Integer>{}(U.I[0]/23+U.I[1]/19+U.I[2]/17+U.I[3]/13+U.I[4]/11+U.I[5]/7);
++    }
++
++    size_t operator()(const gp_Pnt& point1, const gp_Pnt& point2) const noexcept
++    {
++      static Standard_Real tab1[3], tab2[3];
++      point1.Coord(tab1[0],tab1[1],tab1[2]);
++      point2.Coord(tab2[0],tab2[1],tab2[2]);
++      return (memcmp(tab1,tab2,sizeof(tab1)) == 0);
++    }
++#else
+     //=======================================================================
+     //function : HashCode
+     //purpose  :
+@@ -51,9 +74,9 @@ namespace
+       } U;
+ 
+       point.Coord( U.R[0], U.R[1], U.R[2] );
+-
+-      return ::HashCode(U.I[0]/23+U.I[1]/19+U.I[2]/17+U.I[3]/13+U.I[4]/11+U.I[5]/7,Upper);
++      return std::hash<Standard_Integer>{}(U.I[0]/23+U.I[1]/19+U.I[2]/17+U.I[3]/13+U.I[4]/11+U.I[5]/7);
+     }
++ 
+     //=======================================================================
+     //function : IsEqual
+     //purpose  :
+@@ -66,7 +89,9 @@ namespace
+       point2.Coord(tab2[0],tab2[1],tab2[2]);
+       return (memcmp(tab1,tab2,sizeof(tab1)) == 0);
+     }
++#endif
+   };
++
+   typedef NCollection_DataMap<gp_Pnt,SMDS_MeshNode*,Hasher> TDataMapOfPntNodePtr;
+ 
+   const int HEADER_SIZE           = 84;
+diff --git a/src/3rdParty/salomesmesh/src/StdMeshers/StdMeshers_Quadrangle_2D.cpp b/src/3rdParty/salomesmesh/src/StdMeshers/StdMeshers_Quadrangle_2D.cpp
+index 5d5c15c36612..5ebf9dbfb43c 100644
+--- a/src/3rdParty/salomesmesh/src/StdMeshers/StdMeshers_Quadrangle_2D.cpp
++++ b/src/3rdParty/salomesmesh/src/StdMeshers/StdMeshers_Quadrangle_2D.cpp
+@@ -48,7 +48,6 @@
+ #include <Bnd_Box.hxx>
+ #include <GeomAPI_ProjectPointOnSurf.hxx>
+ #include <Geom_Surface.hxx>
+-#include <NCollection_DefineArray2.hxx>
+ #include <Precision.hxx>
+ #include <Standard_Real.hxx>
+ #include <TColStd_SequenceOfInteger.hxx>
+diff --git a/src/Mod/Fem/Gui/TaskCreateNodeSet.cpp b/src/Mod/Fem/Gui/TaskCreateNodeSet.cpp
+index 22c8e6dec516..af4221a39543 100644
+--- a/src/Mod/Fem/Gui/TaskCreateNodeSet.cpp
++++ b/src/Mod/Fem/Gui/TaskCreateNodeSet.cpp
+@@ -28,7 +28,6 @@
+ 
+ #include <SMESHDS_Mesh.hxx>
+ #include <SMESH_Mesh.hxx>
+-#include <Standard_math.hxx>
+ #endif
+ 
+ #include <Base/Console.h>
+diff --git a/src/Mod/Import/App/ImportOCAF.cpp b/src/Mod/Import/App/ImportOCAF.cpp
+index 0f74d8b178a5..eb15de25bafc 100644
+--- a/src/Mod/Import/App/ImportOCAF.cpp
++++ b/src/Mod/Import/App/ImportOCAF.cpp
+@@ -151,7 +151,11 @@ void ImportOCAF::loadShapes(const TDF_Label& label,
+     std::vector<App::DocumentObject*> localValue;
+ 
+     if (aShapeTool->GetShape(label, aShape)) {
++#if OCC_VERSION_HEX >= 0x070800
++        hash = std::hash<TopoDS_Shape>{}(aShape);
++#else
+         hash = aShape.HashCode(HashUpper);
++#endif
+     }
+ 
+     Handle(TDataStd_Name) name;
+@@ -223,7 +227,11 @@ void ImportOCAF::loadShapes(const TDF_Label& label,
+     if (isRef || myRefShapes.find(hash) == myRefShapes.end()) {
+         TopoDS_Shape aShape;
+         if (isRef && aShapeTool->GetShape(label, aShape)) {
++#if OCC_VERSION_HEX >= 0x070800
++            myRefShapes.insert(std::hash<TopoDS_Shape>{}(aShape));
++#else
+             myRefShapes.insert(aShape.HashCode(HashUpper));
++#endif
+         }
+ 
+         if (aShapeTool->IsSimpleShape(label) && (isRef || aShapeTool->IsFree(label))) {
+@@ -550,7 +558,11 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
+     part->Label.setValue(default_name);
+     part->Shape.setValue(shape);
+     std::map<Standard_Integer, Quantity_ColorRGBA>::const_iterator jt;
++#if OCC_VERSION_HEX >= 0x070800
++    jt = myColorMap.find(std::hash<TopoDS_Shape>{}(shape));
++#else
+     jt = myColorMap.find(shape.HashCode(INT_MAX));
++#endif
+ 
+     App::Color partColor(0.8f, 0.8f, 0.8f);
+ #if 0  // TODO
+@@ -571,7 +583,11 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
+     // set label name if defined
+     if (setname && !myNameMap.empty()) {
+         std::map<Standard_Integer, std::string>::const_iterator jt;
++#if OCC_VERSION_HEX >= 0x070800
++        jt = myNameMap.find(std::hash<TopoDS_Shape>{}(shape));
++#else
+         jt = myNameMap.find(shape.HashCode(INT_MAX));
++#endif
+         if (jt != myNameMap.end()) {
+             part->Label.setValue(jt->second);
+         }
+@@ -591,7 +607,11 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
+         faceColors.resize(faces.Extent(), partColor);
+         xp.Init(shape, TopAbs_FACE);
+         while (xp.More()) {
++#if OCC_VERSION_HEX >= 0x070800
++            jt = myColorMap.find(std::hash<TopoDS_Shape>{}(xp.Current()));
++#else
+             jt = myColorMap.find(xp.Current().HashCode(INT_MAX));
++#endif
+             if (jt != myColorMap.end()) {
+                 int index = faces.FindIndex(xp.Current());
+                 faceColors[index - 1] = convertColor(jt->second);
+@@ -626,29 +646,57 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
+             // add the shapes
+             TopExp_Explorer xp;
+             for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
++#if OCC_VERSION_HEX >= 0x070800
++                this->mySolids[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
++#else
+                 this->mySolids[xp.Current().HashCode(INT_MAX)] = (xp.Current());
++#endif
+             }
+             for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++) {
++#if OCC_VERSION_HEX >= 0x070800
++                this->myShells[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
++#else
+                 this->myShells[xp.Current().HashCode(INT_MAX)] = (xp.Current());
++#endif
+             }
+             // if no solids and no shells were found then go for compounds
+             if (ctSolids == 0 && ctShells == 0) {
+                 for (xp.Init(aShape, TopAbs_COMPOUND); xp.More(); xp.Next(), ctComps++) {
++#if OCC_VERSION_HEX >= 0x070800
++                    this->myCompds[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
++#else
+                     this->myCompds[xp.Current().HashCode(INT_MAX)] = (xp.Current());
++#endif
+                 }
+             }
+             if (ctComps == 0) {
+                 for (xp.Init(aShape, TopAbs_FACE, TopAbs_SHELL); xp.More(); xp.Next()) {
++#if OCC_VERSION_HEX >= 0x070800
++                    this->myShapes[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
++#else
+                     this->myShapes[xp.Current().HashCode(INT_MAX)] = (xp.Current());
++#endif
+                 }
+                 for (xp.Init(aShape, TopAbs_WIRE, TopAbs_FACE); xp.More(); xp.Next()) {
++#if OCC_VERSION_HEX >= 0x070800
++                    this->myShapes[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
++#else
+                     this->myShapes[xp.Current().HashCode(INT_MAX)] = (xp.Current());
++#endif
+                 }
+                 for (xp.Init(aShape, TopAbs_EDGE, TopAbs_WIRE); xp.More(); xp.Next()) {
++#if OCC_VERSION_HEX >= 0x070800
++                    this->myShapes[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
++#else
+                     this->myShapes[xp.Current().HashCode(INT_MAX)] = (xp.Current());
++#endif
+                 }
+                 for (xp.Init(aShape, TopAbs_VERTEX, TopAbs_EDGE); xp.More(); xp.Next()) {
++#if OCC_VERSION_HEX >= 0x070800
++                    this->myShapes[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
++#else
+                     this->myShapes[xp.Current().HashCode(INT_MAX)] = (xp.Current());
++#endif
+                 }
+             }
+         }
+@@ -659,7 +707,11 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
+             || hColors->GetColor(label, XCAFDoc_ColorSurf, col)
+             || hColors->GetColor(label, XCAFDoc_ColorCurv, col)) {
+             // add defined color
++#if OCC_VERSION_HEX >= 0x070800
++            myColorMap[std::hash<TopoDS_Shape>{}(aShape)] = col;
++#else
+             myColorMap[aShape.HashCode(INT_MAX)] = col;
++#endif
+         }
+         else {
+             // http://www.opencascade.org/org/forum/thread_17107/
+@@ -669,7 +721,11 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
+                     || hColors->GetColor(it.Value(), XCAFDoc_ColorSurf, col)
+                     || hColors->GetColor(it.Value(), XCAFDoc_ColorCurv, col)) {
+                     // add defined color
++#if OCC_VERSION_HEX >= 0x070800
++                    myColorMap[std::hash<TopoDS_Shape>{}(it.Value())] = col;
++#else
+                     myColorMap[it.Value().HashCode(INT_MAX)] = col;
++#endif
+                 }
+             }
+         }
+@@ -682,7 +738,11 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
+             extstr.ToUTF8CString(str);
+             std::string labelName(str);
+             if (!labelName.empty()) {
++#if OCC_VERSION_HEX >= 0x070800
++                myNameMap[std::hash<TopoDS_Shape>{}(aShape)] = labelName;
++#else
+                 myNameMap[aShape.HashCode(INT_MAX)] = labelName;
++#endif
+             }
+             delete[] str;
+         }
+diff --git a/src/Mod/Import/App/ImportOCAF2.h b/src/Mod/Import/App/ImportOCAF2.h
+index 17cf8a7df9a7..8b79201e1760 100644
+--- a/src/Mod/Import/App/ImportOCAF2.h
++++ b/src/Mod/Import/App/ImportOCAF2.h
+@@ -30,7 +30,6 @@
+ #include <unordered_map>
+ #include <vector>
+ 
+-#include <TDF_LabelMapHasher.hxx>
+ #include <TDocStd_Document.hxx>
+ #include <TopoDS_Shape.hxx>
+ #include <XCAFDoc_ColorTool.hxx>
+diff --git a/src/Mod/Import/App/Tools.h b/src/Mod/Import/App/Tools.h
+index dc0ba5a7bbb5..3d825d53134e 100644
+--- a/src/Mod/Import/App/Tools.h
++++ b/src/Mod/Import/App/Tools.h
+@@ -24,12 +24,13 @@
+ #define IMPORT_TOOLS_H
+ 
+ #include <Quantity_ColorRGBA.hxx>
+-#include <TDF_LabelMapHasher.hxx>
+ #include <TopoDS_Shape.hxx>
+ #include <XCAFDoc_ColorTool.hxx>
+ #include <XCAFDoc_ShapeTool.hxx>
+ #include <App/Color.h>
+ 
++#include <Standard_Version.hxx>
++
+ namespace Import
+ {
+ 
+@@ -37,7 +38,11 @@ struct ShapeHasher
+ {
+     std::size_t operator()(const TopoDS_Shape& shape) const
+     {
++#if OCC_VERSION_HEX >= 0x070800
++        return std::hash<TopoDS_Shape>{}(shape);
++#else
+         return shape.HashCode(INT_MAX);
++#endif
+     }
+ };
+ 
+@@ -45,7 +50,11 @@ struct LabelHasher
+ {
+     std::size_t operator()(const TDF_Label& label) const
+     {
++#if OCC_VERSION_HEX >= 0x070800
++        return std::hash<TDF_Label>{}(label);
++#else
+         return TDF_LabelMapHasher::HashCode(label, INT_MAX);
++#endif
+     }
+ };
+ 
+diff --git a/src/Mod/MeshPart/App/CurveProjector.h b/src/Mod/MeshPart/App/CurveProjector.h
+index 08714d9e2aa2..033f96b16fe6 100644
+--- a/src/Mod/MeshPart/App/CurveProjector.h
++++ b/src/Mod/MeshPart/App/CurveProjector.h
+@@ -32,6 +32,7 @@
+ #include <Mod/Mesh/App/Mesh.h>
+ #include <Mod/MeshPart/MeshPartGlobal.h>
+ 
++#include <Standard_Version.hxx>
+ 
+ namespace MeshCore
+ {
+@@ -65,8 +66,15 @@ class MeshPartExport CurveProjector
+     {
+         bool operator()(const T& x, const T& y) const
+         {
++#if OCC_VERSION_HEX >= 0x070800
++            std::hash<T> hasher;
++            return hasher(x) < hasher(y);
++#else
+             return x.HashCode(INT_MAX - 1) < y.HashCode(INT_MAX - 1);
++#endif
+         }
++
++
+     };
+ 
+     using result_type = std::map<TopoDS_Edge, std::vector<FaceSplitEdge>, TopoDSLess<TopoDS_Edge>>;
+diff --git a/src/Mod/Part/App/ImportStep.cpp b/src/Mod/Part/App/ImportStep.cpp
+index 6c41ac538062..1d02eb2d6325 100644
+--- a/src/Mod/Part/App/ImportStep.cpp
++++ b/src/Mod/Part/App/ImportStep.cpp
+@@ -137,7 +137,12 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
+                 // This is a trick to access the GUI via Python and set the color property
+                 // of the associated view provider. If no GUI is up an exception is thrown
+                 // and cleared immediately
++#if OCC_VERSION_HEX >= 0x070800
++                std::hash<TopoDS_Solid> hasher;
++                std::map<int, Quantity_Color>::iterator it = hash_col.find(hasher(aSolid));
++#else
+                 std::map<int, Quantity_Color>::iterator it = hash_col.find(aSolid.HashCode(INT_MAX));
++#endif
+                 if (it != hash_col.end()) {
+                     try {
+                         Py::Object obj(pcFeature->getPyObject(), true);
+diff --git a/src/Mod/Part/App/TopoShapePyImp.cpp b/src/Mod/Part/App/TopoShapePyImp.cpp
+index 4833e5119e6e..1f97ff75eda7 100644
+--- a/src/Mod/Part/App/TopoShapePyImp.cpp
++++ b/src/Mod/Part/App/TopoShapePyImp.cpp
+@@ -59,6 +59,7 @@
+ # include <TopExp.hxx>
+ # include <TopExp_Explorer.hxx>
+ # include <TopLoc_Location.hxx>
++// # include <TopoDS_Shape.hxx>
+ # include <TopoDS.hxx>
+ # include <TopoDS_Iterator.hxx>
+ # include <TopTools_IndexedMapOfShape.hxx>
+@@ -1306,7 +1307,11 @@ PyObject*  TopoShapePy::ancestorsOfType(PyObject *args)
+         TopTools_ListIteratorOfListOfShape it(ancestors);
+         for (; it.More(); it.Next()) {
+             // make sure to avoid duplicates
++#if OCC_VERSION_HEX >= 0x070800
++            const size_t code = std::hash<TopoDS_Shape>{}(static_cast<TopoDS_Shape>(it.Value()));
++#else
+             Standard_Integer code = it.Value().HashCode(INT_MAX);
++#endif
+             if (hashes.find(code) == hashes.end()) {
+                 list.append(shape2pyshape(it.Value()));
+                 hashes.insert(code);
+@@ -1928,7 +1933,11 @@ PyObject* TopoShapePy::hashCode(PyObject *args)
+     if (!PyArg_ParseTuple(args, "|i",&upper))
+         return nullptr;
+ 
++#if OCC_VERSION_HEX >= 0x070800
++    int hc = std::hash<TopoDS_Shape>{}(getTopoShapePtr()->getShape());
++#else
+     int hc = getTopoShapePtr()->getShape().HashCode(upper);
++#endif
+     return Py_BuildValue("i", hc);
+ }
+ 
+diff --git a/src/Mod/Part/Gui/AppPartGui.cpp b/src/Mod/Part/Gui/AppPartGui.cpp
+index 90af3b7a20f6..8ef49fa4a688 100644
+--- a/src/Mod/Part/Gui/AppPartGui.cpp
++++ b/src/Mod/Part/Gui/AppPartGui.cpp
+@@ -23,9 +23,6 @@
+ 
+ 
+ #include "PreCompiled.h"
+-#ifndef _PreComp_
+-# include <Standard_math.hxx>
+-#endif
+ 
+ #include <Base/Console.h>
+ #include <Base/Interpreter.h>
+diff --git a/src/Mod/Part/Gui/Command.cpp b/src/Mod/Part/Gui/Command.cpp
+index c4a4392127dd..436ba6130a91 100644
+--- a/src/Mod/Part/Gui/Command.cpp
++++ b/src/Mod/Part/Gui/Command.cpp
+@@ -26,7 +26,6 @@
+ # include <QFileInfo>
+ # include <QPointer>
+ # include <QString>
+-# include <Standard_math.hxx>
+ # include <Standard_Version.hxx>
+ # include <TopExp_Explorer.hxx>
+ # include <TopoDS_Shape.hxx>
+diff --git a/src/Mod/Part/Gui/CommandSimple.cpp b/src/Mod/Part/Gui/CommandSimple.cpp
+index 2dfacbab09ee..60dce779c4b8 100644
+--- a/src/Mod/Part/Gui/CommandSimple.cpp
++++ b/src/Mod/Part/Gui/CommandSimple.cpp
+@@ -23,7 +23,6 @@
+ 
+ #include "PreCompiled.h"
+ #ifndef _PreComp_
+-# include <Standard_math.hxx>
+ # include <QInputDialog>
+ #endif
+ 
+diff --git a/src/Mod/Part/Gui/CrossSections.cpp b/src/Mod/Part/Gui/CrossSections.cpp
+index 76069d328290..a0474028b436 100644
+--- a/src/Mod/Part/Gui/CrossSections.cpp
++++ b/src/Mod/Part/Gui/CrossSections.cpp
+@@ -28,7 +28,6 @@
+ # include <QKeyEvent>
+ 
+ # include <BRep_Builder.hxx>
+-# include <Standard_math.hxx>
+ # include <TopoDS.hxx>
+ # include <TopoDS_Compound.hxx>
+ 
+diff --git a/src/Mod/Part/Gui/ViewProvider2DObject.cpp b/src/Mod/Part/Gui/ViewProvider2DObject.cpp
+index 7dd81a5fd22c..3d31ce2a406b 100644
+--- a/src/Mod/Part/Gui/ViewProvider2DObject.cpp
++++ b/src/Mod/Part/Gui/ViewProvider2DObject.cpp
+@@ -25,8 +25,6 @@
+ #ifndef _PreComp_
+ # include <cfloat>
+ 
+-# include <Standard_math.hxx>
+-
+ # include <Inventor/nodes/SoAnnotation.h>
+ # include <Inventor/nodes/SoBaseColor.h>
+ # include <Inventor/nodes/SoDepthBuffer.h>
+diff --git a/src/Mod/Part/Gui/ViewProviderExt.cpp b/src/Mod/Part/Gui/ViewProviderExt.cpp
+index aa58bf5bb325..c5a8d9ef00b4 100644
+--- a/src/Mod/Part/Gui/ViewProviderExt.cpp
++++ b/src/Mod/Part/Gui/ViewProviderExt.cpp
+@@ -982,7 +982,11 @@ void ViewProviderPartExt::updateVisual()
+ 
+             TopExp_Explorer xp;
+             for (xp.Init(faceMap(i),TopAbs_EDGE);xp.More();xp.Next())
++#if OCC_VERSION_HEX >= 0x070800
++                faceEdges.insert(std::hash<TopoDS_Shape>{}(xp.Current()));
++#else
+                 faceEdges.insert(xp.Current().HashCode(INT_MAX));
++#endif
+             numFaces++;
+         }
+ 
+@@ -1010,7 +1014,11 @@ void ViewProviderPartExt::updateVisual()
+             // So, we have to store the hashes of the edges associated to a face.
+             // If the hash of a given edge is not in this list we know it's really
+             // a free edge.
++#if OCC_VERSION_HEX >= 0x070800
++            int hash = std::hash<TopoDS_Shape>{}(aEdge);
++#else
+             int hash = aEdge.HashCode(INT_MAX);
++#endif
+             if (faceEdges.find(hash) == faceEdges.end()) {
+                 Handle(Poly_Polygon3D) aPoly = Part::Tools::polygonOfEdge(aEdge, aLoc);
+                 if (!aPoly.IsNull()) {
+@@ -1209,7 +1217,11 @@ void ViewProviderPartExt::updateVisual()
+             TopLoc_Location aLoc;
+ 
+             // handling of the free edge that are not associated to a face
++#if OCC_VERSION_HEX >= 0x070800
++            int hash = std::hash<TopoDS_Shape>{}(aEdge);
++#else
+             int hash = aEdge.HashCode(INT_MAX);
++#endif
+             if (faceEdges.find(hash) == faceEdges.end()) {
+                 Handle(Poly_Polygon3D) aPoly = Part::Tools::polygonOfEdge(aEdge, aLoc);
+                 if (!aPoly.IsNull()) {
+diff --git a/src/Mod/Part/Gui/ViewProviderExt.h b/src/Mod/Part/Gui/ViewProviderExt.h
+index bdd044e6fbe7..1e5ac2864828 100644
+--- a/src/Mod/Part/Gui/ViewProviderExt.h
++++ b/src/Mod/Part/Gui/ViewProviderExt.h
+@@ -24,7 +24,6 @@
+ #define PARTGUI_VIEWPROVIDERPARTEXT_H
+ 
+ #include <map>
+-#include <Standard_math.hxx>
+ 
+ #include <App/PropertyUnits.h>
+ #include <Gui/ViewProviderGeometryObject.h>
+diff --git a/src/Mod/Part/Gui/ViewProviderMirror.cpp b/src/Mod/Part/Gui/ViewProviderMirror.cpp
+index 617844c02c69..1c3393f3d242 100644
+--- a/src/Mod/Part/Gui/ViewProviderMirror.cpp
++++ b/src/Mod/Part/Gui/ViewProviderMirror.cpp
+@@ -27,7 +27,6 @@
+ # include <QMenu>
+ # include <QTimer>
+ 
+-# include <Standard_math.hxx>
+ # include <TopExp.hxx>
+ # include <TopTools_IndexedMapOfShape.hxx>
+ 
+diff --git a/src/Mod/Part/Gui/ViewProviderPython.cpp b/src/Mod/Part/Gui/ViewProviderPython.cpp
+index 6991f29efbd5..f31c11efe984 100644
+--- a/src/Mod/Part/Gui/ViewProviderPython.cpp
++++ b/src/Mod/Part/Gui/ViewProviderPython.cpp
+@@ -22,7 +22,6 @@
+ 
+ #include "PreCompiled.h"
+ 
+-#include <Standard_math.hxx>
+ #ifndef _PreComp_
+ # include <Inventor/nodes/SoSeparator.h>
+ #endif
+diff --git a/src/Mod/Part/Gui/ViewProviderReference.h b/src/Mod/Part/Gui/ViewProviderReference.h
+index 2408cbe8181c..b92beaf52564 100644
+--- a/src/Mod/Part/Gui/ViewProviderReference.h
++++ b/src/Mod/Part/Gui/ViewProviderReference.h
+@@ -24,7 +24,6 @@
+ #ifndef PARTGUI_ViewProviderPartReference_H
+ #define PARTGUI_ViewProviderPartReference_H
+ 
+-#include <Standard_math.hxx>
+ #include <Standard_Boolean.hxx>
+ #include <TopoDS_Shape.hxx>
+ #include <Gui/ViewProviderGeometryObject.h>
+diff --git a/src/Mod/Path/App/Voronoi.cpp b/src/Mod/Path/App/Voronoi.cpp
+index 27a509c20c07..27383c400205 100644
+--- a/src/Mod/Path/App/Voronoi.cpp
++++ b/src/Mod/Path/App/Voronoi.cpp
+@@ -21,9 +21,6 @@
+  ***************************************************************************/
+ 
+ #include "PreCompiled.h"
+-#ifndef _PreComp_
+-# include <Standard_math.hxx>
+-#endif
+ 
+ #include <Base/Vector3D.h>
+ 
+diff --git a/src/Mod/Path/Gui/PreCompiled.h b/src/Mod/Path/Gui/PreCompiled.h
+index f12ef8f91985..ed8cef500f31 100644
+--- a/src/Mod/Path/Gui/PreCompiled.h
++++ b/src/Mod/Path/Gui/PreCompiled.h
+@@ -38,8 +38,6 @@
+ # define PathGuiExport
+ #endif
+ 
+-#include <Standard_math.hxx>
+-
+ #ifdef _MSC_VER
+ # pragma warning( disable : 4273 )
+ #endif
+diff --git a/src/Mod/Robot/Gui/PreCompiled.h b/src/Mod/Robot/Gui/PreCompiled.h
+index ce1ed1d79085..d99738ef5307 100644
+--- a/src/Mod/Robot/Gui/PreCompiled.h
++++ b/src/Mod/Robot/Gui/PreCompiled.h
+@@ -38,8 +38,6 @@
+ #define RobotGuiExport
+ #endif
+ 
+-#include <Standard_math.hxx>
+-
+ #ifdef _MSC_VER
+ #pragma warning(disable : 4005)
+ #pragma warning(disable : 4273)
+diff --git a/src/Mod/Sketcher/Gui/EditDatumDialog.cpp b/src/Mod/Sketcher/Gui/EditDatumDialog.cpp
+index 3ae6def1f187..479b058d861e 100644
+--- a/src/Mod/Sketcher/Gui/EditDatumDialog.cpp
++++ b/src/Mod/Sketcher/Gui/EditDatumDialog.cpp
+@@ -23,7 +23,6 @@
+ #include "PreCompiled.h"
+ 
+ #ifndef _PreComp_
+-#include <Standard_math.hxx>
+ /// Qt Include Files
+ #include <Inventor/sensors/SoSensor.h>
+ #include <QApplication>
+
+From e12049a89496728daf3b997e38500e11fc03b9bf Mon Sep 17 00:00:00 2001
+From: "pre-commit-ci[bot]"
+ <66853113+pre-commit-ci[bot]@users.noreply.github.com>
+Date: Sat, 6 Jan 2024 01:06:49 +0000
+Subject: [PATCH 2/6] [pre-commit.ci] auto fixes from pre-commit.com hooks
+
+for more information, see https://pre-commit.ci
+---
+ src/Mod/Import/App/ImportOCAF.cpp     | 30 +++++++++++++--------------
+ src/Mod/Import/App/Tools.h            |  4 ++--
+ src/Mod/MeshPart/App/CurveProjector.h |  2 --
+ 3 files changed, 17 insertions(+), 19 deletions(-)
+
+diff --git a/src/Mod/Import/App/ImportOCAF.cpp b/src/Mod/Import/App/ImportOCAF.cpp
+index eb15de25bafc..7277d0fb193e 100644
+--- a/src/Mod/Import/App/ImportOCAF.cpp
++++ b/src/Mod/Import/App/ImportOCAF.cpp
+@@ -152,7 +152,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label,
+ 
+     if (aShapeTool->GetShape(label, aShape)) {
+ #if OCC_VERSION_HEX >= 0x070800
+-        hash = std::hash<TopoDS_Shape>{}(aShape);
++        hash = std::hash<TopoDS_Shape> {}(aShape);
+ #else
+         hash = aShape.HashCode(HashUpper);
+ #endif
+@@ -228,7 +228,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label,
+         TopoDS_Shape aShape;
+         if (isRef && aShapeTool->GetShape(label, aShape)) {
+ #if OCC_VERSION_HEX >= 0x070800
+-            myRefShapes.insert(std::hash<TopoDS_Shape>{}(aShape));
++            myRefShapes.insert(std::hash<TopoDS_Shape> {}(aShape));
+ #else
+             myRefShapes.insert(aShape.HashCode(HashUpper));
+ #endif
+@@ -559,7 +559,7 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
+     part->Shape.setValue(shape);
+     std::map<Standard_Integer, Quantity_ColorRGBA>::const_iterator jt;
+ #if OCC_VERSION_HEX >= 0x070800
+-    jt = myColorMap.find(std::hash<TopoDS_Shape>{}(shape));
++    jt = myColorMap.find(std::hash<TopoDS_Shape> {}(shape));
+ #else
+     jt = myColorMap.find(shape.HashCode(INT_MAX));
+ #endif
+@@ -584,7 +584,7 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
+     if (setname && !myNameMap.empty()) {
+         std::map<Standard_Integer, std::string>::const_iterator jt;
+ #if OCC_VERSION_HEX >= 0x070800
+-        jt = myNameMap.find(std::hash<TopoDS_Shape>{}(shape));
++        jt = myNameMap.find(std::hash<TopoDS_Shape> {}(shape));
+ #else
+         jt = myNameMap.find(shape.HashCode(INT_MAX));
+ #endif
+@@ -608,7 +608,7 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
+         xp.Init(shape, TopAbs_FACE);
+         while (xp.More()) {
+ #if OCC_VERSION_HEX >= 0x070800
+-            jt = myColorMap.find(std::hash<TopoDS_Shape>{}(xp.Current()));
++            jt = myColorMap.find(std::hash<TopoDS_Shape> {}(xp.Current()));
+ #else
+             jt = myColorMap.find(xp.Current().HashCode(INT_MAX));
+ #endif
+@@ -647,14 +647,14 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
+             TopExp_Explorer xp;
+             for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
+ #if OCC_VERSION_HEX >= 0x070800
+-                this->mySolids[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
++                this->mySolids[std::hash<TopoDS_Shape> {}(xp.Current())] = (xp.Current());
+ #else
+                 this->mySolids[xp.Current().HashCode(INT_MAX)] = (xp.Current());
+ #endif
+             }
+             for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++) {
+ #if OCC_VERSION_HEX >= 0x070800
+-                this->myShells[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
++                this->myShells[std::hash<TopoDS_Shape> {}(xp.Current())] = (xp.Current());
+ #else
+                 this->myShells[xp.Current().HashCode(INT_MAX)] = (xp.Current());
+ #endif
+@@ -663,7 +663,7 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
+             if (ctSolids == 0 && ctShells == 0) {
+                 for (xp.Init(aShape, TopAbs_COMPOUND); xp.More(); xp.Next(), ctComps++) {
+ #if OCC_VERSION_HEX >= 0x070800
+-                    this->myCompds[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
++                    this->myCompds[std::hash<TopoDS_Shape> {}(xp.Current())] = (xp.Current());
+ #else
+                     this->myCompds[xp.Current().HashCode(INT_MAX)] = (xp.Current());
+ #endif
+@@ -672,28 +672,28 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
+             if (ctComps == 0) {
+                 for (xp.Init(aShape, TopAbs_FACE, TopAbs_SHELL); xp.More(); xp.Next()) {
+ #if OCC_VERSION_HEX >= 0x070800
+-                    this->myShapes[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
++                    this->myShapes[std::hash<TopoDS_Shape> {}(xp.Current())] = (xp.Current());
+ #else
+                     this->myShapes[xp.Current().HashCode(INT_MAX)] = (xp.Current());
+ #endif
+                 }
+                 for (xp.Init(aShape, TopAbs_WIRE, TopAbs_FACE); xp.More(); xp.Next()) {
+ #if OCC_VERSION_HEX >= 0x070800
+-                    this->myShapes[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
++                    this->myShapes[std::hash<TopoDS_Shape> {}(xp.Current())] = (xp.Current());
+ #else
+                     this->myShapes[xp.Current().HashCode(INT_MAX)] = (xp.Current());
+ #endif
+                 }
+                 for (xp.Init(aShape, TopAbs_EDGE, TopAbs_WIRE); xp.More(); xp.Next()) {
+ #if OCC_VERSION_HEX >= 0x070800
+-                    this->myShapes[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
++                    this->myShapes[std::hash<TopoDS_Shape> {}(xp.Current())] = (xp.Current());
+ #else
+                     this->myShapes[xp.Current().HashCode(INT_MAX)] = (xp.Current());
+ #endif
+                 }
+                 for (xp.Init(aShape, TopAbs_VERTEX, TopAbs_EDGE); xp.More(); xp.Next()) {
+ #if OCC_VERSION_HEX >= 0x070800
+-                    this->myShapes[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
++                    this->myShapes[std::hash<TopoDS_Shape> {}(xp.Current())] = (xp.Current());
+ #else
+                     this->myShapes[xp.Current().HashCode(INT_MAX)] = (xp.Current());
+ #endif
+@@ -708,7 +708,7 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
+             || hColors->GetColor(label, XCAFDoc_ColorCurv, col)) {
+             // add defined color
+ #if OCC_VERSION_HEX >= 0x070800
+-            myColorMap[std::hash<TopoDS_Shape>{}(aShape)] = col;
++            myColorMap[std::hash<TopoDS_Shape> {}(aShape)] = col;
+ #else
+             myColorMap[aShape.HashCode(INT_MAX)] = col;
+ #endif
+@@ -722,7 +722,7 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
+                     || hColors->GetColor(it.Value(), XCAFDoc_ColorCurv, col)) {
+                     // add defined color
+ #if OCC_VERSION_HEX >= 0x070800
+-                    myColorMap[std::hash<TopoDS_Shape>{}(it.Value())] = col;
++                    myColorMap[std::hash<TopoDS_Shape> {}(it.Value())] = col;
+ #else
+                     myColorMap[it.Value().HashCode(INT_MAX)] = col;
+ #endif
+@@ -739,7 +739,7 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
+             std::string labelName(str);
+             if (!labelName.empty()) {
+ #if OCC_VERSION_HEX >= 0x070800
+-                myNameMap[std::hash<TopoDS_Shape>{}(aShape)] = labelName;
++                myNameMap[std::hash<TopoDS_Shape> {}(aShape)] = labelName;
+ #else
+                 myNameMap[aShape.HashCode(INT_MAX)] = labelName;
+ #endif
+diff --git a/src/Mod/Import/App/Tools.h b/src/Mod/Import/App/Tools.h
+index 3d825d53134e..aa05e3067e67 100644
+--- a/src/Mod/Import/App/Tools.h
++++ b/src/Mod/Import/App/Tools.h
+@@ -39,7 +39,7 @@ struct ShapeHasher
+     std::size_t operator()(const TopoDS_Shape& shape) const
+     {
+ #if OCC_VERSION_HEX >= 0x070800
+-        return std::hash<TopoDS_Shape>{}(shape);
++        return std::hash<TopoDS_Shape> {}(shape);
+ #else
+         return shape.HashCode(INT_MAX);
+ #endif
+@@ -51,7 +51,7 @@ struct LabelHasher
+     std::size_t operator()(const TDF_Label& label) const
+     {
+ #if OCC_VERSION_HEX >= 0x070800
+-        return std::hash<TDF_Label>{}(label);
++        return std::hash<TDF_Label> {}(label);
+ #else
+         return TDF_LabelMapHasher::HashCode(label, INT_MAX);
+ #endif
+diff --git a/src/Mod/MeshPart/App/CurveProjector.h b/src/Mod/MeshPart/App/CurveProjector.h
+index 033f96b16fe6..e7d99100ed0a 100644
+--- a/src/Mod/MeshPart/App/CurveProjector.h
++++ b/src/Mod/MeshPart/App/CurveProjector.h
+@@ -73,8 +73,6 @@ class MeshPartExport CurveProjector
+             return x.HashCode(INT_MAX - 1) < y.HashCode(INT_MAX - 1);
+ #endif
+         }
+-
+-
+     };
+ 
+     using result_type = std::map<TopoDS_Edge, std::vector<FaceSplitEdge>, TopoDSLess<TopoDS_Edge>>;
+
+From d0969c3d7eee95bac4964ed1046fbd0735fb4509 Mon Sep 17 00:00:00 2001
+From: bgbsww <bgbsww@gmail.com>
+Date: Fri, 5 Jan 2024 22:50:55 -0500
+Subject: [PATCH 3/6] Appease windows compiler
+
+---
+ src/Mod/Fem/Gui/TaskCreateNodeSet.cpp     | 1 +
+ src/Mod/Part/Gui/AppPartGui.cpp           | 3 +++
+ src/Mod/Part/Gui/Command.cpp              | 1 +
+ src/Mod/Part/Gui/CommandSimple.cpp        | 1 +
+ src/Mod/Part/Gui/CrossSections.cpp        | 1 +
+ src/Mod/Part/Gui/ViewProvider2DObject.cpp | 2 ++
+ src/Mod/Part/Gui/ViewProviderExt.h        | 1 +
+ src/Mod/Part/Gui/ViewProviderMirror.cpp   | 1 +
+ src/Mod/Part/Gui/ViewProviderPython.cpp   | 1 +
+ src/Mod/Part/Gui/ViewProviderReference.h  | 1 +
+ src/Mod/Path/App/Voronoi.cpp              | 3 +++
+ src/Mod/Path/Gui/PreCompiled.h            | 2 ++
+ src/Mod/Robot/Gui/PreCompiled.h           | 2 ++
+ src/Mod/Sketcher/Gui/EditDatumDialog.cpp  | 1 +
+ 14 files changed, 21 insertions(+)
+
+diff --git a/src/Mod/Fem/Gui/TaskCreateNodeSet.cpp b/src/Mod/Fem/Gui/TaskCreateNodeSet.cpp
+index af4221a39543..c8e9083c2269 100644
+--- a/src/Mod/Fem/Gui/TaskCreateNodeSet.cpp
++++ b/src/Mod/Fem/Gui/TaskCreateNodeSet.cpp
+@@ -28,6 +28,7 @@
+ 
+ #include <SMESHDS_Mesh.hxx>
+ #include <SMESH_Mesh.hxx>
++#include <math.h>
+ #endif
+ 
+ #include <Base/Console.h>
+diff --git a/src/Mod/Part/Gui/AppPartGui.cpp b/src/Mod/Part/Gui/AppPartGui.cpp
+index 8ef49fa4a688..8f9ff2e2f1d8 100644
+--- a/src/Mod/Part/Gui/AppPartGui.cpp
++++ b/src/Mod/Part/Gui/AppPartGui.cpp
+@@ -23,6 +23,9 @@
+ 
+ 
+ #include "PreCompiled.h"
++#ifndef _PreComp_
++# include <math.h>
++#endif
+ 
+ #include <Base/Console.h>
+ #include <Base/Interpreter.h>
+diff --git a/src/Mod/Part/Gui/Command.cpp b/src/Mod/Part/Gui/Command.cpp
+index 436ba6130a91..60e49ae1b33d 100644
+--- a/src/Mod/Part/Gui/Command.cpp
++++ b/src/Mod/Part/Gui/Command.cpp
+@@ -26,6 +26,7 @@
+ # include <QFileInfo>
+ # include <QPointer>
+ # include <QString>
++# include <math.h>
+ # include <Standard_Version.hxx>
+ # include <TopExp_Explorer.hxx>
+ # include <TopoDS_Shape.hxx>
+diff --git a/src/Mod/Part/Gui/CommandSimple.cpp b/src/Mod/Part/Gui/CommandSimple.cpp
+index 60dce779c4b8..6093d8f49849 100644
+--- a/src/Mod/Part/Gui/CommandSimple.cpp
++++ b/src/Mod/Part/Gui/CommandSimple.cpp
+@@ -23,6 +23,7 @@
+ 
+ #include "PreCompiled.h"
+ #ifndef _PreComp_
++# include <math.h>
+ # include <QInputDialog>
+ #endif
+ 
+diff --git a/src/Mod/Part/Gui/CrossSections.cpp b/src/Mod/Part/Gui/CrossSections.cpp
+index a0474028b436..8a328cf5c797 100644
+--- a/src/Mod/Part/Gui/CrossSections.cpp
++++ b/src/Mod/Part/Gui/CrossSections.cpp
+@@ -28,6 +28,7 @@
+ # include <QKeyEvent>
+ 
+ # include <BRep_Builder.hxx>
++# include <math.h>
+ # include <TopoDS.hxx>
+ # include <TopoDS_Compound.hxx>
+ 
+diff --git a/src/Mod/Part/Gui/ViewProvider2DObject.cpp b/src/Mod/Part/Gui/ViewProvider2DObject.cpp
+index 3d31ce2a406b..b6abd2a843f8 100644
+--- a/src/Mod/Part/Gui/ViewProvider2DObject.cpp
++++ b/src/Mod/Part/Gui/ViewProvider2DObject.cpp
+@@ -25,6 +25,8 @@
+ #ifndef _PreComp_
+ # include <cfloat>
+ 
++# include <math.h>
++
+ # include <Inventor/nodes/SoAnnotation.h>
+ # include <Inventor/nodes/SoBaseColor.h>
+ # include <Inventor/nodes/SoDepthBuffer.h>
+diff --git a/src/Mod/Part/Gui/ViewProviderExt.h b/src/Mod/Part/Gui/ViewProviderExt.h
+index 1e5ac2864828..fbab7d983a3c 100644
+--- a/src/Mod/Part/Gui/ViewProviderExt.h
++++ b/src/Mod/Part/Gui/ViewProviderExt.h
+@@ -24,6 +24,7 @@
+ #define PARTGUI_VIEWPROVIDERPARTEXT_H
+ 
+ #include <map>
++#include <math.h>
+ 
+ #include <App/PropertyUnits.h>
+ #include <Gui/ViewProviderGeometryObject.h>
+diff --git a/src/Mod/Part/Gui/ViewProviderMirror.cpp b/src/Mod/Part/Gui/ViewProviderMirror.cpp
+index 1c3393f3d242..b6d4c0549cd4 100644
+--- a/src/Mod/Part/Gui/ViewProviderMirror.cpp
++++ b/src/Mod/Part/Gui/ViewProviderMirror.cpp
+@@ -27,6 +27,7 @@
+ # include <QMenu>
+ # include <QTimer>
+ 
++# include <math.h>
+ # include <TopExp.hxx>
+ # include <TopTools_IndexedMapOfShape.hxx>
+ 
+diff --git a/src/Mod/Part/Gui/ViewProviderPython.cpp b/src/Mod/Part/Gui/ViewProviderPython.cpp
+index f31c11efe984..0b694ae32744 100644
+--- a/src/Mod/Part/Gui/ViewProviderPython.cpp
++++ b/src/Mod/Part/Gui/ViewProviderPython.cpp
+@@ -22,6 +22,7 @@
+ 
+ #include "PreCompiled.h"
+ 
++#include <math.h>
+ #ifndef _PreComp_
+ # include <Inventor/nodes/SoSeparator.h>
+ #endif
+diff --git a/src/Mod/Part/Gui/ViewProviderReference.h b/src/Mod/Part/Gui/ViewProviderReference.h
+index b92beaf52564..0819567bde3b 100644
+--- a/src/Mod/Part/Gui/ViewProviderReference.h
++++ b/src/Mod/Part/Gui/ViewProviderReference.h
+@@ -24,6 +24,7 @@
+ #ifndef PARTGUI_ViewProviderPartReference_H
+ #define PARTGUI_ViewProviderPartReference_H
+ 
++#include <math.h>
+ #include <Standard_Boolean.hxx>
+ #include <TopoDS_Shape.hxx>
+ #include <Gui/ViewProviderGeometryObject.h>
+diff --git a/src/Mod/Path/App/Voronoi.cpp b/src/Mod/Path/App/Voronoi.cpp
+index 27383c400205..ed9faf1186dd 100644
+--- a/src/Mod/Path/App/Voronoi.cpp
++++ b/src/Mod/Path/App/Voronoi.cpp
+@@ -21,6 +21,9 @@
+  ***************************************************************************/
+ 
+ #include "PreCompiled.h"
++#ifndef _PreComp_
++# include <math.h>
++#endif
+ 
+ #include <Base/Vector3D.h>
+ 
+diff --git a/src/Mod/Path/Gui/PreCompiled.h b/src/Mod/Path/Gui/PreCompiled.h
+index ed8cef500f31..49b329dcf986 100644
+--- a/src/Mod/Path/Gui/PreCompiled.h
++++ b/src/Mod/Path/Gui/PreCompiled.h
+@@ -38,6 +38,8 @@
+ # define PathGuiExport
+ #endif
+ 
++#include <math.h>
++
+ #ifdef _MSC_VER
+ # pragma warning( disable : 4273 )
+ #endif
+diff --git a/src/Mod/Robot/Gui/PreCompiled.h b/src/Mod/Robot/Gui/PreCompiled.h
+index d99738ef5307..4895053e02ee 100644
+--- a/src/Mod/Robot/Gui/PreCompiled.h
++++ b/src/Mod/Robot/Gui/PreCompiled.h
+@@ -38,6 +38,8 @@
+ #define RobotGuiExport
+ #endif
+ 
++#include <math.h>
++
+ #ifdef _MSC_VER
+ #pragma warning(disable : 4005)
+ #pragma warning(disable : 4273)
+diff --git a/src/Mod/Sketcher/Gui/EditDatumDialog.cpp b/src/Mod/Sketcher/Gui/EditDatumDialog.cpp
+index 479b058d861e..eb468a41e0b6 100644
+--- a/src/Mod/Sketcher/Gui/EditDatumDialog.cpp
++++ b/src/Mod/Sketcher/Gui/EditDatumDialog.cpp
+@@ -23,6 +23,7 @@
+ #include "PreCompiled.h"
+ 
+ #ifndef _PreComp_
++#include <math.h>
+ /// Qt Include Files
+ #include <Inventor/sensors/SoSensor.h>
+ #include <QApplication>
+
+From 369e0104fbd306a2612ae25f3da4b9f26cf30788 Mon Sep 17 00:00:00 2001
+From: bgbsww <bgbsww@gmail.com>
+Date: Fri, 5 Jan 2024 23:21:45 -0500
+Subject: [PATCH 4/6] Appease windows compiler
+
+---
+ src/Mod/Path/App/Voronoi.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/Mod/Path/App/Voronoi.cpp b/src/Mod/Path/App/Voronoi.cpp
+index ed9faf1186dd..443b7475075a 100644
+--- a/src/Mod/Path/App/Voronoi.cpp
++++ b/src/Mod/Path/App/Voronoi.cpp
+@@ -22,6 +22,7 @@
+ 
+ #include "PreCompiled.h"
+ #ifndef _PreComp_
++#define _USE_MATH_DEFINES
+ # include <math.h>
+ #endif
+ 
+
+From 5df6384d0bc02aff8d77795c0d87318518577277 Mon Sep 17 00:00:00 2001
+From: bgbsww <bgbsww@gmail.com>
+Date: Sat, 6 Jan 2024 06:53:41 -0500
+Subject: [PATCH 5/6] Appease windows compiler
+
+---
+ src/Mod/Part/Gui/AppPartGui.cpp           | 1 -
+ src/Mod/Part/Gui/Command.cpp              | 1 -
+ src/Mod/Part/Gui/CommandSimple.cpp        | 1 -
+ src/Mod/Part/Gui/CrossSections.cpp        | 1 -
+ src/Mod/Part/Gui/ViewProvider2DObject.cpp | 1 -
+ src/Mod/Part/Gui/ViewProviderExt.h        | 1 -
+ src/Mod/Part/Gui/ViewProviderMirror.cpp   | 1 -
+ src/Mod/Part/Gui/ViewProviderPython.cpp   | 1 -
+ src/Mod/Part/Gui/ViewProviderReference.h  | 1 -
+ src/Mod/Path/Gui/PreCompiled.h            | 2 --
+ src/Mod/Robot/Gui/PreCompiled.h           | 2 --
+ src/Mod/Sketcher/Gui/EditDatumDialog.cpp  | 1 -
+ 12 files changed, 14 deletions(-)
+
+diff --git a/src/Mod/Part/Gui/AppPartGui.cpp b/src/Mod/Part/Gui/AppPartGui.cpp
+index 8f9ff2e2f1d8..73c931bc66aa 100644
+--- a/src/Mod/Part/Gui/AppPartGui.cpp
++++ b/src/Mod/Part/Gui/AppPartGui.cpp
+@@ -24,7 +24,6 @@
+ 
+ #include "PreCompiled.h"
+ #ifndef _PreComp_
+-# include <math.h>
+ #endif
+ 
+ #include <Base/Console.h>
+diff --git a/src/Mod/Part/Gui/Command.cpp b/src/Mod/Part/Gui/Command.cpp
+index 60e49ae1b33d..436ba6130a91 100644
+--- a/src/Mod/Part/Gui/Command.cpp
++++ b/src/Mod/Part/Gui/Command.cpp
+@@ -26,7 +26,6 @@
+ # include <QFileInfo>
+ # include <QPointer>
+ # include <QString>
+-# include <math.h>
+ # include <Standard_Version.hxx>
+ # include <TopExp_Explorer.hxx>
+ # include <TopoDS_Shape.hxx>
+diff --git a/src/Mod/Part/Gui/CommandSimple.cpp b/src/Mod/Part/Gui/CommandSimple.cpp
+index 6093d8f49849..60dce779c4b8 100644
+--- a/src/Mod/Part/Gui/CommandSimple.cpp
++++ b/src/Mod/Part/Gui/CommandSimple.cpp
+@@ -23,7 +23,6 @@
+ 
+ #include "PreCompiled.h"
+ #ifndef _PreComp_
+-# include <math.h>
+ # include <QInputDialog>
+ #endif
+ 
+diff --git a/src/Mod/Part/Gui/CrossSections.cpp b/src/Mod/Part/Gui/CrossSections.cpp
+index 8a328cf5c797..a0474028b436 100644
+--- a/src/Mod/Part/Gui/CrossSections.cpp
++++ b/src/Mod/Part/Gui/CrossSections.cpp
+@@ -28,7 +28,6 @@
+ # include <QKeyEvent>
+ 
+ # include <BRep_Builder.hxx>
+-# include <math.h>
+ # include <TopoDS.hxx>
+ # include <TopoDS_Compound.hxx>
+ 
+diff --git a/src/Mod/Part/Gui/ViewProvider2DObject.cpp b/src/Mod/Part/Gui/ViewProvider2DObject.cpp
+index b6abd2a843f8..dfde26fa8993 100644
+--- a/src/Mod/Part/Gui/ViewProvider2DObject.cpp
++++ b/src/Mod/Part/Gui/ViewProvider2DObject.cpp
+@@ -25,7 +25,6 @@
+ #ifndef _PreComp_
+ # include <cfloat>
+ 
+-# include <math.h>
+ 
+ # include <Inventor/nodes/SoAnnotation.h>
+ # include <Inventor/nodes/SoBaseColor.h>
+diff --git a/src/Mod/Part/Gui/ViewProviderExt.h b/src/Mod/Part/Gui/ViewProviderExt.h
+index fbab7d983a3c..1e5ac2864828 100644
+--- a/src/Mod/Part/Gui/ViewProviderExt.h
++++ b/src/Mod/Part/Gui/ViewProviderExt.h
+@@ -24,7 +24,6 @@
+ #define PARTGUI_VIEWPROVIDERPARTEXT_H
+ 
+ #include <map>
+-#include <math.h>
+ 
+ #include <App/PropertyUnits.h>
+ #include <Gui/ViewProviderGeometryObject.h>
+diff --git a/src/Mod/Part/Gui/ViewProviderMirror.cpp b/src/Mod/Part/Gui/ViewProviderMirror.cpp
+index b6d4c0549cd4..1c3393f3d242 100644
+--- a/src/Mod/Part/Gui/ViewProviderMirror.cpp
++++ b/src/Mod/Part/Gui/ViewProviderMirror.cpp
+@@ -27,7 +27,6 @@
+ # include <QMenu>
+ # include <QTimer>
+ 
+-# include <math.h>
+ # include <TopExp.hxx>
+ # include <TopTools_IndexedMapOfShape.hxx>
+ 
+diff --git a/src/Mod/Part/Gui/ViewProviderPython.cpp b/src/Mod/Part/Gui/ViewProviderPython.cpp
+index 0b694ae32744..f31c11efe984 100644
+--- a/src/Mod/Part/Gui/ViewProviderPython.cpp
++++ b/src/Mod/Part/Gui/ViewProviderPython.cpp
+@@ -22,7 +22,6 @@
+ 
+ #include "PreCompiled.h"
+ 
+-#include <math.h>
+ #ifndef _PreComp_
+ # include <Inventor/nodes/SoSeparator.h>
+ #endif
+diff --git a/src/Mod/Part/Gui/ViewProviderReference.h b/src/Mod/Part/Gui/ViewProviderReference.h
+index 0819567bde3b..b92beaf52564 100644
+--- a/src/Mod/Part/Gui/ViewProviderReference.h
++++ b/src/Mod/Part/Gui/ViewProviderReference.h
+@@ -24,7 +24,6 @@
+ #ifndef PARTGUI_ViewProviderPartReference_H
+ #define PARTGUI_ViewProviderPartReference_H
+ 
+-#include <math.h>
+ #include <Standard_Boolean.hxx>
+ #include <TopoDS_Shape.hxx>
+ #include <Gui/ViewProviderGeometryObject.h>
+diff --git a/src/Mod/Path/Gui/PreCompiled.h b/src/Mod/Path/Gui/PreCompiled.h
+index 49b329dcf986..ed8cef500f31 100644
+--- a/src/Mod/Path/Gui/PreCompiled.h
++++ b/src/Mod/Path/Gui/PreCompiled.h
+@@ -38,8 +38,6 @@
+ # define PathGuiExport
+ #endif
+ 
+-#include <math.h>
+-
+ #ifdef _MSC_VER
+ # pragma warning( disable : 4273 )
+ #endif
+diff --git a/src/Mod/Robot/Gui/PreCompiled.h b/src/Mod/Robot/Gui/PreCompiled.h
+index 4895053e02ee..d99738ef5307 100644
+--- a/src/Mod/Robot/Gui/PreCompiled.h
++++ b/src/Mod/Robot/Gui/PreCompiled.h
+@@ -38,8 +38,6 @@
+ #define RobotGuiExport
+ #endif
+ 
+-#include <math.h>
+-
+ #ifdef _MSC_VER
+ #pragma warning(disable : 4005)
+ #pragma warning(disable : 4273)
+diff --git a/src/Mod/Sketcher/Gui/EditDatumDialog.cpp b/src/Mod/Sketcher/Gui/EditDatumDialog.cpp
+index eb468a41e0b6..479b058d861e 100644
+--- a/src/Mod/Sketcher/Gui/EditDatumDialog.cpp
++++ b/src/Mod/Sketcher/Gui/EditDatumDialog.cpp
+@@ -23,7 +23,6 @@
+ #include "PreCompiled.h"
+ 
+ #ifndef _PreComp_
+-#include <math.h>
+ /// Qt Include Files
+ #include <Inventor/sensors/SoSensor.h>
+ #include <QApplication>
+
+From 2a6fa0d9832920dd50d8f661e639d14c4eff9a04 Mon Sep 17 00:00:00 2001
+From: bgbsww <bgbsww@gmail.com>
+Date: Sat, 6 Jan 2024 07:41:51 -0500
+Subject: [PATCH 6/6] Cleanups
+
+---
+ .../inc/SMESHDS_DataMapOfShape.hxx            | 20 +++++++++----------
+ src/Mod/Fem/Gui/TaskCreateNodeSet.cpp         |  1 -
+ src/Mod/Part/App/TopoShapePyImp.cpp           |  1 -
+ 3 files changed, 10 insertions(+), 12 deletions(-)
+
+diff --git a/src/3rdParty/salomesmesh/inc/SMESHDS_DataMapOfShape.hxx b/src/3rdParty/salomesmesh/inc/SMESHDS_DataMapOfShape.hxx
+index 074ff56897e8..67e9f91cde88 100644
+--- a/src/3rdParty/salomesmesh/inc/SMESHDS_DataMapOfShape.hxx
++++ b/src/3rdParty/salomesmesh/inc/SMESHDS_DataMapOfShape.hxx
+@@ -47,16 +47,16 @@ struct SMESHDS_Hasher
+ #else
+ struct SMESHDS_Hasher
+ {
+-static inline Standard_Boolean IsEqual(const TopoDS_Shape& S1,
+-                                       const TopoDS_Shape& S2)
+-{
+-  return S1.IsSame(S2);
+-}
+-static inline Standard_Integer HashCode(const TopoDS_Shape& S,
+-                                        const Standard_Integer Upper)
+-{
+-  return ::HashCode( S, Upper);
+-}
++  static inline Standard_Boolean IsEqual(const TopoDS_Shape& S1,
++                                        const TopoDS_Shape& S2)
++  {
++    return S1.IsSame(S2);
++  }
++  static inline Standard_Integer HashCode(const TopoDS_Shape& S,
++                                          const Standard_Integer Upper)
++  {
++    return ::HashCode( S, Upper);
++  }
+ };
+ #endif
+ 
+diff --git a/src/Mod/Fem/Gui/TaskCreateNodeSet.cpp b/src/Mod/Fem/Gui/TaskCreateNodeSet.cpp
+index c8e9083c2269..af4221a39543 100644
+--- a/src/Mod/Fem/Gui/TaskCreateNodeSet.cpp
++++ b/src/Mod/Fem/Gui/TaskCreateNodeSet.cpp
+@@ -28,7 +28,6 @@
+ 
+ #include <SMESHDS_Mesh.hxx>
+ #include <SMESH_Mesh.hxx>
+-#include <math.h>
+ #endif
+ 
+ #include <Base/Console.h>
+diff --git a/src/Mod/Part/App/TopoShapePyImp.cpp b/src/Mod/Part/App/TopoShapePyImp.cpp
+index 1f97ff75eda7..f4471391c911 100644
+--- a/src/Mod/Part/App/TopoShapePyImp.cpp
++++ b/src/Mod/Part/App/TopoShapePyImp.cpp
+@@ -59,7 +59,6 @@
+ # include <TopExp.hxx>
+ # include <TopExp_Explorer.hxx>
+ # include <TopLoc_Location.hxx>
+-// # include <TopoDS_Shape.hxx>
+ # include <TopoDS.hxx>
+ # include <TopoDS_Iterator.hxx>
+ # include <TopTools_IndexedMapOfShape.hxx>
