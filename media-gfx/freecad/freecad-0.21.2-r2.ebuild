@@ -168,7 +168,6 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-0.21.0-0001-Gentoo-specific-disable-ccache-usage.patch
 	"${FILESDIR}"/${PN}-0.21.1-Gentoo-specific-don-t-check-vcs.patch
 	"${FILESDIR}"/${PN}-0.21.2-fix-for-vtk-9-3-compatibility.patch
-	"${FILESDIR}"/${PN}-0.21.2-fix-for-opencascade-7-8-0-compatibility.patch
 )
 
 DOCS=( CODE_OF_CONDUCT.md README.md )
