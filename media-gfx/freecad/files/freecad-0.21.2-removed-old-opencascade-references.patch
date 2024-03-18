@@ -1,0 +1,108 @@
+From 170c2b9957dfe00e519d5035ed7421c31a6a5cab Mon Sep 17 00:00:00 2001
+From: andrea <realeandrea@yahoo.it>
+Date: Mon, 24 Jul 2023 19:27:46 +0200
+Subject: [PATCH] removed old OCC <7 references removed OCC <7 references
+
+---
+ cMake/FindOCC.cmake                                |  7 +++----
+ src/Mod/Import/App/dxf/dxf.h                       |  4 ----
+ src/Mod/Part/App/BRepOffsetAPI_MakePipeShellPy.xml |  4 ----
+ src/Mod/Part/BOPTools/JoinAPI.py                   |  7 -------
+ src/Mod/Part/BOPTools/__init__.py                  | 13 -------------
+ 5 files changed, 3 insertions(+), 32 deletions(-)
+
+diff --git a/cMake/FindOCC.cmake b/cMake/FindOCC.cmake
+index 48e5c98750d4..32078cf2deaf 100644
+--- a/cMake/FindOCC.cmake
++++ b/cMake/FindOCC.cmake
+@@ -160,11 +160,10 @@ if(OCC_FOUND)
+     TKService
+     TKV3d
+   )
+-  if(OCC_VERSION_STRING VERSION_LESS 6.7.3)
+-    list(APPEND OCC_OCAF_LIBRARIES TKAdvTools)
+-  elseif(NOT OCC_VERSION_STRING VERSION_LESS 7.5.0)
++
++  if(NOT OCC_VERSION_STRING VERSION_LESS 7.5.0)
+     list(APPEND OCC_OCAF_LIBRARIES TKRWMesh)
+-  endif(OCC_VERSION_STRING VERSION_LESS 6.7.3)
++  endif(NOT OCC_VERSION_STRING VERSION_LESS 7.5.0)
+   message(STATUS "-- Found OCE/OpenCASCADE version: ${OCC_VERSION_STRING}")
+   message(STATUS "-- OCE/OpenCASCADE include directory: ${OCC_INCLUDE_DIR}")
+   message(STATUS "-- OCE/OpenCASCADE shared libraries directory: ${OCC_LIBRARY_DIR}")
+diff --git a/src/Mod/Import/App/dxf/dxf.h b/src/Mod/Import/App/dxf/dxf.h
+index 8ab4d3b6d45f..43bd41aa38f8 100644
+--- a/src/Mod/Import/App/dxf/dxf.h
++++ b/src/Mod/Import/App/dxf/dxf.h
+@@ -21,10 +21,6 @@
+ #include <Mod/Import/ImportGlobal.h>
+ 
+ 
+-//Following is required to be defined on Ubuntu with OCC 6.3.1
+-#ifndef HAVE_IOSTREAM
+-#define HAVE_IOSTREAM
+-#endif
+ 
+ typedef int ColorIndex_t; // DXF color index
+ 
+diff --git a/src/Mod/Part/App/BRepOffsetAPI_MakePipeShellPy.xml b/src/Mod/Part/App/BRepOffsetAPI_MakePipeShellPy.xml
+index e2dd1fd64191..046cbc7bc213 100644
+--- a/src/Mod/Part/App/BRepOffsetAPI_MakePipeShellPy.xml
++++ b/src/Mod/Part/App/BRepOffsetAPI_MakePipeShellPy.xml
+@@ -63,10 +63,6 @@
+ 					For each Point of the Spine P, an Point Q is evalued on AuxiliarySpine.
+ 					If CurvilinearEquivalence=True Q split AuxiliarySpine with the same length ratio than P split Spine.
+ 
+-					* OCC before 6.7
+-					TypeOfContact = bool
+-					True = keep Contact
+-
+ 					* OCC >= 6.7
+ 					TypeOfContact = long
+ 					0: No contact
+diff --git a/src/Mod/Part/BOPTools/JoinAPI.py b/src/Mod/Part/BOPTools/JoinAPI.py
+index b4a77cbf0ca9..2fb8bb151a13 100644
+--- a/src/Mod/Part/BOPTools/JoinAPI.py
++++ b/src/Mod/Part/BOPTools/JoinAPI.py
+@@ -27,7 +27,6 @@
+ 
+ import Part
+ from . import ShapeMerge
+-from . import generalFuseIsAvailable
+ from .GeneralFuseResult import GeneralFuseResult
+ from .Utils import compoundLeaves
+ 
+@@ -76,12 +75,6 @@ def connect(list_of_shapes, tolerance = 0.0):
+     if len(list_of_shapes) < 2:
+         return Part.makeCompound(list_of_shapes)
+ 
+-    if not generalFuseIsAvailable(): #fallback to legacy
+-        result = list_of_shapes[0]
+-        for i in range(1, len(list_of_shapes)):
+-            result = connect_legacy(result, list_of_shapes[i], tolerance)
+-        return result
+-
+     pieces, map = list_of_shapes[0].generalFuse(list_of_shapes[1:], tolerance)
+     ao = GeneralFuseResult(list_of_shapes, (pieces, map))
+     ao.splitAggregates()
+diff --git a/src/Mod/Part/BOPTools/__init__.py b/src/Mod/Part/BOPTools/__init__.py
+index bd66daa95a27..2eb2dd23f6e3 100644
+--- a/src/Mod/Part/BOPTools/__init__.py
++++ b/src/Mod/Part/BOPTools/__init__.py
+@@ -62,16 +62,3 @@ def addCommands():
+     JoinFeatures.addCommands()
+     SplitFeatures.addCommands()
+ 
+-def generalFuseIsAvailable():
+-    """generalFuseIsAvailable(): returns True if FreeCAD's Part.Shape.generalFuse is functional.
+-    True if Part.OCC_VERSION >= 7.0.0."""
+-    import Part
+-    if not hasattr(Part, "OCC_VERSION"):
+-        return False
+-    else:
+-        ver_string = Part.OCC_VERSION
+-        import re
+-        match = re.match(r"([0-9]+)\.([0-9]+)\.([0-9]+)",ver_string)
+-        major,minor,rev = match.groups()
+-        major = int(major); minor = int(minor); rev = int(rev)
+-        return (major,minor,rev)>=(7,0,0)

@@ -3,38 +3,6 @@ From: bgbsww <bgbsww@gmail.com>
 Date: Fri, 5 Jan 2024 20:01:46 -0500
 Subject: [PATCH 1/6] Add support for OCC 7.8.0
 
----
- cMake/FindOCC.cmake                           | 14 ++---
- .../inc/SMESHDS_DataMapOfShape.hxx            | 31 +++++++---
- .../salomesmesh/inc/SMESH_MeshVSLink.hxx      |  3 -
- src/3rdParty/salomesmesh/inc/SMESH_SMESH.hxx  |  1 +
- .../salomesmesh/inc/SMESH_SequenceOfNode.hxx  |  3 +-
- .../salomesmesh/inc/SMESH_TypeDefs.hxx        |  7 +++
- .../src/DriverSTL/DriverSTL_R_SMDS_Mesh.cpp   | 29 ++++++++-
- .../StdMeshers/StdMeshers_Quadrangle_2D.cpp   |  1 -
- src/Mod/Fem/Gui/TaskCreateNodeSet.cpp         |  1 -
- src/Mod/Import/App/ImportOCAF.cpp             | 60 +++++++++++++++++++
- src/Mod/Import/App/ImportOCAF2.h              |  1 -
- src/Mod/Import/App/Tools.h                    | 11 +++-
- src/Mod/MeshPart/App/CurveProjector.h         |  8 +++
- src/Mod/Part/App/ImportStep.cpp               |  5 ++
- src/Mod/Part/App/TopoShapePyImp.cpp           |  9 +++
- src/Mod/Part/Gui/AppPartGui.cpp               |  3 -
- src/Mod/Part/Gui/Command.cpp                  |  1 -
- src/Mod/Part/Gui/CommandSimple.cpp            |  1 -
- src/Mod/Part/Gui/CrossSections.cpp            |  1 -
- src/Mod/Part/Gui/ViewProvider2DObject.cpp     |  2 -
- src/Mod/Part/Gui/ViewProviderExt.cpp          | 12 ++++
- src/Mod/Part/Gui/ViewProviderExt.h            |  1 -
- src/Mod/Part/Gui/ViewProviderMirror.cpp       |  1 -
- src/Mod/Part/Gui/ViewProviderPython.cpp       |  1 -
- src/Mod/Part/Gui/ViewProviderReference.h      |  1 -
- src/Mod/Path/App/Voronoi.cpp                  |  3 -
- src/Mod/Path/Gui/PreCompiled.h                |  2 -
- src/Mod/Robot/Gui/PreCompiled.h               |  2 -
- src/Mod/Sketcher/Gui/EditDatumDialog.cpp      |  1 -
- 29 files changed, 169 insertions(+), 47 deletions(-)
-
 diff --git a/cMake/FindOCC.cmake b/cMake/FindOCC.cmake
 index 32078cf2deaf..c72066f43e2f 100644
 --- a/cMake/FindOCC.cmake
