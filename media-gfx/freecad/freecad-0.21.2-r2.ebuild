@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 
 inherit check-reqs cmake optfeature python-single-r1 qmake-utils xdg
 
@@ -73,8 +73,14 @@ RDEPEND="
 		net-misc/curl
 	)
 	fem? (
-		!qt6? ( sci-libs/vtk:=[opencascade,qt5,rendering] )
-		qt6? ( sci-libs/vtk:=[opencascade,-qt5,qt6,rendering] )
+		!qt6? (
+			>=sci-libs/vtk-9.3.0:=[opencascade,qt5,rendering]
+			<sci-libs/vtk-9.3.0:=[qt5,rendering]
+		)
+		qt6? (
+			>=sci-libs/vtk-9.3.0:=[opencascade,-qt5,qt6,rendering]
+			<sci-libs/vtk-9.3.0:=[-qt5,qt6,rendering]
+		)
 	)
 	gui? (
 		>=media-libs/coin-4.0.0
