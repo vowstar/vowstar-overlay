@@ -1,4 +1,4 @@
-From 05371be1ea25809b124f6e81dc845e5639592f4e Mon Sep 17 00:00:00 2001
+From 27b71f9a9381d0ab7552bfb27d6d48c6cc5171b1 Mon Sep 17 00:00:00 2001
 From: Huang Rui <vowstar@gmail.com>
 Date: Fri, 22 Mar 2024 18:18:40 +0800
 Subject: [PATCH] libgit2-1.8.0 compatibility: adjusted parent pointer type
@@ -9,13 +9,14 @@ Subject: [PATCH] libgit2-1.8.0 compatibility: adjusted parent pointer type
   1.8.0.
 - Ensures consistent function behavior across different libgit2 versions.
 
+Fixes https://gitlab.com/kicad/code/kicad/-/issues/17536
 Signed-off-by: Huang Rui <vowstar@gmail.com>
 ---
  kicad/project_tree_pane.cpp | 7 +++++++
  1 file changed, 7 insertions(+)
 
 diff --git a/kicad/project_tree_pane.cpp b/kicad/project_tree_pane.cpp
-index 6ac4b04034cf..4bf88a3d2a06 100644
+index 6ac4b04034cf..99ad026bc9c2 100644
 --- a/kicad/project_tree_pane.cpp
 +++ b/kicad/project_tree_pane.cpp
 @@ -2233,7 +2233,14 @@ void PROJECT_TREE_PANE::onGitCommit( wxCommandEvent& aEvent )
@@ -25,7 +26,7 @@ index 6ac4b04034cf..4bf88a3d2a06 100644
 +    // Check if the libgit2 library version is 1.8.0 or higher
 +#if ( LIBGIT2_VER_MAJOR > 1 ) || ( LIBGIT2_VER_MAJOR == 1 && LIBGIT2_VER_MINOR >= 8 )
 +        // For libgit2 version 1.8.0 and above
-+        git_commit* parents[1] = { const_cast<git_commit*>(parent) };
++        git_commit* const parents[1] = { parent };
 +#else
 +        // For libgit2 versions older than 1.8.0
          const git_commit* parents[1] = { parent };
