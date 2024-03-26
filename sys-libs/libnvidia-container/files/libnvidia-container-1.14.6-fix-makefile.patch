@@ -80,7 +80,7 @@
 
  install: all
 -	$(INSTALL) -d -m 755 $(addprefix $(DESTDIR),$(includedir) $(bindir) $(libdir) $(docdir) $(libdbgdir) $(pkgconfdir))
-+	$(INSTALL) -d -m 755 $(addprefix $(DESTDIR),$(includedir) $(bindir) $(libdir) $(docdir) $(pkgconfdir))
++	$(INSTALL) -d -m 755 $(addprefix $(DESTDIR),$(includedir) $(bindir) $(libdir) $(pkgconfdir))
  	# Install header files
  	$(INSTALL) -m 644 $(LIB_INCS) $(DESTDIR)$(includedir)
  	# Install library files
