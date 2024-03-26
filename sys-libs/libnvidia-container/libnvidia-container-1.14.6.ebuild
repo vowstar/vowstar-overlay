@@ -23,7 +23,7 @@ else
 fi
 
 LICENSE="Apache-2.0"
-SLOT="0"
+SLOT="0/${PV}"
 
 RDEPEND="
 	net-libs/libtirpc:=
