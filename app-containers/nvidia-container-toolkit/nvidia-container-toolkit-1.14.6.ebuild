@@ -26,6 +26,7 @@ else
 	"
 	S="${WORKDIR}/${PN}-${PV/_rc/-rc.}"
 	KEYWORDS="~amd64"
+	RESTRICT="mirror"
 fi
 
 LICENSE="Apache-2.0"
