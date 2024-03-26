@@ -100,8 +100,10 @@
  	# Install binary files
  	$(INSTALL) -m 755 $(BIN_NAME) $(DESTDIR)$(bindir)
  	# Install documentation files
- 	$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/$(LIB_NAME)-$(VERSION)
- 	$(INSTALL) -m 644 $(DOC_FILES) $(DESTDIR)$(docdir)/$(LIB_NAME)-$(VERSION)
+-	$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/$(LIB_NAME)-$(VERSION)
+-	$(INSTALL) -m 644 $(DOC_FILES) $(DESTDIR)$(docdir)/$(LIB_NAME)-$(VERSION)
++	# $(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/$(LIB_NAME)-$(VERSION)
++	# $(INSTALL) -m 644 $(DOC_FILES) $(DESTDIR)$(docdir)/$(LIB_NAME)-$(VERSION)
 
  uninstall:
  	# Uninstall header files
