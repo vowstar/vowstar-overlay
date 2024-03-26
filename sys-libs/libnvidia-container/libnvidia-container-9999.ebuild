@@ -24,6 +24,7 @@ fi
 
 LICENSE="Apache-2.0"
 SLOT="0/${PV}"
+IUSE="doc static-libs"
 
 RDEPEND="
 	net-libs/libtirpc:=
@@ -46,6 +47,8 @@ BDEPEND="
 PATCHES=(
 	"${FILESDIR}"/${PN}-1.14.6-fix-makefile.patch
 )
+
+DOCS=( COPYING COPYING.LESSER LICENSE NOTICE README.md)
 
 src_prepare() {
 	# nvidia-modprobe patching based on libnvidia-container/mk/nvidia-modprobe.mk
@@ -82,4 +85,10 @@ src_install() {
 		LIB_TAG="${MY_LIB_TAG}" \
 		DESTDIR="${D}" \
 		install
+	# Install docs
+	einstalldocs # Bug 831705
+	# Cleanup static libraries
+	if ! use static-libs ; then
+		find "${ED}" -name '*.a' -delete || die # Bug 783984
+	fi
 }
