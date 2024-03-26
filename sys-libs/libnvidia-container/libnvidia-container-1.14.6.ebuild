@@ -86,7 +86,9 @@ src_install() {
 		DESTDIR="${D}" \
 		install
 	# Install docs
-	einstalldocs # Bug 831705
+	if use doc ; then
+		einstalldocs # Bug 831705
+	fi
 	# Cleanup static libraries
 	if ! use static-libs ; then
 		find "${ED}" -name '*.a' -delete || die # Bug 783984
