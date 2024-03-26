@@ -4,7 +4,7 @@
 EAPI=8
 
 # check the VERSION in libnvidia-container/mk/nvidia-modprobe.mk
-NVMODV="550.54.14" 
+NVMODV="550.54.14"
 
 DESCRIPTION="NVIDIA container runtime library"
 HOMEPAGE="https://github.com/NVIDIA/libnvidia-container"
