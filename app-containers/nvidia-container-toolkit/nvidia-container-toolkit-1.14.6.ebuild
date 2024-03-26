@@ -30,10 +30,10 @@ else
 fi
 
 LICENSE="Apache-2.0"
-SLOT="0"
+SLOT="0/${PV}"
 
 RDEPEND="
-	=sys-libs/libnvidia-container-${PV}
+	sys-libs/libnvidia-container:0/${PV}=
 "
 
 DEPEND="${RDEPEND}"
