@@ -12,7 +12,7 @@ HOMEPAGE="https://octave.sourceforge.io/audio"
 SRC_URI="https://downloads.sourceforge.net/octave/${P}.tar.gz -> ${P}.tar.gz"
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv ~x86"
+KEYWORDS="~amd64 ~arm64 ~riscv ~x86"
 RESTRICT="test"
 
 RDEPEND="
