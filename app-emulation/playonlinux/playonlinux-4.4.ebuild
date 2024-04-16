@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{8..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 
 inherit desktop python-single-r1 wrapper xdg
 

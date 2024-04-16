@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{8..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 inherit python-r1 qmake-utils
 
 EGIT_COMMIT="ba5af8616b3a6c916e718914225a483267c01356"

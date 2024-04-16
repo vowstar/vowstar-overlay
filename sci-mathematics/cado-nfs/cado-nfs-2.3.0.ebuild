@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{8..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 PYTHON_REQ_USE="sqlite"
 CMAKE_MAKEFILE_GENERATOR="emake"
 inherit cmake python-r1

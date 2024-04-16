@@ -5,7 +5,7 @@ EAPI=8
 
 CMAKE_BUILD_TYPE="Release"
 CMAKE_MAKEFILE_GENERATOR="emake"
-PYTHON_COMPAT=( python3_{8..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 
 inherit cmake desktop llvm python-r1 xdg
 
