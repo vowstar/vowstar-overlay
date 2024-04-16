@@ -26,7 +26,6 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 RDEPEND="
 	${PYTHON_DEPS}
-	!sci-mathematics/ggnfs
 	mpi? ( virtual/mpi )
 	mysql? ( virtual/mysql )
 	curl? ( net-misc/curl )
@@ -35,7 +34,6 @@ RDEPEND="
 "
 
 DEPEND="
-	dev-util/cmake
 	${RDEPEND}
 "
 
