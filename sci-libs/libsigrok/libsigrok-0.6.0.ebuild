@@ -51,7 +51,7 @@ RDEPEND="
 	static-libs? ( ${LIB_DEPEND} )
 "
 DEPEND="${LIB_DEPEND//\[static-libs(+)]}
-	cxx? ( app-doc/doxygen )
+	cxx? ( app-text/doxygen )
 	java? (
 		>=dev-lang/swig-3.0.6
 		>=virtual/jdk-1.8:*
