@@ -37,6 +37,8 @@ pkg_nofetch() {
 	einfo "Segger requires you to accept their license agreement before downloading."
 	einfo "Download ${SRC_URI}"
 	einfo "with your browser and place it in DISTDIR (usually /var/cache/distfiles/)"
+	einfo "Please place the ${P} installation file ${SRC_URI}"
+	einfo "in your \$\{DISTDIR\}."
 }
 
 src_install() {
@@ -100,11 +102,6 @@ src_install() {
 	if use udev ; then
 		udev_dorules 99-jlink.rules
 	fi
-}
-
-pkg_nofetch() {
-	einfo "Please place the ${P} installation file ${SRC_URI}"
-	einfo "in your \$\{DISTDIR\}."
 }
 
 pkg_postinst() {
