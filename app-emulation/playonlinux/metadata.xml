@@ -9,6 +9,9 @@
 		<email>wine@gentoo.org</email>
 		<name>Wine</name>
 	</maintainer>
+	<upstream>
+		<remote-id type="github">PlayOnLinux/POL-POM-4</remote-id>
+	</upstream>
 	<use>
 		<flag name="winbind">Enables support for the winbind auth daemon</flag>
 	</use>
