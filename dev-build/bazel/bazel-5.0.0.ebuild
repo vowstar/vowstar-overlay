@@ -9,6 +9,7 @@ DESCRIPTION="Fast and correct automated build system"
 HOMEPAGE="https://bazel.build/"
 
 SRC_URI="https://github.com/bazelbuild/bazel/releases/download/${PV}/${P}-dist.zip"
+S="${WORKDIR}"
 
 LICENSE="Apache-2.0"
 SLOT="0"
@@ -22,8 +23,6 @@ DEPEND="
 	virtual/jdk:11
 	app-arch/unzip
 	app-arch/zip"
-
-S="${WORKDIR}"
 
 pkg_setup() {
 	if has ccache ${FEATURES}; then
