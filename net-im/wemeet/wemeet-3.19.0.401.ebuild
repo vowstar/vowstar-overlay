@@ -58,6 +58,8 @@ src_install() {
 	rm -rf opt/${PN}/lib/libQt5* || die
 	# Add libQt5Pdf* to fix bug
 	cp -rf opt/${PN}/lib.orig/libQt5Pdf* opt/${PN}/lib/ || die
+	# Add libjpeg* to fix bug
+	cp -rf opt/${PN}/lib.orig/libjpeg* opt/${PN}/lib/ || die
 	# Clean up
 	rm -r opt/${PN}/lib.orig || die
 	# Fix SEGFAULT with libqxcb-glx-integration
