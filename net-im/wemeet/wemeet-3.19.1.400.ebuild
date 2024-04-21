@@ -60,8 +60,14 @@ src_install() {
 	rm -rf opt/${PN}/lib/libQt5* || die
 	# Add libQt5Pdf* to fix bug
 	cp -rf opt/${PN}/lib.orig/libQt5Pdf* opt/${PN}/lib/ || die
-	# Add libjpeg* to fix bug
+	# Tencent modified standard QWidgets and add QWidget::eventFilter, so we
+	# need to use their libQt5Widgets. Add libQt5Widgets* to fix missing of
+	# QWidget::eventFilter(QObject*, QEvent*)
+	cp -rf opt/${PN}/lib.orig/libQt5Widgets* opt/${PN}/lib/ || die
+	# Add libjpeg* to fix missing of libjpeg.so.8.1.2
 	cp -rf opt/${PN}/lib.orig/libjpeg* opt/${PN}/lib/ || die
+	# Add libicu* to fix missing of libicu libraries
+	cp -rf opt/${PN}/lib.orig/libicu* opt/${PN}/lib/ || die
 	# Clean up
 	rm -r opt/${PN}/lib.orig || die
 	# Fix SEGFAULT with libqxcb-glx-integration
