@@ -115,7 +115,6 @@ src_install() {
 		GDBServer \
 		Samples \
 		Script \
-		x86 \
 		README.txt
 
 	if use udev ; then
