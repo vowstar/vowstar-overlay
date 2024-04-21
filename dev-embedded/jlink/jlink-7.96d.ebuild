@@ -48,25 +48,38 @@ pkg_nofetch() {
 
 src_install() {
 	local bins=(
+		DDConditionerExe
+		DevProExe
 		JFlashExe
 		JFlashLiteExe
 		JFlashSPI_CL
+		JFlashSPICLExe
 		JFlashSPIExe
 		JLinkConfigExe
 		JLinkExe
-		JLinkGDBServerCLExe
 		JLinkGDBServer
+		JLinkGDBServerCLExe
+		JLinkGDBServerExe
 		JLinkGUIServerExe
 		JLinkLicenseManager
+		JLinkLicenseManagerExe
 		JLinkRegistration
-		JLinkRemoteServerCLExe
+		JLinkRegistrationExe
 		JLinkRemoteServer
+		JLinkRemoteServerCLExe
+		JLinkRemoteServerExe
 		JLinkRTTClient
+		JLinkRTTClientExe
 		JLinkRTTLogger
+		JLinkRTTLoggerExe
 		JLinkRTTViewerExe
 		JLinkSTM32
-		JLinkSWOViewerCLExe
+		JLinkSTM32Exe
 		JLinkSWOViewer
+		JLinkSWOViewerCLExe
+		JLinkSWOViewerExe
+		JLinkUSBWebServerExe
+		JLinkXVCDServerExe
 		JMemExe
 		JRunExe
 		JTAGLoadExe
@@ -97,12 +110,14 @@ src_install() {
 	done
 
 	doins -r \
-		README.txt \
 		Doc \
-		Samples \
-		Devices \
 		ETC \
-		GDBServer
+		Firmwares \
+		GDBServer \
+		Samples \
+		Script \
+		x86 \
+		README.txt
 
 	if use udev ; then
 		udev_dorules 99-jlink.rules
