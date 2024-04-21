@@ -10,6 +10,8 @@ INSTALLDIR="/opt/${PN}"
 DESCRIPTION="Tools for Segger J-Link JTAG adapters"
 HOMEPAGE="https://www.segger.com/jlink-software.html"
 SRC_URI="JLink_Linux_V${PV/./}_x86_64.tgz"
+S="${WORKDIR}/JLink_Linux_V${PV/./}_x86_64"
+
 LICENSE="SEGGER"
 SLOT="0"
 KEYWORDS="-* amd64"
@@ -21,7 +23,6 @@ RDEPEND="
 	media-libs/fontconfig
 	media-libs/freetype
 	sys-devel/gcc
-	sys-libs/glibc
 	x11-libs/libICE
 	x11-libs/libSM
 	x11-libs/libX11
@@ -30,8 +31,6 @@ RDEPEND="
 	x11-libs/libXfixes
 	x11-libs/libXrandr
 "
-
-S="${WORKDIR}/JLink_Linux_V${PV/./}_x86_64"
 
 pkg_nofetch() {
 	einfo "Segger requires you to accept their license agreement before downloading."
