@@ -9,11 +9,12 @@ DESCRIPTION="Wemeet - Tencent Video Conferencing"
 HOMEPAGE="https://wemeet.qq.com"
 
 SRC_URI="
-	amd64? ( mirror+https://updatecdn.meeting.qq.com/cos/\
-bb4001c715553579a8b3e496233331d4/TencentMeeting_0300000000_${PV}_x86_64_default.publish.deb -> ${P}_amd64.deb )
-	arm64? ( mirror+https://updatecdn.meeting.qq.com/cos/\
-0f96a97b0aaea9b9d5d2c2b912ede656/TencentMeeting_0300000000_${PV}_arm64_default.publish.deb -> ${P}_arm64.deb )
+	amd64? ( mirror+https://updatecdn.meeting.qq.com/cos/bb4001c715553579a8b3e496233331d4\
+/TencentMeeting_0300000000_${PV}_x86_64_default.publish.deb -> ${P}_amd64.deb )
+	arm64? ( mirror+https://updatecdn.meeting.qq.com/cos/0f96a97b0aaea9b9d5d2c2b912ede656\
+/TencentMeeting_0300000000_${PV}_arm64_default.publish.deb -> ${P}_arm64.deb )
 "
+S="${WORKDIR}"
 
 LICENSE="wemeet_license"
 SLOT="0"
@@ -46,7 +47,6 @@ DEPEND="
 RDEPEND="${DEPEND}"
 BDEPEND="dev-util/patchelf"
 
-S="${WORKDIR}"
 QA_PREBUILT="opt/${PN}/*"
 
 src_install() {
