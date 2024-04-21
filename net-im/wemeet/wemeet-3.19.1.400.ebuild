@@ -43,6 +43,7 @@ DEPEND="
 	dev-qt/qtxml:5
 	media-libs/libpulse
 	media-libs/tiff-compat:4
+	sys-apps/bubblewrap
 	x11-libs/libXinerama
 	x11-libs/libXrandr
 "
