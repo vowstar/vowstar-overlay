@@ -36,7 +36,6 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 BDEPEND="
 	>=dev-libs/libfmt-9.1.0
-	>=dev-libs/mimalloc-2.1.2
 	test? ( >=dev-cpp/catch-3.0.1 )
 "
 
