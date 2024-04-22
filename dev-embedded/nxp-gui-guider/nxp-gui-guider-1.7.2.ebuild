@@ -50,13 +50,17 @@ src_install() {
 		[[ -f "${f}" && $(od -t x1 -N 4 "${f}") == *"7f 45 4c 46"* ]] || continue
 		fperms 0755 "/opt/Gui-Guider/${f}"
 		[[ "${f: -4}" != ".cfx" ]] || continue
-		patchelf --set-rpath "${ED}/opt/Gui-Guider" "${f}" || die "patchelf failed on ${f}"
+		patchelf --set-rpath "/opt/Gui-Guider" "${f}" || die "patchelf failed on ${f}"
 	done
 	popd || die
 	for f in $(find "${D}/opt/Gui-Guider/environment/LinkServer/linux/binaries") ; do
 		[[ -f "${f}" && $(od -t x1 -N 4 "${f}") == *"7f 45 4c 46"* ]] || continue
 		[[ "${f: -4}" != ".cfx" ]] || continue
-		patchelf --set-rpath "${ED}/opt/Gui-Guider/environment/LinkServer/linux/binaries" \
+		patchelf --set-rpath \
+"/opt/Gui-Guider/environment/LinkServer/linux/binaries:\
+/opt/Gui-Guider/environment/LinkServer/linux/dist:\
+/opt/Gui-Guider/environment/LinkServer/linux/MCU-LINK_installer/bin:\
+/opt/Gui-Guider/environment/LinkServer/linux/dist/lib-dynload" \
 			"${f}" || die "patchelf failed on ${f}"
 	done
 	for i in 16 32 64 128 256 512; do
