@@ -29,16 +29,15 @@ RESTRICT="!test? ( test )"
 
 RDEPEND="
 	${PYTHON_DEPS}
-	>=dev-cpp/catch-3.0.1
-	>=dev-libs/libfmt-9.1.0
-	>=dev-libs/unordered_dense-2.0.1 <dev-libs/unordered_dense-2.0.2
 	$(python_gen_cond_dep '
 		>=dev-python/pybind11-2.10[${PYTHON_USEDEP}]
 	')
 "
-
-DEPEND="
-	${RDEPEND}
+DEPEND="${RDEPEND}"
+BDEPEND="
+	>=dev-libs/libfmt-9.1.0
+	>=dev-libs/unordered_dense-2.0.1 <dev-libs/unordered_dense-2.0.2
+	test? ( >=dev-cpp/catch-3.0.1 )
 "
 
 src_configure() {

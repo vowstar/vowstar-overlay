@@ -3,7 +3,7 @@
 
 EAPI="8"
 
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{11..12} )
 inherit cmake python-single-r1
 
 DESCRIPTION="SystemVerilog compiler and language services"
@@ -29,16 +29,15 @@ RESTRICT="!test? ( test )"
 
 RDEPEND="
 	${PYTHON_DEPS}
-	>=dev-cpp/catch-3.0.1
-	>=dev-libs/libfmt-9.1.0
-	>=dev-libs/mimalloc-2.1.2
 	$(python_gen_cond_dep '
 		>=dev-python/pybind11-2.10[${PYTHON_USEDEP}]
 	')
 "
-
-DEPEND="
-	${RDEPEND}
+DEPEND="${RDEPEND}"
+BDEPEND="
+	>=dev-libs/libfmt-9.1.0
+	>=dev-libs/mimalloc-2.1.2
+	test? ( >=dev-cpp/catch-3.0.1 )
 "
 
 src_configure() {
@@ -48,6 +47,7 @@ src_configure() {
 		-D BUILD_SHARED_LIBS=ON
 		-D SLANG_INCLUDE_PYLIB=$(usex python)
 		-D SLANG_INCLUDE_TESTS=$(usex test)
+		-D SLANG_USE_MIMALLOC=OFF
 	)
 	cmake_src_configure
 }

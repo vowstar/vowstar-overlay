@@ -32,8 +32,9 @@ RDEPEND="
 	dev-libs/libfmt
 "
 
-DEPEND="
-	${RDEPEND}
+DEPEND="${RDEPEND}"
+BDEPEND="
+	>=dev-libs/libfmt-9.1.0
 "
 
 src_configure() {
