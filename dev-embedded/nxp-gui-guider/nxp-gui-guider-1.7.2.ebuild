@@ -16,7 +16,7 @@ LICENSE="all-rights-reserved"
 SLOT="0"
 KEYWORDS="-* ~amd64"
 
-RESTRICT="bindist strip"
+RESTRICT="bindist fetch strip"
 
 RDEPEND="
 	dev-libs/libappindicator
