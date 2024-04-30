@@ -121,9 +121,9 @@ bazel_setup_bazelrc() {
 		EOF
 
 	if tc-is-cross-compiler; then
-		echo "build --distinct_host_configuration" >> "${T}/bazelrc" || die
+		echo "build --distinct_host_configuration=true" >> "${T}/bazelrc" || die
 	else
-		echo "build --nodistinct_host_configuration" >> "${T}/bazelrc" || die
+		echo "build --distinct_host_configuration=false" >> "${T}/bazelrc" || die
 	fi
 }
 
