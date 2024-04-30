@@ -26,7 +26,6 @@ S="${WORKDIR}/${PN}-${MY_PV}"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64"
-RESTRICT="strip"
 
 RDEPEND="sys-libs/zlib"
 DEPEND="${RDEPEND}"
