@@ -69,9 +69,8 @@ bazel_get_flags() {
 	echo "${fs[*]}"
 }
 
-# Internal func. Extracts and expands the version info from bazel version output.
-# The first argument is the version info to expand.
-# Queries the version via `bazel --version` command for better consistency.
+# @FUNCTION: _bazel_fullversion
+# @RETURN: Internal func. Extracts and expands the bazel version info.
 _bazel_fullversion() {
     local ver="$1"; shift
     # Extracts the version number from the bazel version output
