@@ -45,10 +45,6 @@ BDEPEND="
 	)
 "
 
-pkg_setup() {
-	python-single-r1_pkg_setup
-}
-
 src_prepare() {
 	default
 	if [[ ! "${PV}" == "9999" ]] ; then
