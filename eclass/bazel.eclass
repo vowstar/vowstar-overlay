@@ -161,7 +161,7 @@ bazel_setup_bazelrc() {
 		build --define=INCLUDEDIR=\$(PREFIX)/include
 		EOF
 
-	if [ $(bazel-major-version) -lt 7 ]; then
+	if [ ver_test $(bazel-major-version) -lt 7 ]; then
 		if tc-is-cross-compiler; then
 			echo "build --distinct_host_configuration=true" >> "${T}/bazelrc" || die
 		else
