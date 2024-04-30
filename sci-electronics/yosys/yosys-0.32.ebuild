@@ -11,6 +11,7 @@ SRC_URI="
 	https://github.com/YosysHQ/${PN}/archive/${P}.tar.gz
 	https://github.com/YosysHQ/abc/archive/${ABC_GIT_COMMIT}.tar.gz -> abc-${ABC_GIT_COMMIT}.tar.gz
 "
+S="${WORKDIR}/${PN}-${PN}-${PV}"
 LICENSE="ISC"
 SLOT="0"
 KEYWORDS="~amd64"
@@ -32,8 +33,6 @@ QA_PRESTRIPPED="
 	/usr/bin/yosys-filterlib
 	/usr/bin/yosys-abc
 "
-
-S="${WORKDIR}/${PN}-${PN}-${PV}"
 
 src_prepare() {
 	mv "${WORKDIR}/abc-${ABC_GIT_COMMIT}" "${S}"/abc || die
