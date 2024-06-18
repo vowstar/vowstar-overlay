@@ -1,16 +1,32 @@
-# https://gitlab.archlinux.org/archlinux/packaging/packages/libnvidia-container/-/blob/main/fix-makefile.patch
+From 10291d688da827a199b9fb965c630192be0b7baf Mon Sep 17 00:00:00 2001
+From: Huang Rui <vowstar@gmail.com>
+Date: Tue, 18 Jun 2024 11:55:50 +0800
+Subject: [PATCH] Fix makefile for gcc and clang build
+
+https://gitlab.archlinux.org/archlinux/packaging/packages/libnvidia-container/-/blob/main/fix-makefile.patch
+
+Signed-off-by: Huang Rui <vowstar@gmail.com>
+---
+ Makefile              | 56 ++++++++++---------------------------------
+ mk/nvcgo.mk           |  5 +---
+ mk/nvidia-modprobe.mk |  2 +-
+ src/nvcgo/Makefile    |  8 +++----
+ 4 files changed, 19 insertions(+), 52 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index a374cc098d95..967470a52913 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -18,8 +18,6 @@
+@@ -18,18 +18,15 @@
  ##### Global variables #####
-
+ 
  WITH_NVCGO   ?= yes
 -WITH_LIBELF  ?= no
 -WITH_TIRPC   ?= no
  WITH_SECCOMP ?= yes
-
+ 
  ##### Global definitions #####
-@@ -27,9 +25,8 @@
+ 
 -export prefix      = /usr/local
 +export prefix      = /usr
  export exec_prefix = $(prefix)
@@ -21,8 +37,17 @@
 -export libdbgdir   = $(prefix)/lib/debug$(libdir)
  export includedir  = $(prefix)/include
  export pkgconfdir  = $(libdir)/pkgconfig
-
-@@ -155,17 +152,12 @@
+ 
+@@ -137,7 +134,7 @@ LIBGO_SYMLINK := $(LIBGO_NAME).so
+ 
+ # Common flags
+ CPPFLAGS := -D_GNU_SOURCE -D_FORTIFY_SOURCE=2 $(CPPFLAGS)
+-CFLAGS   := -std=gnu11 -O2 -g -fdata-sections -ffunction-sections -fplan9-extensions -fstack-protector -fno-strict-aliasing -fvisibility=hidden \
++CFLAGS   := -std=gnu11 -O2 -g -fdata-sections -ffunction-sections -fms-extensions -fstack-protector -fno-strict-aliasing -fvisibility=hidden \
+             -Wall -Wextra -Wcast-align -Wpointer-arith -Wmissing-prototypes -Wnonnull \
+             -Wwrite-strings -Wlogical-op -Wformat=2 -Wmissing-format-attribute -Winit-self -Wshadow \
+             -Wstrict-prototypes -Wunreachable-code -Wconversion -Wsign-conversion \
+@@ -155,17 +152,12 @@ ifeq ($(WITH_NVCGO), yes)
  LIB_CPPFLAGS       += -DWITH_NVCGO
  LIB_LDLIBS_SHARED  += -lpthread
  endif
@@ -44,9 +69,9 @@
  ifeq ($(WITH_SECCOMP), yes)
  LIB_CPPFLAGS       += -DWITH_SECCOMP $(shell pkg-config --cflags libseccomp)
  LIB_LDLIBS_SHARED  += $(shell pkg-config --libs libseccomp)
-@@ -219,22 +211,14 @@
+@@ -219,22 +211,14 @@ $(BIN_OBJS): %.o: %.c | shared
  -include $(DEPENDENCIES)
-
+ 
  $(LIB_SHARED): $(LIB_OBJS)
 -	$(MKDIR) -p $(DEBUG_DIR)
  	$(CC) $(LIB_CFLAGS) $(LIB_CPPFLAGS) $(LIB_LDFLAGS) $(OUTPUT_OPTION) $^ $(LIB_SCRIPT) $(LIB_LDLIBS)
@@ -54,20 +79,20 @@
 -	$(OBJCPY) --add-gnu-debuglink=$(LIB_SONAME) $@
 -	$(MV) $(LIB_SONAME) $(DEBUG_DIR)
 -	$(STRIP) --strip-unneeded -R .comment $@
-
+ 
  $(LIB_STATIC_OBJ): $(LIB_OBJS)
  	# FIXME Handle user-defined LDFLAGS and LDLIBS
  	$(LD) -d -r --exclude-libs ALL -L$(DEPS_DIR)$(libdir) $(OUTPUT_OPTION) $^ $(LIB_LDLIBS_STATIC)
 -	$(OBJCPY) --localize-hidden $@
 -	$(STRIP) --strip-unneeded -R .comment $@
-
+ 
  $(BIN_NAME): $(BIN_OBJS)
  	$(CC) $(BIN_CFLAGS) $(BIN_CPPFLAGS) $(BIN_LDFLAGS) $(OUTPUT_OPTION) $^ $(BIN_SCRIPT) $(BIN_LDLIBS)
 -	$(STRIP) --strip-unneeded -R .comment $@
-
+ 
  ##### Public rules #####
-
-@@ -259,15 +243,9 @@
+ 
+@@ -259,15 +243,9 @@ deps: $(LIB_RPC_SRCS) $(BUILD_DEFS)
  ifeq ($(WITH_NVCGO), yes)
  	$(MAKE) -f $(MAKE_DIR)/nvcgo.mk DESTDIR=$(DEPS_DIR) MAJOR=$(MAJOR) VERSION=$(VERSION) LIB_NAME=$(LIBGO_NAME) install
  endif
@@ -77,14 +102,14 @@
 -ifeq ($(WITH_TIRPC), yes)
 -	$(MAKE) -f $(MAKE_DIR)/libtirpc.mk DESTDIR=$(DEPS_DIR) install
 -endif
-
+ 
  install: all
 -	$(INSTALL) -d -m 755 $(addprefix $(DESTDIR),$(includedir) $(bindir) $(libdir) $(docdir) $(libdbgdir) $(pkgconfdir))
 +	$(INSTALL) -d -m 755 $(addprefix $(DESTDIR),$(includedir) $(bindir) $(libdir) $(pkgconfdir))
  	# Install header files
  	$(INSTALL) -m 644 $(LIB_INCS) $(DESTDIR)$(includedir)
  	# Install library files
-@@ -276,18 +254,18 @@
+@@ -276,18 +254,18 @@ install: all
  	$(LN) -sf $(LIB_SONAME) $(DESTDIR)$(libdir)/$(LIB_SYMLINK)
  ifeq ($(WITH_NVCGO), yes)
  	$(INSTALL) -m 755 $(DEPS_DIR)$(libdir)/$(LIBGO_SHARED) $(DESTDIR)$(libdir)
@@ -104,10 +129,10 @@
 -	$(INSTALL) -m 644 $(DOC_FILES) $(DESTDIR)$(docdir)/$(LIB_NAME)-$(VERSION)
 +	# $(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/$(LIB_NAME)-$(VERSION)
 +	# $(INSTALL) -m 644 $(DOC_FILES) $(DESTDIR)$(docdir)/$(LIB_NAME)-$(VERSION)
-
+ 
  uninstall:
  	# Uninstall header files
-@@ -297,14 +275,12 @@
+@@ -297,14 +275,12 @@ uninstall:
  ifeq ($(WITH_NVCGO), yes)
  	$(RM) $(addprefix $(DESTDIR)$(libdir)/,$(LIBGO_SHARED) $(LIBGO_SONAME) $(LIBGO_SYMLINK))
  endif
@@ -120,10 +145,10 @@
  	# Uninstall documentation files
 -	$(RM) -r $(DESTDIR)$(docdir)/$(LIB_NAME)-$(VERSION)
 +	# $(RM) -r $(DESTDIR)$(docdir)/$(LIB_NAME)-$(VERSION)
-
+ 
  dist: DESTDIR:=$(DIST_DIR)/$(LIB_NAME)_$(VERSION)$(addprefix -,$(TAG))
  dist: install
-@@ -317,12 +293,6 @@
+@@ -317,12 +293,6 @@ depsclean:
  ifeq ($(WITH_NVCGO), yes)
  	-$(MAKE) -f $(MAKE_DIR)/nvcgo.mk clean
  endif
@@ -133,61 +158,69 @@
 -ifeq ($(WITH_TIRPC), yes)
 -	-$(MAKE) -f $(MAKE_DIR)/libtirpc.mk clean
 -endif
-
+ 
  mostlyclean:
  	$(RM) $(LIB_OBJS) $(LIB_STATIC_OBJ) $(BIN_OBJS) $(DEPENDENCIES)
---- a/mk/nvcgo.mk	2024-02-27 13:34:22.000000000 +0100
-+++ b/mk/nvcgo.mk	2024-03-21 12:57:18.094692606 +0100
-@@ -17,7 +17,7 @@
+diff --git a/mk/nvcgo.mk b/mk/nvcgo.mk
+index 0060f0e96f8c..877a72ba21ec 100644
+--- a/mk/nvcgo.mk
++++ b/mk/nvcgo.mk
+@@ -17,7 +17,7 @@ include $(MAKE_DIR)/common.mk
  ##### Source definitions #####
-
+ 
  PREFIX         := nvcgo
 -SRCS_DIR       := $(DEPS_DIR)/src/$(PREFIX)
 +SRCS_DIR       := $(CURDIR)/src/$(PREFIX)
  VERSION        := $(VERSION)
-
+ 
  ##### Public rules #####
-@@ -25,9 +25,6 @@
+@@ -25,9 +25,6 @@ VERSION        := $(VERSION)
  .PHONY: all install clean
-
+ 
  build:
 -	$(RM) -rf $(SRCS_DIR)
 -	$(CP) -R $(CURDIR)/src/$(PREFIX) $(SRCS_DIR)
 -	$(MAKE) -C $(SRCS_DIR) VERSION=$(VERSION) clean
  	$(MAKE) -C $(SRCS_DIR) VERSION=$(VERSION) build
-
+ 
  install: build
+diff --git a/mk/nvidia-modprobe.mk b/mk/nvidia-modprobe.mk
+index 1633e0c47072..645cfd0e0e18 100644
 --- a/mk/nvidia-modprobe.mk
 +++ b/mk/nvidia-modprobe.mk
-@@ -25,7 +25,7 @@
-
+@@ -25,7 +25,7 @@ PATCH_FILE     := $(MAKE_DIR)/nvidia-modprobe.patch
+ 
  ARFLAGS  := -rU
  CPPFLAGS := -D_FORTIFY_SOURCE=2 -DNV_LINUX
 -CFLAGS   := -O2 -g -fdata-sections -ffunction-sections -fstack-protector -fno-strict-aliasing -fPIC
 +CFLAGS   := -O2 -g -fdata-sections -ffunction-sections -fstack-protector -fno-strict-aliasing -fPIC $(CFLAGS)
-
+ 
  ##### Private rules #####
-
+ 
+diff --git a/src/nvcgo/Makefile b/src/nvcgo/Makefile
+index eaee95a4fb15..2ed78156d553 100644
 --- a/src/nvcgo/Makefile
 +++ b/src/nvcgo/Makefile
-@@ -31,15 +31,15 @@
+@@ -31,15 +31,15 @@ OBJ_NAME := $(LIB_NAME).so
  HDR_NAME := $(LIB_NAME).h
  CTYPES_H := ctypes.h
-
+ 
 -CGO_CFLAGS  := -std=gnu11 -O2
 -CGO_LDFLAGS := -Wl,--gc-sections -Wl,-s -Wl,-soname,$(LIB_SONAME)
 +CGO_CFLAGS  := -std=gnu11 -O2 $(CGO_CFLAGS)
 +CGO_LDFLAGS := -Wl,--gc-sections -Wl,-soname,$(LIB_SONAME) $(CGO_LDFLAGS)
-
+ 
  build: $(OBJ_NAME)
-
+ 
  $(OBJ_NAME): $(wildcard $(CURDIR)/*.go) $(wildcard */*.go)
  	export CGO_CFLAGS="$(CGO_CFLAGS)"; \
 -	export CGO_LDFLAGS="$(CGO_LDFLAGS)"; \
-+	export CGO_LDFLAGS="-Wl,--gc-sections -Wl,-soname,$(LIB_SONAME) $(CGO_LDFLAGS)"; \
 -	$(GO) build -o $(@) -ldflags "-s -w" -buildmode=c-shared .
++	export CGO_LDFLAGS="-Wl,--gc-sections -Wl,-soname,$(LIB_SONAME) $(CGO_LDFLAGS)"; \
 +	$(GO) build -o $(@) -ldflags "$(GO_LDFLAGS)" -buildmode=c-shared .
-
+ 
  install: $(OBJ_NAME)
  	$(INSTALL) -d -m 755 $(addprefix $(DESTDIR),$(libdir) $(includedir)/$(PKG_NAME))
+-- 
+2.45.2
 
