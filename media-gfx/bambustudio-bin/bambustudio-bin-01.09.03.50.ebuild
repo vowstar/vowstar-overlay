@@ -25,7 +25,7 @@ RDEPEND="
 	>=media-libs/glm-0.9.9.1
 	media-libs/gstreamer
 	media-libs/mesa[X(+)]
-	net-libs/libsoup
+	net-libs/libsoup:3.0=
 	net-libs/webkit-gtk:4.1/0
 	>=sci-libs/opencascade-7.3.0:0=
 	virtual/glu
@@ -61,6 +61,8 @@ src_install() {
 	patchelf --replace-needed libwebkit2gtk-4.0.so.37 libwebkit2gtk-4.1.so.0 \
 		"${S}"/squashfs-root/bin/bambu-studio || die
 	patchelf --replace-needed libjavascriptcoregtk-4.0.so.18 libjavascriptcoregtk-4.1.so.0 \
+		"${S}"/squashfs-root/bin/bambu-studio || die
+	patchelf --remove-needed libsoup-2.4.so.1 \
 		"${S}"/squashfs-root/bin/bambu-studio || die
 	insinto /opt/"${PN}"
 	doins -r "${S}"/squashfs-root/*
