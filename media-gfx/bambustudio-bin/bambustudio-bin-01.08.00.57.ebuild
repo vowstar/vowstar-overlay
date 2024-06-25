@@ -14,6 +14,7 @@ HOMEPAGE="https://bambulab.com"
 SRC_URI="
 	https://github.com/bambulab/${MY_PN}/releases/download/v${PV}/Bambu_Studio_linux_ubuntu_v${PV}-20231109141031.AppImage -> ${P}.AppImage
 "
+S="${WORKDIR}/${P}"
 
 LICENSE="AGPL-3"
 SLOT="0"
@@ -41,7 +42,6 @@ BDEPEND="
 
 QA_PREBUILT="*"
 RESTRICT="strip"
-S="${WORKDIR}/${P}"
 
 src_unpack() {
 	mkdir "${S}" || die
