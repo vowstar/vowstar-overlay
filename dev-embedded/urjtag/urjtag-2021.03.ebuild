@@ -12,7 +12,7 @@ if [[ ${PV} == "9999" ]] ; then
 	inherit git-r3 autotools
 	S="${WORKDIR}/${P}/${PN}"
 else
-	SRC_URI="mirror://sourceforge/urjtag/${P}.tar.xz"
+	SRC_URI="https://downloads.sourceforge.net/urjtag/${P}.tar.xz"
 	KEYWORDS="~amd64 ~ppc ~sparc ~x86"
 fi
 
