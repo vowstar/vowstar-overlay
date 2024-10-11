@@ -65,6 +65,11 @@ src_prepare() {
 	eautoconf --force
 }
 
+src_configure() {
+	# https://bugs.gentoo.org/887919
+	econf CFLAGS="${CFLAGS}" CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS}"
+}
+
 src_test() {
 	emake test
 }
