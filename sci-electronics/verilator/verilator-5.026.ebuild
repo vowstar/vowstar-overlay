@@ -38,11 +38,11 @@ DEPEND="
 "
 
 BDEPEND="
-	dev-debug/gdb
 	sys-devel/bison
 	sys-devel/flex
 	test? (
 		dev-build/cmake
+		dev-debug/gdb
 	)
 "
 
