@@ -10,6 +10,8 @@ DESCRIPTION="CAD/CAM software for 3D design and processing"
 HOMEPAGE="https://www.zwsoft.cn/product/zw3d/linux"
 SRC_URI="https://home-store-packages.uniontech.com/appstore/pool/appstore/c/${MY_PGK_NAME}/${MY_PGK_NAME}_${PV}_amd64.deb -> ${P}.deb"
 
+S="${WORKDIR}"
+
 LICENSE="all-rights-reserved"
 SLOT="0"
 KEYWORDS="-* ~amd64"
@@ -31,6 +33,7 @@ RDEPEND="
 	dev-qt/qtsvg:5
 	media-fonts/noto-cjk
 	media-gfx/imagemagick
+	media-libs/freetype
 	media-libs/jbigkit
 	media-libs/libglvnd
 	media-libs/libpng
@@ -60,15 +63,42 @@ BDEPEND="
 	dev-util/patchelf
 "
 
-S=${WORKDIR}
-
 QA_PREBUILT="*"
 
+src_compile() {
+	default
+	# Fix zw3d coredump when run
+cat >> "${T}"/zw3d.c <<- EOF || die
+#include <stdint.h>
+extern int DiModuleEntryPoint(uint64_t argc, uint64_t argv, uint64_t envp);
+int main(int argc, char* argv[], char* envp[])
+{
+return DiModuleEntryPoint((uint64_t)(uintptr_t)&argc, (uint64_t)(uintptr_t)argv, (uint64_t)(uintptr_t)envp);
+}
+	EOF
+
+TAB=$'\t'
+cat >> "${T}"/Makefile <<- EOF || die
+.PHONY: all
+all:
+${TAB}\$(CC) \$(LDFLAGS) \
+-o "\$(S)/opt/apps/\$(MY_PGK_NAME)/files/zw3d" \
+zw3d.c \
+-L"\$(S)/opt/apps/\$(MY_PGK_NAME)/files/lib" \
+-lDrawingInstance \
+-lstdc++ \
+-lm \
+-lgcc_s \
+-Wl,--unresolved-symbols=ignore-all
+	EOF
+
+	emake S="${S}" MY_PGK_NAME="${MY_PGK_NAME}" -C "${T}" || die
+}
+
 src_install() {
-	# Install scalable icons
-	mkdir -p "${S}"/usr/share/icons/hicolor/scalable/apps || die
-	mv "${S}"/opt/apps/${MY_PGK_NAME}/entries/icons/hicolor/scalable/apps/*.svg \
-		"${S}"/usr/share/icons/hicolor/scalable/apps || die
+	# Install scalable icons, desktop files, mimes
+	mkdir -p "${S}"/usr/share || die
+	mv "${S}"/opt/apps/${MY_PGK_NAME}/entries/* "${S}"/usr/share || die
 
 	# Set RPATH for preserve-libs handling
 	pushd "${S}"/opt/apps/${MY_PGK_NAME}/files || die
@@ -102,9 +132,22 @@ sh /opt/apps/${MY_PGK_NAME}/files/zw3drun.sh \$*
 
 	ln -s /opt/apps/${MY_PGK_NAME}/zw3d "${S}"/usr/bin/zw3d || die
 
+	# Fix zw3d startup file
+cat >> insert.txt <<- EOF || die
+unset WAYLAND_DISPLAY
+export XDG_SESSION_TYPE=x11
+export QT_QPA_PLATFORM=xcb
+export QT_AUTO_SCREEN_SCALE_FACTOR=1
+export QT_STYLE_OVERRIDE=fusion
+export IBUS_USE_PORTAL=1
+	EOF
+
+	sed -i \
+		-e '/export LD_LIBRARY_PATH/r insert.txt' \
+		"${S}"/opt/apps/${MY_PGK_NAME}/files/zw3drun.sh || die
+
 	# Use system libraries
-	# rm -rf "${S}"/opt/apps/${MY_PGK_NAME}/files/lib3rd/libMagickCore* || die
-	# rm -rf "${S}"/opt/apps/${MY_PGK_NAME}/files/lib3rd/libjpeg* || die
+	rm -rf "${S}"/opt/apps/${MY_PGK_NAME}/files/lib3rd/libfreetype* || die
 
 	# Fix coredump while draw 2D sketch due to not find fonts
 	# media-fonts/noto-cjk is required
