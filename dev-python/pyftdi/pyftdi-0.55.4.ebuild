@@ -15,8 +15,8 @@ SLOT="0"
 KEYWORDS="~amd64 ~arm64 ~riscv ~x86"
 
 RDEPEND="
-    dev-python/pyusb[${PYTHON_USEDEP}]
-    dev-python/pyserial[${PYTHON_USEDEP}]
+	dev-python/pyusb[${PYTHON_USEDEP}]
+	dev-python/pyserial[${PYTHON_USEDEP}]
 "
 
 DEPEND="${RDEPEND}"
