@@ -32,7 +32,7 @@ BDEPEND="
 
 python_test() {
 	FTDI_LOGLEVEL=WARNING
-    FTDI_DEBUG=on
+	FTDI_DEBUG=on
 	FTDI_VIRTUAL=off "${EPYTHON}" pyftdi/tests/mockusb.py || die
 	FTDI_VIRTUAL=on "${EPYTHON}" pyftdi/tests/gpio.py || die
 	FTDI_VIRTUAL=on "${EPYTHON}" pyftdi/tests/eeprom_mock.py || die
