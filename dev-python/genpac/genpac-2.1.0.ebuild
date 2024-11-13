@@ -12,7 +12,7 @@ HOMEPAGE="https://github.com/JinnLynn/genpac"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~arm64 ~ia64 ~riscv ~sparc ~x86"
+KEYWORDS="~amd64 ~arm64 ~riscv ~sparc ~x86"
 
 PATCHES=(
 	"${FILESDIR}/${PN}-2.1.0-fix-collections.patch"
