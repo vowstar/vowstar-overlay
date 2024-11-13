@@ -3,13 +3,13 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..13} pypy3 )
+PYTHON_COMPAT=( python3_{10..13} )
 DISTUTILS_USE_PEP517=setuptools
 inherit distutils-r1 pypi
 
 DESCRIPTION="PyFtdi provides a user-space driver for FTDI devices"
 HOMEPAGE="https://github.com/eblot/pyftdi"
-SRC_URI="https://github.com/eblot/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/eblot/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.gh.tar.gz"
 
 LICENSE="BSD"
 SLOT="0"
