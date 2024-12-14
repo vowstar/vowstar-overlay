@@ -19,7 +19,7 @@ KEYWORDS="~amd64"
 RDEPEND="
 	dev-libs/boost
 	media-gfx/xdot
-	sys-devel/clang
+	llvm-core/clang
 "
 
 DEPEND="${RDEPEND}"
