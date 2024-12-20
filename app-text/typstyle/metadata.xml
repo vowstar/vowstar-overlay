@@ -20,7 +20,7 @@
 		further. It also maintains correctness by preserving the rendered
 		output's appearance. Users can access Typstyle via a command-line
 		interface, integrate it into editors through plugins like tinymist, or
-		utilize its web application for online code formatting. 
+		utilize its web application for online code formatting.
 	</longdescription>
 	<longdescription lang="zh">
 		Typstyle 是一款为 Typst 设计的代码格式化工具，旨在生成一致且美观的代码
