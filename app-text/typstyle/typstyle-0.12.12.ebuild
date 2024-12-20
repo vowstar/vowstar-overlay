@@ -536,6 +536,11 @@ src_compile() {
 	cargo_src_compile
 }
 
+src_install() {
+	cargo_src_install --path "${S}/crates/${PN}"
+	einstalldocs
+}
+
 src_test() {
 	edo cargo nextest run --workspace -E 'test([typst])' --no-fail-fast --no-default-features
 }
