@@ -11,9 +11,10 @@ DESCRIPTION="Hex editor library, Qt application written in C++ with Python bindi
 HOMEPAGE="https://github.com/Simsys/qhexedit2/"
 SRC_URI="https://github.com/Simsys/${PN}/archive/${EGIT_COMMIT}.tar.gz -> ${P}.tar.gz"
 
+S="${WORKDIR}/${PN}-${EGIT_COMMIT}"
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~riscv ~x86"
+KEYWORDS="amd64 ~riscv x86"
 IUSE="doc +gui python"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
@@ -28,10 +29,11 @@ RDEPEND="
 	dev-qt/qtcore:5
 	dev-qt/qtgui:5
 	dev-qt/qtwidgets:5
+	media-libs/libglvnd
 	python? (
 		${PYTHON_DEPS}
 		$(python_gen_cond_dep '
-			>=dev-python/PyQt5-5.15.6[gui,widgets,${PYTHON_USEDEP}]
+			>=dev-python/pyqt5-5.15.6[gui,widgets,${PYTHON_USEDEP}]
 		')
 	)
 "
@@ -39,13 +41,11 @@ DEPEND="${RDEPEND}"
 BDEPEND="
 	python? (
 		$(python_gen_cond_dep '
-			>=dev-python/PyQt-builder-1.10[${PYTHON_USEDEP}]
+			>=dev-python/pyqt-builder-1.10[${PYTHON_USEDEP}]
 			>=dev-python/sip-5:=[${PYTHON_USEDEP}]
 		')
 	)
 "
-
-S="${WORKDIR}/${PN}-${EGIT_COMMIT}"
 
 src_prepare() {
 	default
