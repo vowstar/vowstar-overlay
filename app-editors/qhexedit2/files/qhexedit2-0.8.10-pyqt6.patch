@@ -1,12 +1,11 @@
-From d33027525ca69557b8f4bee21eac567efb629b1e Mon Sep 17 00:00:00 2001
+From 01763f1efcdd3cf7c12844c06f52a464d160e3e7 Mon Sep 17 00:00:00 2001
 From: Huang Rui <vowstar@gmail.com>
 Date: Thu, 23 Jan 2025 23:06:14 +0800
 Subject: [PATCH] Add PyQt6 support with backward compatibility
 
 - Implement Qt version checks in C++ for Q_UNREACHABLE compatibility
 - Add dynamic PyQt version detection (4/5/6) in build system
-- Remove hardcoded PyQt5 dependency from project metadata
-- Bump version to 0.8.10 and update documentation examples
+- Bump pyproject.toml version to 0.8.10 and update documentation examples
 - Fix missing include `<optional>` in `example/main.cpp
 
 Closes: https://github.com/Simsys/qhexedit2/issues/154
