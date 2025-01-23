@@ -14,7 +14,7 @@ S="${WORKDIR}/${PN}-${PV}"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~riscv ~x86"
-IUSE="doc +gui python +qt5 qt6"
+IUSE="doc +gui python qt5 +qt6"
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
 	|| ( qt5 qt6 )
@@ -65,19 +65,31 @@ src_prepare() {
 	sed -i -e '/^unix:DESTDIR/ d' -e "\$atarget.path = /usr/$(get_libdir)" \
 		-e "\$aINSTALLS += target" src/qhexedit.pro \
 		|| die "src/qhexedit.pro: sed failed"
-	use qt6 && sed -i -e 's/PyQt5/PyQt6/g' pyproject.toml \
+	sed -i '/abi-version/d' pyproject.toml \
 		|| die "pyproject.toml: sed failed"
-	use qt6 && sed -i '/abi-version/d' pyproject.toml \
-		|| die "pyproject.toml: sed failed"
+	if use qt6; then
+		sed -i -e 's/PyQt5/PyQt6/g' pyproject.toml project.py setup.py \
+			|| die "pyproject.toml project.py setup.py: sed failed"
+	elif use qt5; then
+		sed -i -e 's/PyQt6/PyQt5/g' pyproject.toml project.py setup.py \
+			|| die "pyproject.toml project.py setup.py: sed failed"
+	fi
 }
 
 src_configure() {
-	use qt5 && eqmake5 src/qhexedit.pro
-	use qt6 && eqmake6 src/qhexedit.pro
+	if use qt6; then
+		eqmake6 src/qhexedit.pro
+	elif use qt5; then
+		eqmake5 src/qhexedit.pro
+	fi
+
 	if use gui; then
 		cd example || die "can't cd example"
-		use qt5 && eqmake5 qhexedit.pro
-		use qt6 && eqmake6 qhexedit.pro
+		if use qt6; then
+			eqmake6 qhexedit.pro
+		elif use qt5; then
+			eqmake5 qhexedit.pro
+		fi
 	fi
 }
 
@@ -99,8 +111,11 @@ src_compile() {
 src_test() {
 	cd test || die "can't cd test"
 	mkdir logs || die "can't create logs dir"
-	use qt5 && eqmake5 chunks.pro
-	use qt6 && eqmake6 chunks.pro
+	if use qt6; then
+		eqmake6 chunks.pro
+	elif use qt5; then
+		eqmake5 chunks.pro
+	fi
 	emake
 	./chunks || die "test run failed"
 	grep -q "^NOK" logs/Summary.log && die "test failed"
