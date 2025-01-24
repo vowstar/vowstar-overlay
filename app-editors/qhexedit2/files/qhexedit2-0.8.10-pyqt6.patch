@@ -1,4 +1,4 @@
-From 8628c83b09caa76825d1504c366f0388d3890987 Mon Sep 17 00:00:00 2001
+From 628d28efb12eb68747b9ee5a15cb14301dbf1c75 Mon Sep 17 00:00:00 2001
 From: Huang Rui <vowstar@gmail.com>
 Date: Thu, 23 Jan 2025 23:06:14 +0800
 Subject: [PATCH] Add PyQt6 support with backward compatibility
@@ -19,9 +19,9 @@ Signed-off-by: Huang Rui <vowstar@gmail.com>
  python/python3_pyqt6/mainwindow.py | 23 ++++++++++
  readme.md                          |  8 ++--
  setup.py                           | 72 ++++++++++++++++++++++--------
- src/qhexedit.pro                   |  6 ++-
+ src/qhexedit.pro                   |  8 +++-
  src/qhexedit.sip                   |  2 +
- 8 files changed, 127 insertions(+), 33 deletions(-)
+ 8 files changed, 129 insertions(+), 33 deletions(-)
  create mode 100644 python/python3_pyqt6/mainwindow.py
 
 diff --git a/example/main.cpp b/example/main.cpp
@@ -310,18 +310,20 @@ index 1906a07261f6..89622e8c3b8a 100644
 -            
 +
 diff --git a/src/qhexedit.pro b/src/qhexedit.pro
-index 2a940163d0e6..994a86b151bb 100644
+index 2a940163d0e6..39e400a17c19 100644
 --- a/src/qhexedit.pro
 +++ b/src/qhexedit.pro
-@@ -23,5 +23,9 @@ Release:TARGET = qhexedit
+@@ -23,5 +23,11 @@ Release:TARGET = qhexedit
  Debug:TARGET = qhexeditd
  
  
 -unix:DESTDIR = /usr/lib
 +unix {
 +    # Allows users to specify parameters when running qmake
-+    DESTDIR = $$(QHEXEDIT_DESTDIR)
-+    isEmpty(DESTDIR): DESTDIR = $$[QT_INSTALL_LIBS]
++    QHEXEDIT_DESTDIR = $$(QHEXEDIT_DESTDIR)
++    isEmpty(QHEXEDIT_DESTDIR): QHEXEDIT_DESTDIR = $$[QT_INSTALL_LIBS]
++    target.path = $$QHEXEDIT_DESTDIR
++    INSTALLS += target
 +}
  win32:DESTDIR = ../lib
 diff --git a/src/qhexedit.sip b/src/qhexedit.sip
