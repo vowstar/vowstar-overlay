@@ -14,10 +14,9 @@ S="${WORKDIR}/${PN}-${PV}"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~riscv ~x86"
-IUSE="doc +gui python qt5 +qt6"
+IUSE="doc +gui python"
 REQUIRED_USE="
 	python? ( ${PYTHON_REQUIRED_USE} )
-	|| ( qt5 qt6 )
 "
 
 PATCHES=(
@@ -25,29 +24,14 @@ PATCHES=(
 )
 
 RDEPEND="
+	dev-qt/qtbase:6[gui,widgets]
 	media-libs/libglvnd
 	python? (
 		${PYTHON_DEPS}
-		qt5? (
-			$(python_gen_cond_dep '
-				>=dev-python/pyqt5-5.15.6[gui,widgets,${PYTHON_USEDEP}]
-				>=dev-python/pyqt5-sip-12.9:=[${PYTHON_USEDEP}]
-			')
-		)
-		qt6? (
-			$(python_gen_cond_dep '
-				>=dev-python/pyqt6-6.8.0[gui,widgets,${PYTHON_USEDEP}]
-				>=dev-python/pyqt6-sip-13.5:=[${PYTHON_USEDEP}]
-			')
-		)
-	)
-	qt5? (
-		dev-qt/qtcore:5
-		dev-qt/qtgui:5
-		dev-qt/qtwidgets:5
-	)
-	qt6? (
-		dev-qt/qtbase:6[gui,widgets]
+		$(python_gen_cond_dep '
+			>=dev-python/pyqt6-6.8.0[gui,widgets,${PYTHON_USEDEP}]
+			>=dev-python/pyqt6-sip-13.5:=[${PYTHON_USEDEP}]
+		')
 	)
 "
 DEPEND="${RDEPEND}"
@@ -67,29 +51,14 @@ src_prepare() {
 		|| die "src/qhexedit.pro: sed failed"
 	sed -i '/abi-version/d' pyproject.toml \
 		|| die "pyproject.toml: sed failed"
-	if use qt6; then
-		sed -i -e 's/PyQt5/PyQt6/g' pyproject.toml project.py setup.py \
-			|| die "pyproject.toml project.py setup.py: sed failed"
-	elif use qt5; then
-		sed -i -e 's/PyQt6/PyQt5/g' pyproject.toml project.py setup.py \
-			|| die "pyproject.toml project.py setup.py: sed failed"
-	fi
 }
 
 src_configure() {
-	if use qt6; then
-		eqmake6 src/qhexedit.pro
-	elif use qt5; then
-		eqmake5 src/qhexedit.pro
-	fi
+	eqmake6 src/qhexedit.pro
 
 	if use gui; then
-		cd example || die "can't cd example"
-		if use qt6; then
-			eqmake6 qhexedit.pro
-		elif use qt5; then
-			eqmake5 qhexedit.pro
-		fi
+		pushd example || die "can't cd example"
+		eqmake6 qhexedit.pro
 	fi
 }
 
@@ -97,8 +66,7 @@ src_compile() {
 	emake
 	use gui && emake -C example
 	if use python; then
-		use qt5 && export PATH="$(qt5_get_bindir):${PATH}"
-		use qt6 && export PATH="$(qt6_get_bindir):${PATH}"
+		export PATH="$(qt6_get_bindir):${PATH}"
 		python_build() {
 			pushd "${S}" || die
 			sip-build || die
@@ -111,11 +79,7 @@ src_compile() {
 src_test() {
 	cd test || die "can't cd test"
 	mkdir logs || die "can't create logs dir"
-	if use qt6; then
-		eqmake6 chunks.pro
-	elif use qt5; then
-		eqmake5 chunks.pro
-	fi
+	eqmake6 chunks.pro
 	emake
 	./chunks || die "test run failed"
 	grep -q "^NOK" logs/Summary.log && die "test failed"
