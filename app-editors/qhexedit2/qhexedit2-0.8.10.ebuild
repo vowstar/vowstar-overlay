@@ -45,7 +45,7 @@ BDEPEND="
 "
 
 src_configure() {
-	QHEXEDIT_DESTDIR="${D}/usr/$(get_libdir)" eqmake6 src/qhexedit.pro
+	QHEXEDIT_DESTDIR="${S}" eqmake6 src/qhexedit.pro
 
 	if use gui; then
 		pushd example || die "can't cd example"
