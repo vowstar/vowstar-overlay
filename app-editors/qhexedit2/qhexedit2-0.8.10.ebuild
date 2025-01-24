@@ -44,17 +44,8 @@ BDEPEND="
 	)
 "
 
-src_prepare() {
-	default
-	sed -i -e '/^unix:DESTDIR/ d' -e "\$atarget.path = /usr/$(get_libdir)" \
-		-e "\$aINSTALLS += target" src/qhexedit.pro \
-		|| die "src/qhexedit.pro: sed failed"
-	sed -i '/abi-version/d' pyproject.toml \
-		|| die "pyproject.toml: sed failed"
-}
-
 src_configure() {
-	eqmake6 src/qhexedit.pro
+	QHEXEDIT_DESTDIR="${D}/usr/$(get_libdir)" eqmake6 src/qhexedit.pro
 
 	if use gui; then
 		pushd example || die "can't cd example"
