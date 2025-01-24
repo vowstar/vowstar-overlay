@@ -48,7 +48,7 @@ src_configure() {
 	QHEXEDIT_DESTDIR="${S}" eqmake6 src/qhexedit.pro
 
 	if use gui; then
-		pushd example || die "can't cd example"
+		pushd example || die "can't pushd example"
 		eqmake6 qhexedit.pro
 	fi
 }
@@ -68,7 +68,7 @@ src_compile() {
 }
 
 src_test() {
-	cd test || die "can't cd test"
+	pushd test || die "can't pushd test"
 	mkdir logs || die "can't create logs dir"
 	eqmake6 chunks.pro
 	emake
