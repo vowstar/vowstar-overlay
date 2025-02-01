@@ -65,41 +65,7 @@ BDEPEND="
 
 QA_PREBUILT="*"
 
-src_compile() {
-	default
-# 	# Fix zw3d coredump when run
-# cat >> "${T}"/zw3d.c <<- EOF || die
-# #include <stdint.h>
-# extern int DiModuleEntryPoint(uint64_t argc, uint64_t argv, uint64_t envp);
-# int main(int argc, char* argv[], char* envp[])
-# {
-# return DiModuleEntryPoint((uint64_t)(uintptr_t)&argc, (uint64_t)(uintptr_t)argv, (uint64_t)(uintptr_t)envp);
-# }
-# 	EOF
-
-# TAB=$'\t'
-# cat >> "${T}"/Makefile <<- EOF || die
-# .PHONY: all
-# all:
-# ${TAB}\$(CC) \$(LDFLAGS) \
-# -o "\$(S)/opt/apps/\$(MY_PGK_NAME)/files/zw3d" \
-# zw3d.c \
-# -L"\$(S)/opt/apps/\$(MY_PGK_NAME)/files" \
-# -lDrawingInstance \
-# -lstdc++ \
-# -lm \
-# -lgcc_s \
-# -Wl,--unresolved-symbols=ignore-all
-# 	EOF
-
-# 	emake S="${S}" MY_PGK_NAME="${MY_PGK_NAME}" -C "${T}" || die
-}
-
 src_install() {
-	# Install scalable icons, desktop files, mimes
-	# mkdir -p "${S}"/usr/share || die
-	# mv "${S}"/opt/apps/${MY_PGK_NAME}/entries/* "${S}"/usr/share || die
-
 	# Set RPATH for preserve-libs handling
 	pushd "${S}"/opt/apps/${MY_PGK_NAME}/files || die
 	local x
@@ -110,8 +76,6 @@ src_install() {
 		local RPATH_S="${RPATH_ROOT}/:${RPATH_ROOT}/xlator/:${RPATH_ROOT}/xlator/InterOp/:${RPATH_ROOT}/libqt/:${RPATH_ROOT}/libqt/plugins/designer/:${RPATH_ROOT}/lib3rd/:/usr/lib64/"
 		patchelf --set-rpath "${RPATH_S}" "${x}" || \
 			die "patchelf failed on ${x}"
-		# patchelf --replace-needed libMagickCore-6.Q16.so.7 libMagickCore-7.Q16.so "${x}" || \
-		# 	die "patchelf failed on ${x}"
 		patchelf --replace-needed libjbig.so.0 libjbig.so "${x}" || \
 			die "patchelf failed on ${x}"
 		patchelf --replace-needed libwebp.so.6 libwebp.so "${x}" || \
@@ -119,10 +83,12 @@ src_install() {
 	done
 	popd || die
 
+	# Use system libtiff
+	rm -rf "${S}"/opt/apps/${MY_PGK_NAME}/files/lib3rd/libtiff* || die
+
 	# Fix desktop files
-	# sed -E -i 's/^Exec=.*$/Exec=zw3d %F/g' "${S}/usr/share/applications/${MY_PGK_NAME}.desktop" || die
-	# sed -E -i 's/^Icon=.*$/Icon=ZW3Dprofessional/g' "${S}/usr/share/applications/${MY_PGK_NAME}.desktop" || die
-	# sed -E -i 's/Application;//g' "${S}/usr/share/applications/${MY_PGK_NAME}.desktop" || die
+	sed -E -i "s/^Icon=.*$/Icon=${MY_PGK_NAME}/g" "${S}/usr/share/applications/${MY_PGK_NAME}.desktop" || die
+	sed -E -i "s/Application;//g" "${S}/usr/share/applications/${MY_PGK_NAME}.desktop" || die
 
 	# Add zw3d command
 	mkdir -p "${S}"/usr/bin/ || die
