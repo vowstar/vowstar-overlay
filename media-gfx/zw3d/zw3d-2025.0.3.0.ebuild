@@ -109,7 +109,7 @@ export IBUS_USE_PORTAL=1
 		-e '/export LD_LIBRARY_PATH/r insert.txt' \
 		"${S}"/opt/apps/${MY_PGK_NAME}/files/zw3drun.sh || die
 
-	sed -E -i "s|^run_path=.*$|run_path=/opt/apps/${MY_PGK_NAME}/files|g" \
+	sed -E -i "s|^script_dir=.*$|script_dir=/opt/apps/${MY_PGK_NAME}/files|g" \
 		"${S}"/opt/apps/${MY_PGK_NAME}/files/zw3drun.sh || die
 
 	# Use system libraries
