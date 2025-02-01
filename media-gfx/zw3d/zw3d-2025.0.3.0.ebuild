@@ -114,6 +114,8 @@ src_install() {
 		# 	die "patchelf failed on ${x}"
 		patchelf --replace-needed libjbig.so.0 libjbig.so "${x}" || \
 			die "patchelf failed on ${x}"
+		patchelf --replace-needed libwebp.so.6 libwebp.so "${x}" || \
+			die "patchelf failed on ${x}"
 	done
 	popd || die
 
