@@ -33,6 +33,7 @@ RDEPEND="
 	dev-qt/qtgui:5
 	dev-qt/qtconcurrent:5
 	dev-qt/qtmultimedia:5
+	dev-qt/qtopengl:5
 	dev-qt/qtsvg:5
 	dev-qt/qtwidgets:5
 	media-libs/libsdl2
@@ -44,7 +45,7 @@ DEPEND="${RDEPEND}"
 
 BDEPEND="
 	${PYTHON_DEPS}
-	$(python_gen_cond_dep 'dev-python/protobuf-python[${PYTHON_USEDEP}]')
+	$(python_gen_cond_dep 'dev-python/protobuf[${PYTHON_USEDEP}]')
 	dev-libs/protobuf
 	virtual/pkgconfig
 "
