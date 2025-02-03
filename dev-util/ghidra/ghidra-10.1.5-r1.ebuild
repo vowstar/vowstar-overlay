@@ -1,7 +1,7 @@
 # Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 inherit java-pkg-2 desktop
 
 GRADLE_DEP_VER="20220131"
@@ -19,10 +19,11 @@ SRC_URI="https://github.com/NationalSecurityAgency/${PN}/archive/Ghidra_${PV}_bu
 # run: "pentoo/scripts/gradle_dependencies.py buildGhidra" from "${S}" directory to generate dependencies
 #	https://www.eclipse.org/downloads/download.php?r=1&protocol=https&file=/tools/cdt/releases/8.6/cdt-8.6.0.zip
 
+S="${WORKDIR}/ghidra-Ghidra_${PV}_build"
+
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="amd64"
-IUSE=""
 
 #FIXME:
 # * QA Notice: Files built without respecting LDFLAGS have been detected
@@ -40,8 +41,6 @@ DEPEND="${RDEPEND}
 	sys-devel/bison
 	dev-java/jflex
 	app-arch/unzip"
-
-S="${WORKDIR}/ghidra-Ghidra_${PV}_build"
 
 src_unpack() {
 	# https://github.com/NationalSecurityAgency/ghidra/blob/master/DevGuide.md
@@ -62,8 +61,12 @@ src_unpack() {
 	cp "${DISTDIR}"/yajsw-beta-13.01.zip "${WORKDIR}"/ghidra.bin/Ghidra/Features/GhidraServer/ || die "(7) cp failed"
 
 	mkdir -p "${WORKDIR}"/ghidra.bin/GhidraBuild/EclipsePlugins/GhidraDev/buildDependencies/ || die "(8) mkdir failed"
-	cp "${DISTDIR}"/PyDev-6.3.1.zip "${WORKDIR}/ghidra.bin/GhidraBuild/EclipsePlugins/GhidraDev/buildDependencies/PyDev 6.3.1.zip" || die "(9) cp failed"
-	cp "${DISTDIR}"/cdt-8.6.0.zip "${WORKDIR}"/ghidra.bin/GhidraBuild/EclipsePlugins/GhidraDev/buildDependencies/ || die "(10) cp failed"
+	cp "${DISTDIR}"/PyDev-6.3.1.zip \
+		"${WORKDIR}/ghidra.bin/GhidraBuild/EclipsePlugins/GhidraDev/buildDependencies/PyDev 6.3.1.zip" \
+		|| die "(9) cp failed"
+	cp "${DISTDIR}"/cdt-8.6.0.zip \
+		"${WORKDIR}"/ghidra.bin/GhidraBuild/EclipsePlugins/GhidraDev/buildDependencies/ \
+		|| die "(10) cp failed"
 
 	cd "${S}"
 	mv ../dependencies .
@@ -107,7 +110,7 @@ src_install() {
 
 	#fixme: add doc flag
 	rm -r  "${ED}"/usr/share/ghidra/docs/ || die "rm failed"
-	dosym "${EPREFIX}"/usr/share/ghidra/ghidraRun /usr/bin/ghidra
+	dosym -r /usr/share/ghidra/ghidraRun /usr/bin/ghidra
 
 	# icon
 	doicon GhidraDocs/GhidraClass/Beginner/Images/GhidraLogo64.png
