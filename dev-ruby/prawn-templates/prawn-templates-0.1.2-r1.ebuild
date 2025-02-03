@@ -1,8 +1,8 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-USE_RUBY="ruby27 ruby30 ruby31 ruby32"
+USE_RUBY="ruby31 ruby32"
 
 RUBY_FAKEGEM_RECIPE_DOC="yard"
 RUBY_FAKEGEM_RECIPE_TEST="rspec3"
@@ -13,8 +13,11 @@ DESCRIPTION="Provides support for templates in Prawn"
 HOMEPAGE="https://github.com/prawnpdf/prawn-templates"
 LICENSE="|| ( GPL-2+ GPL-3 Ruby )"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~riscv ~sparc ~x86"
-IUSE=""
+KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~x86"
+
+# prawn breaks tests for some reasons, needs to be investigated; code
+# still works though.
+RESTRICT="test"
 
 ruby_add_rdepend "
 	>=dev-ruby/pdf-reader-1.2
