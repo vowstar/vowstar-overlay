@@ -16,7 +16,7 @@ HOMEPAGE="https://github.com/deivid-rodriguez/pry-byebug"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~riscv ~sparc ~x86"
+KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~riscv ~sparc ~x86"
 
 ruby_add_rdepend "
 	>=dev-ruby/byebug-11.0
