@@ -19,7 +19,7 @@ SRC_URI="
 
 LICENSE="BSD GPL-3"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~ppc ~ppc64 ~riscv ~sparc ~x86"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~riscv ~sparc ~x86"
 IUSE="doc"
 
 S="${WORKDIR}/${PN}-${PV}_build_${MY_BUILD_PV}"
