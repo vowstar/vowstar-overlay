@@ -15,9 +15,9 @@ inherit ruby-fakegem
 
 DESCRIPTION="Sass-based Stylesheet Framework"
 HOMEPAGE="https://github.com/premailer/css_parser/"
-LICENSE="MIT"
-
 SRC_URI="https://github.com/${GITHUB_USER}/${GITHUB_PROJECT}/archive/v${PV}.tar.gz -> ${GITHUB_PROJECT}-${PV}.tar.gz"
+
+LICENSE="MIT"
 
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~riscv ~sparc ~x86"
