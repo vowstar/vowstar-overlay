@@ -43,7 +43,7 @@ RDEPEND="
 	media-libs/libpng
 	|| ( media-libs/tiff:0/6 media-libs/tiff-compat:4 )
 	sys-fs/fuse
-	sys-libs/libcxx
+	llvm-runtimes/libcxx
 	sys-libs/libxcrypt
 	udev? ( virtual/udev )
 	virtual/glu
