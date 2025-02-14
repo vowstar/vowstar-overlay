@@ -8,11 +8,9 @@ move sci-mathematics/octave-control dev-octave/control
 move sci-mathematics/octave-database dev-octave/database
 move sci-mathematics/octave-dataframe dev-octave/dataframe
 move sci-mathematics/octave-data-smoothing dev-octave/data-smoothing
-move sci-mathematics/octave-dicom dev-octave/dicom
 move sci-mathematics/octave-divand dev-octave/divand
 move sci-mathematics/octave-doctest dev-octave/doctest
 move sci-mathematics/octave-econometrics dev-octave/econometrics
-move sci-mathematics/octave-fem-fenics dev-octave/fem-fenics
 move sci-mathematics/octave-financial dev-octave/financial
 move sci-mathematics/octave-fits dev-octave/fits
 move sci-mathematics/octave-fpl dev-octave/fpl
@@ -55,7 +53,6 @@ move sci-mathematics/octave-secs2d dev-octave/secs2d
 move sci-mathematics/octave-secs3d dev-octave/secs3d
 move sci-mathematics/octave-signal dev-octave/signal
 move sci-mathematics/octave-sockets dev-octave/sockets
-move sci-mathematics/octave-sparsersb dev-octave/sparsersb
 move sci-mathematics/octave-splines dev-octave/splines
 move sci-mathematics/octave-statistics dev-octave/statistics
 move sci-mathematics/octave-stk dev-octave/stk
