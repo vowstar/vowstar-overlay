@@ -3,6 +3,8 @@
 
 EAPI=8
 
+VER_MUNIT="439de4a9b136bc3b5163e73d4caf37c590bef875"
+
 PYTHON_COMPAT=( python3_{10..13} )
 inherit cmake python-single-r1 xdg
 
@@ -13,13 +15,16 @@ if [[ "${PV}" == "9999" ]] ; then
 	EGIT_REPO_URI="https://github.com/streetpea/${PN}.git"
 	inherit git-r3
 else
-	SRC_URI="https://github.com/streetpea/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="
+		https://github.com/streetpea/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
+		test? ( https://github.com/nemequ/munit/archive/${VER_MUNIT}.tar.gz -> munit-${VER_MUNIT}.tar.gz )
+	"
 	KEYWORDS="~amd64"
 fi
 
 LICENSE="GPL-3"
 SLOT="0"
-IUSE="+cli +gui +sdl +ffmpeg system-jerasure system-nanopb mbedtls test"
+IUSE="+cli +gui +sdl +ffmpeg mbedtls test"
 REQUIRED_USE="
 	${PYTHON_REQUIRED_USE}
 	gui? ( ffmpeg )
@@ -29,20 +34,24 @@ RESTRICT="!test? ( test )"
 RDEPEND="
 	${PYTHON_DEPS}
 	dev-libs/libevdev
+	dev-libs/jerasure
+	dev-libs/nanopb
+	media-libs/libplacebo
 	media-libs/opus
+	net-dns/libidn2
+	net-misc/curl
 	sdl? ( media-libs/libsdl2[joystick,haptic] )
-	gui? ( dev-qt/qtcore:5 )
-	gui? ( dev-qt/qtwidgets:5 )
-	gui? ( dev-qt/qtgui:5 )
-	gui? ( dev-qt/qtconcurrent:5 )
-	gui? ( dev-qt/qtmultimedia:5 )
-	gui? ( dev-qt/qtopengl:5 )
-	gui? ( dev-qt/qtsvg:5 )
+	gui? (
+		dev-qt/qtbase:6[concurrent,dbus,gui,network,opengl,widgets]
+		dev-qt/qtdeclarative:6[network,opengl,widgets,svg]
+		dev-qt/qtmultimedia:6
+		dev-qt/qtsvg:6
+		dev-qt/qtwebchannel:6[qml]
+		dev-qt/qtwebengine:6[qml,widgets]
+	)
 	!mbedtls? ( dev-libs/openssl:= )
 	mbedtls? ( net-libs/mbedtls )
 	ffmpeg?	( media-video/ffmpeg:= )
-	system-jerasure? ( dev-libs/jerasure )
-	system-nanopb? ( dev-libs/nanopb )
 "
 
 DEPEND="${RDEPEND}"
@@ -54,11 +63,24 @@ BDEPEND="
 	virtual/pkgconfig
 "
 
+src_prepare() {
+	cmake_src_prepare
+
+	if use test; then
+		rm -r "${S}"/test/munit
+		ln -s "${WORKDIR}"/munit-${VER_MUNIT} "${S}"/test/munit
+	fi
+}
+
 src_configure() {
 	local mycmakeargs=(
 		-DPYTHON_EXECUTABLE="${PYTHON}"
-		-DCHIAKI_USE_SYSTEM_JERASURE=$(usex system-jerasure)
-		-DCHIAKI_USE_SYSTEM_NANOPB=$(usex system-nanopb)
+		-DCHIAKI_USE_SYSTEM_JERASURE=ON
+		-DCHIAKI_USE_SYSTEM_NANOPB=ON
+		-DCHIAKI_USE_SYSTEM_CURL=ON
+		-DCHIAKI_ENABLE_STEAM_SHORTCUT=OFF # BUG: require cpp-steam-tools, used by steamdeck
+		-DCHIAKI_ENABLE_SWITCH_CURL=ON # BUG: Gentoo use CURL::libcurl instead of CURL::libcurl_shared
+		-DCHIAKI_ENABLE_STEAMDECK_NATIVE=OFF # Used by steamdeck
 		-DCHIAKI_ENABLE_TESTS=$(usex test)
 		-DCHIAKI_ENABLE_CLI=$(usex cli)
 		-DCHIAKI_ENABLE_GUI=$(usex gui)
@@ -74,5 +96,5 @@ src_install() {
 	cmake_src_install
 
 	dolib.so "${BUILD_DIR}"/lib/*.so
-	use sdl || dolib.so "${BUILD_DIR}"/setsu/*.so
+	use gui && dolib.so "${BUILD_DIR}"/gui/*.so
 }
