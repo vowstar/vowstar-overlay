@@ -5,10 +5,10 @@
 		<email>vowstar@gmail.com</email>
 		<name>Huang Rui</name>
 	</maintainer>
-    <upstream>
-        <remote-id type="github">streetpea/chiaki-ng</remote-id>
-        <bugs-to>https://github.com/streetpea/chiaki-ng/issues</bugs-to>
-    </upstream>
+	<upstream>
+		<remote-id type="github">streetpea/chiaki-ng</remote-id>
+		<bugs-to>https://github.com/streetpea/chiaki-ng/issues</bugs-to>
+	</upstream>
 	<use>
 		<flag name="cli">Build CLI interface</flag>
 		<flag name="gui">Build Qt GUI interface</flag>
