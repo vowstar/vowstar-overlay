@@ -1,0 +1,55 @@
+# vim:syntax=apparmor
+
+abi <abi/3.0>,
+
+include <tunables/global>
+profile wechat /opt/wechat/* {
+    include <abstractions/base>
+    include <abstractions/fonts>
+    include <abstractions/gnome>
+    include <abstractions/kde>
+    include <abstractions/nameservice>
+    include <abstractions/ssl_certs>
+    include <abstractions/user-tmp>
+    include <abstractions/private-files-strict>
+
+    # Network
+    network inet stream,
+    network inet6 stream,
+    @{PROC}/@{pid}/net/if_inet6 r,
+    @{PROC}/@{pid}/net/ipv6_route r,
+
+    # System config
+    /etc/machine-id r,
+    /etc/passwd r,
+    /etc/nsswitch.conf r,
+    /etc/resolv.conf r,
+    /etc/localtime r,
+    /etc/fonts r,
+    # Loong New World on Loong Old World
+    /opt/lol/** r,
+
+    # Hardware
+    /sys/devices/pci** r,
+    /sys/devices/system/** r,
+    /sys/dev rwk
+    /sys/dev/char r
+    /sys/devices r
+    /dev/video* rw,
+
+    # Home
+    owner @{HOME}/.cache/ rw,
+    owner @{HOME}/.config/ rw,
+    owner @{HOME}/.local/ rw,
+    owner @{HOME}/.local/share/ rw,
+    owner @{HOME}/.deepinwine/** mrwkl,
+    owner @{HOME}/Documents/** mrwkl,
+    owner @{HOME}/Downloads/** mrwkl,
+    owner @{HOME}/** r,
+
+    # Application
+    /opt/wechat/** rmix,
+
+    # Site-specific additions and overrides. See local/README for details.
+    include if exists <local/wechat>
+}
