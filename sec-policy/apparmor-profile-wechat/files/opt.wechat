@@ -32,9 +32,9 @@ profile wechat /opt/wechat/* {
     # Hardware
     /sys/devices/pci** r,
     /sys/devices/system/** r,
-    /sys/dev rwk
-    /sys/dev/char r
-    /sys/devices r
+    /sys/dev rwk,
+    /sys/dev/char r,
+    /sys/devices r,
     /dev/video* rw,
 
     # Home
