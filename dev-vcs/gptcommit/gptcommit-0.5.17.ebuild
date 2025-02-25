@@ -318,3 +318,7 @@ LICENSE="MIT"
 LICENSE+=" Apache-2.0 BSD ISC MIT MPL-2.0 Unicode-DFS-2016"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64 ~loong ~riscv"
+
+PATCHES=(
+	"${FILESDIR}/${PN}-0.5.17-deepseek-fix.patch"
+)

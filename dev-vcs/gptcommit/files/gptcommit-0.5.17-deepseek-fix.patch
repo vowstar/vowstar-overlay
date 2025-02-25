@@ -1,0 +1,33 @@
+From 43575d6bc9056fa58367b46f9c0abbac9a2bd216 Mon Sep 17 00:00:00 2001
+From: Huang Rui <vowstar@gmail.com>
+Date: Wed, 26 Feb 2025 03:00:41 +0800
+Subject: [PATCH] src/llms/openai.rs: workaround deepseek tiktoken
+
+Signed-off-by: Huang Rui <vowstar@gmail.com>
+---
+ src/llms/openai.rs | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/src/llms/openai.rs b/src/llms/openai.rs
+index cfc9bd7..1ce4890 100644
+--- a/src/llms/openai.rs
++++ b/src/llms/openai.rs
+@@ -98,7 +98,14 @@ impl OpenAIClient {
+     }
+ 
+     pub(crate) async fn get_completions(&self, prompt: &str) -> Result<String> {
+-        let prompt_token_limit = get_completion_max_tokens(&self.model, prompt)?;
++        let prompt_token_limit = match self.model.as_str() {
++            "deepseek-chat" | "deepseek-reasoner" => {
++                8192
++            }
++            _ => {
++                get_completion_max_tokens(&self.model, prompt)?
++            }
++        };
+ 
+         if prompt_token_limit < COMPLETION_TOKEN_LIMIT {
+             let error_msg =
+-- 
+2.48.1
+
