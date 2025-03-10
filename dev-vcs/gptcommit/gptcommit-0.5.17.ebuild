@@ -322,3 +322,7 @@ KEYWORDS="~amd64 ~arm64 ~loong ~riscv"
 PATCHES=(
 	"${FILESDIR}/${PN}-0.5.17-deepseek-fix.patch"
 )
+
+# rust does not use *FLAGS from make.conf, silence portage warning
+# update with proper path to binaries this crate installs, omit leading /
+QA_FLAGS_IGNORED="usr/bin/${PN}"
