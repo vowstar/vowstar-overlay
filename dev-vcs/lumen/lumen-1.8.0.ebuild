@@ -31,6 +31,7 @@ CRATES="
 	colored@2.1.0
 	core-foundation-sys@0.8.7
 	core-foundation@0.9.4
+	dirs@6.0.0
 	encoding_rs@0.8.35
 	equivalent@1.0.1
 	errno@0.3.9
