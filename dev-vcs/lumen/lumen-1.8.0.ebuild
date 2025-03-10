@@ -186,6 +186,12 @@ LICENSE+=" Apache-2.0 BSD MIT MPL-2.0 Unicode-DFS-2016"
 SLOT="0"
 KEYWORDS="~amd64"
 
+# fzf is required for lumen list command
+RDEPEND="
+	app-shells/fzf
+"
+DEPEND="${RDEPEND}"
+
 # rust does not use *FLAGS from make.conf, silence portage warning
 # update with proper path to binaries this crate installs, omit leading /
 QA_FLAGS_IGNORED="usr/bin/${PN}"
