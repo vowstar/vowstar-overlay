@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<!--maintainer-needed-->
+	<upstream>
+		<bugs-to>https://github.com/jnsahaj/lumen/issues</bugs-to>
+		<changelog>https://github.com/jnsahaj/lumen/releases</changelog>
+		<remote-id type="github">jnsahaj/lumen</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		lumen is an AI-enhanced command-line tool that optimizes Git workflows
+		by automatically generating conventional commit messages and explaining
+		code changes.
+		It works out-of-the-box using Phind's AI without requiring API keys,
+		supports multiple providers (OpenAI/Claude/Groq/Ollama/Deepseek), and
+		offers interactive commit exploration. Features include staged change
+		analysis, branch comparisons, markdown-rich outputs, and seamless
+		integration with existing workflows through config files or environment
+		variables.
+	</longdescription>
+	<longdescription lang="zh">
+		lumen 是一款 AI 增强型命令行工具，通过自动生成规范提交信息和智能解析代码
+		变更 优化 Git 工作流。默认使用 Phind 无需 API 密钥，支持多种 AI 服务
+		（OpenAI/Claude/Groq/Ollama/Deepseek），提供交互式提交记录浏览功能。
+		可分析暂存区变更、进行分支对比， 支持 Markdown 格式输出，通过配置文件或
+		环境变量灵活定制，无缝集成现有开发流程。
+	</longdescription>
+</pkgmetadata>
