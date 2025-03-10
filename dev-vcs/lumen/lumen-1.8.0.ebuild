@@ -31,6 +31,7 @@ CRATES="
 	colored@2.1.0
 	core-foundation-sys@0.8.7
 	core-foundation@0.9.4
+	dirs-sys@0.5.0
 	dirs@6.0.0
 	encoding_rs@0.8.35
 	equivalent@1.0.1
@@ -45,6 +46,7 @@ CRATES="
 	futures-sink@0.3.31
 	futures-task@0.3.31
 	futures-util@0.3.31
+	getrandom@0.2.15
 	gimli@0.31.1
 	h2@0.3.26
 	hashbrown@0.15.0
@@ -65,6 +67,7 @@ CRATES="
 	js-sys@0.3.72
 	lazy_static@1.5.0
 	libc@0.2.161
+	libredox@0.1.3
 	linux-raw-sys@0.4.14
 	lock_api@0.4.12
 	log@0.4.22
@@ -79,6 +82,7 @@ CRATES="
 	openssl-probe@0.1.5
 	openssl-sys@0.9.104
 	openssl@0.10.68
+	option-ext@0.2.0
 	parking_lot@0.12.3
 	parking_lot_core@0.9.10
 	paste@1.0.15
@@ -86,9 +90,10 @@ CRATES="
 	pin-project-lite@0.2.15
 	pin-utils@0.1.0
 	pkg-config@0.3.31
-	proc-macro2@1.0.89
+	proc-macro2@1.0.94
 	quote@1.0.37
 	redox_syscall@0.5.7
+	redox_users@0.5.0
 	reqwest@0.11.27
 	rustc-demangle@0.1.24
 	rustix@0.38.38
@@ -109,13 +114,15 @@ CRATES="
 	socket2@0.5.7
 	spinoff@0.8.0
 	strsim@0.11.1
-	syn@2.0.85
+	syn@2.0.100
 	sync_wrapper@0.1.2
 	system-configuration-sys@0.5.0
 	system-configuration@0.5.1
 	tempfile@3.13.0
 	thiserror-impl@1.0.65
+	thiserror-impl@2.0.12
 	thiserror@1.0.65
+	thiserror@2.0.12
 	tinyvec@1.8.0
 	tinyvec_macros@0.1.1
 	tokio-macros@2.4.0
