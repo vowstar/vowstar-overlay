@@ -1,0 +1,299 @@
+From 26cb2bc6bed96648b7ad315b47a17f209cf3fe2a Mon Sep 17 00:00:00 2001
+From: Huang Rui <vowstar@gmail.com>
+Date: Thu, 20 Mar 2025 22:14:53 +0800
+Subject: [PATCH] feat(outline): Add support for generating structured commit
+ messages with bullet points
+
+- Add `OutlineCommand` to handle structured commit message generation
+- Implement `build_outline_prompt` method in `AIPrompt` for structured messages
+- Update CLI and main logic to support the `outline` command
+- Add `outline` method in `LumenProvider` to process structured commit requests
+
+Signed-off-by: Huang Rui <vowstar@gmail.com>
+---
+ README.md              | 14 +++++++++
+ src/ai_prompt.rs       | 65 +++++++++++++++++++++++++++++++++++++++++-
+ src/command/mod.rs     |  8 ++++++
+ src/command/outline.rs | 27 ++++++++++++++++++
+ src/config/cli.rs      |  7 ++++-
+ src/main.rs            |  5 ++++
+ src/provider/mod.rs    | 31 +++++++++++++++-----
+ 7 files changed, 148 insertions(+), 9 deletions(-)
+ create mode 100644 src/command/outline.rs
+
+diff --git a/README.md b/README.md
+index d8d4c55a2b60..7c574f5ddcf9 100644
+--- a/README.md
++++ b/README.md
+@@ -73,6 +73,18 @@ lumen draft
+ # Add context for more meaningful messages
+ lumen draft --context "match brand guidelines"
+ # Output: "feat(button.tsx): Update button color to align with brand identity guidelines"
++
++# Generate a structured commit message with bullet points
++lumen outline
++# Output:
++# feat(button.tsx): Update button color to align with brand identity guidelines
++#
++# - Update primary button color to match new brand color scheme
++# - Add hover state color transition for better user feedback
++# - Update color variables in theme configuration for consistency
++
++# Add context for more meaningful structured messages
++lumen outline --context "match brand guidelines"
+ ```
+ 
+ 
+@@ -127,6 +139,8 @@ lumen draft | code -
+ 
+ # Directly commit using the generated message
+ lumen draft | git commit -F -           
++# Directly commit using the generated message with bullet points
++lumen outline | git commit -F -
+ ```
+ 
+ If you are using [lazygit](https://github.com/jesseduffield/lazygit), you can add this to the [user config](https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md)
+diff --git a/src/ai_prompt.rs b/src/ai_prompt.rs
+index f672c10829ae..ac44d60fcc55 100644
+--- a/src/ai_prompt.rs
++++ b/src/ai_prompt.rs
+@@ -1,5 +1,5 @@
+ use crate::{
+-    command::{draft::DraftCommand, explain::ExplainCommand},
++    command::{draft::DraftCommand, outline::OutlineCommand, explain::ExplainCommand},
+     git_entity::{diff::Diff, GitEntity},
+ };
+ use indoc::{formatdoc, indoc};
+@@ -148,6 +148,69 @@ impl AIPrompt {
+         })
+     }
+ 
++    pub fn build_outline_prompt(command: &OutlineCommand) -> Result<Self, AIPromptError> {
++        let GitEntity::Diff(Diff::WorkingTree { diff, .. }) = &command.git_entity else {
++            return Err(AIPromptError(
++                "`outline` is only supported for working tree diffs".into(),
++            ));
++        };
++
++        let system_prompt = String::from(indoc! {"
++            You are a commit message generator that follows these rules:
++            1. IMPORTANT: Each line must be no more than 65 characters (including title and bullet points)
++            2. Write in present tense
++            3. Be concise and direct
++            4. Output only the commit message without any explanations
++            5. Follow the format:
++               <type>(<optional scope>): <commit message>
++               
++               - <bullet point describing a key change>
++               - <bullet point describing another key change>
++        "});
++
++        let context = if let Some(context) = &command.context {
++            formatdoc!(
++                "
++                Use the following context to understand intent:
++                {context}
++                "
++            )
++        } else {
++            "".to_string()
++        };
++
++        let user_prompt = String::from(formatdoc! {"
++            Generate a structured git commit message written in present tense for the following code diff with the given specifications below:
++
++            The output response must be in format:
++            <type>(<optional scope>): <commit message>
++
++            - <bullet point describing a key change>
++            - <bullet point describing another key change>
++
++            Choose a type from the type-to-description JSON below that best describes the git diff:
++            {commit_types}
++            Focus on being accurate and concise.
++            {context}
++            First line must be a maximum of 72 characters.
++            Each bullet point must be a maximum of 78 characters.
++            If a bullet point exceeds 78 characters, wrap it with 2 spaces at the start of the next line.
++            Exclude anything unnecessary such as translation. Your entire response will be passed directly into git commit.
++
++            Code diff:
++            ```diff
++            {diff}
++            ```
++            ",
++            commit_types = command.draft_config.commit_types,
++        });
++
++        Ok(AIPrompt {
++            system_prompt,
++            user_prompt,
++        })
++    }
++
+     pub fn build_operate_prompt(query: &str) -> Result<Self, AIPromptError> {
+         let system_prompt = String::from(indoc! {"
+         You're a Git assistant that provides commands with clear explanations.
+diff --git a/src/command/mod.rs b/src/command/mod.rs
+index b51a8d182338..9e8058696e85 100644
+--- a/src/command/mod.rs
++++ b/src/command/mod.rs
+@@ -1,5 +1,6 @@
+ use async_trait::async_trait;
+ use draft::DraftCommand;
++use outline::OutlineCommand;
+ use explain::ExplainCommand;
+ use list::ListCommand;
+ use operate::OperateCommand;
+@@ -12,6 +13,7 @@ use crate::git_entity::GitEntity;
+ use crate::provider::LumenProvider;
+ 
+ pub mod draft;
++pub mod outline;
+ pub mod explain;
+ pub mod list;
+ pub mod operate;
+@@ -24,6 +26,7 @@ pub enum CommandType {
+     },
+     List,
+     Draft(Option<String>, DraftConfig),
++    Outline(Option<String>, DraftConfig),
+     Operate {
+         query: String,
+     },
+@@ -46,6 +49,11 @@ impl CommandType {
+                 draft_config,
+                 context,
+             }),
++            CommandType::Outline(context, draft_config) => Box::new(OutlineCommand {
++                git_entity: GitEntity::Diff(Diff::from_working_tree(true)?),
++                draft_config,
++                context,
++            }),
+             CommandType::Operate { query } => Box::new(OperateCommand { query }),
+         })
+     }
+diff --git a/src/command/outline.rs b/src/command/outline.rs
+new file mode 100644
+index 000000000000..526b7cfba79c
+--- /dev/null
++++ b/src/command/outline.rs
+@@ -0,0 +1,27 @@
++use std::io::Write;
++
++use async_trait::async_trait;
++
++use crate::{
++    config::configuration::DraftConfig, error::LumenError, git_entity::GitEntity,
++    provider::LumenProvider,
++};
++
++use super::Command;
++
++pub struct OutlineCommand {
++    pub git_entity: GitEntity,
++    pub context: Option<String>,
++    pub draft_config: DraftConfig,
++}
++
++#[async_trait]
++impl Command for OutlineCommand {
++    async fn execute(&self, provider: &LumenProvider) -> Result<(), LumenError> {
++        let result = provider.outline(self).await?;
++
++        print!("{result}");
++        std::io::stdout().flush()?;
++        Ok(())
++    }
++} 
+\ No newline at end of file
+diff --git a/src/config/cli.rs b/src/config/cli.rs
+index 81744c40a6cd..edb943f58031 100644
+--- a/src/config/cli.rs
++++ b/src/config/cli.rs
+@@ -81,7 +81,12 @@ pub enum Commands {
+         #[arg(short, long)]
+         context: Option<String>,
+     },
+-
++    /// Generate a structured commit message with bullet points for the staged changes
++    Outline {
++        /// Add context to communicate intent
++        #[arg(short, long)]
++        context: Option<String>,
++    },
+     Operate {
+         #[arg()]
+         query: String,
+diff --git a/src/main.rs b/src/main.rs
+index 00fb1d618aad..b19b58410703 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -72,6 +72,11 @@ async fn run() -> Result<(), LumenError> {
+                 .execute(command::CommandType::Draft(context, config.draft))
+                 .await?
+         }
++        Commands::Outline { context } => {
++            command
++                .execute(command::CommandType::Outline(context, config.draft))
++                .await?
++        }
+         Commands::Operate { query } => {
+             command
+                 .execute(command::CommandType::Operate { query })
+diff --git a/src/provider/mod.rs b/src/provider/mod.rs
+index 9b744a9a75ba..c309e74847fe 100644
+--- a/src/provider/mod.rs
++++ b/src/provider/mod.rs
+@@ -1,4 +1,14 @@
+-use crate::config::cli::ProviderType;
++use crate::{
++    ai_prompt::{AIPrompt, AIPromptError},
++    command::{
++        draft::DraftCommand, 
++        outline::OutlineCommand,
++        explain::ExplainCommand, 
++        operate::OperateCommand,
++    },
++    config::cli::ProviderType,
++    error::LumenError,
++};
+ use async_trait::async_trait;
+ use claude::{ClaudeConfig, ClaudeProvider};
+ use deepseek::{DeepSeekConfig, DeepSeekProvider};
+@@ -9,12 +19,6 @@ use openrouter::{OpenRouterConfig, OpenRouterProvider};
+ use phind::{PhindConfig, PhindProvider};
+ use thiserror::Error;
+ 
+-use crate::{
+-    ai_prompt::{AIPrompt, AIPromptError},
+-    command::{draft::DraftCommand, explain::ExplainCommand, operate::OperateCommand},
+-    error::LumenError,
+-};
+-
+ pub mod claude;
+ pub mod deepseek;
+ pub mod groq;
+@@ -136,6 +140,19 @@ impl LumenProvider {
+         }
+     }
+ 
++    pub async fn outline(&self, command: &OutlineCommand) -> Result<String, ProviderError> {
++        let prompt = AIPrompt::build_outline_prompt(command)?;
++        match self {
++            LumenProvider::OpenAI(provider) => provider.complete(prompt).await,
++            LumenProvider::Phind(provider) => provider.complete(prompt).await,
++            LumenProvider::Groq(provider) => provider.complete(prompt).await,
++            LumenProvider::Claude(provider) => provider.complete(prompt).await,
++            LumenProvider::Ollama(provider) => provider.complete(prompt).await,
++            LumenProvider::OpenRouter(provider) => provider.complete(prompt).await,
++            LumenProvider::DeepSeek(provider) => provider.complete(prompt).await,
++        }
++    }
++
+     pub async fn operate(&self, command: &OperateCommand) -> Result<String, ProviderError> {
+         let prompt = AIPrompt::build_operate_prompt(command.query.as_str())?;
+         match self {
+-- 
+2.49.0
+
