@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="8"
@@ -6,7 +6,7 @@ EAPI="8"
 MY_PV="${PV//./\/}"
 MY_LLVM_PV="d978730d8e2c10c76867b83bec2f1143d895ee7d"
 CMAKE_BUILD_TYPE="Release"
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{11..12} )
 inherit cmake python-r1
 
 DESCRIPTION="The fast free Verilog/SystemVerilog simulator"
