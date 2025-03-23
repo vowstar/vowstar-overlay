@@ -14,57 +14,55 @@ profile vscode /opt/vscode/* {
     include <abstractions/private-files-strict>
     include <abstractions/audio>
     include <abstractions/dbus-session-strict>
+    include <abstractions/X>
 
     # Network
     network inet stream,
     network inet6 stream,
-    @{PROC}/@{pid}/net/if_inet6 r,
-    @{PROC}/@{pid}/net/ipv6_route r,
     unix,
 
     # System config
     /etc/machine-id r,
-    /etc/passwd r,
     /etc/nsswitch.conf r,
     /etc/resolv.conf r,
     /etc/localtime r,
     /etc/fonts/** r,
     /usr/share/fonts/** r,
     /usr/local/share/fonts/** r,
-    # Loong New World on Loong Old World
-    /opt/lol/** r,
+    /usr/share/** r,
 
-    # Hardware
+    # Hardware access
     /sys/devices/pci** r,
     /sys/devices/system/** r,
     /sys/dev rwk,
-    /sys/dev/char r,
-    /sys/devices r,
-    /dev/video* rw,
     /dev/dri/** rw,
     /dev/shm/** rw,
-    
-    # System filesystem access
-    /sys/fs/** r,
-    /sys/fs/cgroup/** r,
+    /dev/pts/* rw,
+    /dev/video* rw,
 
-    # Process info
-    @{PROC}/ r,
-    @{PROC}/** r,
+    # System filesystem access
+    /sys/fs/cgroup/** rw,
+
+    # Process info - simplified
+    /proc/ r,
+    /proc/** r,
     @{PROC}/@{pid}/setgroups w,
     @{PROC}/@{pid}/gid_map w,
     @{PROC}/@{pid}/uid_map w,
 
-    # Terminal access
-    /dev/pts/* rw,
+    # Temporary files
+    /tmp/** mrwlkix,
 
-    # Allow executable mapping for JIT and extensions
-    /tmp/.vscode-root** mrwlkix,
-
-    # Chrome sandbox capabilities
+    # Capabilities for sandbox
     capability sys_admin,
+    capability sys_ptrace,
 
-    # Home
+    # Runtime
+    /run/** rw,
+
+    # Executables
+    /usr/bin/** rix,
+    /bin/** rix,
 
     # Deny access to sensitive directories
     deny owner @{HOME}/.ssh/** rwklmx,
@@ -79,21 +77,14 @@ profile vscode /opt/vscode/* {
     deny owner @{HOME}/.pki/** rwklmx,
     deny owner @{HOME}/.mozilla/** rwklmx,
 
-    # Allow access to all other home directory files
-    owner @{HOME}/.cache/ rw,
-    owner @{HOME}/.config/ rw,
-    owner @{HOME}/.local/ rw,
-    owner @{HOME}/.local/share/ rw,
+    # Home directory access
     owner @{HOME}/.vscode/** mrwkl,
     owner @{HOME}/.vscode-server/** mrwkl,
     owner @{HOME}/** mrwkl,
 
     # Application
     /opt/vscode/** rmix,
-    /usr/bin/git rix,
-    /usr/bin/node rix,
-    /usr/bin/npm rix,
 
-    # Site-specific additions and overrides. See local/README for details.
+    # Site-specific additions
     include if exists <local/vscode>
 }
