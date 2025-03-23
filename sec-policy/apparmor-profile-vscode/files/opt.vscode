@@ -42,10 +42,14 @@ profile vscode /opt/vscode/* {
 
     # System filesystem access
     /sys/fs/cgroup/** rw,
+    /sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/app-ghostty-transient-*.scope/surfaces/*.scope/memory.* rw,
 
-    # Process info - simplified
+    # Process info - more specific
     /proc/ r,
     /proc/** r,
+    /proc/*/gid_map w,
+    /proc/*/uid_map w,
+    /proc/*/setgroups w,
     @{PROC}/@{pid}/setgroups w,
     @{PROC}/@{pid}/gid_map w,
     @{PROC}/@{pid}/uid_map w,
@@ -56,6 +60,9 @@ profile vscode /opt/vscode/* {
     # Capabilities for sandbox
     capability sys_admin,
     capability sys_ptrace,
+    capability sys_chroot,
+    capability dac_read_search,
+    capability dac_override,
 
     # Runtime
     /run/** rw,
