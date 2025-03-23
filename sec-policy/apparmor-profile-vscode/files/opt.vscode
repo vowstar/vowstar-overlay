@@ -42,17 +42,18 @@ profile vscode /opt/vscode/* {
     /sys/devices r,
     /dev/video* rw,
     /dev/dri/** rw,
-    /dev/shm/org.chromium.* rw,
+    /dev/shm/** rw,
+    
+    # System filesystem access
+    /sys/fs/** r,
+    /sys/fs/cgroup/** r,
 
     # Process info
     @{PROC}/ r,
-    @{PROC}/@{pid}/ r,
-    @{PROC}/@{pid}/** r,
-    @{PROC}/sys/kernel/random/boot_id r,
-    @{PROC}/loadavg r,
-    @{PROC}/sys/fs/inotify/** r,
+    @{PROC}/** r,
     @{PROC}/@{pid}/setgroups w,
     @{PROC}/@{pid}/gid_map w,
+    @{PROC}/@{pid}/uid_map w,
 
     # Terminal access
     /dev/pts/* rw,
