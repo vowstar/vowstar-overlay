@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">vowstar/vowstar-overlay</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		This is an AppArmor security policy specifically written for closed
+		source software, designed to restrict closed source software from
+		accessing users' sensitive directories (such as .ssh) and
+		system-sensitive information directories, providing a certain level of
+		protection.
+		These security policies take effect after installing AppArmor and
+		enabling the relevant services.
+	</longdescription>
+	<longdescription lang="zh">
+		这是针对闭源软件编写的AppArmor安全策略，主要限制闭源软件对用户敏感目录的
+		访问，例如.ssh目录，以及系统敏感信息目录，起到一定的保护作用。这些安全
+		策略在安装AppArmor并启用相关服务后生效。
+	</longdescription>
+</pkgmetadata>

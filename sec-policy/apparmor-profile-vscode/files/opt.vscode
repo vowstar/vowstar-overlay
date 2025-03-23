@@ -1,0 +1,88 @@
+# vim:syntax=apparmor
+
+abi <abi/3.0>,
+
+include <tunables/global>
+profile vscode /opt/vscode/* {
+    include <abstractions/base>
+    include <abstractions/fonts>
+    include <abstractions/gnome>
+    include <abstractions/kde>
+    include <abstractions/nameservice>
+    include <abstractions/ssl_certs>
+    include <abstractions/user-tmp>
+    include <abstractions/private-files-strict>
+    include <abstractions/audio>
+    include <abstractions/dbus-session-strict>
+
+    # Network
+    network inet stream,
+    network inet6 stream,
+    @{PROC}/@{pid}/net/if_inet6 r,
+    @{PROC}/@{pid}/net/ipv6_route r,
+    unix,
+
+    # System config
+    /etc/machine-id r,
+    /etc/passwd r,
+    /etc/nsswitch.conf r,
+    /etc/resolv.conf r,
+    /etc/localtime r,
+    /etc/fonts/** r,
+    /usr/share/fonts/** r,
+    /usr/local/share/fonts/** r,
+    # Loong New World on Loong Old World
+    /opt/lol/** r,
+
+    # Hardware
+    /sys/devices/pci** r,
+    /sys/devices/system/** r,
+    /sys/dev rwk,
+    /sys/dev/char r,
+    /sys/devices r,
+    /dev/video* rw,
+    /dev/dri/** rw,
+    /dev/shm/org.chromium.* rw,
+
+    # Process info
+    @{PROC}/sys/kernel/random/boot_id r,
+    @{PROC}/@{pid}/stat r,
+    @{PROC}/@{pid}/cmdline r,
+    @{PROC}/loadavg r,
+
+    # Allow executable mapping for JIT and extensions
+    /tmp/.vscode-root** mrwlkix,
+
+    # Home
+
+    # Deny access to sensitive directories
+    deny owner @{HOME}/.ssh/** rwklmx,
+    deny owner @{HOME}/.gnupg/** rwklmx,
+    deny owner @{HOME}/.gpg/** rwklmx,
+    deny owner @{HOME}/.aws/** rwklmx,
+    deny owner @{HOME}/.kube/** rwklmx,
+    deny owner @{HOME}/.config/gcloud/** rwklmx,
+    deny owner @{HOME}/.config/keyring/** rwklmx,
+    deny owner @{HOME}/.password-store/** rwklmx,
+    deny owner @{HOME}/.cert/** rwklmx,
+    deny owner @{HOME}/.pki/** rwklmx,
+    deny owner @{HOME}/.mozilla/** rwklmx,
+
+    # Allow access to all other home directory files
+    owner @{HOME}/.cache/ rw,
+    owner @{HOME}/.config/ rw,
+    owner @{HOME}/.local/ rw,
+    owner @{HOME}/.local/share/ rw,
+    owner @{HOME}/.vscode/** mrwkl,
+    owner @{HOME}/.vscode-server/** mrwkl,
+    owner @{HOME}/** mrwkl,
+
+    # Application
+    /opt/vscode/** rmix,
+    /usr/bin/git rix,
+    /usr/bin/node rix,
+    /usr/bin/npm rix,
+
+    # Site-specific additions and overrides. See local/README for details.
+    include if exists <local/vscode>
+}
