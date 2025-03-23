@@ -23,6 +23,7 @@ profile vscode /opt/vscode/* {
 
     # System config
     /etc/machine-id r,
+    /etc/passwd r,
     /etc/nsswitch.conf r,
     /etc/resolv.conf r,
     /etc/localtime r,
@@ -44,6 +45,7 @@ profile vscode /opt/vscode/* {
 
     # System filesystem access
     /sys/fs/cgroup/** rw,
+    /sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/app-ghostty-transient-*.scope/surfaces/*.scope/memory.* rw,
 
     # Process info - more specific
     /proc/ r,
@@ -52,7 +54,10 @@ profile vscode /opt/vscode/* {
     /proc/*/uid_map w,
     /proc/*/setgroups w,
     /proc/*/oom_score_adj w,
-    @{PROC}/@{pid}/** w,
+    @{PROC}/@{pid}/setgroups w,
+    @{PROC}/@{pid}/gid_map w,
+    @{PROC}/@{pid}/uid_map w,
+    @{PROC}/@{pid}/oom_score_adj w,
 
     # Temporary files
     /tmp/** mrwlkix,
@@ -94,4 +99,4 @@ profile vscode /opt/vscode/* {
 
     # Site-specific additions
     include if exists <local/vscode>
-}
+} 
