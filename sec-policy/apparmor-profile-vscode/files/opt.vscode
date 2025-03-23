@@ -35,6 +35,8 @@ profile vscode /opt/vscode/* {
     /sys/devices/pci** r,
     /sys/devices/system/** r,
     /sys/dev rwk,
+    /sys/bus/pci/devices/ r,
+    /sys/bus/pci/devices/** r,
     /dev/dri/** rw,
     /dev/shm/** rw,
     /dev/pts/* rw,
@@ -42,7 +44,6 @@ profile vscode /opt/vscode/* {
 
     # System filesystem access
     /sys/fs/cgroup/** rw,
-    /sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/app-ghostty-transient-*.scope/surfaces/*.scope/memory.* rw,
 
     # Process info - more specific
     /proc/ r,
@@ -50,9 +51,11 @@ profile vscode /opt/vscode/* {
     /proc/*/gid_map w,
     /proc/*/uid_map w,
     /proc/*/setgroups w,
+    /proc/*/oom_score_adj wc,
     @{PROC}/@{pid}/setgroups w,
     @{PROC}/@{pid}/gid_map w,
     @{PROC}/@{pid}/uid_map w,
+    @{PROC}/@{pid}/oom_score_adj wc,
 
     # Temporary files
     /tmp/** mrwlkix,
