@@ -45,14 +45,14 @@ profile vscode /opt/vscode/* {
     /dev/shm/org.chromium.* rw,
 
     # Process info
+    @{PROC}/ r,
+    @{PROC}/@{pid}/ r,
+    @{PROC}/@{pid}/** r,
     @{PROC}/sys/kernel/random/boot_id r,
-    @{PROC}/@{pid}/stat r,
-    @{PROC}/@{pid}/cmdline r,
     @{PROC}/loadavg r,
-    @{PROC}/@{pid}/cgroup r,
-    @{PROC}/@{pid}/setgroups w,
-    @{PROC}/@{pid}/fd/ r,
     @{PROC}/sys/fs/inotify/** r,
+    @{PROC}/@{pid}/setgroups w,
+    @{PROC}/@{pid}/gid_map w,
 
     # Terminal access
     /dev/pts/* rw,
