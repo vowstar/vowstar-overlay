@@ -52,6 +52,7 @@ profile vscode /opt/vscode/* {
     @{PROC}/@{pid}/cgroup r,
     @{PROC}/@{pid}/setgroups w,
     @{PROC}/@{pid}/fd/ r,
+    @{PROC}/sys/fs/inotify/** r,
 
     # Terminal access
     /dev/pts/* rw,
