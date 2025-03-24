@@ -15,6 +15,8 @@ LICENSE="MPL-2.0"
 SLOT="0/${PV}"
 KEYWORDS="~amd64"
 
+CABAL_CHDEPS=('base             >= 4.12.0 && < 4.19' 'base >= 4.12 && < 4.22')
+
 RDEPEND=">=dev-haskell/cmdargs-0.10.20:=[profile?] <dev-haskell/cmdargs-0.11:=[profile?]
 	>=dev-haskell/megaparsec-9.0.1:=[profile?] <dev-haskell/megaparsec-9.6:=[profile?]
 	>=dev-haskell/parser-combinators-1.0.3:=[profile?] <dev-haskell/parser-combinators-1.4:=[profile?]
