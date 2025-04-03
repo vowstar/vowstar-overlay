@@ -13,13 +13,13 @@ HOMEPAGE="https://www.cocotb.org"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~amd64 ~arm64"
+KEYWORDS="~amd64 ~arm64 ~riscv ~x86"
 
-# Tests requires many eda tools
+# Tests requires many eda tools, and can't work inside network sandbox
 RESTRICT=test
 
 RDEPEND="
-	dev-python/findpython[${PYTHON_USEDEP}]
+	dev-python/find-libpython[${PYTHON_USEDEP}]
 "
 
 DEPEND="${RDEPEND}"
