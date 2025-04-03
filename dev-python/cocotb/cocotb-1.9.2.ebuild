@@ -22,6 +22,8 @@ RDEPEND="
 	dev-python/findpython[${PYTHON_USEDEP}]
 "
 
+DEPEND="${RDEPEND}"
+
 PATCHES=(
 	"${FILESDIR}/cocotb-1.9.2-fix-license-qa.patch"
 )
