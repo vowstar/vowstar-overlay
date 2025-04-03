@@ -13,10 +13,14 @@ HOMEPAGE="https://www.cocotb.org"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~amd64 ~arm64 ~riscv ~x86"
+KEYWORDS="~amd64 ~arm64"
 
 # Tests requires many eda tools
 RESTRICT=test
+
+RDEPEND="
+	dev-python/findpython[${PYTHON_USEDEP}]
+"
 
 PATCHES=(
 	"${FILESDIR}/cocotb-1.9.2-fix-license-qa.patch"
