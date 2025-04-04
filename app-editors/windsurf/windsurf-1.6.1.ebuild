@@ -11,6 +11,7 @@ HOMEPAGE="https://codeium.com"
 SRC_URI="https://windsurf-stable.codeiumdata.com/wVxQEIWkwPUEAGf3/apt/pool/main/w/windsurf/Windsurf-linux-x64-${PV}.deb"
 S="${WORKDIR}"
 
+# License same as vscode
 LICENSE="
 	Apache-2.0
 	BSD
