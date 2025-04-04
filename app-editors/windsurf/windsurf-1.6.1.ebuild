@@ -84,6 +84,13 @@ src_install() {
 	# Install launcher script
 	dosym ../../opt/windsurf/windsurf /usr/bin/windsurf
 
+	# Fix paths in desktop files
+	sed -i \
+		-e 's|/usr/share/windsurf/windsurf|/opt/windsurf/windsurf|g' \
+		"${S}/usr/share/applications/windsurf.desktop" \
+		"${S}/usr/share/applications/windsurf-url-handler.desktop" \
+		|| die "sed failed"
+
 	# Install desktop files
 	domenu "${S}/usr/share/applications/windsurf.desktop"
 	domenu "${S}/usr/share/applications/windsurf-url-handler.desktop"
