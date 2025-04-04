@@ -69,8 +69,6 @@ RDEPEND="
 
 QA_PREBUILT="*"
 
-QA_PREBUILT="*"
-
 src_install() {
 	# Install application files and keep the original permissions
 	mkdir -p "${ED}/opt/${PN}" || die
