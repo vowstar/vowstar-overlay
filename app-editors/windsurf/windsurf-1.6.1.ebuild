@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit desktop unpacker xdg shell-completion
+inherit desktop shell-completion unpacker xdg
 
 DESCRIPTION="AI-powered code editor maintaining flow state with instant assistance."
 HOMEPAGE="https://codeium.com"
@@ -11,30 +11,48 @@ HOMEPAGE="https://codeium.com"
 SRC_URI="https://windsurf-stable.codeiumdata.com/wVxQEIWkwPUEAGf3/apt/pool/main/w/windsurf/Windsurf-linux-x64-${PV}.deb"
 S="${WORKDIR}"
 
-LICENSE="MIT"
+LICENSE="
+	Apache-2.0
+	BSD
+	BSD-1
+	BSD-2
+	BSD-4
+	CC-BY-4.0
+	ISC
+	LGPL-2.1+
+	Microsoft-vscode
+	MIT
+	MPL-2.0
+	openssl
+	PYTHON
+	TextMate-bundle
+	Unlicense
+	UoI-NCSA
+	W3C
+"
 SLOT="0"
 KEYWORDS="-* ~amd64"
-RESTRICT="mirror strip"
+RESTRICT="mirror strip bindist"
 
 RDEPEND="
-	app-accessibility/at-spi2-core:2
-	app-crypt/gnupg
-	app-crypt/libsecret
+	>=app-accessibility/at-spi2-core-2.46.0:2
+	app-crypt/libsecret[crypt]
+	app-crypt/mit-krb5
+	app-misc/ca-certificates
 	dev-libs/expat
 	dev-libs/glib:2
 	dev-libs/nspr
 	dev-libs/nss
 	media-libs/alsa-lib
+	media-libs/libglvnd
 	media-libs/mesa
-	net-print/cups
+	net-misc/curl
 	sys-apps/dbus
-	sys-apps/util-linux
+	sys-libs/zlib
 	sys-process/lsof
 	x11-libs/cairo
-	x11-libs/gdk-pixbuf:2
 	x11-libs/gtk+:3
 	x11-libs/libdrm
-	x11-libs/libnotify
 	x11-libs/libX11
 	x11-libs/libxcb
 	x11-libs/libXcomposite
@@ -44,42 +62,22 @@ RDEPEND="
 	x11-libs/libxkbcommon
 	x11-libs/libxkbfile
 	x11-libs/libXrandr
-	x11-libs/libXrender
 	x11-libs/libXScrnSaver
-	x11-libs/libXScrnSaver
-	x11-libs/libXtst
-	x11-misc/shared-mime-info
+	x11-libs/pango
 	x11-misc/xdg-utils
 "
 
-DEPEND="${RDEPEND}"
+QA_PREBUILT="*"
 
-QA_PREBUILT="
-	opt/windsurf/chrome-sandbox
-	opt/windsurf/chrome_crashpad_handler
-	opt/windsurf/windsurf
-	opt/windsurf/libEGL.so
-	opt/windsurf/libGLESv2.so
-	opt/windsurf/libffmpeg.so
-	opt/windsurf/libvk_swiftshader.so
-	opt/windsurf/libvulkan.so.1
-	opt/windsurf/*.so
-	opt/windsurf/*.so.*
-"
+QA_PREBUILT="*"
 
 src_install() {
-	# Install application files
-	insinto /opt/windsurf
-	doins -r "${S}/usr/share/windsurf/"*
+	# Install application files and keep the original permissions
+	mkdir -p "${ED}/opt/${PN}" || die
+	cp -r "${S}/usr/share/windsurf/"* "${ED}/opt/${PN}" || die
 
 	# Fix chrome-sandbox permissions
 	fperms 4755 /opt/windsurf/chrome-sandbox
-
-	# Make executables executable
-	local f
-	for f in ${QA_PREBUILT}; do
-		[[ -f "${D}/${f}" ]] && fperms +x "/${f}"
-	done
 
 	# Install launcher script
 	dosym ../../opt/windsurf/windsurf /usr/bin/windsurf
