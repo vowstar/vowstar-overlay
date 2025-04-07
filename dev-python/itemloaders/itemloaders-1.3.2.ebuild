@@ -12,7 +12,7 @@ HOMEPAGE="https://scrapy.org/"
 
 LICENSE="BSD"
 SLOT=0
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~arm64"
 
 DEPEND="${PYTHON_DEPS}"
 RDEPEND="${DEPEND}
