@@ -84,12 +84,18 @@ profile wechat /opt/wechat/* {
     deny owner @{HOME}/.pki/** rwklmx,
     deny owner @{HOME}/.mozilla/** rwklmx,
 
-    # Home
-    owner @{HOME}/.cache/ rw,
-    owner @{HOME}/.config/ rw,
-    owner @{HOME}/.local/ rw,
-    owner @{HOME}/.local/share/ rw,
+    # Home directory access
+    owner @{HOME}/.xwechat/ rwkl,
+    owner @{HOME}/.xwechat/** rwkl,
+    owner @{HOME}/.cache/ rwkl,
+    owner @{HOME}/.cache/** rwkl,
+    owner @{HOME}/.config/ rwkl,
+    owner @{HOME}/.config/** rwkl,
+    owner @{HOME}/.local/ rwkl,
+    owner @{HOME}/.local/** rwkl,
+    owner @{HOME}/Documents/ mrwkl,
     owner @{HOME}/Documents/** mrwkl,
+    owner @{HOME}/Downloads/ mrwkl,
     owner @{HOME}/Downloads/** mrwkl,
     owner @{HOME}/** r,
 
