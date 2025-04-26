@@ -21,10 +21,11 @@ HOMEPAGE="
 	https://www.blackmagicdesign.com/support/family/davinci-resolve-and-fusion
 "
 SRC_URI="${ARC_NAME}"
+S="${WORKDIR}"
 
 LICENSE="all-rights-reserved"
-KEYWORDS="-* ~amd64"
 SLOT="0"
+KEYWORDS="-* ~amd64"
 IUSE="doc udev"
 
 RESTRICT="strip mirror bindist fetch"
@@ -60,8 +61,6 @@ BDEPEND="
 	app-arch/unzip
 	dev-util/patchelf
 "
-
-S="${WORKDIR}"
 
 QA_PREBUILT="*"
 
