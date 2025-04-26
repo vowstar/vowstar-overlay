@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">BelledonneCommunications/linphone-deskop</remote-id>
+		<bugs-to>https://github.com/BelledonneCommunications/linphone-deskop/issues</bugs-to>
+		<changelog>https://github.com/BelledonneCommunications/linphone-deskop/releases</changelog>
+	</upstream>
+	<longdescription lang="en">
+		Linphone is a free open source SIP client for HD voice/video calls,
+		conference calling, and instant messaging. It features end-to-end
+		encrypted communications, a modern user interface, and supports
+		advanced functionalities like screen sharing, file transfer, and
+		group chat. Linphone is cross-platform and available for desktop
+		environments (GNU/Linux, macOS, Windows) and mobile devices
+		(iOS, Android). It's built on the Liblinphone SDK, which can be
+		embedded into other applications requiring real-time communication.
+	</longdescription>
+	<longdescription lang="zh">
+		Linphone 是一个免费开源的 SIP 客户端，用于高清语音/视频通话、会议通话和
+		即时消息。它具有端到端加密通信功能，现代用户界面，并支持高级功能，如
+		屏幕共享、文件传输和群组聊天。Linphone 是跨平台的，可用于桌面环境
+		（GNU/Linux, macOS, Windows）和移动设备（iOS, Android）。它基于
+		Liblinphone SDK 构建，该 SDK 可嵌入到其他需要实时通信的应用程序中。
+	</longdescription>
+</pkgmetadata>
