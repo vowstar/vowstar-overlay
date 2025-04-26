@@ -37,7 +37,6 @@ RDEPEND="
 	dev-libs/openssl:=
 	dev-qt/qtcore:5
 	dev-qt/qtsvg:5
-	dev-qt/qtwebengine:5
 	dev-qt/qtwebsockets:5
 	media-libs/gstreamer
 	media-libs/libpano13
