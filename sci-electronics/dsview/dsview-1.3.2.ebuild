@@ -4,7 +4,7 @@
 EAPI=8
 
 GITHUB_PN="DSView"
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{11..12} )
 
 inherit cmake python-r1 udev xdg
 
@@ -49,6 +49,13 @@ DEPEND="
 BDEPEND="
 	virtual/pkgconfig
 "
+
+PATCHES=(
+	# bug 887877
+	"${FILESDIR}/${PN}-1.3.0-gcc13.patch"
+	# bug 887913
+	"${FILESDIR}/${PN}-1.3.0-fix-flags.patch"
+)
 
 src_configure() {
 	local mycmakeargs=(
