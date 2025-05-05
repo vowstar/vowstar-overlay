@@ -3,7 +3,7 @@
 
 EAPI="8"
 
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{10..13} )
 GIT_COMMIT="f6d0f7a"
 
 inherit autotools python-r1 java-pkg-opt-2 udev xdg
