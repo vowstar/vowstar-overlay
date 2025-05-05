@@ -5,7 +5,7 @@ EAPI="8"
 
 GIT_COMMIT="782c35b"
 
-PYTHON_COMPAT=( python3_{10..13} )
+PYTHON_COMPAT=( python3_{10..12} )
 inherit autotools python-single-r1
 
 if [[ ${PV} == *9999* ]]; then
