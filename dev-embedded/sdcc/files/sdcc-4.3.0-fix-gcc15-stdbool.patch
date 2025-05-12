@@ -1,0 +1,16 @@
+--- a/debugger/mcs51/sdcdb.h	2024-02-05 02:33:46.000000000 +0800
++++ b/debugger/mcs51/sdcdb.h	2025-05-12 14:33:25.897757364 +0800
+@@ -60,7 +60,13 @@
+ #define TRUE 1
+ #define FALSE !TRUE
+ 
++#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
++/* C99 + <stdbool.h> is guaranteed to exist */
++#include <stdbool.h>
++#else
++/* very old compilers: fall back to DIY typedef */
+ typedef short bool;
++#endif
+ 
+ #ifndef max
+ #define max(a,b) (a > b ? a : b)

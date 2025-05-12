@@ -1,0 +1,11 @@
+--- a/sdas/linksrc/aslink.h	2023-05-16 01:14:52.000000000 +0800
++++ b/sdas/linksrc/aslink.h	2025-05-12 15:23:48.151182943 +0800
+@@ -1312,7 +1312,7 @@
+ extern  VOID            sflush(void);
+ 
+ /* EEP: lkelf.c */
+-extern  VOID            elf();
++extern  VOID            elf(int i);
+ 
+ /* JCF: lkmem.c */
+ extern int summary(struct area * xp);
