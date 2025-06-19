@@ -6,7 +6,7 @@ EAPI=8
 MY_PN="asciidoctor-diagram"
 MY_PV="2.2.6"
 
-USE_RUBY="ruby27 ruby30 ruby31 ruby32"
+USE_RUBY="ruby32 ruby33"
 
 RUBY_FAKEGEM_RECIPE_TEST="rspec3"
 

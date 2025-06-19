@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-USE_RUBY="ruby27 ruby30 ruby31 ruby32"
+USE_RUBY="ruby32 ruby33"
 
 PN_LASEM="lasem"
 PV_LASEM="0.5.1"

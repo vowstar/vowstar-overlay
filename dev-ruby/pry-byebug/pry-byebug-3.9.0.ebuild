@@ -7,7 +7,7 @@ RUBY_FAKEGEM_EXTRADOC=""
 RUBY_FAKEGEM_GEMSPEC=""
 RUBY_FAKEGEM_TASK_DOC=""
 RUBY_FAKEGEM_TASK_TEST=""
-USE_RUBY="ruby27 ruby30 ruby31 ruby32"
+USE_RUBY="ruby32 ruby33"
 
 inherit ruby-fakegem
 
