@@ -2,13 +2,12 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-USE_RUBY="ruby32 ruby33"
 
+USE_RUBY="ruby32 ruby33"
 PN_LASEM="lasem"
 PV_LASEM="0.5.1"
 PN_MTEX2MML="mtex2MML"
 PV_MTEX2MML="1.3.1"
-
 RUBY_FAKEGEM_EXTENSIONS=("ext/${PN}/extconf.rb")
 RUBY_FAKEGEM_EXTENSION_LIBDIR="lib/${PN}"
 RUBY_FAKEGEM_EXTRADOC="LICENSE.txt README.md"
@@ -24,18 +23,17 @@ SRC_URI="
 		-> ${P}-${PN_LASEM}-${PV_LASEM}.tar.gz
 	https://github.com/gjtorikian/mtex2MML/archive/v${PV_MTEX2MML}.tar.gz -> ${P}-${PN_MTEX2MML}-${PV_MTEX2MML}.tar.gz
 "
-
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
 ruby_add_rdepend ">=dev-ruby/ruby-enum-0.4"
+
 ruby_add_bdepend ">=dev-ruby/math-to-itex-0.3
 	>=dev-ruby/minitest-5.6
 	>=dev-ruby/nokogiri-1.10
 	>=dev-ruby/pry-byebug-3.9.0
 	"
-
 RDEPEND+="
 	dev-libs/libxml2
 	dev-libs/libffi:=

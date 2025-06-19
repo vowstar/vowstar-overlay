@@ -4,11 +4,9 @@
 EAPI=8
 
 USE_RUBY="ruby32 ruby33"
-
 RUBY_FAKEGEM_RECIPE_DOC="yard"
 RUBY_FAKEGEM_RECIPE_TEST="rspec3"
 RUBY_FAKEGEM_EXTRAINSTALL="data"
-
 RUBY_FAKEGEM_GEMSPEC="prawn.gemspec"
 
 inherit ruby-fakegem
@@ -25,6 +23,7 @@ ruby_add_rdepend "
 	=dev-ruby/pdf-core-0.9*
 	>=dev-ruby/ttfunk-1.7:*
 "
+
 ruby_add_bdepend "test? ( dev-ruby/coderay
 	>=dev-ruby/pdf-inspector-1.2.1
 	>=dev-ruby/pdf-reader-1.4
@@ -32,9 +31,7 @@ ruby_add_bdepend "test? ( dev-ruby/coderay
 
 all_ruby_prepare() {
 	sed -i -e 's/__dir__/"."/' ${RUBY_FAKEGEM_GEMSPEC} || die
-
 	sed -i -e "/[Bb]undler/d" Rakefile spec/spec_helper.rb || die
-
 	# Remove test that needs unpackaged dependency
 	rm -f spec/prawn_manual_spec.rb || die
 }

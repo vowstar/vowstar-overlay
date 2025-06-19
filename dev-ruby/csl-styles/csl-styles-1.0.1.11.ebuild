@@ -2,13 +2,12 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-USE_RUBY="ruby32 ruby33"
 
+USE_RUBY="ruby32 ruby33"
 RUBY_FAKEGEM_EXTRADOC="README.md"
 RUBY_FAKEGEM_EXTRAINSTALL="vendor"
 RUBY_FAKEGEM_GEMSPEC="csl-styles.gemspec"
 RUBY_FAKEGEM_RECIPE_TEST="rspec3"
-
 COMMIT="ec26358947824de26ec8b13c63436d1e3122c1a6"
 COMMIT_LOCALES="bd8d2dbc85713b192d426fb02749475df30f0d2c"
 COMMIT_STYLES="9b9c74d04fbaab04fa942a932289f2b2e9b9d4ab"
@@ -24,11 +23,9 @@ SRC_URI="
 	${CSL_URI}/styles/archive/${COMMIT_STYLES}.tar.gz -> ${PN}-styles-${COMMIT_STYLES}.tar.gz
 "
 RUBY_S="${PN}-${COMMIT}"
-
 LICENSE="AGPL-3 BSD-2"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~riscv ~sparc ~x86"
-IUSE=""
 
 ruby_add_rdepend ">=dev-ruby/csl-1.0 <dev-ruby/csl-2"
 

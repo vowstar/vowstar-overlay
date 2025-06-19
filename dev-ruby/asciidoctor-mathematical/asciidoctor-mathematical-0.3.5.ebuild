@@ -2,8 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-USE_RUBY="ruby32 ruby33"
 
+USE_RUBY="ruby32 ruby33"
 RUBY_FAKEGEM_EXTRADOC="README.md"
 RUBY_FAKEGEM_GEMSPEC="${PN}.gemspec"
 RUBY_FAKEGEM_RECIPE_TEST="rspec3"
@@ -13,11 +13,9 @@ inherit ruby-fakegem
 DESCRIPTION="Alternative stem processor for asciidoctor based on Mathematical"
 HOMEPAGE="https://github.com/asciidoctor/asciidoctor-mathematical"
 SRC_URI="https://github.com/asciidoctor/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-
 LICENSE="OWL"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
 
 ruby_add_rdepend "
 	>=dev-ruby/asciidoctor-2.0 <dev-ruby/asciidoctor-3
@@ -27,7 +25,6 @@ ruby_add_rdepend "
 
 all_ruby_prepare() {
 	rm Gemfile || die
-
 	sed -i -e "s:_relative ': './:" ${RUBY_FAKEGEM_GEMSPEC} || die
 }
 

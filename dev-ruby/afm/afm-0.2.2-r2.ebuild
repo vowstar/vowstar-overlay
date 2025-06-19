@@ -3,15 +3,13 @@
 
 EAPI=8
 
-USE_RUBY="ruby32 ruby33"
-
+USE_RUBY="ruby32 ruby33 ruby34"
 RUBY_FAKEGEM_EXTRADOC="README.rdoc"
 
 inherit ruby-fakegem
 
 DESCRIPTION="A very simple library to read Adobe Font Metrics files"
 HOMEPAGE="https://github.com/halfbyte/afm"
-
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~riscv ~sparc ~x86"

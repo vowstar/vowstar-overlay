@@ -15,11 +15,9 @@ inherit ruby-fakegem
 DESCRIPTION="a Ruby 2 debugger"
 HOMEPAGE="https://github.com/deivid-rodriguez/byebug"
 SRC_URI="https://github.com/deivid-rodriguez/byebug/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~riscv ~sparc ~x86"
-
 # Tests require bundler and hang when run from portage
 RESTRICT="test"
 

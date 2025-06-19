@@ -2,8 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-USE_RUBY="ruby32 ruby33"
 
+USE_RUBY="ruby32 ruby33"
 RUBY_FAKEGEM_RECIPE_DOC="yard"
 RUBY_FAKEGEM_RECIPE_TEST="rspec3"
 
@@ -14,7 +14,6 @@ HOMEPAGE="https://github.com/prawnpdf/prawn-templates"
 LICENSE="|| ( GPL-2+ GPL-3 Ruby )"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~x86"
-
 # prawn breaks tests for some reasons, needs to be investigated; code
 # still works though.
 RESTRICT="test"

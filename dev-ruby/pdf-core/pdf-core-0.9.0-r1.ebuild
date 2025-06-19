@@ -4,9 +4,7 @@
 EAPI=8
 
 USE_RUBY="ruby32 ruby33"
-
 RUBY_FAKEGEM_RECIPE_TEST="rspec3"
-
 RUBY_FAKEGEM_GEMSPEC="${PN}.gemspec"
 
 inherit ruby-fakegem
@@ -14,7 +12,6 @@ inherit ruby-fakegem
 DESCRIPTION="Implements low level PDF features for Prawn"
 HOMEPAGE="https://github.com/prawnpdf/pdf-core/"
 SRC_URI="https://github.com/prawnpdf/pdf-core/archive/${PV}.tar.gz -> ${P}.tar.gz"
-
 LICENSE="|| ( Ruby GPL-2 GPL-3 )"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~sparc ~x86"
