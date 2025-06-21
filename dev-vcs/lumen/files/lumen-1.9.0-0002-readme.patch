@@ -1,0 +1,21 @@
+From 9c642ac86678b76d101ecfaaa0d42f7d1284aeff Mon Sep 17 00:00:00 2001
+From: Sahaj Jain <82111591+jnsahaj@users.noreply.github.com>
+Date: Wed, 4 Jun 2025 14:05:25 +0530
+Subject: [PATCH 2/4] Update README.md
+
+---
+ README.md | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/README.md b/README.md
+index d8d4c55..34850bc 100644
+--- a/README.md
++++ b/README.md
+@@ -238,3 +238,4 @@ export LUMEN_API_KEY="sk-xxxxxxxxxxxxxxxxxxxxxxxx"
+ # Or override using CLI flags
+ lumen -p "ollama" -m "llama3.2" draft
+ ```
++<!-- GitAds-Verify: OE99H8YHI6ACIS31OJLLV19T6QOB4J3P -->
+-- 
+2.50.0
+

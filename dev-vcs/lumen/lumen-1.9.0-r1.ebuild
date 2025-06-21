@@ -197,5 +197,8 @@ DEPEND="${RDEPEND}"
 QA_FLAGS_IGNORED="usr/bin/${PN}"
 
 PATCHES=(
-	"${FILESDIR}/${PN}-1.9.0-outline.patch"
+	"${FILESDIR}/${PN}-1.9.0-0001-readme.patch"
+	"${FILESDIR}/${PN}-1.9.0-0002-readme.patch"
+	"${FILESDIR}/${PN}-1.9.0-0003-readme.patch"
+	"${FILESDIR}/${PN}-1.9.0-custom-prompt.patch"
 )

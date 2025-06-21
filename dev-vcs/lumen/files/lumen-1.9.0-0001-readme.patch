@@ -1,0 +1,41 @@
+From c9ae97a5b03c41a11a699a7776971a5f34bce8f2 Mon Sep 17 00:00:00 2001
+From: Sahaj Jain <82111591+jnsahaj@users.noreply.github.com>
+Date: Thu, 20 Mar 2025 16:35:03 +0530
+Subject: [PATCH 1/4] Update README.md
+
+---
+ README.md | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/README.md b/README.md
+index e58f187..d8d4c55 100644
+--- a/README.md
++++ b/README.md
+@@ -16,6 +16,7 @@ A command-line tool that uses AI to streamline your git workflow - from generati
+   - [Installation](#installation)
+ - [Usage](#usage-)
+   - [Generate Commit Messages](#generate-commit-messages)
++  - [Generate Git Commands](#generate-git-commands)
+   - [Explain Changes](#explain-changes)
+   - [Interactive Mode](#interactive-mode)
+   - [Tips & Tricks](#tips--tricks)
+@@ -74,6 +75,16 @@ lumen draft --context "match brand guidelines"
+ # Output: "feat(button.tsx): Update button color to align with brand identity guidelines"
+ ```
+ 
++
++### Generate Git Commands
++
++Ask Lumen to generate Git commands based on a natural language query:
++
++```bash
++lumen operate "squash the last 3 commits into 1 with the message 'squashed commit'"
++# Output: git reset --soft HEAD~3 && git commit -m "squashed commit" [y/N]
++```
++
+ ### Explain Changes
+ 
+ Understand what changed and why:
+-- 
+2.50.0
+

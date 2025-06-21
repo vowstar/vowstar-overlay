@@ -1,0 +1,813 @@
+From 9c8db9f6b9ef51aaf5b348d835dddd8f21715b87 Mon Sep 17 00:00:00 2001
+From: Huang Rui <vowstar@gmail.com>
+Date: Sat, 21 Jun 2025 16:50:48 +0800
+Subject: [PATCH 4/4] feat(prompts): Add customizable prompt configuration
+
+- Add prompt configuration support for explain, draft, and operate
+- Update command execution to pass prompt configs to providers
+- Add default prompt configs and fallback to built-in prompts
+
+Signed-off-by: Huang Rui <vowstar@gmail.com>
+---
+ README.md                   | 111 ++++++++++++++++++++++++++++++++-
+ src/ai_prompt.rs            | 119 ++++++++++++++++++++++++++++++------
+ src/command/draft.rs        |  12 +++-
+ src/command/explain.rs      |  13 +++-
+ src/command/list.rs         |   9 ++-
+ src/command/mod.rs          |  19 ++++--
+ src/command/operate.rs      |  10 ++-
+ src/config/configuration.rs |  42 ++++++++++++-
+ src/main.rs                 |  21 ++++---
+ src/provider/mod.rs         |  24 ++++++--
+ 10 files changed, 332 insertions(+), 48 deletions(-)
+
+diff --git a/README.md b/README.md
+index 09c6bc6..6ddf614 100644
+--- a/README.md
++++ b/README.md
+@@ -10,9 +10,11 @@ A command-line tool that uses AI to streamline your git workflow - from generati
+ ![demo](https://github.com/user-attachments/assets/0d029bdb-3b11-4b5c-bed6-f5a91d8529f2)
+ 
+ ## GitAds Sponsored
++
+ [![Sponsored by GitAds](https://gitads.dev/v1/ad-serve?source=jnsahaj/lumen@github)](https://gitads.dev/v1/ad-track?source=jnsahaj/lumen@github)
+ 
+ ## Table of Contents
++
+ - [Features](#features-)
+ - [Getting Started](#getting-started-)
+   - [Prerequisites](#prerequisites)
+@@ -41,7 +43,9 @@ A command-line tool that uses AI to streamline your git workflow - from generati
+ ## Getting Started 🔅
+ 
+ ### Prerequisites
++
+ Before you begin, ensure you have:
++
+ 1. `git` installed on your system
+ 2. [fzf](https://github.com/junegunn/fzf) (optional) - Required for `lumen list` command
+ 3. [mdcat](https://github.com/swsnr/mdcat) (optional) - Required for pretty output formatting
+@@ -49,15 +53,18 @@ Before you begin, ensure you have:
+ ### Installation
+ 
+ #### Using Homebrew (MacOS and Linux)
++
+ ```bash
+ brew install jnsahaj/lumen/lumen
+ ```
+ 
+ #### Using Cargo
++
+ > [!IMPORTANT]
+ > `cargo` is a package manager for `rust`,
+ > and is installed automatically when you install `rust`.
+ > See [installation guide](https://doc.rust-lang.org/cargo/getting-started/installation.html)
++
+ ```bash
+ cargo install lumen
+ ```
+@@ -78,7 +85,6 @@ lumen draft --context "match brand guidelines"
+ # Output: "feat(button.tsx): Update button color to align with brand identity guidelines"
+ ```
+ 
+-
+ ### Generate Git Commands
+ 
+ Ask Lumen to generate Git commands based on a natural language query:
+@@ -110,6 +116,7 @@ lumen explain HEAD --query "What are the potential side effects?"
+ ```
+ 
+ ### Interactive Mode
++
+ ```bash
+ # Launch interactive fuzzy finder to search through commits (requires: fzf)
+ lumen list
+@@ -133,6 +140,7 @@ lumen draft | git commit -F -
+ ```
+ 
+ If you are using [lazygit](https://github.com/jesseduffield/lazygit), you can add this to the [user config](https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md)
++
+ ```yml
+ customCommands:
+   - key: '<c-l>'
+@@ -180,6 +188,7 @@ export LUMEN_AI_MODEL="gpt-4o"
+ ## Advanced Configuration 🔅
+ 
+ ### Configuration File
++
+ Lumen supports configuration through a JSON file. You can place the configuration file in one of the following locations:
+ 
+ 1. Project Root: Create a lumen.config.json file in your project's root directory.
+@@ -213,19 +222,117 @@ Lumen will load configurations in the following order of priority:
+       "revert": "Reverts a previous commit",
+       "feat": "A new feature",
+       "fix": "A bug fix"
+-    }
++    },
++    "system_prompt": "You are a commit message generator that creates semantic commit messages following conventional commits specification.",
++    "user_prompt": "Generate a semantic commit message for the following changes. Use conventional commits format and be descriptive:"
++  },
++  "explain": {
++    "system_prompt": "You are a helpful Git assistant that provides detailed explanations of changes. Always be thorough and educational.",
++    "user_prompt": "Please analyze the following changes and provide a comprehensive explanation including technical details and potential impacts:"
++  },
++  "operate": {
++    "system_prompt": "You are a Git expert that provides safe and educational Git commands with detailed explanations.",
++    "user_prompt": "For the query: {query}\n\nProvide:\n- The exact Git command\n- Step-by-step explanation\n- Any safety considerations\n\nFormat:\n<command>git command here</command>\n<explanation>detailed explanation</explanation>\n<warning>safety notes if needed</warning>"
++  }
++}
++```
++
++### Prompt Customization
++
++Lumen allows you to customize the AI prompts for all three main commands (`explain`, `draft`, and `operate`) to better suit your workflow and requirements. Each prompt configuration accepts:
++
++- **`system_prompt`**: Defines the AI's role and behavior
++- **`user_prompt`**: Defines the template for user input to the AI
++
++#### Key Features
++
++- **Fallback Support**: If a custom prompt is empty or not provided, Lumen automatically uses the built-in default prompts
++- **Template Variables**: Use placeholders like `{query}`, `{diff}`, etc., that get replaced with actual content
++- **Full Customization**: Completely override the default behavior to match your team's standards
++
++#### Example Use Cases
++
++**Code Review Focus:**
++
++```json
++{
++  "explain": {
++    "system_prompt": "You are a senior code reviewer. Focus on security, performance, and maintainability concerns.",
++    "user_prompt": "Review these changes for potential issues:\n\n{base_content}\n\nHighlight: security risks, performance impacts, and maintainability concerns."
++  }
++}
++```
++
++**Educational Context:**
++
++```json
++{
++  "explain": {
++    "system_prompt": "You are a computer science teacher. Explain git changes in an educational manner suitable for beginners.",
++    "user_prompt": "Explain these changes to a beginner programmer, including relevant programming concepts:\n\n{base_content}"
++  }
++}
++```
++
++**Team-Specific Commit Standards:**
++
++```json
++{
++  "draft": {
++    "commit_types": {
++      "feat": "A new feature",
++      "fix": "A bug fix",
++      "docs": "Documentation only changes",
++      "compliance": "Regulatory compliance changes"
++    },
++    "system_prompt": "You are a commit message generator for a fintech company. Follow strict regulatory compliance standards.",
++    "user_prompt": "Generate a commit message that includes compliance tracking. Changes:\n\n{diff}\n\nEnsure the message follows our SOX compliance requirements."
++  }
++}
++```
++
++**Structured Commit Messages with Bullet Points:**
++
++```json
++{
++  "draft": {
++    "commit_types": {
++      "feat": "A new feature",
++      "fix": "A bug fix",
++      "docs": "Documentation only changes",
++      "style": "Changes that do not affect the meaning of the code",
++      "refactor": "A code change that neither fixes a bug nor adds a feature",
++      "perf": "A code change that improves performance",
++      "test": "Adding missing tests or correcting existing tests"
++    },
++    "system_prompt": "You are a commit message generator that follows these rules:\n1. IMPORTANT: Each line must be no more than 65 characters (including title and bullet points)\n2. Write in present tense\n3. Be concise and direct\n4. Output only the commit message without any explanations\n5. Follow the format:\n   <type>(<optional scope>): <commit message>\n   \n   - <bullet point describing a key change>\n   - <bullet point describing another key change>",
++    "user_prompt": "Generate a structured git commit message written in present tense for the following code diff with the given specifications below:\nThe output response must be in format:\n<type>(<optional scope>): <commit message>\n- <bullet point describing a key change>\n- <bullet point describing another key change>\nChoose a type from the type-to-description JSON below that best describes the git diff:\n{commit_types}\nFocus on being accurate and concise.\nFirst line must be a maximum of 72 characters.\nEach bullet point must be a maximum of 78 characters.\nIf a bullet point exceeds 78 characters, wrap it with 2 spaces at the start of the next line.\nExclude anything unnecessary such as translation. Your entire response will be passed directly into git commit.\nCode diff:\n```diff\n{diff}\n```"
++  }
++}
++```
++
++**Advanced Git Operations:**
++
++```json
++{
++  "operate": {
++    "system_prompt": "You are a Git expert for a large enterprise team. Always prioritize safety and provide comprehensive explanations.",
++    "user_prompt": "Enterprise Git Operation Request: {query}\n\nProvide:\n1. Safe command with full explanation\n2. Potential risks and mitigation\n3. Alternative approaches\n4. Team notification requirements\n\nFormat:\n<command>git command</command>\n<explanation>enterprise-level explanation</explanation>\n<warning>comprehensive safety analysis</warning>"
+   }
+ }
+ ```
+ 
+ ### Configuration Precedence
++
+ Options are applied in the following order (highest to lowest priority):
++
+ 1. CLI Flags
+ 2. Configuration File
+ 3. Environment Variables
+ 4. Default options
+ 
+ Example: Using different providers for different projects:
++
+ ```bash
+ # Set global defaults in .zshrc/.bashrc
+ export LUMEN_AI_PROVIDER="openai"
+diff --git a/src/ai_prompt.rs b/src/ai_prompt.rs
+index f672c10..6a440a7 100644
+--- a/src/ai_prompt.rs
++++ b/src/ai_prompt.rs
+@@ -1,5 +1,6 @@
+ use crate::{
+     command::{draft::DraftCommand, explain::ExplainCommand},
++    config::configuration::{DraftConfig, ExplainConfig, OperateConfig},
+     git_entity::{diff::Diff, GitEntity},
+ };
+ use indoc::{formatdoc, indoc};
+@@ -15,14 +16,33 @@ pub struct AIPrompt {
+ }
+ 
+ impl AIPrompt {
+-    pub fn build_explain_prompt(command: &ExplainCommand) -> Result<Self, AIPromptError> {
+-        let system_prompt = String::from(indoc! {"
++    // Helper function to replace variables in custom prompts
++    fn format_template(template: &str, vars: &[(&str, &str)]) -> String {
++        let mut result = template.to_string();
++        for (var, value) in vars {
++            result = result.replace(var, value);
++        }
++        result
++    }
++    pub fn build_explain_prompt(
++        command: &ExplainCommand,
++        config: &ExplainConfig,
++    ) -> Result<Self, AIPromptError> {
++        let default_system_prompt = indoc! {"
+             You are a helpful assistant that explains Git changes in a concise way.
+             Focus only on the most significant changes and their direct impact.
+             When answering specific questions, address them directly and precisely.
+             Keep explanations brief but informative and don't ask for further explanations.
+             Use markdown for clarity.
+-        "});
++        "};
++
++        let system_prompt = config
++            .system_prompt
++            .as_ref()
++            .filter(|s| !s.trim().is_empty())
++            .map(|s| s.as_str())
++            .unwrap_or(default_system_prompt)
++            .to_string();
+ 
+         let base_content = match &command.git_entity {
+             GitEntity::Commit(commit) => {
+@@ -51,7 +71,7 @@ impl AIPrompt {
+             }
+         };
+ 
+-        let user_prompt = match &command.query {
++        let default_user_prompt = match &command.query {
+             Some(query) => {
+                 formatdoc! {"
+                     {base_content}
+@@ -59,7 +79,9 @@ impl AIPrompt {
+                     Question: {query}
+ 
+                     Provide a focused answer to the question based on the changes shown above.
+-                    "
++                    ",
++                    base_content = base_content,
++                    query = query
+                 }
+             }
+             None => match &command.git_entity {
+@@ -69,7 +91,8 @@ impl AIPrompt {
+                     Provide a short explanation covering:
+                     1. Core changes made
+                     2. Direct impact
+-                    "
++                    ",
++                    base_content = base_content
+                 },
+                 GitEntity::Diff(Diff::WorkingTree { .. }) => formatdoc! {"
+                     {base_content}
+@@ -77,7 +100,8 @@ impl AIPrompt {
+                     Provide:
+                     1. Key changes
+                     2. Notable concerns (if any)
+-                    "
++                    ",
++                    base_content = base_content
+                 },
+                 GitEntity::Diff(Diff::CommitsRange { .. }) => formatdoc! {"
+                     {base_content}
+@@ -85,31 +109,52 @@ impl AIPrompt {
+                     Provide:
+                     1. Core changes made
+                     2. Direct impact
+-                    "
++                    ",
++                    base_content = base_content
+                 },
+             },
+         };
+ 
++        let user_prompt = if let Some(custom_prompt) =
++            config.user_prompt.as_ref().filter(|s| !s.trim().is_empty())
++        {
++            // Use unified template formatting
++            Self::format_template(custom_prompt, &[("{base_content}", &base_content)])
++        } else {
++            default_user_prompt
++        };
++
+         Ok(AIPrompt {
+             system_prompt,
+             user_prompt,
+         })
+     }
+ 
+-    pub fn build_draft_prompt(command: &DraftCommand) -> Result<Self, AIPromptError> {
++    pub fn build_draft_prompt(
++        command: &DraftCommand,
++        config: &DraftConfig,
++    ) -> Result<Self, AIPromptError> {
+         let GitEntity::Diff(Diff::WorkingTree { diff, .. }) = &command.git_entity else {
+             return Err(AIPromptError(
+                 "`draft` is only supported for working tree diffs".into(),
+             ));
+         };
+ 
+-        let system_prompt = String::from(indoc! {"
++        let default_system_prompt = indoc! {"
+             You are a commit message generator that follows these rules:
+             1. Write in present tense
+             2. Be concise and direct
+             3. Output only the commit message without any explanations
+             4. Follow the format: <type>(<optional scope>): <commit message>
+-        "});
++        "};
++
++        let system_prompt = config
++            .system_prompt
++            .as_ref()
++            .filter(|s| !s.trim().is_empty())
++            .map(|s| s.as_str())
++            .unwrap_or(default_system_prompt)
++            .to_string();
+ 
+         let context = if let Some(context) = &command.context {
+             formatdoc!(
+@@ -122,7 +167,7 @@ impl AIPrompt {
+             "".to_string()
+         };
+ 
+-        let user_prompt = String::from(formatdoc! {"
++        let default_user_prompt = formatdoc! {"
+             Generate a concise git commit message written in present tense for the following code diff with the given specifications below:
+ 
+             The output response must be in format:
+@@ -140,7 +185,25 @@ impl AIPrompt {
+             ```
+             ",
+             commit_types = command.draft_config.commit_types,
+-        });
++            context = context,
++            diff = diff,
++        };
++
++        let user_prompt = if let Some(custom_prompt) =
++            config.user_prompt.as_ref().filter(|s| !s.trim().is_empty())
++        {
++            // Use unified template formatting
++            Self::format_template(
++                custom_prompt,
++                &[
++                    ("{diff}", diff),
++                    ("{commit_types}", &command.draft_config.commit_types),
++                    ("{context}", &context),
++                ],
++            )
++        } else {
++            default_user_prompt
++        };
+ 
+         Ok(AIPrompt {
+             system_prompt,
+@@ -148,13 +211,25 @@ impl AIPrompt {
+         })
+     }
+ 
+-    pub fn build_operate_prompt(query: &str) -> Result<Self, AIPromptError> {
+-        let system_prompt = String::from(indoc! {"
++    pub fn build_operate_prompt(
++        query: &str,
++        config: &OperateConfig,
++    ) -> Result<Self, AIPromptError> {
++        let default_system_prompt = indoc! {"
+         You're a Git assistant that provides commands with clear explanations.
+         - Include warnings ONLY for destructive commands (reset, push --force, clean, etc.)
+         - Omit warning tag completely for safe commands
+-    "});
+-        let user_prompt = formatdoc! {"
++    "};
++
++        let system_prompt = config
++            .system_prompt
++            .as_ref()
++            .filter(|s| !s.trim().is_empty())
++            .map(|s| s.as_str())
++            .unwrap_or(default_system_prompt)
++            .to_string();
++
++        let default_user_prompt = formatdoc! {"
+         Generate Git command for: {query}
+         
+         <command>Git command</command>
+@@ -163,6 +238,16 @@ impl AIPrompt {
+         ",
+             query = query
+         };
++
++        let user_prompt = if let Some(custom_prompt) =
++            config.user_prompt.as_ref().filter(|s| !s.trim().is_empty())
++        {
++            // Use unified template formatting
++            Self::format_template(custom_prompt, &[("{query}", query)])
++        } else {
++            default_user_prompt
++        };
++
+         Ok(AIPrompt {
+             system_prompt,
+             user_prompt,
+diff --git a/src/command/draft.rs b/src/command/draft.rs
+index d2046b7..585db6c 100644
+--- a/src/command/draft.rs
++++ b/src/command/draft.rs
+@@ -3,7 +3,9 @@ use std::io::Write;
+ use async_trait::async_trait;
+ 
+ use crate::{
+-    config::configuration::DraftConfig, error::LumenError, git_entity::GitEntity,
++    config::configuration::{DraftConfig, LumenConfig},
++    error::LumenError,
++    git_entity::GitEntity,
+     provider::LumenProvider,
+ };
+ 
+@@ -17,8 +19,12 @@ pub struct DraftCommand {
+ 
+ #[async_trait]
+ impl Command for DraftCommand {
+-    async fn execute(&self, provider: &LumenProvider) -> Result<(), LumenError> {
+-        let result = provider.draft(self).await?;
++    async fn execute(
++        &self,
++        provider: &LumenProvider,
++        config: &LumenConfig,
++    ) -> Result<(), LumenError> {
++        let result = provider.draft(self, &config.draft).await?;
+ 
+         print!("{result}");
+         std::io::stdout().flush()?;
+diff --git a/src/command/explain.rs b/src/command/explain.rs
+index 7d4c30f..fad03ea 100644
+--- a/src/command/explain.rs
++++ b/src/command/explain.rs
+@@ -1,7 +1,10 @@
+ use async_trait::async_trait;
+ use spinoff::{spinners, Color, Spinner};
+ 
+-use crate::{error::LumenError, git_entity::GitEntity, provider::LumenProvider};
++use crate::{
++    config::configuration::LumenConfig, error::LumenError, git_entity::GitEntity,
++    provider::LumenProvider,
++};
+ 
+ use super::{Command, LumenCommand};
+ 
+@@ -12,7 +15,11 @@ pub struct ExplainCommand {
+ 
+ #[async_trait]
+ impl Command for ExplainCommand {
+-    async fn execute(&self, provider: &LumenProvider) -> Result<(), LumenError> {
++    async fn execute(
++        &self,
++        provider: &LumenProvider,
++        config: &LumenConfig,
++    ) -> Result<(), LumenError> {
+         LumenCommand::print_with_mdcat(self.git_entity.format_static_details(provider))?;
+         if let Some(query) = &self.query {
+             LumenCommand::print_with_mdcat(format!("`query`: {query}"))?;
+@@ -24,7 +31,7 @@ impl Command for ExplainCommand {
+         };
+ 
+         let mut spinner = Spinner::new(spinners::Dots, spinner_text, Color::Blue);
+-        let result = provider.explain(self).await?;
++        let result = provider.explain(self, &config.explain).await?;
+         spinner.success("Done");
+ 
+         LumenCommand::print_with_mdcat(result)?;
+diff --git a/src/command/list.rs b/src/command/list.rs
+index 59f269a..9b4afb2 100644
+--- a/src/command/list.rs
++++ b/src/command/list.rs
+@@ -1,6 +1,7 @@
+ use async_trait::async_trait;
+ 
+ use crate::{
++    config::configuration::LumenConfig,
+     error::LumenError,
+     git_entity::{commit::Commit, GitEntity},
+     provider::LumenProvider,
+@@ -12,14 +13,18 @@ pub struct ListCommand;
+ 
+ #[async_trait]
+ impl Command for ListCommand {
+-    async fn execute(&self, provider: &LumenProvider) -> Result<(), LumenError> {
++    async fn execute(
++        &self,
++        provider: &LumenProvider,
++        config: &LumenConfig,
++    ) -> Result<(), LumenError> {
+         let sha = LumenCommand::get_sha_from_fzf()?;
+         let git_entity = GitEntity::Commit(Commit::new(sha)?);
+         ExplainCommand {
+             git_entity,
+             query: None,
+         }
+-        .execute(provider)
++        .execute(provider, config)
+         .await
+     }
+ }
+diff --git a/src/command/mod.rs b/src/command/mod.rs
+index b51a8d1..5b52b9d 100644
+--- a/src/command/mod.rs
++++ b/src/command/mod.rs
+@@ -5,7 +5,7 @@ use list::ListCommand;
+ use operate::OperateCommand;
+ use std::process::Stdio;
+ 
+-use crate::config::configuration::DraftConfig;
++use crate::config::configuration::{DraftConfig, LumenConfig};
+ use crate::error::LumenError;
+ use crate::git_entity::diff::Diff;
+ use crate::git_entity::GitEntity;
+@@ -31,7 +31,11 @@ pub enum CommandType {
+ 
+ #[async_trait]
+ pub trait Command {
+-    async fn execute(&self, provider: &LumenProvider) -> Result<(), LumenError>;
++    async fn execute(
++        &self,
++        provider: &LumenProvider,
++        config: &LumenConfig,
++    ) -> Result<(), LumenError>;
+ }
+ 
+ impl CommandType {
+@@ -60,8 +64,15 @@ impl LumenCommand {
+         LumenCommand { provider }
+     }
+ 
+-    pub async fn execute(&self, command_type: CommandType) -> Result<(), LumenError> {
+-        command_type.create_command()?.execute(&self.provider).await
++    pub async fn execute(
++        &self,
++        command_type: CommandType,
++        config: &LumenConfig,
++    ) -> Result<(), LumenError> {
++        command_type
++            .create_command()?
++            .execute(&self.provider, config)
++            .await
+     }
+ 
+     fn get_sha_from_fzf() -> Result<String, LumenError> {
+diff --git a/src/command/operate.rs b/src/command/operate.rs
+index 394b9f1..db21715 100644
+--- a/src/command/operate.rs
++++ b/src/command/operate.rs
+@@ -17,7 +17,7 @@ pub struct ExtractError {
+     message: String,
+ }
+ 
+-use crate::{error::LumenError, provider::LumenProvider};
++use crate::{config::configuration::LumenConfig, error::LumenError, provider::LumenProvider};
+ 
+ use super::{Command, LumenCommand};
+ 
+@@ -120,13 +120,17 @@ pub fn process_operation(result: OperateResult) -> Result<(), io::Error> {
+ 
+ #[async_trait]
+ impl Command for OperateCommand {
+-    async fn execute(&self, provider: &LumenProvider) -> Result<(), LumenError> {
++    async fn execute(
++        &self,
++        provider: &LumenProvider,
++        config: &LumenConfig,
++    ) -> Result<(), LumenError> {
+         LumenCommand::print_with_mdcat(format!("`query`: {}", &self.query))?;
+ 
+         let spinner_text = "Generating answer...".to_string();
+ 
+         let mut spinner = Spinner::new(spinners::Dots, spinner_text, Color::Blue);
+-        let result = provider.operate(self).await?;
++        let result = provider.operate(self, &config.operate).await?;
+         let operate_result = extract_operate_response(&result)
+             .map_err(|e| LumenError::CommandError(e.to_string()))?;
+         spinner.success("Done");
+diff --git a/src/config/configuration.rs b/src/config/configuration.rs
+index 39af8d3..33d3415 100644
+--- a/src/config/configuration.rs
++++ b/src/config/configuration.rs
+@@ -26,15 +26,35 @@ pub struct LumenConfig {
+ 
+     #[serde(default = "default_draft_config")]
+     pub draft: DraftConfig,
++
++    #[serde(default = "default_explain_config")]
++    pub explain: ExplainConfig,
++
++    #[serde(default = "default_operate_config")]
++    pub operate: OperateConfig,
+ }
+ 
+-#[derive(Debug, Deserialize, Default)]
++#[derive(Debug, Deserialize, Default, Clone)]
+ pub struct DraftConfig {
+     #[serde(
+         default = "default_commit_types",
+         deserialize_with = "deserialize_commit_types"
+     )]
+     pub commit_types: String,
++    pub system_prompt: Option<String>,
++    pub user_prompt: Option<String>,
++}
++
++#[derive(Debug, Deserialize, Default)]
++pub struct ExplainConfig {
++    pub system_prompt: Option<String>,
++    pub user_prompt: Option<String>,
++}
++
++#[derive(Debug, Deserialize, Default)]
++pub struct OperateConfig {
++    pub system_prompt: Option<String>,
++    pub user_prompt: Option<String>,
+ }
+ 
+ fn default_ai_provider() -> ProviderType {
+@@ -90,6 +110,22 @@ where
+ fn default_draft_config() -> DraftConfig {
+     DraftConfig {
+         commit_types: default_commit_types(),
++        system_prompt: None,
++        user_prompt: None,
++    }
++}
++
++fn default_explain_config() -> ExplainConfig {
++    ExplainConfig {
++        system_prompt: None,
++        user_prompt: None,
++    }
++}
++
++fn default_operate_config() -> OperateConfig {
++    OperateConfig {
++        system_prompt: None,
++        user_prompt: None,
+     }
+ }
+ 
+@@ -122,6 +158,8 @@ impl LumenConfig {
+             model,
+             api_key,
+             draft: config.draft,
++            explain: config.explain,
++            operate: config.operate,
+         })
+     }
+ 
+@@ -146,6 +184,8 @@ impl Default for LumenConfig {
+             model: default_model(),
+             api_key: default_api_key(),
+             draft: default_draft_config(),
++            explain: default_explain_config(),
++            operate: default_operate_config(),
+         }
+     }
+ }
+diff --git a/src/main.rs b/src/main.rs
+index 00fb1d6..91befa8 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -32,8 +32,12 @@ async fn run() -> Result<(), LumenError> {
+         Err(e) => return Err(e),
+     };
+ 
+-    let provider =
+-        provider::LumenProvider::new(client, config.provider, config.api_key, config.model)?;
++    let provider = provider::LumenProvider::new(
++        client,
++        config.provider,
++        config.api_key.clone(),
++        config.model.clone(),
++    )?;
+     let command = command::LumenCommand::new(provider);
+ 
+     match cli.command {
+@@ -54,7 +58,7 @@ async fn run() -> Result<(), LumenError> {
+                 GitEntity::Commit(Commit::new(sha)?)
+             } else if let Some(CommitReference::Range { from, to }) = reference {
+                 GitEntity::Diff(Diff::from_commits_range(&from, &to, false)?)
+-            }  else if let Some(CommitReference::TripleDots { from, to }) = reference {
++            } else if let Some(CommitReference::TripleDots { from, to }) = reference {
+                 GitEntity::Diff(Diff::from_commits_range(&from, &to, true)?)
+             } else {
+                 return Err(LumenError::InvalidArguments(
+@@ -63,18 +67,21 @@ async fn run() -> Result<(), LumenError> {
+             };
+ 
+             command
+-                .execute(command::CommandType::Explain { git_entity, query })
++                .execute(command::CommandType::Explain { git_entity, query }, &config)
+                 .await?;
+         }
+-        Commands::List => command.execute(command::CommandType::List).await?,
++        Commands::List => command.execute(command::CommandType::List, &config).await?,
+         Commands::Draft { context } => {
+             command
+-                .execute(command::CommandType::Draft(context, config.draft))
++                .execute(
++                    command::CommandType::Draft(context, config.draft.clone()),
++                    &config,
++                )
+                 .await?
+         }
+         Commands::Operate { query } => {
+             command
+-                .execute(command::CommandType::Operate { query })
++                .execute(command::CommandType::Operate { query }, &config)
+                 .await?;
+         }
+     }
+diff --git a/src/provider/mod.rs b/src/provider/mod.rs
+index 9b744a9..71121db 100644
+--- a/src/provider/mod.rs
++++ b/src/provider/mod.rs
+@@ -110,8 +110,12 @@ impl LumenProvider {
+         }
+     }
+ 
+-    pub async fn explain(&self, command: &ExplainCommand) -> Result<String, ProviderError> {
+-        let prompt = AIPrompt::build_explain_prompt(command)?;
++    pub async fn explain(
++        &self,
++        command: &ExplainCommand,
++        config: &crate::config::configuration::ExplainConfig,
++    ) -> Result<String, ProviderError> {
++        let prompt = AIPrompt::build_explain_prompt(command, config)?;
+         match self {
+             LumenProvider::OpenAI(provider) => provider.complete(prompt).await,
+             LumenProvider::Phind(provider) => provider.complete(prompt).await,
+@@ -123,8 +127,12 @@ impl LumenProvider {
+         }
+     }
+ 
+-    pub async fn draft(&self, command: &DraftCommand) -> Result<String, ProviderError> {
+-        let prompt = AIPrompt::build_draft_prompt(command)?;
++    pub async fn draft(
++        &self,
++        command: &DraftCommand,
++        config: &crate::config::configuration::DraftConfig,
++    ) -> Result<String, ProviderError> {
++        let prompt = AIPrompt::build_draft_prompt(command, config)?;
+         match self {
+             LumenProvider::OpenAI(provider) => provider.complete(prompt).await,
+             LumenProvider::Phind(provider) => provider.complete(prompt).await,
+@@ -136,8 +144,12 @@ impl LumenProvider {
+         }
+     }
+ 
+-    pub async fn operate(&self, command: &OperateCommand) -> Result<String, ProviderError> {
+-        let prompt = AIPrompt::build_operate_prompt(command.query.as_str())?;
++    pub async fn operate(
++        &self,
++        command: &OperateCommand,
++        config: &crate::config::configuration::OperateConfig,
++    ) -> Result<String, ProviderError> {
++        let prompt = AIPrompt::build_operate_prompt(command.query.as_str(), config)?;
+         match self {
+             LumenProvider::OpenAI(provider) => provider.complete(prompt).await,
+             LumenProvider::Phind(provider) => provider.complete(prompt).await,
+-- 
+2.50.0
+
