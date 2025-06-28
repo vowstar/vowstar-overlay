@@ -42,7 +42,6 @@ RDEPEND="
 	dev-octave/mvn
 	dev-octave/nan
 	dev-octave/ncarray
-	dev-octave/netcdf
 	dev-octave/nurbs
 	dev-octave/ocl
 	dev-octave/octclip
@@ -101,7 +100,6 @@ pkg_postinst() {
 	elog "pkg load mvn"
 	elog "pkg load nan"
 	elog "pkg load ncarray"
-	elog "pkg load netcdf"
 	elog "pkg load nurbs"
 	elog "pkg load ocl"
 	elog "pkg load octclip"
@@ -158,7 +156,6 @@ pkg_postrm() {
 	elog "pkg load mvn"
 	elog "pkg load nan"
 	elog "pkg load ncarray"
-	elog "pkg load netcdf"
 	elog "pkg load nurbs"
 	elog "pkg load ocl"
 	elog "pkg load octclip"
