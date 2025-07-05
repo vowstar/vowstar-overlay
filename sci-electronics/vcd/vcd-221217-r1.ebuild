@@ -27,6 +27,6 @@ src_compile() {
 
 src_install() {
 	local DOCS=( README.md )
-	emake DESTDIR="${ED}"
+	emake DESTDIR="${ED}" install
 	einstalldocs
 }
