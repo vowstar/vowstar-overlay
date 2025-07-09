@@ -3,7 +3,7 @@
 
 EAPI=8
 
-MY_TAG="v0.1.9-nightly.250708.137ffec3"
+MY_TAG="v0.1.9-nightly.250709.c8cf954e"
 
 DESCRIPTION="Gemini CLI - a command-line AI workflow tool by Google"
 HOMEPAGE="https://github.com/google-gemini/gemini-cli"
