@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Vowstar</name>
+	</maintainer>
+	<upstream>
+		<doc>https://docs.plandex.ai</doc>
+		<remote-id type="github">plandex-ai/plandex</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		Plandex is a terminal-based AI development tool that can plan and
+		execute large coding tasks that span many steps and touch dozens of
+		files. It can handle up to 2M tokens of context directly (~100k per
+		file), and can index directories with 20M tokens or more using
+		tree-sitter project maps.
+	</longdescription>
+	<longdescription lang="zh">
+		Plandex 是一个基于终端的 AI 开发工具，可以规划和执行跨越多个步骤并涉及
+		数十个文件的大型编码任务。它可以直接处理多达 200 万个标记的上下文（每个
+		文件约 10 万个），并且可以使用 tree-sitter 项目映射索引 2000 万个标记或
+		更多的目录。
+	</longdescription>
+</pkgmetadata>
