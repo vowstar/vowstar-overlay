@@ -7,11 +7,11 @@ index b671def..ff84b7d 100644
 --- a/src/cmake/testing.cmake
 +++ b/src/cmake/testing.cmake
 @@ -271,9 +271,11 @@ macro (oiio_add_all_tests)
-                     IMAGEDIR oiio-images URL "Recent checkout of oiio-images")
+                     IMAGEDIR oiio-images URL "Recent checkout of OpenImageIO-images")
      oiio_add_tests (jpeg2000
                      FOUNDVAR OPENJPEG_FOUND
 +                    ENABLEVAR ENABLE_OPENJPEG
-                     IMAGEDIR oiio-images URL "Recent checkout of oiio-images")
+                     IMAGEDIR oiio-images URL "Recent checkout of OpenImageIO-images")
      oiio_add_tests (jpeg2000-j2kp4files
                      FOUNDVAR OPENJPEG_FOUND
 +                    ENABLEVAR ENABLE_OPENJPEG
