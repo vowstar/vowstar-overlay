@@ -63,6 +63,4 @@ src_install() {
 	doicon -s 192 "${S}"/squashfs-root/BambuStudio.png
 	domenu "${FILESDIR}/bambu-studio.desktop"
 	make_wrapper bambu-studio "/opt/${PN}/AppRun"
-	# fix for libOSMesa.so.8, bug #956009
-	dosym -r "/usr/$(get_libdir)/libGL.so" "/opt/${PN}/bin/libOSMesa.so.8"
 }
