@@ -539,6 +539,7 @@ src_install() {
 	dosym -r "/usr/$(get_libdir)/${PN}/bin/FreeCADCmd" "/usr/bin/freecadcmd"
 
 	domenu "${S}/src/XDGData/org.freecad.FreeCAD.desktop"
+	newicon -s scalable "${S}/src/Gui/Icons/freecad.svg" "org.freecad.FreeCAD.svg"
 
 	rm -r "${ED}/usr/$(get_libdir)/${PN}/include/E57Format" || die "failed to drop unneeded include directory E57Format"
 
