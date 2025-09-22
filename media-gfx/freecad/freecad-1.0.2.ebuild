@@ -9,7 +9,8 @@ PYTHON_COMPAT=( python3_{11..13} )
 # The added asserts break on mem leaks, so tests fail.
 # PYTHON_REQ_USE="-debug"
 
-inherit check-reqs cmake cuda edo flag-o-matic optfeature python-single-r1 qmake-utils toolchain-funcs xdg virtualx
+inherit check-reqs cmake cuda desktop edo flag-o-matic optfeature \
+	python-single-r1 qmake-utils toolchain-funcs xdg virtualx
 
 DESCRIPTION="Qt based Computer Aided Design application"
 HOMEPAGE="https://www.freecad.org/ https://github.com/FreeCAD/FreeCAD"
@@ -536,6 +537,8 @@ src_install() {
 		_EOF_
 	fi
 	dosym -r "/usr/$(get_libdir)/${PN}/bin/FreeCADCmd" "/usr/bin/freecadcmd"
+
+	domenu "${S}/src/XDGData/org.freecad.FreeCAD.desktop"
 
 	rm -r "${ED}/usr/$(get_libdir)/${PN}/include/E57Format" || die "failed to drop unneeded include directory E57Format"
 
