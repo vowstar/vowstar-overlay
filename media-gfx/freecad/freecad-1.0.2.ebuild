@@ -25,7 +25,6 @@ else
 	SRC_URI="
 		https://github.com/${MY_PN}/${MY_PN}/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz
 		https://github.com/FreeCAD/FreeCAD/commit/d91b3e051789623f0bc1eff65947c361e7a661d0.patch -> ${PN}-20710.patch
-		https://github.com/FreeCAD/FreeCAD/commit/3d2b7dc9c7ac898b30fe469b7cbd424ed1bca0a2.patch -> ${PN}-22221.patch
 	"
 	KEYWORDS="~amd64"
 	S="${WORKDIR}/FreeCAD-${PV}"
@@ -74,7 +73,7 @@ RDEPEND="
 	sys-libs/zlib
 	$(python_gen_cond_dep '
 		dev-python/numpy[${PYTHON_USEDEP}]
-		<dev-python/pybind11-3[${PYTHON_USEDEP}]
+		dev-python/pybind11[${PYTHON_USEDEP}]
 		dev-python/pyyaml[${PYTHON_USEDEP}]
 	')
 	assembly? ( sci-libs/ondselsolver )
@@ -137,10 +136,9 @@ BDEPEND="
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-1.0.0-r1-Gentoo-specific-don-t-check-vcs.patch
-	"${FILESDIR}"/${PN}-0.21.0-0001-Gentoo-specific-disable-ccache-usage.patch
+	"${FILESDIR}"/${PN}-1.0.2-0001-Gentoo-specific-disable-ccache-usage.patch
 	"${FILESDIR}"/${PN}-1.0.1-tests-src-Qt-only-build-test-for-BUILD_GUI-ON.patch
 	"${DISTDIR}/${PN}-20710.patch" # DESTDIR in env
-	"${DISTDIR}/${PN}-22221.patch" # vtk-9.5
 )
 
 DOCS=( CODE_OF_CONDUCT.md README.md )
@@ -284,6 +282,8 @@ src_configure() {
 	fi
 
 	local mycmakeargs=(
+		-DFREECAD_USE_CCACHE=OFF # Do not use CCache
+
 		-DCMAKE_POLICY_DEFAULT_CMP0144="OLD" # FLANN_ROOT
 		-DCMAKE_POLICY_DEFAULT_CMP0167="OLD" # FindBoost
 		-DCMAKE_POLICY_DEFAULT_CMP0175="OLD" # add_custom_command
