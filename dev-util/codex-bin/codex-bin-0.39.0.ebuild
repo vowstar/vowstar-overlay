@@ -3,9 +3,11 @@
 
 EAPI=8
 
+MY_PN="codex-x86_64-unknown-linux-musl"
+
 DESCRIPTION="Codex - OpenAI's code generation and completion tool"
 HOMEPAGE="https://github.com/openai/codex"
-SRC_URI="https://github.com/openai/codex/releases/download/rust-v${PV}/codex-x86_64-unknown-linux-musl.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/openai/codex/releases/download/rust-v${PV}/${MY_PN}.tar.gz -> ${P}.tar.gz"
 S="${WORKDIR}"
 
 LICENSE="Apache-2.0"
@@ -17,6 +19,5 @@ RESTRICT="bindist mirror strip"
 QA_PREBUILT="usr/bin/codex"
 
 src_install() {
-	mv codex-x86_64-unknown-linux-musl codex || die
-	dobin codex
+	newbin "${MY_PN}" codex
 }
