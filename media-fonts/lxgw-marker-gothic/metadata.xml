@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		LXGW Marker Gothic is an open-source Chinese font derived from Tanugo.
+		It features a marker pen writing style, suitable for creative applications
+		like comic illustrations, advertising, and poster design.
+	</longdescription>
+	<longdescription lang="zh">
+		霞鹜漫黑是一款基于日文开源字体 Tanugo 衍生的中文字体，具有独特的马克笔书写风格。
+		字体补完简体 3500 常用汉字及 GB/T 2312 标准字，繁体部分支持 GB/T 12345、
+		台湾常用国字、香港常用字等标准，总计包含 1.3 万余字，可基本满足简繁日常用字的显示需要。
+		适用于平面海报、电商文案、视频标题及字幕、书报标题、游戏嵌入等创意场景，
+		但不推荐用于正文排版或编程代码。字体采用 SIL Open Font License 1.1 授权，
+		完全免费商用，无需付费或署名。
+	</longdescription>
+	<upstream>
+		<remote-id type="github">lxgw/LxgwMarkerGothic</remote-id>
+	</upstream>
+</pkgmetadata>
