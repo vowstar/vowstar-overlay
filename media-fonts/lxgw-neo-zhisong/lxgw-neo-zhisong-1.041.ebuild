@@ -1,11 +1,11 @@
-# Copyright 1999-2025 Gentoo Authors
+# Copyright 2022-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 inherit font
 
-DESCRIPTION="An open-source Chinese font derived from IPAmj Mincho"
+DESCRIPTION="A Chinese serif font derived from IPAex Mincho and IPAmj Mincho"
 HOMEPAGE="https://github.com/lxgw/LxgwNeoZhiSong"
 SRC_URI="
 	regular? (
@@ -17,6 +17,7 @@ SRC_URI="
 "
 
 S="${WORKDIR}"
+
 LICENSE="IPAfont"
 SLOT="0"
 KEYWORDS="~amd64 ~loong ~riscv ~x86"
