@@ -13,11 +13,11 @@ SRC_URI="
 	https://github.com/lxgw/LxgwNeoZhiSong/releases/download/v${PV}/LXGWNeoZhiSongCHS.ttf
 	https://github.com/lxgw/LxgwNeoZhiSong/releases/download/v${PV}/LXGWHeartSerifCHS.ttf
 "
-LICENSE="IPAfont"
-SLOT="0"
-KEYWORDS="~amd64 ~loong ~riscv ~x86"
 
 # Has to fall back to distdir until author offers tarball
 S="${DISTDIR}"
+LICENSE="IPAfont"
+SLOT="0"
+KEYWORDS="~amd64 ~loong ~riscv ~x86"
 FONT_SUFFIX="ttf"
 FONT_S="${DISTDIR}"
