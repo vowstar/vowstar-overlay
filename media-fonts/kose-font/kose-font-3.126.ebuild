@@ -7,7 +7,7 @@ inherit font
 
 MY_P="${PN}-v${PV}"
 
-DESCRIPTION="Xiaolai (小赖字体) - An open-source Chinese font"
+DESCRIPTION="Kose Font (小赖字体) - An open-source Chinese font"
 HOMEPAGE="https://github.com/lxgw/kose-font"
 SRC_URI="
 	https://github.com/lxgw/kose-font/releases/download/v${PV}/Xiaolai-Regular.ttf

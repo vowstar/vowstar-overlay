@@ -7,7 +7,7 @@ inherit font
 
 MY_P="${PN}-v${PV}"
 
-DESCRIPTION="Yozai (悠哉字体) - A Chinese font derived from Y.OzFont"
+DESCRIPTION="Yozai Font (悠哉字体) - A Chinese font derived from Y.OzFont"
 HOMEPAGE="https://github.com/lxgw/yozai-font"
 SRC_URI="
 	https://github.com/lxgw/yozai-font/releases/download/v${PV}/Yozai-Light.ttf

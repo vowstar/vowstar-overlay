@@ -10,10 +10,10 @@
 		<remote-id type="github">lxgw/kose-font</remote-id>
 	</upstream>
 	<longdescription lang="en">
-		Xiaolai (小赖字体) is an open-source Chinese font derived from the
-		Kose font. This is a Chinese serif font suitable for body text and
-		titles. The font includes two variants: Xiaolai-Regular and
-		XiaolaiMono-Regular (monospace version).
+		Kose Font (小赖字体 / Xiaolai) is an open-source Chinese font
+		derived from the Kose font. This is a Chinese serif font suitable
+		for body text and titles. The font includes two variants:
+		Xiaolai-Regular and XiaolaiMono-Regular (monospace version).
 	</longdescription>
 	<longdescription lang="zh">
 		小赖字体是一款衍生于 Kose 字体的开源中文字体。这是一款适合正文
