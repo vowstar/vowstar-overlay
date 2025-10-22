@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -10,8 +10,8 @@ MY_P="${PN}-v${PV}"
 DESCRIPTION="An open-source Chinese font derived from IPAmj Mincho"
 HOMEPAGE="https://github.com/lxgw/LxgwNeoZhiSong"
 SRC_URI="
-	https://github.com/lxgw/LxgwNeoZhiSong/releases/download/v${PV}/LXGWNeoZhiSongCHS.ttf
-	https://github.com/lxgw/LxgwNeoZhiSong/releases/download/v${PV}/LXGWHeartSerifCHS.ttf
+	https://github.com/lxgw/LxgwNeoZhiSong/releases/download/v${PV}/LXGWNeoZhiSong.ttf
+	https://github.com/lxgw/LxgwNeoZhiSong/releases/download/v${PV}/LXGWNeoZhiSongPlus.ttf
 "
 
 # Has to fall back to distdir until author offers tarball
