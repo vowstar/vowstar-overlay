@@ -16,6 +16,7 @@ SRC_URI="
 	signed_${MY_PGK_NAME}_${MY_PV}_amd64.deb
 	${URI_ANACONDA}/python/3.8.20/download/linux-64/python-3.8.20-he870216_0.tar.bz2 -> ${PN}-python-3.8.20.tar.bz2
 "
+S=${WORKDIR}
 
 LICENSE="all-rights-reserved"
 SLOT="0"
@@ -35,8 +36,6 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 
 BDEPEND="dev-util/patchelf"
-
-S=${WORKDIR}
 
 QA_PREBUILT="*"
 
