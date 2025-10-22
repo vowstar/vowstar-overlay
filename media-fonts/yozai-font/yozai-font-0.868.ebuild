@@ -5,21 +5,25 @@ EAPI=8
 
 inherit font
 
-MY_P="${PN}-v${PV}"
-
 DESCRIPTION="Yozai Font (悠哉字体) - A Chinese font derived from Y.OzFont"
 HOMEPAGE="https://github.com/lxgw/yozai-font"
 SRC_URI="
-	https://github.com/lxgw/yozai-font/releases/download/v${PV}/Yozai-Light.ttf
-	https://github.com/lxgw/yozai-font/releases/download/v${PV}/Yozai-Medium.ttf
-	https://github.com/lxgw/yozai-font/releases/download/v${PV}/Yozai-Regular.ttf
+	light? ( https://github.com/lxgw/yozai-font/releases/download/v${PV}/Yozai-Light.ttf -> ${PN}-light-${PV}.ttf )
+	regular? ( https://github.com/lxgw/yozai-font/releases/download/v${PV}/Yozai-Regular.ttf -> ${P}.ttf )
+	medium? ( https://github.com/lxgw/yozai-font/releases/download/v${PV}/Yozai-Medium.ttf -> ${PN}-medium-${PV}.ttf )
 "
 
-# Has to fall back to distdir until author offers tarball
-S="${DISTDIR}"
+S="${WORKDIR}"
 LICENSE="OFL-1.1"
 SLOT="0"
 KEYWORDS="~amd64 ~loong ~riscv ~x86"
 
+IUSE="light +regular medium"
+
 FONT_SUFFIX="ttf"
-FONT_S="${DISTDIR}"
+
+src_unpack() {
+	use light && cp -v "${DISTDIR}/${PN}-light-${PV}.ttf" "Yozai-Light.ttf"
+	use regular && cp -v "${DISTDIR}/${P}.ttf" "Yozai-Regular.ttf"
+	use medium && cp -v "${DISTDIR}/${PN}-medium-${PV}.ttf" "Yozai-Medium.ttf"
+}

@@ -5,20 +5,23 @@ EAPI=8
 
 inherit font
 
-MY_P="${PN}-v${PV}"
-
 DESCRIPTION="Kose Font (小赖字体) - An open-source Chinese font"
 HOMEPAGE="https://github.com/lxgw/kose-font"
 SRC_URI="
-	https://github.com/lxgw/kose-font/releases/download/v${PV}/Xiaolai-Regular.ttf
-	https://github.com/lxgw/kose-font/releases/download/v${PV}/XiaolaiMono-Regular.ttf
+	regular? ( https://github.com/lxgw/kose-font/releases/download/v${PV}/Xiaolai-Regular.ttf -> ${P}.ttf )
+	mono? ( https://github.com/lxgw/kose-font/releases/download/v${PV}/XiaolaiMono-Regular.ttf -> ${PN}-mono-${PV}.ttf )
 "
 
-# Has to fall back to distdir until author offers tarball
-S="${DISTDIR}"
+S="${WORKDIR}"
 LICENSE="OFL-1.1"
 SLOT="0"
 KEYWORDS="~amd64 ~loong ~riscv ~x86"
 
+IUSE="+regular mono"
+
 FONT_SUFFIX="ttf"
-FONT_S="${DISTDIR}"
+
+src_unpack() {
+	use regular && cp -v "${DISTDIR}/${P}.ttf" "Xiaolai-Regular.ttf"
+	use mono && cp -v "${DISTDIR}/${PN}-mono-${PV}.ttf" "XiaolaiMono-Regular.ttf"
+}

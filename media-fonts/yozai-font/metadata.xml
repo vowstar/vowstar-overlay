@@ -22,4 +22,9 @@
 		Light（细体）、Regular（常规体）和 Medium（中等体），为各种
 		设计需求提供灵活性。
 	</longdescription>
+	<use>
+		<flag name="light">Light weight variant</flag>
+		<flag name="regular">Regular weight variant</flag>
+		<flag name="medium">Medium weight variant</flag>
+	</use>
 </pkgmetadata>
