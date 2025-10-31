@@ -186,6 +186,7 @@ src_install() {
 	# fix some embedded paths and install desktop files
 	for filename in $(find "${ED}/${M_TARGET}/SystemFiles/Installation" -name "*.desktop") ; do
 		einfo "Fixing ${filename}"
+		sed -e 's/^Icon=.*$/Icon=wolfram-mathematica/' -i "${filename}" || die
 		sed -e "s|${S}||g" -e 's|^\t\t||g' -e 's|\\+|+|g' -e 's:Version=2.0:Version=1.5:g' -i "${filename}" || die
 		echo "Categories=Physics;Science;Engineering;2DGraphics;Graphics;" >> "${filename}" || die
 		domenu "${filename}"
@@ -195,7 +196,7 @@ src_install() {
 	for iconsize in 16 32 64 128 256; do
 		local iconfile="${ED}/${M_TARGET}/SystemFiles/FrontEnd/SystemResources/X/App-${iconsize}.png"
 		if [ -e "${iconfile}" ]; then
-			newicon -s "${iconsize}" "${iconfile}" wolfram-wolfram.png
+			newicon -s "${iconsize}" "${iconfile}" wolfram-mathematica.png
 		fi
 	done
 
