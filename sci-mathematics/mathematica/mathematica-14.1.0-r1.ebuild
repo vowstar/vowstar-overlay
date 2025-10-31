@@ -89,6 +89,7 @@ src_install() {
 
 	# in the depths of the installer it tests whether it can write here
 	# addpredict is by far the simplest solution
+	# bug 960526, the installer may check the following two paths for write access
 	addpredict /usr/share/Wolfram/thisisatest
 	addpredict /usr/share/thisisatest
 
