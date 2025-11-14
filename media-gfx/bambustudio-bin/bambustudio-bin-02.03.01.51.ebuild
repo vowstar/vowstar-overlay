@@ -12,7 +12,7 @@ DESCRIPTION="Bambu Studio is a cutting-edge, feature-rich slicing software"
 HOMEPAGE="https://bambulab.com"
 
 SRC_URI="
-	https://github.com/bambulab/${MY_PN}/releases/download/v${PV}/Bambu_Studio_ubuntu-24.04_PR-7829.AppImage \
+	https://github.com/bambulab/${MY_PN}/releases/download/v${PV}/Bambu_Studio_ubuntu-24.04_PR-8583.AppImage \
 	-> ${P}.AppImage
 "
 
@@ -34,7 +34,7 @@ RDEPEND="
 	x11-libs/libxkbcommon
 	>=x11-libs/pixman-0.30
 	x11-libs/wxGTK:${WX_GTK_VER}=[X,opengl]
-	sys-libs/zlib
+	virtual/zlib
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
