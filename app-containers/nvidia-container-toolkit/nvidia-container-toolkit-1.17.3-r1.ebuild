@@ -29,7 +29,8 @@ RESTRICT="test" # Bug 831702
 
 # Bug 950233 version should not be newer than libnvidia-container
 RDEPEND="
-	~sys-libs/libnvidia-container-${PV}
+	>=sys-libs/libnvidia-container-$(ver_cut 1-2)
+	<=sys-libs/libnvidia-container-$(ver_cut 1-3)
 "
 
 src_compile() {
