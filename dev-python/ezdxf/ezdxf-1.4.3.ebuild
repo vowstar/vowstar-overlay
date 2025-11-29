@@ -14,6 +14,10 @@ LICENSE="MIT"
 SLOT=0
 KEYWORDS="~amd64 ~arm64"
 
+# Tests require fonts from repository ./fonts folder
+# https://github.com/mozman/ezdxf/blob/master/tests/README.md
+RESTRICT="test"
+
 RDEPEND="
 	>=dev-python/pyparsing-2.0.1[${PYTHON_USEDEP}]
 	>=dev-python/typing-extensions-4.6.0[${PYTHON_USEDEP}]
@@ -21,5 +25,3 @@ RDEPEND="
 	dev-python/fonttools[${PYTHON_USEDEP}]
 "
 BDEPEND="${RDEPEND}"
-
-distutils_enable_tests pytest
