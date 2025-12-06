@@ -719,6 +719,8 @@ SRC_URI="
 		-> f128-${F128_COMMIT}.tar.gz
 	https://github.com/ics-jku/instruction-decoder/archive/${INSTRUCTION_DECODER_COMMIT}.tar.gz
 		-> instruction-decoder-${INSTRUCTION_DECODER_COMMIT}.tar.gz
+	https://gitlab.com/surfer-project/${PN}/-/raw/main/surfer/assets/com.gitlab.surferproject.surfer.png
+	https://gitlab.com/surfer-project/${PN}/-/raw/main/surfer/assets/com.gitlab.surferproject.surfer.desktop
 	${CARGO_CRATE_URIS}
 "
 
@@ -795,10 +797,10 @@ src_install() {
 	dobin target/release/surfer
 	dobin target/release/surver
 
-	# Create desktop entry (icon and metainfo not available in this version)
-	make_desktop_entry surfer Surfer "" \
-		"Utility;Electronics;Engineering" \
-		"MimeType=application/vnd.gtkwave-vcd;application/vnd.gtkwave-fst;application/vnd.gtkwave-ghw;"
+	# Install desktop file and icon (from main branch)
+	# Desktop file expects Icon=com.gitlab.surferproject.surfer.png
+	doicon "${DISTDIR}/com.gitlab.surferproject.surfer.png"
+	domenu "${DISTDIR}/com.gitlab.surferproject.surfer.desktop"
 
 	dodoc README.md CHANGELOG.md
 }
