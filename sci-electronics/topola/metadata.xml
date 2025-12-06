@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		Topola is a work-in-progress interactive topological router for printed
+		circuit boards (PCBs) written in Rust. It implements rubberband-style
+		routing where traces behave like elastic bands wrapped around obstacles,
+		providing an intuitive way to route PCB traces interactively. The project
+		aims to provide both interactive routing and autorouting capabilities for
+		PCB design workflows.
+	</longdescription>
+	<longdescription lang="zh">
+		Topola 是一个正在开发中的交互式拓扑布线器，用于印刷电路板 (PCB) 设计，
+		使用 Rust 语言编写。它实现了橡皮筋式布线，走线像弹性带一样缠绕在障碍物
+		周围，为交互式 PCB 走线提供了直观的方式。该项目旨在为 PCB 设计工作流程
+		提供交互式布线和自动布线功能。
+	</longdescription>
+	<use>
+		<flag name="gtk3">Use GTK3 for native file dialogs</flag>
+		<flag name="wayland">Enable Wayland support via xdg-portal</flag>
+		<flag name="X">Enable X11 support</flag>
+	</use>
+	<upstream>
+		<remote-id type="codeberg">topola/topola</remote-id>
+		<bugs-to>https://codeberg.org/topola/topola/issues</bugs-to>
+	</upstream>
+</pkgmetadata>
