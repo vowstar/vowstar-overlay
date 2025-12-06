@@ -563,7 +563,7 @@ CRATES="
 	zvariant_utils@3.2.1
 "
 
-PYTHON_COMPAT=( python3_{11..13} )
+PYTHON_COMPAT=( python3_{11..14} )
 
 # Topola uses a fork of petgraph from codeberg
 PETGRAPH_COMMIT="1bae625ec5f0373ebe859e027af56dcb11a3ac85"
