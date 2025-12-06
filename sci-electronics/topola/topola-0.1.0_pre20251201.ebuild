@@ -569,7 +569,7 @@ PYTHON_COMPAT=( python3_{11..13} )
 PETGRAPH_COMMIT="1bae625ec5f0373ebe859e027af56dcb11a3ac85"
 TOPOLA_COMMIT="3b56eb74c973b148350fc1b0ebcb2040548cbdbc"
 
-inherit cargo python-any-r1
+inherit cargo desktop python-any-r1
 
 DESCRIPTION="Work-in-progress topological (rubberband) router and autorouter for PCBs"
 HOMEPAGE="https://topola.dev https://codeberg.org/topola/topola"
@@ -683,6 +683,12 @@ src_compile() {
 src_install() {
 	dobin target/release/topola-egui
 	dosym topola-egui /usr/bin/topola
+
+	# Install icon and create desktop entry
+	doicon -s scalable assets/logos/topola/icon.svg
+	make_desktop_entry topola Topola icon \
+		"Electronics;Engineering" \
+		"MimeType=application/x-kicad-pcb;"
 
 	dodoc README.md CONTRIBUTING.md INSTALL.md
 
