@@ -36,8 +36,8 @@ src_install() {
 	doins "${T}/sby_core.py"
 
 	# Create the sby launcher script with path and version substitutions
-	local syspath='sys.path += [os.path.dirname(__file__) + p for p in '
-	syspath+='["/share/python3", "/../share/yosys/python3"]]'
+	# Use absolute path with EPREFIX because python-exec wrapper changes script location
+	local syspath="sys.path += [\"${EPREFIX}/usr/share/yosys/python3\"]"
 	sed -e "s|##yosys-sys-path##|${syspath}|" \
 		-e "s|##yosys-release-version##|release_version = 'SBY ${PV}'|" \
 		sbysrc/sby.py > "${T}/sby" || die
