@@ -708,7 +708,7 @@ INSTRUCTION_DECODER_COMMIT="7c5adb7621a6f277ee13ec1a4babe32ce56cc0c3"
 
 PYTHON_COMPAT=( python3_{11..14} )
 
-inherit cargo python-any-r1
+inherit cargo desktop python-any-r1
 
 DESCRIPTION="Waveform viewer with a focus on a snappy usable interface"
 HOMEPAGE="https://surfer-project.org/ https://gitlab.com/surfer-project/surfer"
@@ -794,6 +794,12 @@ src_install() {
 	# and surver doesn't have the same features as surfer
 	dobin target/release/surfer
 	dobin target/release/surver
+
+	# Install desktop file, icon, and metainfo
+	domenu surfer/assets/com.gitlab.surferproject.surfer.desktop
+	doicon surfer/assets/com.gitlab.surferproject.surfer.png
+	insinto /usr/share/metainfo
+	doins surfer/assets/com.gitlab.surferproject.surfer.metainfo.xml
 
 	dodoc README.md CHANGELOG.md
 }
