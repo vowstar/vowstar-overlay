@@ -14,11 +14,8 @@ SRC_URI="https://github.com/YosysHQ/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="ISC"
 SLOT="0"
 KEYWORDS="~amd64"
+IUSE="yices2"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
-
-# Tests require formal verification solvers (yices2, z3, boolector, etc.)
-# and the complete Tabby CAD Suite or OSS CAD Suite
-RESTRICT="test"
 
 RDEPEND="
 	${PYTHON_DEPS}
@@ -26,6 +23,8 @@ RDEPEND="
 		dev-python/click[${PYTHON_USEDEP}]
 	')
 	sci-electronics/yosys
+	sci-mathematics/z3
+	yices2? ( sci-mathematics/yices2 )
 "
 DEPEND="${RDEPEND}"
 

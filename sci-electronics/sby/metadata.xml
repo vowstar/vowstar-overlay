@@ -19,6 +19,9 @@
 		Verilog、SystemVerilog 或 VHDL 编写的硬件设计。SymbiYosys 集成了
 		多种 SMT 求解器和模型检查器，包括 Yices、Z3、Boolector 和 ABC。
 	</longdescription>
+	<use>
+		<flag name="yices2">Enable Yices2 SMT solver support</flag>
+	</use>
 	<upstream>
 		<remote-id type="github">YosysHQ/sby</remote-id>
 		<bugs-to>https://github.com/YosysHQ/sby/issues</bugs-to>
