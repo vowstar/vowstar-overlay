@@ -16,6 +16,10 @@ SLOT="0"
 KEYWORDS="~amd64"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
+# Tests require formal verification solvers (yices2, z3, boolector, etc.)
+# and the complete Tabby CAD Suite or OSS CAD Suite
+RESTRICT="test"
+
 RDEPEND="
 	${PYTHON_DEPS}
 	$(python_gen_cond_dep '

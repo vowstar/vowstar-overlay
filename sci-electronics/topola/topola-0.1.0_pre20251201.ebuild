@@ -614,6 +614,10 @@ BDEPEND="
 
 QA_FLAGS_IGNORED="usr/bin/topola"
 
+# Tests require dev-dependencies (proptest, rstest) which are removed
+# in src_prepare to avoid network access during build
+RESTRICT="test"
+
 pkg_setup() {
 	python-any-r1_pkg_setup
 	rust_pkg_setup
