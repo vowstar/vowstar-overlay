@@ -642,27 +642,27 @@ import os
 import re
 
 def remove_dev_deps(filepath):
-    with open(filepath, 'r') as f:
-        lines = f.readlines()
-    result = []
-    skip = False
-    for line in lines:
-        if re.match(r'^\[dev-dependencies', line):
-            skip = True
-            continue
-        if line.startswith('[') and not re.match(r'^\[dev-dependencies', line):
-            skip = False
-        if not skip:
-            result.append(line)
-    with open(filepath, 'w') as f:
-        f.writelines(result)
+	with open(filepath, 'r') as f:
+		lines = f.readlines()
+	result = []
+	skip = False
+	for line in lines:
+		if re.match(r'^\[dev-dependencies', line):
+			skip = True
+			continue
+		if line.startswith('[') and not re.match(r'^\[dev-dependencies', line):
+			skip = False
+		if not skip:
+			result.append(line)
+	with open(filepath, 'w') as f:
+		f.writelines(result)
 
 for root, dirs, files in os.walk('.'):
-    if 'fuzz' in root:
-        continue
-    for f in files:
-        if f == 'Cargo.toml':
-            remove_dev_deps(os.path.join(root, f))
+	if 'fuzz' in root:
+		continue
+	for f in files:
+		if f == 'Cargo.toml':
+			remove_dev_deps(os.path.join(root, f))
 PYEOF
 
 	cargo_src_prepare

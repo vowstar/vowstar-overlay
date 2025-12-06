@@ -795,11 +795,8 @@ src_install() {
 	dobin target/release/surfer
 	dobin target/release/surver
 
-	# Install desktop file, icon, and metainfo
-	domenu surfer/assets/com.gitlab.surferproject.surfer.desktop
-	doicon surfer/assets/com.gitlab.surferproject.surfer.png
-	insinto /usr/share/metainfo
-	doins surfer/assets/com.gitlab.surferproject.surfer.metainfo.xml
+	# Install desktop file (icon and metainfo not available in this version)
+	domenu surfer/assets/Surfer.desktop
 
 	dodoc README.md CHANGELOG.md
 }
