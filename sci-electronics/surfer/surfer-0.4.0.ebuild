@@ -795,8 +795,10 @@ src_install() {
 	dobin target/release/surfer
 	dobin target/release/surver
 
-	# Install desktop file (icon and metainfo not available in this version)
-	domenu surfer/assets/Surfer.desktop
+	# Create desktop entry (icon and metainfo not available in this version)
+	make_desktop_entry surfer Surfer "" \
+		"Utility;Electronics;Engineering" \
+		"MimeType=application/vnd.gtkwave-vcd;application/vnd.gtkwave-fst;application/vnd.gtkwave-ghw;"
 
 	dodoc README.md CHANGELOG.md
 }

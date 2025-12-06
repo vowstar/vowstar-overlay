@@ -685,8 +685,8 @@ src_install() {
 	dosym topola-egui /usr/bin/topola
 
 	# Install icon and create desktop entry
-	doicon -s scalable assets/logos/topola/icon.svg
-	make_desktop_entry topola Topola icon \
+	newicon -s scalable assets/logos/topola/icon.svg ${PN}.svg
+	make_desktop_entry topola Topola ${PN} \
 		"Electronics;Engineering" \
 		"MimeType=application/x-kicad-pcb;"
 
