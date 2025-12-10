@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Gentoo Authors
+# Copyright 2021-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -26,16 +26,13 @@ IUSE="+vaapi +X"
 
 RDEPEND="
 	app-pda/libplist
+	dev-libs/glib:2
 	dev-libs/openssl
 	media-libs/gstreamer
-	media-libs/gst-plugins-good
 	media-libs/gst-plugins-bad
 	media-libs/gst-plugins-base
 	media-plugins/gst-plugins-libav
-	vaapi? (
-		media-plugins/gst-plugins-vaapi
-		media-video/ffmpeg[vaapi]
-	)
+	vaapi? ( media-plugins/gst-plugins-vaapi )
 	net-dns/avahi[mdnsresponder-compat]
 	X? ( x11-libs/libX11 )
 "
