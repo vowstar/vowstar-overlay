@@ -1,0 +1,90 @@
+From: Gentoo <gentoo@gentoo.org>
+Date: Tue, 10 Dec 2025 00:00:00 +0000
+Subject: [PATCH] Support GCC as assembler compiler
+
+When CMake uses GCC as the assembler compiler instead of the raw 'as',
+the assembler flags need to be passed via -Wa, prefix. This patch
+detects when GCC is being used and wraps the flags accordingly.
+Also adds -c flag to CMAKE_ASM_COMPILE_OBJECT when using GCC to compile
+without linking.
+
+--- a/make/cpp2asm_support.cmake
++++ b/make/cpp2asm_support.cmake
+@@ -215,14 +215,33 @@
+     set(ASM_FLAGS "${ASM_FLAGS} -g")
+   endif (DEBUG)
+ elseif (UNIX)
++  # Check if CMAKE_ASM_COMPILER is GCC (not raw 'as')
++  # GCC doesn't accept raw assembler flags, they need -Wa, prefix
++  get_filename_component(ASM_COMPILER_NAME "${CMAKE_ASM_COMPILER}" NAME)
++  if ("${ASM_COMPILER_NAME}" MATCHES "gcc$" OR "${ASM_COMPILER_NAME}" MATCHES "g\\+\\+$" OR
++      "${ASM_COMPILER_NAME}" MATCHES "^.*-gcc$" OR "${ASM_COMPILER_NAME}" MATCHES "^.*-g\\+\\+$" OR
++      "${CMAKE_ASM_COMPILER_ID}" STREQUAL "GNU")
++    set(USING_GCC_AS_ASM TRUE)
++  else ()
++    set(USING_GCC_AS_ASM FALSE)
++  endif ()
+   if (DR_HOST_X86)
+-    set(ASM_FLAGS "-mmnemonic=intel -msyntax=intel -mnaked-reg")
+-    if (X64)
+-      set(ASM_FLAGS "${ASM_FLAGS} --64")
+-    else (X64)
+-      # putting --32 last so we fail on -mmnemonic=intel on older as, not --32
+-      set(ASM_FLAGS "${ASM_FLAGS} --32")
+-    endif (X64)
++    if (USING_GCC_AS_ASM)
++      set(ASM_FLAGS "-Wa,-mmnemonic=intel,-msyntax=intel,-mnaked-reg")
++      if (X64)
++        set(ASM_FLAGS "${ASM_FLAGS} -Wa,--64")
++      else (X64)
++        set(ASM_FLAGS "${ASM_FLAGS} -Wa,--32")
++      endif (X64)
++    else ()
++      set(ASM_FLAGS "-mmnemonic=intel -msyntax=intel -mnaked-reg")
++      if (X64)
++        set(ASM_FLAGS "${ASM_FLAGS} --64")
++      else (X64)
++        # putting --32 last so we fail on -mmnemonic=intel on older as, not --32
++        set(ASM_FLAGS "${ASM_FLAGS} --32")
++      endif (X64)
++    endif ()
+   elseif (DR_HOST_ARM)
+     # No 64-bit support yet.
+     # Some tests and libgcc/arm use deprecated instructions, disable warnings.
+@@ -234,7 +253,9 @@
+         set(ASM_FLAGS "${ASM_FLAGS} ${ASMFLAGS_SVE}")
+     endif ()
+   endif ()
+-  if (NOT ANDROID64)
++  if (USING_GCC_AS_ASM)
++    set(ASM_FLAGS "${ASM_FLAGS} -Wa,--noexecstack")
++  elseif (NOT ANDROID64)
+     set(ASM_FLAGS "${ASM_FLAGS} --noexecstack")
+   endif ()
+   if (DEBUG)
+@@ -352,11 +373,20 @@
+     "<CMAKE_ASM_COMPILER> ${ASM_FLAGS} -xassembler -c -o <OBJECT> <OBJECT>.s"
+     )
+ elseif (UNIX OR (APPLE AND AARCH64))
+-  set(CMAKE_ASM_COMPILE_OBJECT
+-    "${CMAKE_CPP} ${CMAKE_CPP_FLAGS} ${rule_flags} ${rule_defs} -E <SOURCE> -o <OBJECT>.s"
+-    "<CMAKE_COMMAND> -Dfile=<OBJECT>.s -P \"${cpp2asm_newline_script_path}\""
+-    "<CMAKE_ASM_COMPILER> ${ASM_FLAGS} -o <OBJECT> <OBJECT>.s"
+-    )
++  if (USING_GCC_AS_ASM)
++    # When using GCC as assembler, need -c flag to compile without linking
++    set(CMAKE_ASM_COMPILE_OBJECT
++      "${CMAKE_CPP} ${CMAKE_CPP_FLAGS} ${rule_flags} ${rule_defs} -E <SOURCE> -o <OBJECT>.s"
++      "<CMAKE_COMMAND> -Dfile=<OBJECT>.s -P \"${cpp2asm_newline_script_path}\""
++      "<CMAKE_ASM_COMPILER> ${ASM_FLAGS} -c -o <OBJECT> <OBJECT>.s"
++      )
++  else ()
++    set(CMAKE_ASM_COMPILE_OBJECT
++      "${CMAKE_CPP} ${CMAKE_CPP_FLAGS} ${rule_flags} ${rule_defs} -E <SOURCE> -o <OBJECT>.s"
++      "<CMAKE_COMMAND> -Dfile=<OBJECT>.s -P \"${cpp2asm_newline_script_path}\""
++      "<CMAKE_ASM_COMPILER> ${ASM_FLAGS} -o <OBJECT> <OBJECT>.s"
++      )
++  endif ()
+ else ()
+   # Even if we didn't preprocess we'd need our own rule since cmake doesn't
+   # support ml.

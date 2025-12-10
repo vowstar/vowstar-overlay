@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		DynamoRIO is a runtime code manipulation system that supports code
+		transformations on any part of a program, while it executes. DynamoRIO
+		exports an interface for building dynamic tools for a wide variety of
+		uses: program analysis and understanding, profiling, instrumentation,
+		optimization, translation, etc. Unlike many dynamic tool systems,
+		DynamoRIO is not limited to insertion of callouts/trampolines and
+		allows arbitrary modifications to application instructions via a
+		powerful IA-32/AMD64/ARM/AArch64 instruction manipulation library.
+		DynamoRIO provides efficient, transparent, and comprehensive
+		manipulation of unmodified applications running on stock operating
+		systems and commodity hardware.
+	</longdescription>
+	<longdescription lang="zh">
+		DynamoRIO 是一个运行时代码操作系统，支持在程序执行时对其任何部分进行
+		代码转换。DynamoRIO 提供了一个接口，用于构建各种用途的动态工具：程序
+		分析和理解、性能分析、插桩、优化、翻译等。与许多动态工具系统不同，
+		DynamoRIO 不限于插入回调/跳板，而是通过强大的 IA-32/AMD64/ARM/AArch64
+		指令操作库允许对应用程序指令进行任意修改。DynamoRIO 提供高效、透明和
+		全面的操作，适用于在标准操作系统和商用硬件上运行的未修改应用程序。
+	</longdescription>
+	<use>
+		<flag name="debug">Build with debug information</flag>
+		<flag name="doc">Build API documentation</flag>
+		<flag name="samples">Build and install client sample programs</flag>
+		<flag name="static-libs">Build and install static libraries</flag>
+	</use>
+	<upstream>
+		<remote-id type="github">DynamoRIO/dynamorio</remote-id>
+		<bugs-to>https://github.com/DynamoRIO/dynamorio/issues</bugs-to>
+	</upstream>
+</pkgmetadata>
