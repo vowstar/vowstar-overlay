@@ -62,9 +62,6 @@ PATCHES=(
 QA_FLAGS_IGNORED="
 	opt/drmemory/.*
 "
-QA_PREBUILT="
-	opt/drmemory/.*
-"
 
 src_prepare() {
 	# Setup bundled DynamoRIO
@@ -126,6 +123,23 @@ src_install() {
 	# Remove incorrectly installed DynamoRIO build artifacts
 	# These are cmake install targets that don't properly respect DESTDIR
 	rm -rf "${ED}/var" || die
+
+	# Install DynamoRIO extension libraries that DRMF depends on
+	# These are built but not installed by DrMemory's cmake install
+	local ext_src="${BUILD_DIR}/dynamorio/ext/lib64/release"
+	local ext_dst="${ED}/opt/${PN}/dynamorio/ext/lib64/release"
+	if [[ -d "${ext_src}" ]]; then
+		einfo "Installing DynamoRIO extension libraries"
+		dodir "/opt/${PN}/dynamorio/ext/lib64/release"
+		local lib
+		for lib in "${ext_src}"/*.so; do
+			if [[ -f "${lib}" ]]; then
+				cp -a "${lib}" "${ext_dst}/" || die "Failed to install ${lib##*/}"
+			fi
+		done
+	else
+		ewarn "DynamoRIO extension directory not found: ${ext_src}"
+	fi
 
 	# Create .drpath files for DynamoRIO's private loader to find GCC libraries
 	# DynamoRIO uses its own loader that doesn't respect standard library paths
