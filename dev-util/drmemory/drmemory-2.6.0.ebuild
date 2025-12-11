@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit cmake flag-o-matic
+inherit cmake flag-o-matic toolchain-funcs
 
 DESCRIPTION="Memory debugging tool for Linux and Windows"
 HOMEPAGE="https://drmemory.org/ https://github.com/DynamoRIO/drmemory"
@@ -101,6 +101,11 @@ src_configure() {
 	# Avoid AVX-512 for portability
 	append-flags -mno-avx512f
 
+	# Static link libstdc++ and libgcc to avoid runtime library path issues
+	# DynamoRIO uses a private loader that doesn't respect standard library paths
+	# This is the recommended approach per DynamoRIO documentation
+	append-ldflags -static-libgcc -static-libstdc++
+
 	local mycmakeargs=(
 		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/opt/${PN}"
 		-DBUILD_TOOL_TESTS=$(usex test ON OFF)
@@ -121,6 +126,26 @@ src_install() {
 	# Remove incorrectly installed DynamoRIO build artifacts
 	# These are cmake install targets that don't properly respect DESTDIR
 	rm -rf "${ED}/var" || die
+
+	# Create .drpath files for DynamoRIO's private loader to find GCC libraries
+	# DynamoRIO uses its own loader that doesn't respect standard library paths
+	# The .drpath file is DynamoRIO's cross-platform mechanism for library search paths
+	# Note: patchelf is NOT used because it can break DynamoRIO's private loader
+	local gcc_libdir
+	gcc_libdir="$($(tc-getCC) -print-file-name=libstdc++.so.6)"
+	gcc_libdir="${gcc_libdir%/*}"
+	if [[ -d "${gcc_libdir}" ]]; then
+		einfo "Creating .drpath files with GCC library path: ${gcc_libdir}"
+		local f basename
+		while IFS= read -r -d '' f; do
+			if [[ -f "${f}" ]] && file "${f}" | grep -q "ELF.*shared object"; then
+				basename="${f##*/}"
+				basename="${basename%.so*}"
+				echo "${gcc_libdir}" > "${f%/*}/${basename}.drpath" || \
+					ewarn "Failed to create .drpath for ${f}"
+			fi
+		done < <(find "${ED}/opt/${PN}" -name "*.so" -print0)
+	fi
 
 	# Create symlinks in /usr/bin for main tools
 	dodir /usr/bin
