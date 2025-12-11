@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit cmake flag-o-matic
+inherit cmake flag-o-matic toolchain-funcs
 
 DESCRIPTION="A dynamic instrumentation tool platform"
 HOMEPAGE="https://dynamorio.org/ https://github.com/DynamoRIO/dynamorio"
@@ -79,6 +79,10 @@ src_configure() {
 	# and to avoid frequency scaling issues
 	append-flags -mno-avx512f
 
+	# Static link libstdc++ and libgcc to avoid runtime library path issues
+	# DynamoRIO uses a private loader that doesn't respect standard library paths
+	append-ldflags -static-libgcc -static-libstdc++
+
 	local mycmakeargs=(
 		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/opt/${PN}"
 		-DDEBUG=$(usex debug ON OFF)
@@ -95,6 +99,24 @@ src_install() {
 	# Remove static libraries unless requested
 	if ! use static-libs; then
 		find "${ED}" -name "*.a" -delete || die
+	fi
+
+	# Create .drpath files for DynamoRIO's private loader to find GCC libraries
+	# The .drpath file is DynamoRIO's cross-platform mechanism for library search paths
+	local gcc_libdir
+	gcc_libdir="$($(tc-getCC) -print-file-name=libstdc++.so.6)"
+	gcc_libdir="${gcc_libdir%/*}"
+	if [[ -d "${gcc_libdir}" ]]; then
+		einfo "Creating .drpath files with GCC library path: ${gcc_libdir}"
+		local f basename
+		while IFS= read -r -d '' f; do
+			if [[ -f "${f}" ]] && file "${f}" | grep -q "ELF.*shared object"; then
+				basename="${f##*/}"
+				basename="${basename%.so*}"
+				echo "${gcc_libdir}" > "${f%/*}/${basename}.drpath" || \
+					ewarn "Failed to create .drpath for ${f}"
+			fi
+		done < <(find "${ED}/opt/${PN}" -name "*.so" -print0)
 	fi
 
 	# Create symlinks in /usr/bin for main tools
