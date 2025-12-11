@@ -35,7 +35,9 @@ LICENSE="LGPL-2.1"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE="doc test"
-RESTRICT="!test? ( test )"
+# DynamoRIO uses special ELF structures for dynamic binary instrumentation
+# Stripping corrupts these structures and causes SIGILL at runtime
+RESTRICT="strip !test? ( test )"
 
 RDEPEND="
 	sys-libs/libunwind:=
