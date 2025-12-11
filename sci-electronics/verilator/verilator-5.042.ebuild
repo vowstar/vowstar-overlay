@@ -3,7 +3,7 @@
 
 EAPI="8"
 
-PYTHON_COMPAT=( python3_{10..14} )
+PYTHON_COMPAT=( python3_{11..14} )
 
 inherit autotools python-single-r1
 
@@ -30,7 +30,7 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 RDEPEND="
 	${PYTHON_DEPS}
 	dev-lang/perl
-	virtual/zlib
+	virtual/zlib:=
 "
 
 DEPEND="
