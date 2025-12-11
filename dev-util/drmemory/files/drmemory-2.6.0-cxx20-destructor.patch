@@ -1,0 +1,73 @@
+From: Huang Rui <vowstar@gmail.com>
+Date: Tue, 10 Dec 2025 00:00:00 +0000
+Subject: [PATCH] Fix C++20 template-id destructor compatibility
+
+C++20 no longer allows template arguments in destructor names like
+~file_reader_t<type>(). This patch removes the template arguments
+from destructor definitions to fix compilation with GCC 15.
+
+--- a/dynamorio/clients/drcachesim/reader/compressed_file_reader.cpp
++++ b/dynamorio/clients/drcachesim/reader/compressed_file_reader.cpp
+@@ -91,7 +91,7 @@
+ /* clang-format off */ /* (make vera++ newline-after-type check happy) */
+ template <>
+ /* clang-format on */
+-file_reader_t<gzip_reader_t>::~file_reader_t<gzip_reader_t>()
++file_reader_t<gzip_reader_t>::~file_reader_t()
+ {
+     if (input_file_.file != nullptr) {
+         gzclose(input_file_.file);
+@@ -134,7 +134,7 @@
+ /* clang-format off */ /* (make vera++ newline-after-type check happy) */
+ template <>
+ /* clang-format on */
+-record_file_reader_t<gzip_reader_t>::~record_file_reader_t<gzip_reader_t>()
++record_file_reader_t<gzip_reader_t>::~record_file_reader_t()
+ {
+     if (input_file_ != nullptr) {
+         gzclose(input_file_->file);
+--- a/dynamorio/clients/drcachesim/reader/lz4_file_reader.cpp
++++ b/dynamorio/clients/drcachesim/reader/lz4_file_reader.cpp
+@@ -70,7 +70,7 @@
+ /* clang-format off */ /* (make vera++ newline-after-type check happy) */
+ template <>
+ /* clang-format on */
+-file_reader_t<lz4_reader_t>::~file_reader_t<lz4_reader_t>()
++file_reader_t<lz4_reader_t>::~file_reader_t()
+ {
+     if (input_file_.file != nullptr) {
+         delete input_file_.file;
+--- a/dynamorio/clients/drcachesim/reader/record_file_reader.cpp
++++ b/dynamorio/clients/drcachesim/reader/record_file_reader.cpp
+@@ -39,7 +39,7 @@
+ /* clang-format off */ /* (make vera++ newline-after-type check happy) */
+ template <>
+ /* clang-format on */
+-record_file_reader_t<std::ifstream>::~record_file_reader_t<std::ifstream>()
++record_file_reader_t<std::ifstream>::~record_file_reader_t()
+ {
+ }
+
+--- a/dynamorio/clients/drcachesim/reader/snappy_file_reader.cpp
++++ b/dynamorio/clients/drcachesim/reader/snappy_file_reader.cpp
+@@ -208,7 +208,7 @@
+ /* clang-format off */ /* (make vera++ newline-after-type check happy) */
+ template <>
+ /* clang-format on */
+-file_reader_t<snappy_reader_t>::~file_reader_t<snappy_reader_t>()
++file_reader_t<snappy_reader_t>::~file_reader_t()
+ {
+     // Empty.
+ }
+--- a/dynamorio/clients/drcachesim/reader/zipfile_file_reader.cpp
++++ b/dynamorio/clients/drcachesim/reader/zipfile_file_reader.cpp
+@@ -51,7 +51,7 @@
+ /* clang-format off */ /* (make vera++ newline-after-type check happy) */
+ template <>
+ /* clang-format on */
+-file_reader_t<zipfile_reader_t>::~file_reader_t<zipfile_reader_t>()
++file_reader_t<zipfile_reader_t>::~file_reader_t()
+ {
+     if (input_file_.file != nullptr) {
+         unzClose(input_file_.file);
+

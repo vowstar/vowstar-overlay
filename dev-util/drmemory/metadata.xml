@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		Dr. Memory is a memory monitoring tool capable of identifying
+		memory-related programming errors such as accesses of uninitialized
+		memory, accesses to unaddressable memory (including outside of
+		allocated heap units and heap underflow and overflow), accesses to
+		freed memory, double frees, memory leaks, and (on Windows) handle
+		leaks, GDI API usage errors, and accesses to un-reserved thread
+		local storage slots.
+
+		Dr. Memory operates on unmodified application binaries running on
+		Windows, Linux, Mac, or Android on commodity IA-32, AMD64, and ARM
+		hardware.
+
+		This package also includes:
+		- drltrace: library call tracer
+		- drstrace: system call tracer (Windows only)
+		- symquery: symbol query tool
+	</longdescription>
+	<longdescription lang="zh">
+		Dr. Memory 是一个内存监控工具，能够识别与内存相关的编程错误，如访问
+		未初始化的内存、访问不可寻址的内存（包括已分配堆单元之外的内存以及堆
+		下溢和溢出）、访问已释放的内存、双重释放、内存泄漏，以及（在 Windows
+		上）句柄泄漏、GDI API 使用错误和访问未预留的线程本地存储槽。
+
+		Dr. Memory 可以在 Windows、Linux、Mac 或 Android 上运行的未修改应用
+		程序二进制文件上运行，支持 IA-32、AMD64 和 ARM 硬件。
+
+		此包还包括：
+		- drltrace：库调用追踪器
+		- drstrace：系统调用追踪器（仅限 Windows）
+		- symquery：符号查询工具
+	</longdescription>
+	<use>
+		<flag name="doc">Build API documentation</flag>
+		<flag name="test">Build and run tests</flag>
+	</use>
+	<upstream>
+		<remote-id type="github">DynamoRIO/drmemory</remote-id>
+		<bugs-to>https://github.com/DynamoRIO/drmemory/issues</bugs-to>
+	</upstream>
+</pkgmetadata>

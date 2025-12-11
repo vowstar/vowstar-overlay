@@ -1,0 +1,19 @@
+From: Huang Rui <vowstar@gmail.com>
+Date: Wed, 11 Dec 2025 00:00:00 +0000
+Subject: [PATCH] Fix entry_count type from bool to int in memlayout.c
+
+The entry_count field is used as a counter with ++ increment operator,
+but was declared as bool. GCC 15 with -Werror=bool-operation catches
+this as an error. Change to int since it's used as a counter.
+
+--- a/drmemory/memlayout.c
++++ b/drmemory/memlayout.c
+@@ -52,7 +52,7 @@ typedef struct _layout_data_t {
+     /* Used to distinguish in memory_layout_rb_iter. */
+     bool walking_heap;
+     /* Used to prevent a trailing JSON comma. */
+-    bool entry_count;
++    int entry_count;
+ } layout_data_t;
+
+ void

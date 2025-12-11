@@ -1,0 +1,22 @@
+From: Huang Rui <vowstar@gmail.com>
+Date: Tue, 10 Dec 2025 00:00:00 +0000
+Subject: [PATCH] i#1558: Use new behavior of CMP0043 in drgui
+
+Old CMP0043 policy instructs CMake to respect
+COMPILE_DEFINITIONS_<CONFIG> target properties and apply the specified
+definitions when building in <CONFIG> mode.
+
+The policy is completely removed in CMake 4.x, causing build failure.
+Switch to the new behavior.
+
+--- a/dynamorio/ext/drgui/CMakeLists.txt
++++ b/dynamorio/ext/drgui/CMakeLists.txt
+@@ -51,8 +51,6 @@ else () # Qt5 and CMake 3.2+
+ 
+   include(../../make/policies.cmake NO_POLICY_SCOPE)
+ 
+-  cmake_policy(SET CMP0043 OLD)
+-
+   # Set ouput_dir since drgui_qt is the only executable extension
+   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/ext/${INSTALL_BIN}")
+ 

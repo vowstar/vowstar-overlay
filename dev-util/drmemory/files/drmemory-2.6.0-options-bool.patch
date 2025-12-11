@@ -1,0 +1,32 @@
+From: Huang Rui <vowstar@gmail.com>
+Date: Wed, 11 Dec 2025 00:00:00 +0000
+Subject: [PATCH] Fix _Bool token pasting issue in options.c
+
+GCC 15 with C23 makes bool a keyword that expands to _Bool. When macros
+use token pasting with TYPE_IS_BOOL_##type, it becomes TYPE_IS_BOOL__Bool
+instead of TYPE_IS_BOOL_bool. Add aliases for _Bool to handle this.
+
+--- a/drmemory/options.c
++++ b/drmemory/options.c
+@@ -105,18 +105,21 @@ enum {
+
+ enum {
+     TYPE_IS_BOOL_bool       = true,
++    TYPE_IS_BOOL__Bool      = true,  /* Alias for C23 _Bool */
+     TYPE_IS_BOOL_opstring_t = false,
+     TYPE_IS_BOOL_multi_opstring_t = false,
+     TYPE_IS_BOOL_uint       = false,
+     TYPE_IS_BOOL_uint64     = false,
+     TYPE_IS_BOOL_int        = false,
+     TYPE_IS_STRING_bool       = false,
++    TYPE_IS_STRING__Bool      = false,  /* Alias for C23 _Bool */
+     TYPE_IS_STRING_opstring_t = true,
+     TYPE_IS_STRING_multi_opstring_t = false,
+     TYPE_IS_STRING_uint       = false,
+     TYPE_IS_STRING_uint64     = false,
+     TYPE_IS_STRING_int        = false,
+     TYPE_HAS_RANGE_bool       = false,
++    TYPE_HAS_RANGE__Bool      = false,  /* Alias for C23 _Bool */
+     TYPE_HAS_RANGE_opstring_t = false,
+     TYPE_HAS_RANGE_multi_opstring_t = false,
+     TYPE_HAS_RANGE_uint       = true,

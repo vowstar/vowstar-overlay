@@ -1,0 +1,39 @@
+From: Huang Rui <vowstar@gmail.com>
+Date: Wed, 11 Dec 2025 00:00:00 +0000
+Subject: [PATCH] Fix strcasestr return type to match glibc
+
+The glibc declaration of strcasestr returns 'char *' while drmemory
+declared it as returning 'const char *'. This causes a conflicting
+types error with GCC 15. Fix by matching the standard library signature
+and updating the implementation to use non-const internal pointers.
+
+--- a/common/utils.h
++++ b/common/utils.h
+@@ -1011,7 +1011,7 @@
+ #define MAX_OPTION_LEN DR_MAX_OPTIONS_LENGTH
+
+ #if !defined(MACOS) && !defined(ANDROID) && !defined(NOLINK_STRCASESTR)
+-const char *
++char *
+ strcasestr(const char *text, const char *pattern);
+ #endif
+
+--- a/common/utils_shared.c
++++ b/common/utils_shared.c
+@@ -51,12 +51,13 @@
+  * want a libc dependence.
+  */
+ #if !defined(MACOS) && !defined(ANDROID) && !defined(NOLINK_STRCASESTR)
+-const char *
++char *
+ strcasestr(const char *text, const char *pattern)
+ {
+-    const char *cur_text, *cur_pattern, *root;
++    const char *cur_text, *cur_pattern;
++    char *root;
+     cur_text = text;
+-    root = text;
++    root = (char *)text;
+     cur_pattern = pattern;
+     while (true) {
+         if (*cur_pattern == '\0')

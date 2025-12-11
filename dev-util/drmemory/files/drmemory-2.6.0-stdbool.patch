@@ -1,0 +1,61 @@
+From: Huang Rui <vowstar@gmail.com>
+Date: Tue, 10 Dec 2025 00:00:00 +0000
+Subject: [PATCH] Use stdbool.h for bool type definition
+
+GCC 15 made bool a keyword in GNU C modes. The old approach of using
+typedef _Bool bool no longer works. Use stdbool.h instead which
+provides bool, true, and false in a way that works across all C
+standards and compilers.
+
+Since stdbool.h defines bool as a macro expanding to _Bool, we also
+need to add aliases for token pasting macros and enums that use bool
+in their names (ISSTRING__Bool, OPTION_TYPE__Bool).
+
+--- a/dynamorio/core/lib/globals_api.h
++++ b/dynamorio/core/lib/globals_api.h
+@@ -106,20 +106,8 @@
+  */
+ /* clang-format off */
+ #    ifndef __cplusplus
+-#        ifdef WINDOWS
+-#            define inline __inline
+-#        else
+-#            define inline __inline__
+-#        endif
+-#        ifndef DR_DO_NOT_DEFINE_bool
+-#            ifdef DR__Bool_EXISTS
+-/* prefer _Bool as it avoids truncation casting non-zero to zero */
+-typedef _Bool bool;
+-#            else
+-/* char-sized for compatibility with C++ */
+-typedef char bool;
+-#            endif
+-#        endif
++#        include <stdbool.h>
++#        define inline __inline__
+ #        ifndef true
+ #            define true (1)
+ #        endif
+--- a/dynamorio/core/options_struct.h
++++ b/dynamorio/core/options_struct.h
+@@ -118,6 +118,8 @@
+
+ /* to dispatch on string default values, kept in struct not enum */
+ #define ISSTRING_bool 0
++/* stdbool.h may define bool as _Bool, causing token pasting to create ISSTRING__Bool */
++#define ISSTRING__Bool 0
+ #define ISSTRING_uint 0
+ #define ISSTRING_uint_size 0
+ #define ISSTRING_uint_time 0
+--- a/dynamorio/core/options.c
++++ b/dynamorio/core/options.c
+@@ -109,6 +109,8 @@
+
+ typedef enum option_type_t {
+     OPTION_TYPE_bool,
++    /* stdbool.h may define bool as _Bool, causing token pasting to create OPTION_TYPE__Bool */
++    OPTION_TYPE__Bool = OPTION_TYPE_bool,
+     OPTION_TYPE_uint,
+     OPTION_TYPE_uint_addr,
+     OPTION_TYPE_uint_size,
+
