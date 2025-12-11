@@ -147,12 +147,19 @@ src_install() {
 		done < <(find "${ED}/opt/${PN}" -name "*.so" -print0)
 	fi
 
-	# Create symlinks in /usr/bin for main tools
+	# Create symlinks in /usr/bin for DrMemory tools
 	dodir /usr/bin
 	local tool
 	for tool in drmemory drltrace drstrace symquery; do
 		if [[ -x "${ED}/opt/${PN}/bin64/${tool}" ]]; then
 			dosym "../../opt/${PN}/bin64/${tool}" "/usr/bin/${tool}"
+		fi
+	done
+
+	# Create symlinks in /usr/bin for bundled DynamoRIO tools
+	for tool in drrun drconfig drinject drdisas; do
+		if [[ -x "${ED}/opt/${PN}/dynamorio/bin64/${tool}" ]]; then
+			dosym "../../opt/${PN}/dynamorio/bin64/${tool}" "/usr/bin/${tool}"
 		fi
 	done
 

@@ -18,10 +18,18 @@
 		Windows, Linux, Mac, or Android on commodity IA-32, AMD64, and ARM
 		hardware.
 
-		This package also includes:
+		This package includes:
+		- drmemory: memory debugging tool
 		- drltrace: library call tracer
 		- drstrace: system call tracer (Windows only)
 		- symquery: symbol query tool
+
+		This package also bundles DynamoRIO, a dynamic binary instrumentation
+		framework, which provides:
+		- drrun: run applications under DynamoRIO
+		- drconfig: configure DynamoRIO
+		- drinject: inject DynamoRIO into running processes
+		- drdisas: disassembler tool
 	</longdescription>
 	<longdescription lang="zh">
 		Dr. Memory 是一个内存监控工具，能够识别与内存相关的编程错误，如访问
@@ -32,10 +40,17 @@
 		Dr. Memory 可以在 Windows、Linux、Mac 或 Android 上运行的未修改应用
 		程序二进制文件上运行，支持 IA-32、AMD64 和 ARM 硬件。
 
-		此包还包括：
+		此包包括：
+		- drmemory：内存调试工具
 		- drltrace：库调用追踪器
 		- drstrace：系统调用追踪器（仅限 Windows）
 		- symquery：符号查询工具
+
+		此包还捆绑了 DynamoRIO 动态二进制插桩框架，提供：
+		- drrun：在 DynamoRIO 下运行应用程序
+		- drconfig：配置 DynamoRIO
+		- drinject：将 DynamoRIO 注入运行中的进程
+		- drdisas：反汇编工具
 	</longdescription>
 	<use>
 		<flag name="doc">Build API documentation</flag>
