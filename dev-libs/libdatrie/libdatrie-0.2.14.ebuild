@@ -3,7 +3,7 @@
 
 EAPI=8
 
-inherit autotools libtool
+inherit autotools
 
 DESCRIPTION="Double-Array Trie Library"
 HOMEPAGE="https://github.com/tlwg/libdatrie"
@@ -16,30 +16,23 @@ else
 	KEYWORDS="~amd64 ~arm ~arm64 ~riscv ~x86"
 fi
 
-LICENSE="LGPL-2.1"
+LICENSE="LGPL-2.1+"
 SLOT="0"
+IUSE="doc"
 
-BDEPEND="dev-vcs/git"
+BDEPEND="doc? ( app-text/doxygen )"
 
 src_prepare() {
 	default
 	# Fixed version if in non git project
 	echo ${PV} > VERSION
-	# From upstreams autogen.sh, to make it utilize the autotools eclass
-	# Here translate the autogen.sh, equivalent to the following code
-	# > sh autogen.sh
-	eautoheader
-	elibtoolize --force
-	eaclocal
-	eautomake --add-missing
-	# Not allow git-version-gen does refresh
-	eautoconf
+	eautoreconf
 }
 
 src_configure() {
 	econf \
-		--docdir="${EPREFIX}/usr/share/doc/${PF}" \
-		--with-html-docdir="${EPREFIX}/usr/share/doc/${PF}/html"
+		$(use_enable doc doxygen-doc) \
+		--with-html-docdir="${EPREFIX}"/usr/share/doc/${PF}/html
 }
 
 src_install() {
