@@ -107,7 +107,7 @@ src_prepare() {
 	find "${S}/kipy/proto" \( -name '*_pb2.py' -o -name '*_pb2.pyi' \) -exec \
 		sed -i -E \
 			-e 's/^(from|import) (common|board|schematic)([ .])/\1 kipy.proto.\2\3/g' \
-			{} \;
+			{} + || die "failed to fix protobuf imports"
 
 	distutils-r1_src_prepare
 }
