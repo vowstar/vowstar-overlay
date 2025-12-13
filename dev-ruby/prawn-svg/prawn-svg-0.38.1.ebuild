@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -19,13 +19,8 @@ ruby_add_rdepend "
 	>=dev-ruby/css_parser-1.6.0
 	>=dev-ruby/matrix-0.4.2
 	>=dev-ruby/prawn-0.11.1
-	>=dev-ruby/rexml-3.2.0
-	"
-
-PATCHES=(
-	# adapt to >=dev-ruby/rexml-3.3.3
-	"${FILESDIR}/${P}-rexml.patch"
-)
+	>=dev-ruby/rexml-3.4.2
+"
 
 all_ruby_prepare() {
 	# avoid useless dependencies
