@@ -14,8 +14,4 @@ LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64 ~riscv ~x86"
 
-PATCHES=(
-	"${FILESDIR}/find-libpython-0.4.0-fix-license-qa.patch"
-)
-
 distutils_enable_tests pytest
