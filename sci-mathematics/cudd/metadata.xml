@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">davidkebo/cudd</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		CUDD stands for Colorado University Decision Diagram. It is a package for
+		the manipulation of Binary Decision Diagrams (BDDs), Algebraic Decision
+		Diagrams (ADDs) and Zero-suppressed Binary Decision Diagrams (ZDDs).
+	</longdescription>
+	<longdescription lang="zh">
+		CUDD 是科罗拉多大学决策图软件包的缩写。它是一个用于操作二元决策图 (BDD)、
+		代数决策图 (ADD) 和零抑制二元决策图 (ZDD) 的软件包。
+	</longdescription>
+	<use>
+		<flag name="doc">Build HTML and PDF documentation (may fail with certain doxygen versions)</flag>
+	</use>
+</pkgmetadata>
