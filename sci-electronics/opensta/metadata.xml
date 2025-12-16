@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">parallaxsw/OpenSTA</remote-id>
+		<bugs-to>https://github.com/parallaxsw/OpenSTA/issues</bugs-to>
+	</upstream>
+	<longdescription lang="en">
+		OpenSTA is a gate level static timing verifier. As a stand-alone
+		executable it can be used to verify the timing of a design using
+		standard file formats. OpenSTA uses a TCL command interpreter to
+		read the design, specify timing constraints and print timing reports.
+	</longdescription>
+	<longdescription lang="zh">
+		OpenSTA 是一款门级静态时序验证器。作为独立可执行程序，
+		它可以使用标准文件格式来验证设计的时序。OpenSTA 使用
+		TCL 命令解释器来读取设计、指定时序约束并打印时序报告。
+	</longdescription>
+	<use>
+		<flag name="tclreadline">Enable TCL readline support for interactive command line editing</flag>
+	</use>
+</pkgmetadata>
