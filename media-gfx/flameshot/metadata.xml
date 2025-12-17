@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-	<maintainer type="person" proxied="yes">
-		<email>paul.kalug@gmail.com</email>
-		<name>Pavel Kalugin</name>
-	</maintainer>
-	<maintainer type="project" proxied="proxy">
-		<email>proxy-maint@gentoo.org</email>
-		<name>Proxy Maintainers</name>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
 	</maintainer>
 	<upstream>
 		<remote-id type="github">flameshot-org/flameshot</remote-id>
@@ -19,4 +15,12 @@
 		experimental GNOME/KDE Wayland support, integration with Imgur and
 		support for both GUI and CLI interface.
 	</longdescription>
+	<longdescription lang="zh">
+		Flameshot 是一款功能强大且易于使用的截图工具。其主要功能包括可自定义外观、
+		应用内截图编辑、D-Bus 接口、系统托盘图标支持、实验性的 GNOME/KDE Wayland 支持、
+		Imgur 集成以及 GUI 和 CLI 界面支持。
+	</longdescription>
+	<use>
+		<flag name="wayland">Enable Wayland clipboard support via KF6GuiAddons</flag>
+	</use>
 </pkgmetadata>
