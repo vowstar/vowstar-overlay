@@ -7,7 +7,14 @@ inherit cmake flag-o-matic xdg
 
 DESCRIPTION="Powerful yet simple to use screenshot software"
 HOMEPAGE="https://flameshot.org https://github.com/flameshot-org/flameshot"
-SRC_URI="https://github.com/flameshot-org/flameshot/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
+
+# Qt-Color-Widgets commit used by flameshot
+QCW_COMMIT="352bc8f99bf2174d5724ee70623427aa31ddc26a"
+
+SRC_URI="
+	https://github.com/flameshot-org/flameshot/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
+	https://gitlab.com/mattbas/Qt-Color-Widgets/-/archive/${QCW_COMMIT}/Qt-Color-Widgets-${QCW_COMMIT}.tar.bz2
+"
 
 LICENSE="Apache-2.0 Free-Art-1.3 GPL-3+"
 SLOT="0"
@@ -25,6 +32,13 @@ BDEPEND="
 	dev-qt/qttools:6[linguist]
 "
 RDEPEND="${DEPEND}"
+
+src_prepare() {
+	# Use pre-downloaded Qt-Color-Widgets instead of FetchContent
+	mkdir -p "${S}/external" || die
+	mv "${WORKDIR}/Qt-Color-Widgets-${QCW_COMMIT}" "${S}/external/Qt-Color-Widgets" || die
+	cmake_src_prepare
+}
 
 src_configure() {
 	# -Werror=strict-aliasing
