@@ -10,15 +10,11 @@ HOMEPAGE="https://flameshot.org https://github.com/flameshot-org/flameshot"
 
 # Qt-Color-Widgets commit used by flameshot
 QCW_COMMIT="352bc8f99bf2174d5724ee70623427aa31ddc26a"
-# KDSingleApplication version used by flameshot
-KDSA_VER="1.2.0"
 
 SRC_URI="
 	https://github.com/flameshot-org/flameshot/archive/refs/tags/v${PV}.tar.gz
 		-> ${P}.tar.gz
 	https://gitlab.com/mattbas/Qt-Color-Widgets/-/archive/${QCW_COMMIT}/Qt-Color-Widgets-${QCW_COMMIT}.tar.bz2
-	https://github.com/KDAB/KDSingleApplication/archive/refs/tags/v${KDSA_VER}.tar.gz
-		-> KDSingleApplication-${KDSA_VER}.tar.gz
 "
 
 LICENSE="Apache-2.0 Free-Art-1.3 GPL-3+"
@@ -28,6 +24,7 @@ IUSE="wayland"
 
 # Qt6 version
 DEPEND="
+	dev-libs/kdsingleapplication
 	dev-qt/qtbase:6[dbus,gui,network,widgets]
 	dev-qt/qtsvg:6
 	sys-apps/dbus
@@ -39,10 +36,9 @@ BDEPEND="
 RDEPEND="${DEPEND}"
 
 src_prepare() {
-	# Use pre-downloaded dependencies instead of FetchContent
+	# Use pre-downloaded Qt-Color-Widgets instead of FetchContent
 	mkdir -p "${S}/external" || die
 	mv "${WORKDIR}/Qt-Color-Widgets-${QCW_COMMIT}" "${S}/external/Qt-Color-Widgets" || die
-	mv "${WORKDIR}/KDSingleApplication-${KDSA_VER}" "${S}/external/KDSingleApplication" || die
 	cmake_src_prepare
 }
 
@@ -57,25 +53,13 @@ src_configure() {
 
 	local mycmakeargs=(
 		-DUSE_KDSINGLEAPPLICATION=ON
-		-DUSE_BUNDLED_KDSINGLEAPPLICATION=ON
+		-DUSE_BUNDLED_KDSINGLEAPPLICATION=OFF
 		-DENABLE_CACHE=OFF
 		-DUSE_WAYLAND_CLIPBOARD=$(usex wayland)
 		-DDISABLE_UPDATE_CHECKER=ON
-		# Build bundled libs as static to avoid installing shared libs
+		# Build bundled Qt-Color-Widgets as static
 		-DBUILD_SHARED_LIBS=OFF
 	)
 
 	cmake_src_configure
-}
-
-src_install() {
-	cmake_src_install
-
-	# Remove bundled KDSingleApplication files that shouldn't be installed
-	rm -f "${ED}"/usr/lib64/libkdsingleapplication*.a || die
-	rm -rf "${ED}"/usr/lib64/cmake/KDSingleApplication || die
-	rm -rf "${ED}"/usr/include/kdsingleapplication* || die
-
-	# Clean up empty directories
-	find "${ED}" -type d -empty -delete || die
 }
