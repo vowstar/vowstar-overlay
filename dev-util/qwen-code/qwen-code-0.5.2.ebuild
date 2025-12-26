@@ -5,7 +5,7 @@ EAPI=8
 
 DESCRIPTION="Qwen Code is a powerful command-line AI workflow tool adapted from Gemini CLI"
 HOMEPAGE="https://github.com/QwenLM/qwen-code"
-SRC_URI="https://github.com/QwenLM/qwen-code/releases/download/v${PV}/gemini.js -> ${P}.js"
+SRC_URI="https://github.com/QwenLM/qwen-code/releases/download/v${PV}/cli.js -> ${P}.js"
 S="${WORKDIR}"
 
 LICENSE="Apache-2.0"
