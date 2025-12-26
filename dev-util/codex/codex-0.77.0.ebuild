@@ -774,7 +774,7 @@ LICENSE="Apache-2.0"
 # Dependent crate licenses
 LICENSE+=" Apache-2.0 BSD ISC MIT MPL-2.0 Unicode-3.0 Unlicense ZLIB"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~arm64"
 # Tests fail due to ring crate conflicts with system OpenSSL
 RESTRICT="test"
 
