@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="8"
@@ -12,18 +12,16 @@ HOMEPAGE="https://squareline.io"
 SRC_URI="
 	https://static.squareline.io/downloads/SquareLine_Studio_Linux_v${MY_PV}.zip -> ${P}.zip
 "
+S="${WORKDIR}"
 
 LICENSE="all-rights-reserved"
-KEYWORDS="-* ~amd64"
 SLOT="0/${PV}"
+KEYWORDS="-* ~amd64"
 
-RDEPEND=""
-DEPEND="${RDEPEND}"
 BDEPEND="
 	app-arch/unzip
 "
 
-S="${WORKDIR}"
 QA_PREBUILT="*"
 
 src_install() {
