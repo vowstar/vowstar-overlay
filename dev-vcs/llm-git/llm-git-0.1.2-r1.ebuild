@@ -322,4 +322,5 @@ QA_FLAGS_IGNORED="usr/bin/${PN}"
 
 PATCHES=(
 	"${DISTDIR}/${P}-updates.patch"
+	"${FILESDIR}/${P}-gpg-sign.patch"
 )
