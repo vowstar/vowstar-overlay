@@ -36,7 +36,9 @@ DOCS=( "opt/Gui-Guider/EULA.txt" )
 pkg_nofetch() {
 	einfo "${PN} requires you to accept their license agreement before downloading."
 	einfo "Download ${SRC_URI}"
-	einfo "with your browser and place it in ${DISTDIR} directory."
+	einfo "with your browser and place it in DISTDIR (usually /var/cache/distfiles/)"
+	einfo "Please place the ${P} installation file ${SRC_URI}"
+	einfo "in your \$\{DISTDIR\}."
 }
 
 src_install() {
