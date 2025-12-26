@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="8"
@@ -36,9 +36,7 @@ DOCS=( "opt/Gui-Guider/EULA.txt" )
 pkg_nofetch() {
 	einfo "${PN} requires you to accept their license agreement before downloading."
 	einfo "Download ${SRC_URI}"
-	einfo "with your browser and place it in DISTDIR (usually /var/cache/distfiles/)"
-	einfo "Please place the ${P} installation file ${SRC_URI}"
-	einfo "in your \$\{DISTDIR\}."
+	einfo "with your browser and place it in ${DISTDIR} directory."
 }
 
 src_install() {
