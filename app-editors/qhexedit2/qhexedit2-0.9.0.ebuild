@@ -1,39 +1,31 @@
-# Copyright 1999-2025 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..13} )
+PYTHON_COMPAT=( python3_{11..14} )
 inherit python-r1 qmake-utils
 
-EGIT_COMMIT="541139125be034b90b6811a84faa1413e357fd94"
 DESCRIPTION="Hex editor library, Qt application written in C++ with Python bindings"
 HOMEPAGE="https://github.com/Simsys/qhexedit2/"
-SRC_URI="https://github.com/Simsys/${PN}/archive/${EGIT_COMMIT}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/Simsys/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
-S="${WORKDIR}/${PN}-${EGIT_COMMIT}"
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 ~riscv x86"
+KEYWORDS="~amd64 ~riscv ~x86"
 IUSE="doc +gui python"
-REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
-
-PATCHES=(
-	"${FILESDIR}/${PN}-0.8.4-setup.py.patch"
-	"${FILESDIR}/${PN}-0.8.6-sip.patch" #820473
-	"${FILESDIR}/${PN}-0.8.6-sip5.patch" #820473
-	"${FILESDIR}/${PN}-0.8.9-fix-crash.patch"
-)
+REQUIRED_USE="
+	python? ( ${PYTHON_REQUIRED_USE} )
+"
 
 RDEPEND="
-	dev-qt/qtcore:5
-	dev-qt/qtgui:5
-	dev-qt/qtwidgets:5
+	dev-qt/qtbase:6[gui,widgets]
 	media-libs/libglvnd
 	python? (
 		${PYTHON_DEPS}
 		$(python_gen_cond_dep '
-			>=dev-python/pyqt5-5.15.6[gui,widgets,${PYTHON_USEDEP}]
+			>=dev-python/pyqt6-6.8.0[gui,widgets,${PYTHON_USEDEP}]
+			>=dev-python/pyqt6-sip-13.5:=[${PYTHON_USEDEP}]
 		')
 	)
 "
@@ -41,24 +33,18 @@ DEPEND="${RDEPEND}"
 BDEPEND="
 	python? (
 		$(python_gen_cond_dep '
-			>=dev-python/pyqt-builder-1.10[${PYTHON_USEDEP}]
-			>=dev-python/sip-5:=[${PYTHON_USEDEP}]
+			>=dev-python/pyqt-builder-1.17[${PYTHON_USEDEP}]
+			>=dev-python/sip-6.9:=[${PYTHON_USEDEP}]
 		')
 	)
 "
 
-src_prepare() {
-	default
-	sed -i -e '/^unix:DESTDIR/ d' -e "\$atarget.path = /usr/$(get_libdir)" \
-		-e "\$aINSTALLS += target" src/qhexedit.pro \
-		|| die "src/qhexedit.pro: sed failed"
-}
-
 src_configure() {
-	eqmake5 src/qhexedit.pro
+	QHEXEDIT_DESTDIR="${S}" eqmake6 src/qhexedit.pro
+
 	if use gui; then
-		cd example || die "can't cd example"
-		eqmake5 qhexedit.pro
+		pushd example || die "can't pushd example"
+		eqmake6 qhexedit.pro
 	fi
 }
 
@@ -66,9 +52,16 @@ src_compile() {
 	emake
 	use gui && emake -C example
 	if use python; then
-		export PATH="$(qt5_get_bindir):${PATH}"
+		export PATH="$(qt6_get_bindir):${PATH}"
 		python_build() {
-			pushd "${S}" || die
+			local build_dir="${BUILD_DIR}/python-build"
+			mkdir -p "${build_dir}" || die
+			cp -r "${S}"/src "${build_dir}/" || die
+			cp "${S}"/license.txt "${build_dir}/" || die
+			cp "${S}"/readme.md "${build_dir}/" || die
+			cp "${S}"/python/pyqt6-pyproject.toml "${build_dir}/pyproject.toml" || die
+			cp "${S}"/python/QHexEdit.sip "${build_dir}/" || die
+			pushd "${build_dir}" || die
 			# sip-build is not able to handle CFLAGS and CXXFLAGS
 			# so we need to pass them as QMAKE_CFLAGS and QMAKE_CXXFLAGS
 			# https://bugs.gentoo.org/952787
@@ -83,9 +76,9 @@ src_compile() {
 }
 
 src_test() {
-	cd test || die "can't cd test"
+	pushd test || die "can't pushd test"
 	mkdir logs || die "can't create logs dir"
-	eqmake5 chunks.pro
+	eqmake6 chunks.pro
 	emake
 	./chunks || die "test run failed"
 	grep -q "^NOK" logs/Summary.log && die "test failed"
@@ -96,7 +89,7 @@ src_install() {
 	dolib.so libqhexedit.so*
 	if use python; then
 		python_install() {
-			pushd "${S}"/build || die
+			pushd "${BUILD_DIR}"/python-build/build || die
 			emake INSTALL_ROOT="${D}" install
 			popd || die
 		}
@@ -109,6 +102,6 @@ src_install() {
 	fi
 	if use doc; then
 		dodoc -r doc/html
-		dodoc doc/release.txt
+		dodoc changelog.md
 	fi
 }
