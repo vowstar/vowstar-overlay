@@ -5,16 +5,17 @@ EAPI=8
 
 PYTHON_COMPAT=( python3_{11..14} )
 DISTUTILS_USE_PEP517=setuptools
-PYPI_NO_NORMALIZE=1
-PYPI_PN="${PN^}"
-inherit distutils-r1 pypi
+inherit distutils-r1
 
 DESCRIPTION="A library for creating columnar output strings using data as input"
 HOMEPAGE="
 	https://github.com/MaxTaggart/columnar
 	https://pypi.org/project/columnar/
 "
-S="${WORKDIR}/${PYPI_PN}-${PV}"
+SRC_URI="
+	https://github.com/MaxTaggart/columnar/archive/v${PV}.tar.gz
+		-> ${P}.gh.tar.gz
+"
 
 LICENSE="MIT"
 SLOT="0"
@@ -25,6 +26,4 @@ RDEPEND="
 	dev-python/wcwidth[${PYTHON_USEDEP}]
 "
 
-# Tests not included in PyPI tarball
-# https://github.com/MaxTaggart/columnar/tree/master/tests
-RESTRICT="test"
+distutils_enable_tests pytest
