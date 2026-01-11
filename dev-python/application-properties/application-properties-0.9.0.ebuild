@@ -5,20 +5,24 @@ EAPI=8
 
 PYTHON_COMPAT=( python3_{11..14} )
 DISTUTILS_USE_PEP517=setuptools
-inherit distutils-r1 pypi
+inherit distutils-r1
+
+MY_PN="${PN//-/_}"
 
 DESCRIPTION="A simple, unified manner of accessing program properties"
 HOMEPAGE="
 	https://github.com/jackdewinter/application_properties
 	https://pypi.org/project/application-properties/
 "
-S="${WORKDIR}/${PN//-/_}-${PV}"
+SRC_URI="
+	https://github.com/jackdewinter/${MY_PN}/archive/v${PV}.tar.gz
+		-> ${P}.gh.tar.gz
+"
+S="${WORKDIR}/${MY_PN}-${PV}"
 
 LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64 ~x86"
-# Tests require pytest_helpers.py and test/__init__.py which are not included in PyPI tarball
-RESTRICT="test"
 
 RDEPEND="
 	dev-python/typing-extensions[${PYTHON_USEDEP}]
@@ -26,3 +30,10 @@ RDEPEND="
 	dev-python/pyyaml[${PYTHON_USEDEP}]
 	dev-python/pyjson5[${PYTHON_USEDEP}]
 "
+
+distutils_enable_tests pytest
+
+python_test() {
+	# Remove pytest.ini addopts that require pytest-timeout and pytest-cov
+	epytest -o addopts=
+}
