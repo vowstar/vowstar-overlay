@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		Application Properties provides a simple, easy to use, unified manner
+		of accessing program properties. It supports hierarchical property
+		management with multiple file formats including JSON, YAML, TOML,
+		and JSON5, along with command-line configuration.
+	</longdescription>
+	<longdescription lang="zh">
+		Application Properties 提供了一种简单、易用、统一的方式来访问程序属性。
+		它支持分层属性管理，支持多种文件格式，包括 JSON、YAML、TOML 和 JSON5，
+		以及命令行配置。
+	</longdescription>
+	<upstream>
+		<remote-id type="github">jackdewinter/application_properties</remote-id>
+		<remote-id type="pypi">application-properties</remote-id>
+	</upstream>
+</pkgmetadata>
