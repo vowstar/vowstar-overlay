@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		PyMarkdown is a GitHub Flavored Markdown compliant Markdown linter.
+		It analyzes tokens from its own parser to ensure high-quality linting
+		against both GFM and CommonMark specifications. The tool helps maintain
+		consistent Markdown formatting across projects.
+	</longdescription>
+	<longdescription lang="zh">
+		PyMarkdown 是一个符合 GitHub Flavored Markdown 规范的 Markdown 检查器。
+		它分析来自自身解析器的标记，以确保对 GFM 和 CommonMark 规范进行高质量的检查。
+		该工具有助于在项目中保持一致的 Markdown 格式。
+	</longdescription>
+	<upstream>
+		<remote-id type="github">jackdewinter/pymarkdown</remote-id>
+		<remote-id type="pypi">pymarkdownlnt</remote-id>
+	</upstream>
+</pkgmetadata>
