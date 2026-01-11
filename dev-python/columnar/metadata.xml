@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		Columnar is a library for creating columnar output strings from data.
+		It supports features like text wrapping, custom styling, and Unicode
+		character width handling for properly formatted table output.
+	</longdescription>
+	<longdescription lang="zh">
+		Columnar 是一个用于从数据创建列式输出字符串的库。
+		它支持文本换行、自定义样式和 Unicode 字符宽度处理等功能，
+		以生成格式正确的表格输出。
+	</longdescription>
+	<upstream>
+		<remote-id type="github">MaxTaggart/columnar</remote-id>
+		<remote-id type="pypi">columnar</remote-id>
+	</upstream>
+</pkgmetadata>
