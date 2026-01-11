@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		PyJSON5 is a JSON5 serializer and parser for Python 3 written in Cython.
+		The serializer returns ASCII data safe to embed in an HTML template.
+		The parser handles both JSON5 1.0.0 and standard JSON formats.
+	</longdescription>
+	<longdescription lang="zh">
+		PyJSON5 是一个用 Cython 编写的 Python 3 JSON5 序列化器和解析器。
+		序列化器返回可安全嵌入 HTML 模板的 ASCII 数据。
+		解析器支持 JSON5 1.0.0 和标准 JSON 格式。
+	</longdescription>
+	<upstream>
+		<remote-id type="github">Kijewski/pyjson5</remote-id>
+		<remote-id type="pypi">pyjson5</remote-id>
+	</upstream>
+</pkgmetadata>
