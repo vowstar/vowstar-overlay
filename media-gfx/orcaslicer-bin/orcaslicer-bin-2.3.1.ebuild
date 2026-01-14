@@ -33,6 +33,8 @@ RDEPEND="
 	x11-libs/pango
 "
 
+BDEPEND="dev-util/patchelf"
+
 QA_PREBUILT="*"
 
 src_unpack() {
@@ -43,6 +45,9 @@ src_unpack() {
 }
 
 src_install() {
+	# Fix RUNPATH security issue
+	patchelf --set-rpath '$ORIGIN' "${S}/${MY_PN}/bin/orca-slicer" || die
+
 	# Install application files
 	insinto /opt/${PN}
 	doins -r "${MY_PN}"/*
