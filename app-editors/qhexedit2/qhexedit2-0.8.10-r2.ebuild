@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..13} )
+PYTHON_COMPAT=( python3_{10..14} )
 inherit python-r1 qmake-utils
 
 DESCRIPTION="Hex editor library, Qt application written in C++ with Python bindings"
@@ -59,12 +59,14 @@ src_compile() {
 		export PATH="$(qt6_get_bindir):${PATH}"
 		python_build() {
 			pushd "${S}" || die
-			# sip-build is not able to handle CFLAGS and CXXFLAGS
-			# so we need to pass them as QMAKE_CFLAGS and QMAKE_CXXFLAGS
+			# sip-build is not able to handle CFLAGS, CXXFLAGS and LDFLAGS
+			# so we need to pass them as QMAKE_CFLAGS, QMAKE_CXXFLAGS and QMAKE_LFLAGS
 			# https://bugs.gentoo.org/952787
+			# https://bugs.gentoo.org/955165
 			sip-build \
 				--qmake-setting "QMAKE_CFLAGS += ${CFLAGS}" \
 				--qmake-setting "QMAKE_CXXFLAGS += ${CXXFLAGS}" \
+				--qmake-setting "QMAKE_LFLAGS += ${LDFLAGS}" \
 				|| die
 			popd || die
 		}

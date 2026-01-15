@@ -10,12 +10,16 @@
             <name>Proxy Maintainers</name>
     </maintainer>
     <use>
-        <flag name="gui">Install Qt5 hex editor</flag>
+        <flag name="gui">Install Qt6 hex editor</flag>
     </use>
     <longdescription lang="en">
-        QHexEdit is a hex editor widget written in C++ for the Qt5 framework.
-        It is a simple editor for binary data, and has bindings to PyQt
-        with python 2 and 3.
+        QHexEdit is a hex editor widget written in C++ for the Qt6 framework.
+        It is a simple editor for binary data, and has bindings to PyQt6
+        with Python 3.
+    </longdescription>
+    <longdescription lang="zh">
+        QHexEdit 是一个使用 C++ 编写的 Qt6 十六进制编辑器组件。
+        它是一个简单的二进制数据编辑器，支持 PyQt6 和 Python 3 绑定。
     </longdescription>
     <upstream>
         <remote-id type="github">lancos/qhexedit2</remote-id>

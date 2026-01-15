@@ -62,12 +62,14 @@ src_compile() {
 			cp "${S}"/python/pyqt6-pyproject.toml "${build_dir}/pyproject.toml" || die
 			cp "${S}"/python/QHexEdit.sip "${build_dir}/" || die
 			pushd "${build_dir}" || die
-			# sip-build is not able to handle CFLAGS and CXXFLAGS
-			# so we need to pass them as QMAKE_CFLAGS and QMAKE_CXXFLAGS
+			# sip-build is not able to handle CFLAGS, CXXFLAGS and LDFLAGS
+			# so we need to pass them as QMAKE_CFLAGS, QMAKE_CXXFLAGS and QMAKE_LFLAGS
 			# https://bugs.gentoo.org/952787
+			# https://bugs.gentoo.org/955165
 			sip-build \
 				--qmake-setting "QMAKE_CFLAGS += ${CFLAGS}" \
 				--qmake-setting "QMAKE_CXXFLAGS += ${CXXFLAGS}" \
+				--qmake-setting "QMAKE_LFLAGS += ${LDFLAGS}" \
 				|| die
 			popd || die
 		}
