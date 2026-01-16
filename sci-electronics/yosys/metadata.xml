@@ -26,7 +26,4 @@
 		Yosys是根据ISC许可证发布的免费软件，这是一种与GPL兼容的许可证，其条款与
 		MIT许可证或二条款BSD许可证类似。
 	</longdescription>
-	<use>
-		<flag name="tcl">Enable Tcl scripting support</flag>
-	</use>
 </pkgmetadata>
