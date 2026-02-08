@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		MARISA is a static and space-efficient trie data structure.
+		MARISA stands for Matching Algorithm with Recursively Implemented StorAge.
+		This library provides a C++ library and command line tools to build and search
+		a MARISA-trie. Python bindings are also available.
+	</longdescription>
+	<longdescription lang="zh">
+		MARISA 是一个静态的、空间高效的 trie 数据结构。
+		MARISA 代表递归实现存储的匹配算法（Matching Algorithm with Recursively Implemented StorAge）。
+		此库提供 C++ 库和命令行工具来构建和搜索 MARISA-trie。同时提供 Python 绑定。
+	</longdescription>
+	<upstream>
+		<remote-id type="github">s-yata/marisa-trie</remote-id>
+	</upstream>
+</pkgmetadata>
