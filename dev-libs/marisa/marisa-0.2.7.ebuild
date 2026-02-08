@@ -1,6 +1,16 @@
 # Copyright 2014-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
+# Note: Unlike 0.2.6, this version does not require architecture-specific
+# patches (riscv, loong, sparc64) for MARISA_WORD_SIZE detection.
+# Since 0.2.7, upstream uses UINTPTR_MAX for portable word size detection:
+#   #if UINTPTR_MAX == UINT64_MAX
+#    #define MARISA_WORD_SIZE 64
+#   #elif UINTPTR_MAX == UINT32_MAX
+#    #define MARISA_WORD_SIZE 32
+#   #endif
+# This works correctly on all architectures without patches.
+
 EAPI="8"
 PYTHON_COMPAT=( python3_{12..14} )
 DISTUTILS_USE_PEP517="setuptools"
@@ -39,17 +49,12 @@ if [[ "${PV}" != "9999" ]]; then
 	S="${WORKDIR}/marisa-trie-${PV}"
 fi
 
-PATCHES=(
-	"${FILESDIR}/${PN}-0.2.6-riscv_word_size.patch"
-	"${FILESDIR}/${PN}-0.2.6-loong_word_size.patch"
-	"${FILESDIR}/${PN}-0.2.6-sparc64_word_size.patch"
-)
-
 src_prepare() {
 	default
 	eautoreconf
 
-	sed -e "s:^\([[:space:]]*\)libraries=:\1include_dirs=[\"../../include\"],\n\1library_dirs=[\"../../lib/marisa/.libs\"],\n&:" -i bindings/python/setup.py || die
+	sed -e "s:^\([[:space:]]*\)libraries=:\1include_dirs=[\"../../include\"],\n\1library_dirs=[\"../../lib/marisa/.libs\"],\n&:" \
+		-i bindings/python/setup.py || die
 
 	if use python; then
 		pushd bindings/python > /dev/null || die
