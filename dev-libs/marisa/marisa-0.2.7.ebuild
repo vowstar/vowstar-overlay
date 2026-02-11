@@ -1,16 +1,6 @@
 # Copyright 2014-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-# Note: Unlike 0.2.6, this version does not require architecture-specific
-# patches (riscv, loong, sparc64) for MARISA_WORD_SIZE detection.
-# Since 0.2.7, upstream uses UINTPTR_MAX for portable word size detection:
-#   #if UINTPTR_MAX == UINT64_MAX
-#    #define MARISA_WORD_SIZE 64
-#   #elif UINTPTR_MAX == UINT32_MAX
-#    #define MARISA_WORD_SIZE 32
-#   #endif
-# This works correctly on all architectures without patches.
-
 EAPI="8"
 PYTHON_COMPAT=( python3_{12..14} )
 DISTUTILS_USE_PEP517="setuptools"
