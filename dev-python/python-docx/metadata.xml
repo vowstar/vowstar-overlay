@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		python-docx is a Python library for creating, reading, and updating
+		Microsoft Word (.docx) files. It provides a full-featured API for
+		manipulating document content including paragraphs, tables, images,
+		headers, footers, and styles.
+	</longdescription>
+	<longdescription lang="zh">
+		python-docx 是一个用于创建、读取和更新 Microsoft Word（.docx）文件的
+		Python 库。它提供了一个功能完整的 API，可以操作文档内容，包括段落、表格、
+		图片、页眉、页脚和样式。
+	</longdescription>
+	<upstream>
+		<remote-id type="github">python-openxml/python-docx</remote-id>
+		<remote-id type="pypi">python-docx</remote-id>
+	</upstream>
+</pkgmetadata>
