@@ -1,12 +1,13 @@
-# Copyright 1999-2025 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-inherit autotools
-
-DESCRIPTION="Double-Array Trie Library"
-HOMEPAGE="https://github.com/tlwg/libdatrie"
+DESCRIPTION="Set of Thai language support routines"
+HOMEPAGE="
+	https://linux.thai.net/projects/libthai
+	https://github.com/tlwg/libthai
+"
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit git-r3
@@ -17,17 +18,13 @@ else
 fi
 
 LICENSE="LGPL-2.1+"
-SLOT="0"
+# Subslot: LT_CURRENT - LT_AGE from configure.ac (3 - 3 = 0)
+SLOT="0/0"
 IUSE="doc"
 
-BDEPEND="doc? ( app-text/doxygen )"
-
-src_prepare() {
-	default
-	# Fixed version if in non git project
-	echo ${PV} > VERSION
-	eautoreconf
-}
+RDEPEND="dev-libs/libdatrie:="
+DEPEND="${RDEPEND}"
+BDEPEND="doc? ( >=app-text/doxygen-1.15.0 )"
 
 src_configure() {
 	econf \
