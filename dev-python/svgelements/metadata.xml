@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">meerk40t/svgelements</remote-id>
+		<remote-id type="pypi">svgelements</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		svgelements is a Python library for SVG parsing and generation. It provides
+		a comprehensive set of SVG element classes that allow manipulation of SVG
+		paths, shapes, transforms, colors, and other SVG constructs. The library
+		is designed to be lightweight and standalone with no external dependencies.
+	</longdescription>
+	<longdescription lang="zh">
+		svgelements是一个用于SVG解析和生成的Python库。它提供了一套全面的SVG元素类，
+		允许操作SVG路径、形状、变换、颜色和其他SVG构造。该库设计为轻量级且独立运行，
+		无需外部依赖。
+	</longdescription>
+</pkgmetadata>
