@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{11..13} )
+PYTHON_COMPAT=( python3_{11..14} )
 DISTUTILS_USE_PEP517=setuptools
 PYPI_PN="pyvisa"
 inherit distutils-r1 pypi
@@ -28,4 +28,5 @@ BDEPEND="
 	${RDEPEND}
 "
 
+EPYTEST_PLUGINS=( )
 distutils_enable_tests pytest
