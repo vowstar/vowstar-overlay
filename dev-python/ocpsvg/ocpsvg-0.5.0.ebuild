@@ -15,9 +15,10 @@ SLOT="0"
 KEYWORDS="~amd64"
 
 RDEPEND="
-	>=dev-python/cadquery-ocp-novtk-bin-7.8.1[${PYTHON_USEDEP}]
+	>=dev-python/cadquery-ocp-novtk-7.8.1[${PYTHON_USEDEP}]
 	>=dev-python/svgelements-1.9.1[${PYTHON_USEDEP}]
 "
 BDEPEND="${RDEPEND}"
 
+EPYTEST_PLUGINS=( )
 distutils_enable_tests pytest
