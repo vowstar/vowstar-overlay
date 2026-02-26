@@ -22,7 +22,7 @@ EPYTEST_DESELECT=(
 )
 
 RDEPEND="
-	>=dev-python/cadquery-ocp-novtk-bin-7.8[${PYTHON_USEDEP}]
+	>=dev-python/cadquery-ocp-novtk-7.8[${PYTHON_USEDEP}]
 	>=dev-python/typing-extensions-4.6.0[${PYTHON_USEDEP}]
 	>=dev-python/numpy-2[${PYTHON_USEDEP}]
 	>=dev-python/svgpathtools-1.5.1[${PYTHON_USEDEP}]
@@ -42,4 +42,5 @@ BDEPEND="
 	${RDEPEND}
 "
 
+EPYTEST_PLUGINS=( )
 distutils_enable_tests pytest
