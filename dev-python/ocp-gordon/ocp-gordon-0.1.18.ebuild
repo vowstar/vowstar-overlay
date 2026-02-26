@@ -16,10 +16,11 @@ SLOT="0"
 KEYWORDS="~amd64"
 
 RDEPEND="
-	>=dev-python/cadquery-ocp-novtk-bin-7.8[${PYTHON_USEDEP}]
+	>=dev-python/cadquery-ocp-novtk-7.8[${PYTHON_USEDEP}]
 	>=dev-python/numpy-2[${PYTHON_USEDEP}]
 	dev-python/scipy[${PYTHON_USEDEP}]
 "
 BDEPEND="${RDEPEND}"
 
+EPYTEST_PLUGINS=( )
 distutils_enable_tests pytest
