@@ -57,6 +57,10 @@ BDEPEND="
 	)
 "
 
+# Tests are post-install validation scripts requiring a deployed user
+# environment ($HOME/.local/, running Rime), not suitable for ebuild sandbox
+RESTRICT="test"
+
 src_prepare() {
 	default
 
