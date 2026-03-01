@@ -4,7 +4,7 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{11..14} )
-DISTUTILS_USE_PEP517=setuptools
+DISTUTILS_USE_PEP517=scikit-build-core
 DISTUTILS_EXT=1
 inherit distutils-r1 pypi
 
@@ -23,7 +23,7 @@ RDEPEND="
 	media-libs/soxr
 "
 BDEPEND="
-	dev-python/cython[${PYTHON_USEDEP}]
+	dev-python/nanobind[${PYTHON_USEDEP}]
 	dev-python/numpy[${PYTHON_USEDEP}]
 "
 
