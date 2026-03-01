@@ -33,5 +33,5 @@ RDEPEND="
 	>=dev-python/msgpack-1.0[${PYTHON_USEDEP}]
 "
 
-# Tests require audio fixtures and matplotlib
+# Tests require librosa-test-data git submodule (~157MB) not in sdist
 RESTRICT="test"
