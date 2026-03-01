@@ -17,5 +17,6 @@ LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64 ~x86"
 
-# Tests not included in PyPI tarball
+# Tests are standalone scripts incompatible with pytest, and require
+# missing data files (userdict.txt, extra_dict/) not included in sdist
 RESTRICT="test"
