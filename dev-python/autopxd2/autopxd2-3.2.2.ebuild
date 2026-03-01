@@ -22,5 +22,5 @@ RDEPEND="
 	dev-python/pycparser[${PYTHON_USEDEP}]
 "
 
-# Tests require pytest + cython
+# PyPI sdist missing test infrastructure (conftest.py, assertions.py, etc.)
 RESTRICT="test"
