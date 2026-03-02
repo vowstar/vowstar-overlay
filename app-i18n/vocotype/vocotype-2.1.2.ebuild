@@ -10,9 +10,41 @@ inherit distutils-r1 multiprocessing systemd xdg-utils
 DESCRIPTION="Linux offline voice input method based on FunASR Paraformer"
 HOMEPAGE="https://github.com/LeonardNJU/VocoType-linux"
 
+# Model version (independent of software version)
+VOCOTYPE_MODEL_REV="v2.0.5"
+VOCOTYPE_ASR_MODEL="speech_paraformer-large_asr_nat-zh-cn-16k-common-vocab8404-onnx"
+VOCOTYPE_VAD_MODEL="speech_fsmn_vad_zh-cn-16k-common-onnx"
+VOCOTYPE_PUNC_MODEL="punc_ct-transformer_zh-cn-common-vocab272727-onnx"
+
 SRC_URI="
 	https://github.com/LeonardNJU/VocoType-linux/archive/refs/tags/v${PV}.tar.gz
 		-> ${P}.tar.gz
+	https://modelscope.cn/models/iic/${VOCOTYPE_ASR_MODEL}/resolve/${VOCOTYPE_MODEL_REV}/model_quant.onnx
+		-> vocotype-${VOCOTYPE_MODEL_REV}-asr-model_quant.onnx
+	https://modelscope.cn/models/iic/${VOCOTYPE_ASR_MODEL}/resolve/${VOCOTYPE_MODEL_REV}/config.yaml
+		-> vocotype-${VOCOTYPE_MODEL_REV}-asr-config.yaml
+	https://modelscope.cn/models/iic/${VOCOTYPE_ASR_MODEL}/resolve/${VOCOTYPE_MODEL_REV}/am.mvn
+		-> vocotype-${VOCOTYPE_MODEL_REV}-asr-am.mvn
+	https://modelscope.cn/models/iic/${VOCOTYPE_ASR_MODEL}/resolve/${VOCOTYPE_MODEL_REV}/tokens.json
+		-> vocotype-${VOCOTYPE_MODEL_REV}-asr-tokens.json
+	https://modelscope.cn/models/iic/${VOCOTYPE_ASR_MODEL}/resolve/${VOCOTYPE_MODEL_REV}/configuration.json
+		-> vocotype-${VOCOTYPE_MODEL_REV}-asr-configuration.json
+	https://modelscope.cn/models/iic/${VOCOTYPE_VAD_MODEL}/resolve/${VOCOTYPE_MODEL_REV}/model_quant.onnx
+		-> vocotype-${VOCOTYPE_MODEL_REV}-vad-model_quant.onnx
+	https://modelscope.cn/models/iic/${VOCOTYPE_VAD_MODEL}/resolve/${VOCOTYPE_MODEL_REV}/config.yaml
+		-> vocotype-${VOCOTYPE_MODEL_REV}-vad-config.yaml
+	https://modelscope.cn/models/iic/${VOCOTYPE_VAD_MODEL}/resolve/${VOCOTYPE_MODEL_REV}/am.mvn
+		-> vocotype-${VOCOTYPE_MODEL_REV}-vad-am.mvn
+	https://modelscope.cn/models/iic/${VOCOTYPE_VAD_MODEL}/resolve/${VOCOTYPE_MODEL_REV}/configuration.json
+		-> vocotype-${VOCOTYPE_MODEL_REV}-vad-configuration.json
+	https://modelscope.cn/models/iic/${VOCOTYPE_PUNC_MODEL}/resolve/${VOCOTYPE_MODEL_REV}/model_quant.onnx
+		-> vocotype-${VOCOTYPE_MODEL_REV}-punc-model_quant.onnx
+	https://modelscope.cn/models/iic/${VOCOTYPE_PUNC_MODEL}/resolve/${VOCOTYPE_MODEL_REV}/config.yaml
+		-> vocotype-${VOCOTYPE_MODEL_REV}-punc-config.yaml
+	https://modelscope.cn/models/iic/${VOCOTYPE_PUNC_MODEL}/resolve/${VOCOTYPE_MODEL_REV}/tokens.json
+		-> vocotype-${VOCOTYPE_MODEL_REV}-punc-tokens.json
+	https://modelscope.cn/models/iic/${VOCOTYPE_PUNC_MODEL}/resolve/${VOCOTYPE_MODEL_REV}/configuration.json
+		-> vocotype-${VOCOTYPE_MODEL_REV}-punc-configuration.json
 "
 
 S="${WORKDIR}/VocoType-linux-${PV}"
@@ -60,6 +92,10 @@ BDEPEND="
 # Tests are post-install validation scripts requiring a deployed user
 # environment ($HOME/.local/, running Rime), not suitable for ebuild sandbox
 RESTRICT="test"
+
+PATCHES=(
+	"${FILESDIR}/${P}-download-models.patch"
+)
 
 src_prepare() {
 	default
@@ -135,7 +171,28 @@ src_install() {
 		doins "${FILESDIR}/vocotype-fcitx5-backend.desktop"
 	fi
 
-	# Model download helper script
+	# Install pre-packaged models
+	local asr_files=( model_quant.onnx config.yaml am.mvn tokens.json configuration.json )
+	local vad_files=( model_quant.onnx config.yaml am.mvn configuration.json )
+	local punc_files=( model_quant.onnx config.yaml tokens.json configuration.json )
+
+	local f
+	insinto "/usr/share/vocotype/models/${VOCOTYPE_ASR_MODEL}"
+	for f in "${asr_files[@]}"; do
+		newins "${DISTDIR}/vocotype-${VOCOTYPE_MODEL_REV}-asr-${f}" "${f}"
+	done
+
+	insinto "/usr/share/vocotype/models/${VOCOTYPE_VAD_MODEL}"
+	for f in "${vad_files[@]}"; do
+		newins "${DISTDIR}/vocotype-${VOCOTYPE_MODEL_REV}-vad-${f}" "${f}"
+	done
+
+	insinto "/usr/share/vocotype/models/${VOCOTYPE_PUNC_MODEL}"
+	for f in "${punc_files[@]}"; do
+		newins "${DISTDIR}/vocotype-${VOCOTYPE_MODEL_REV}-punc-${f}" "${f}"
+	done
+
+	# Model download helper script (for manual updates)
 	python_scriptinto /usr/bin
 	python_foreach_impl python_newscript app/download_models.py vocotype-download-models
 }
@@ -145,8 +202,9 @@ pkg_postinst() {
 
 	elog "VoCoType has been installed."
 	elog ""
-	elog "Before using VoCoType, you need to download the AI models (~500MB):"
-	elog "  vocotype-download-models"
+	elog "Speech recognition models are pre-installed at:"
+	elog "  /usr/share/vocotype/models/"
+	elog "To update models manually: vocotype-download-models"
 	elog ""
 	if use ibus; then
 		elog "For IBus: restart ibus-daemon and add VoCoType in IBus settings."
