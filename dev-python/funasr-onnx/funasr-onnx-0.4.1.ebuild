@@ -32,7 +32,6 @@ RDEPEND="
 	dev-python/numpy[${PYTHON_USEDEP}]
 	dev-python/kaldi-native-fbank[${PYTHON_USEDEP}]
 	dev-python/pyyaml[${PYTHON_USEDEP}]
-	sci-ml/onnx[${PYTHON_USEDEP}]
 	sci-ml/sentencepiece[${PYTHON_USEDEP}]
 	dev-python/onnxruntime[${PYTHON_USEDEP}]
 "
