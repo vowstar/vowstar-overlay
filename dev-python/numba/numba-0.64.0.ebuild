@@ -42,8 +42,6 @@ KEYWORDS="~amd64"
 RDEPEND="
 	>=dev-python/llvmlite-0.46.0[${PYTHON_USEDEP}]
 	>=dev-python/numpy-1.22[${PYTHON_USEDEP}]
-	sys-devel/gcc[openmp]
-	dev-cpp/tbb:=
 "
 
 RESTRICT="bindist mirror strip test"
@@ -55,4 +53,8 @@ python_compile() {
 	pyver="${pyver/./}"
 	distutils_wheel_install "${BUILD_DIR}/install" \
 		"${DISTDIR}/${PN}-${PV}-cp${pyver}-cp${pyver}-linux_x86_64.whl"
+
+	# Remove optional threading backends with unresolvable soname deps
+	# (libgomp for OpenMP, libtbb for TBB); numba works without them
+	rm -f "${BUILD_DIR}"/install/usr/lib/python*/site-packages/numba/np/ufunc/{omppool,tbbpool}*.so || true
 }
