@@ -6,7 +6,7 @@ EAPI=8
 PYTHON_COMPAT=( python3_{11..14} )
 DISTUTILS_USE_PEP517=standalone
 DISTUTILS_EXT=1
-inherit distutils-r1
+inherit distutils-r1 pypi
 
 DESCRIPTION="Cross-platform, high performance ML inferencing and training accelerator"
 HOMEPAGE="
@@ -18,19 +18,15 @@ HOMEPAGE="
 SRC_URI="
 	python_targets_python3_11? (
 		https://files.pythonhosted.org/packages/2c/32/4e5921ba8b82ac37cad45f1108ca6effd430f49c7f20577d53f317d166ed/${PN}-${PV}-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
-			-> ${PN}-${PV}-cp311-cp311-linux_x86_64.whl
 	)
 	python_targets_python3_12? (
 		https://files.pythonhosted.org/packages/35/af/ad86cfbfd65d5a86204b3a30893e92c0cf3f1a56280efc5a12e69d81f52d/${PN}-${PV}-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
-			-> ${PN}-${PV}-cp312-cp312-linux_x86_64.whl
 	)
 	python_targets_python3_13? (
 		https://files.pythonhosted.org/packages/ac/62/6f2851cf3237a91bc04cdb35434293a623d4f6369f79836929600da574ba/${PN}-${PV}-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
-			-> ${PN}-${PV}-cp313-cp313-linux_x86_64.whl
 	)
 	python_targets_python3_14? (
 		https://files.pythonhosted.org/packages/0d/74/a1913b3a0fc2f27fe1751e9545745a3f35fd7833e3438a4208b4e215778f/${PN}-${PV}-cp314-cp314-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
-			-> ${PN}-${PV}-cp314-cp314-linux_x86_64.whl
 	)
 "
 
@@ -55,6 +51,8 @@ QA_PREBUILT="*"
 python_compile() {
 	local pyver="${EPYTHON/python/}"
 	pyver="${pyver/./}"
+	local pytag="cp${pyver}"
+	local abitag="${pytag}-manylinux_2_27_x86_64.manylinux_2_28_x86_64"
 	distutils_wheel_install "${BUILD_DIR}/install" \
-		"${DISTDIR}/${PN}-${PV}-cp${pyver}-cp${pyver}-linux_x86_64.whl"
+		"${DISTDIR}/$(pypi_wheel_name "${PN}" "${PV}" "${pytag}" "${abitag}")"
 }
