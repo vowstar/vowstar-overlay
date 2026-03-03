@@ -36,10 +36,4 @@ BDEPEND="
 	dev-python/cython[${PYTHON_USEDEP}]
 "
 
-EPYTEST_PLUGINS=( )
-EPYTEST_XDIST=1
 distutils_enable_tests pytest
-
-python_test() {
-	epytest
-}
