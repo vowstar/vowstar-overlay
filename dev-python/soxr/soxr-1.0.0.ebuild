@@ -27,5 +27,4 @@ BDEPEND="
 	dev-python/numpy[${PYTHON_USEDEP}]
 "
 
-EPYTEST_PLUGINS=( )
 distutils_enable_tests pytest
