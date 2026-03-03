@@ -35,3 +35,10 @@ RDEPEND="
 
 # Tests require librosa-test-data git submodule (~157MB) not in sdist
 RESTRICT="test"
+
+src_prepare() {
+	default
+
+	# Remove deprecated license classifier
+	sed -i "/License ::/d" setup.cfg || die
+}

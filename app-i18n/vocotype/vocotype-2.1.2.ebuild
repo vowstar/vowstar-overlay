@@ -101,6 +101,9 @@ PATCHES=(
 src_prepare() {
 	default
 
+	# Fix deprecated project.license table format (PEP 639)
+	sed -i 's/^license = { file = "LICENSE" }/license = "GPL-3.0-or-later"/' pyproject.toml || die
+
 	# Fix IBus component XML paths for system-wide installation
 	if use ibus; then
 		sed -i \
@@ -136,6 +139,21 @@ src_compile() {
 	fi
 }
 
+python_install() {
+	distutils-r1_python_install
+
+	# Per-implementation script installs
+	if use ibus; then
+		python_scriptinto /usr/libexec
+		python_newscript ibus/main.py ibus-engine-vocotype
+	fi
+
+	if use fcitx; then
+		python_scriptinto /usr/bin
+		python_newscript fcitx5/backend/fcitx5_server.py vocotype-fcitx5-backend
+	fi
+}
+
 src_install() {
 	distutils-r1_src_install
 
@@ -143,10 +161,6 @@ src_install() {
 	if use ibus; then
 		insinto /usr/share/ibus/component
 		newins data/ibus/vocotype.xml.in vocotype.xml
-
-		# IBus engine launcher
-		python_scriptinto /usr/libexec
-		python_foreach_impl python_newscript ibus/main.py ibus-engine-vocotype
 	fi
 
 	# Fcitx5 addon
@@ -162,10 +176,6 @@ src_install() {
 		# Install input method config
 		insinto /usr/share/fcitx5/inputmethod
 		newins fcitx5/data/vocotype.conf.in vocotype.conf
-
-		# Install backend script
-		python_scriptinto /usr/bin
-		python_foreach_impl python_newscript fcitx5/backend/fcitx5_server.py vocotype-fcitx5-backend
 
 		# Install audio recorder script for C++ addon to invoke
 		insinto /usr/share/vocotype
@@ -201,7 +211,6 @@ src_install() {
 	for f in "${punc_files[@]}"; do
 		newins "${DISTDIR}/vocotype-${VOCOTYPE_MODEL_REV}-punc-${f}" "${f}"
 	done
-
 }
 
 pkg_postinst() {

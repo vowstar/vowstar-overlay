@@ -24,3 +24,10 @@ RDEPEND="
 
 # PyPI sdist missing test infrastructure (conftest.py, assertions.py, etc.)
 RESTRICT="test"
+
+src_prepare() {
+	default
+
+	# Fix deprecated project.license table format (PEP 639)
+	sed -i 's/^license = { file = "LICENSE" }/license = "MIT"/' pyproject.toml || die
+}

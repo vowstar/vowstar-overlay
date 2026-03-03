@@ -20,3 +20,10 @@ KEYWORDS="~amd64 ~arm64 ~x86"
 # Tests are standalone scripts incompatible with pytest, and require
 # missing data files (userdict.txt, extra_dict/) not included in sdist
 RESTRICT="test"
+
+src_prepare() {
+	default
+
+	# Remove deprecated license classifier
+	sed -i "/License ::/d" setup.py || die
+}
