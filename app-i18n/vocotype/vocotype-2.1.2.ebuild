@@ -53,7 +53,7 @@ LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
 
-IUSE="+fcitx ibus rime systemd"
+IUSE="+fcitx ibus +rime systemd"
 REQUIRED_USE="
 	|| ( ibus fcitx )
 	${PYTHON_REQUIRED_USE}
@@ -95,6 +95,7 @@ RESTRICT="test"
 
 PATCHES=(
 	"${FILESDIR}/${P}-download-models.patch"
+	"${FILESDIR}/${P}-fcitx5-system-install.patch"
 )
 
 src_prepare() {
@@ -106,6 +107,11 @@ src_prepare() {
 			-e "s|VOCOTYPE_EXEC_PATH|/usr/libexec/ibus-engine-vocotype|g" \
 			-e "s|VOCOTYPE_VERSION|${PV}|g" \
 			data/ibus/vocotype.xml.in || die
+	fi
+
+	# Copy rime_handler into app/ so it gets installed via distutils
+	if use fcitx; then
+		cp fcitx5/backend/rime_handler.py app/rime_handler.py || die
 	fi
 }
 
@@ -161,6 +167,10 @@ src_install() {
 		python_scriptinto /usr/bin
 		python_foreach_impl python_newscript fcitx5/backend/fcitx5_server.py vocotype-fcitx5-backend
 
+		# Install audio recorder script for C++ addon to invoke
+		insinto /usr/share/vocotype
+		doins fcitx5/backend/audio_recorder.py
+
 		# systemd user service
 		if use systemd; then
 			systemd_douserunit "${FILESDIR}/vocotype-fcitx5-backend.service"
@@ -192,19 +202,12 @@ src_install() {
 		newins "${DISTDIR}/vocotype-${VOCOTYPE_MODEL_REV}-punc-${f}" "${f}"
 	done
 
-	# Model download helper script (for manual updates)
-	python_scriptinto /usr/bin
-	python_foreach_impl python_newscript app/download_models.py vocotype-download-models
 }
 
 pkg_postinst() {
 	xdg_icon_cache_update
 
 	elog "VoCoType has been installed."
-	elog ""
-	elog "Speech recognition models are pre-installed at:"
-	elog "  /usr/share/vocotype/models/"
-	elog "To update models manually: vocotype-download-models"
 	elog ""
 	if use ibus; then
 		elog "For IBus: restart ibus-daemon and add VoCoType in IBus settings."
