@@ -10,9 +10,9 @@ SRC_URI=""
 LICENSE="metapackage"
 SLOT="0"
 
-if [[ ${PV} != *_rc* ]] ; then
-	KEYWORDS="~amd64"
-fi
+#if [[ ${PV} != *_rc* ]] ; then
+#	KEYWORDS="~amd64"
+#fi
 
 RDEPEND="
 	dev-build/make
