@@ -1,0 +1,183 @@
+# Copyright 2025-2026 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+EAPI=8
+
+inherit cmake flag-o-matic toolchain-funcs
+
+DESCRIPTION="Memory debugging tool for Linux and Windows"
+HOMEPAGE="https://drmemory.org/ https://github.com/DynamoRIO/drmemory"
+
+# cronbuild-2.6.20434 snapshot commit
+MY_COMMIT="3d2b5f9b055dba86c41a75e58c53b59760cc2a6e"
+# DynamoRIO submodule commit for cronbuild-2.6.20434
+DRIO_COMMIT="92be9e40f209525031b5407095f1f81abf483bac"
+# Googletest submodule commit
+GTEST_COMMIT="12ddfca458945b8fcffa7ed416076ed55bf669b1"
+# DynamoRIO's submodules
+LIBIPT_COMMIT="c848a85c3104e2f5780741f85de5c9e65476ece2"
+ZLIB_COMMIT="51b7f2abdade71cd9bb0e7a373ef2610ec6f9daf"
+ELFUTILS_COMMIT="18a015c0b0787ba5acb39801ab7c17dac50f584d"
+
+SRC_URI="
+	https://github.com/DynamoRIO/${PN}/archive/${MY_COMMIT}.tar.gz
+		-> ${P}.tar.gz
+	https://github.com/DynamoRIO/dynamorio/archive/${DRIO_COMMIT}.tar.gz
+		-> dynamorio-${DRIO_COMMIT:0:7}.tar.gz
+	https://github.com/DynamoRIO/googletest/archive/${GTEST_COMMIT}.tar.gz
+		-> googletest-${GTEST_COMMIT:0:7}.tar.gz
+	https://github.com/intel/libipt/archive/${LIBIPT_COMMIT}.tar.gz
+		-> libipt-${LIBIPT_COMMIT:0:7}.tar.gz
+	https://github.com/madler/zlib/archive/${ZLIB_COMMIT}.tar.gz
+		-> zlib-${ZLIB_COMMIT:0:7}.tar.gz
+	https://github.com/DynamoRIO/elfutils/archive/${ELFUTILS_COMMIT}.tar.gz
+		-> elfutils-${ELFUTILS_COMMIT:0:7}.tar.gz
+"
+
+S="${WORKDIR}/${PN}-${MY_COMMIT}"
+
+LICENSE="LGPL-2.1"
+SLOT="0"
+KEYWORDS="~amd64"
+IUSE="doc test"
+# DynamoRIO uses special ELF structures for dynamic binary instrumentation
+# Stripping corrupts these structures and causes SIGILL at runtime
+RESTRICT="strip !test? ( test )"
+
+RDEPEND="
+	sys-libs/libunwind:=
+	dev-lang/perl
+"
+DEPEND="${RDEPEND}"
+BDEPEND="
+	doc? ( app-text/doxygen )
+"
+
+PATCHES=(
+	"${FILESDIR}/${P}-gcc15-fixes.patch"
+)
+
+QA_FLAGS_IGNORED="
+	opt/drmemory/.*
+"
+
+src_prepare() {
+	# Setup bundled DynamoRIO
+	rmdir "${S}/dynamorio" || die
+	mv "${WORKDIR}/dynamorio-${DRIO_COMMIT}" "${S}/dynamorio" || die
+
+	# Setup DynamoRIO's bundled libipt
+	rmdir "${S}/dynamorio/third_party/libipt" || die
+	mv "${WORKDIR}/libipt-${LIBIPT_COMMIT}" "${S}/dynamorio/third_party/libipt" || die
+
+	# Setup DynamoRIO's bundled zlib
+	rmdir "${S}/dynamorio/third_party/zlib" || die
+	mv "${WORKDIR}/zlib-${ZLIB_COMMIT}" "${S}/dynamorio/third_party/zlib" || die
+
+	# Setup DynamoRIO's bundled elfutils
+	rmdir "${S}/dynamorio/third_party/elfutils" || die
+	mv "${WORKDIR}/elfutils-${ELFUTILS_COMMIT}" "${S}/dynamorio/third_party/elfutils" || die
+
+	# Setup bundled googletest
+	rmdir "${S}/third_party/googletest" || die
+	mv "${WORKDIR}/googletest-${GTEST_COMMIT}" "${S}/third_party/googletest" || die
+
+	# Fix cmake install commands to respect DESTDIR
+	# The file(WRITE/MAKE_DIRECTORY/APPEND) and configure_file() commands
+	# do not automatically respect the DESTDIR environment variable
+	sed -i \
+		-e 's|"\\${CMAKE_INSTALL_PREFIX}/|"\\$ENV{DESTDIR}\\${CMAKE_INSTALL_PREFIX}/|g' \
+		"${S}/CMakeLists.txt" "${S}/docs/CMakeLists.txt" || die
+
+	cmake_src_prepare
+}
+
+src_configure() {
+	# DynamoRIO needs specific compiler flags
+	filter-flags -fstack-protector-strong -fstack-clash-protection
+	append-flags -fno-stack-protector
+
+	# Avoid AVX-512 for portability
+	append-flags -mno-avx512f
+
+	# Static link libstdc++ and libgcc to avoid runtime library path issues
+	# DynamoRIO uses a private loader that doesn't respect standard library paths
+	# This is the recommended approach per DynamoRIO documentation
+	append-ldflags -static-libgcc -static-libstdc++
+
+	local mycmakeargs=(
+		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/opt/${PN}"
+		-DBUILD_TOOL_TESTS=$(usex test ON OFF)
+	)
+
+	# Disable doxygen search when doc USE is disabled
+	# drmemory unconditionally runs find_package(Doxygen) and builds docs if found
+	if ! use doc; then
+		mycmakeargs+=( -DCMAKE_DISABLE_FIND_PACKAGE_Doxygen=ON )
+	fi
+
+	cmake_src_configure
+}
+
+src_install() {
+	cmake_src_install
+
+	# Remove incorrectly installed DynamoRIO build artifacts
+	# These are cmake install targets that don't properly respect DESTDIR
+	rm -rf "${ED}/var" || die
+
+	# Install DynamoRIO extension libraries that DRMF depends on
+	# These are built but not installed by DrMemory's cmake install
+	local ext_src="${BUILD_DIR}/dynamorio/ext/lib64/release"
+	local ext_dst="${ED}/opt/${PN}/dynamorio/ext/lib64/release"
+	if [[ -d "${ext_src}" ]]; then
+		einfo "Installing DynamoRIO extension libraries"
+		dodir "/opt/${PN}/dynamorio/ext/lib64/release"
+		local lib
+		for lib in "${ext_src}"/*.so; do
+			if [[ -f "${lib}" ]]; then
+				cp -a "${lib}" "${ext_dst}/" || die "Failed to install ${lib##*/}"
+			fi
+		done
+	else
+		ewarn "DynamoRIO extension directory not found: ${ext_src}"
+	fi
+
+	# Create .drpath files for DynamoRIO's private loader to find GCC libraries
+	# DynamoRIO uses its own loader that doesn't respect standard library paths
+	# The .drpath file is DynamoRIO's cross-platform mechanism for library search paths
+	# Note: patchelf is NOT used because it can break DynamoRIO's private loader
+	local gcc_libdir
+	gcc_libdir="$($(tc-getCC) -print-file-name=libstdc++.so.6)"
+	gcc_libdir="${gcc_libdir%/*}"
+	if [[ -d "${gcc_libdir}" ]]; then
+		einfo "Creating .drpath files with GCC library path: ${gcc_libdir}"
+		local f basename
+		while IFS= read -r -d '' f; do
+			if [[ -f "${f}" ]] && file "${f}" | grep -q "ELF.*shared object"; then
+				basename="${f##*/}"
+				basename="${basename%.so*}"
+				echo "${gcc_libdir}" > "${f%/*}/${basename}.drpath" || \
+					ewarn "Failed to create .drpath for ${f}"
+			fi
+		done < <(find "${ED}/opt/${PN}" -name "*.so" -print0)
+	fi
+
+	# Create symlinks in /usr/bin for DrMemory tools
+	dodir /usr/bin
+	local tool
+	for tool in drmemory drltrace drstrace symquery; do
+		if [[ -x "${ED}/opt/${PN}/bin64/${tool}" ]]; then
+			dosym "../../opt/${PN}/bin64/${tool}" "/usr/bin/${tool}"
+		fi
+	done
+
+	# Create symlinks in /usr/bin for bundled DynamoRIO tools
+	for tool in drrun drconfig drinject drdisas; do
+		if [[ -x "${ED}/opt/${PN}/dynamorio/bin64/${tool}" ]]; then
+			dosym "../../opt/${PN}/dynamorio/bin64/${tool}" "/usr/bin/${tool}"
+		fi
+	done
+
+	dodoc README.md
+}

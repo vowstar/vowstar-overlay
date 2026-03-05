@@ -1,0 +1,221 @@
+diff --color -Naur -x .orig a/drmemory/memlayout.c b/drmemory/memlayout.c
+--- a/drmemory/memlayout.c	2026-03-05 18:49:37.674206543 +0800
++++ b/drmemory/memlayout.c	2026-03-05 18:52:31.332826728 +0800
+@@ -52,7 +52,7 @@
+     /* Used to distinguish in memory_layout_rb_iter. */
+     bool walking_heap;
+     /* Used to prevent a trailing JSON comma. */
+-    bool entry_count;
++    int entry_count;
+ } layout_data_t;
+ 
+ void
+diff --color -Naur -x .orig a/drmemory/options.c b/drmemory/options.c
+--- a/drmemory/options.c	2026-03-05 18:49:37.674240272 +0800
++++ b/drmemory/options.c	2026-03-05 18:52:49.921354823 +0800
+@@ -105,18 +105,21 @@
+ 
+ enum {
+     TYPE_IS_BOOL_bool       = true,
++    TYPE_IS_BOOL__Bool      = true,
+     TYPE_IS_BOOL_opstring_t = false,
+     TYPE_IS_BOOL_multi_opstring_t = false,
+     TYPE_IS_BOOL_uint       = false,
+     TYPE_IS_BOOL_uint64     = false,
+     TYPE_IS_BOOL_int        = false,
+     TYPE_IS_STRING_bool       = false,
++    TYPE_IS_STRING__Bool      = false,
+     TYPE_IS_STRING_opstring_t = true,
+     TYPE_IS_STRING_multi_opstring_t = false,
+     TYPE_IS_STRING_uint       = false,
+     TYPE_IS_STRING_uint64     = false,
+     TYPE_IS_STRING_int        = false,
+     TYPE_HAS_RANGE_bool       = false,
++    TYPE_HAS_RANGE__Bool      = false,
+     TYPE_HAS_RANGE_opstring_t = false,
+     TYPE_HAS_RANGE_multi_opstring_t = false,
+     TYPE_HAS_RANGE_uint       = true,
+diff --color -Naur -x .orig a/dynamorio/CMakeLists.txt b/dynamorio/CMakeLists.txt
+--- a/dynamorio/CMakeLists.txt	2026-03-05 18:49:37.851642176 +0800
++++ b/dynamorio/CMakeLists.txt	2026-03-05 18:53:38.674735711 +0800
+@@ -800,6 +800,8 @@
+   # and set DR_DO_NOT_DEFINE_*
+   # Note that for later gcc uint and ushort seem to be "soft typedefs":
+   # defined, but overridable: ?!?
++  set(CMAKE_ORIG_C_FLAGS "${CMAKE_C_FLAGS}")
++  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
+   include(CheckTypeSize)
+   CHECK_TYPE_SIZE(uint DR_DO_NOT_DEFINE_uint)
+   CHECK_TYPE_SIZE(ushort DR_DO_NOT_DEFINE_ushort)
+@@ -824,6 +826,7 @@
+       message(FATAL_ERROR "incompatible \"_Bool\" type is larger than 1 byte")
+     endif (NOT ${DR__Bool_EXISTS} EQUAL 1)
+   endif (DR__Bool_EXISTS)
++  set(CMAKE_C_FLAGS "${CMAKE_ORIG_C_FLAGS}")
+ endif (UNIX)
+ 
+ ###########################################################################
+diff --color -Naur -x .orig a/dynamorio/core/lib/globals_api.h b/dynamorio/core/lib/globals_api.h
+--- a/dynamorio/core/lib/globals_api.h	2026-03-05 18:49:37.720396935 +0800
++++ b/dynamorio/core/lib/globals_api.h	2026-03-05 18:50:48.204998341 +0800
+@@ -112,19 +112,7 @@
+ #            define inline __inline__
+ #        endif
+ #        ifndef DR_DO_NOT_DEFINE_bool
+-#            ifdef DR__Bool_EXISTS
+-/* prefer _Bool as it avoids truncation casting non-zero to zero */
+-typedef _Bool bool;
+-#            else
+-/* char-sized for compatibility with C++ */
+-typedef char bool;
+-#            endif
+-#        endif
+-#        ifndef true
+-#            define true (1)
+-#        endif
+-#        ifndef false
+-#            define false (0)
++#            include <stdbool.h>
+ #        endif
+ #    endif
+ 
+diff --color -Naur -x .orig a/dynamorio/core/options.c b/dynamorio/core/options.c
+--- a/dynamorio/core/options.c	2026-03-05 18:49:37.721530333 +0800
++++ b/dynamorio/core/options.c	2026-03-05 18:51:21.262889174 +0800
+@@ -109,6 +109,7 @@
+ 
+ typedef enum option_type_t {
+     OPTION_TYPE_bool,
++    OPTION_TYPE__Bool = OPTION_TYPE_bool,
+     OPTION_TYPE_uint,
+     OPTION_TYPE_uint_addr,
+     OPTION_TYPE_uint_size,
+diff --color -Naur -x .orig a/dynamorio/core/options_struct.h b/dynamorio/core/options_struct.h
+--- a/dynamorio/core/options_struct.h	2026-03-05 18:49:37.721627830 +0800
++++ b/dynamorio/core/options_struct.h	2026-03-05 18:51:15.396731107 +0800
+@@ -118,6 +118,7 @@
+ 
+ /* to dispatch on string default values, kept in struct not enum */
+ #define ISSTRING_bool 0
++#define ISSTRING__Bool 0
+ #define ISSTRING_uint 0
+ #define ISSTRING_uint_size 0
+ #define ISSTRING_uint_time 0
+diff --color -Naur -x .orig a/dynamorio/make/cpp2asm_support.cmake b/dynamorio/make/cpp2asm_support.cmake
+--- a/dynamorio/make/cpp2asm_support.cmake	2026-03-05 18:49:37.751567482 +0800
++++ b/dynamorio/make/cpp2asm_support.cmake	2026-03-05 18:50:35.004642578 +0800
+@@ -217,14 +217,33 @@
+     set(ASM_FLAGS "${ASM_FLAGS} -g")
+   endif (DEBUG)
+ elseif (UNIX)
++  # Check if CMAKE_ASM_COMPILER is GCC (not raw 'as')
++  # GCC doesn't accept raw assembler flags, they need -Wa, prefix
++  get_filename_component(ASM_COMPILER_NAME "${CMAKE_ASM_COMPILER}" NAME)
++  if ("${ASM_COMPILER_NAME}" MATCHES "gcc$" OR "${ASM_COMPILER_NAME}" MATCHES "g\\+\\+$" OR
++      "${ASM_COMPILER_NAME}" MATCHES "^.*-gcc$" OR "${ASM_COMPILER_NAME}" MATCHES "^.*-g\\+\\+$" OR
++      "${CMAKE_ASM_COMPILER_ID}" STREQUAL "GNU")
++    set(USING_GCC_AS_ASM TRUE)
++  else ()
++    set(USING_GCC_AS_ASM FALSE)
++  endif ()
+   if (DR_HOST_X86)
+-    set(ASM_FLAGS "-mmnemonic=intel -msyntax=intel -mnaked-reg")
+-    if (X64)
+-      set(ASM_FLAGS "${ASM_FLAGS} --64")
+-    else (X64)
+-      # putting --32 last so we fail on -mmnemonic=intel on older as, not --32
+-      set(ASM_FLAGS "${ASM_FLAGS} --32")
+-    endif (X64)
++    if (USING_GCC_AS_ASM)
++      set(ASM_FLAGS "-Wa,-mmnemonic=intel,-msyntax=intel,-mnaked-reg")
++      if (X64)
++        set(ASM_FLAGS "${ASM_FLAGS} -Wa,--64")
++      else (X64)
++        set(ASM_FLAGS "${ASM_FLAGS} -Wa,--32")
++      endif (X64)
++    else ()
++      set(ASM_FLAGS "-mmnemonic=intel -msyntax=intel -mnaked-reg")
++      if (X64)
++        set(ASM_FLAGS "${ASM_FLAGS} --64")
++      else (X64)
++        # putting --32 last so we fail on -mmnemonic=intel on older as, not --32
++        set(ASM_FLAGS "${ASM_FLAGS} --32")
++      endif (X64)
++    endif ()
+   elseif (DR_HOST_ARM)
+     # No 64-bit support yet.
+     # Some tests and libgcc/arm use deprecated instructions, disable warnings.
+@@ -236,8 +255,14 @@
+         set(ASM_FLAGS "${ASM_FLAGS} ${ASMFLAGS_SVE}")
+     endif ()
+   endif ()
+-  if (NOT ANDROID64)
+-    set(ASM_FLAGS "${ASM_FLAGS} --noexecstack")
++  if (USING_GCC_AS_ASM)
++    if (NOT ANDROID64)
++      set(ASM_FLAGS "${ASM_FLAGS} -Wa,--noexecstack")
++    endif ()
++  else ()
++    if (NOT ANDROID64)
++      set(ASM_FLAGS "${ASM_FLAGS} --noexecstack")
++    endif ()
+   endif ()
+   if (DEBUG)
+     set(ASM_FLAGS "${ASM_FLAGS} -g")
+@@ -281,16 +306,29 @@
+ endif (APPLE)
+ if (UNIX AND NOT APPLE)
+   # We require gas >= 2.18.50 for --32, --64, and the new -msyntax=intel, etc.
++  # Always check 'as' directly since GCC's --help doesn't show assembler options
+   execute_process(COMMAND
+-    ${CMAKE_ASM_COMPILER} --help
++    as --help
+     RESULT_VARIABLE asm_result
+     ERROR_VARIABLE asm_error
+     OUTPUT_VARIABLE asm_out)
+   if (asm_result OR asm_error)
++    # Fallback to CMAKE_ASM_COMPILER if 'as' is not found
++    execute_process(COMMAND
++      ${CMAKE_ASM_COMPILER} --help
++      RESULT_VARIABLE asm_result
++      ERROR_VARIABLE asm_error
++      OUTPUT_VARIABLE asm_out)
++  endif ()
++  if (asm_result OR asm_error)
+     message(FATAL_ERROR "*** ${CMAKE_ASM_COMPILER} failed: ***\n${asm_error}")
+   endif (asm_result OR asm_error)
+   # turn the flags into a vector
+   string(REGEX REPLACE " " ";" flags_needed "${ASM_FLAGS}")
++  # Strip -Wa, prefix from flags (used when GCC is the assembler compiler)
++  string(REGEX REPLACE "-Wa," "" flags_needed "${flags_needed}")
++  # Split comma-separated flags that were passed to -Wa,
++  string(REGEX REPLACE "," ";" flags_needed "${flags_needed}")
+   # -mfpu= and -march do not list the possibilities
+   string(REGEX REPLACE "-mfpu=[a-z]*" "-mfpu" flags_needed "${flags_needed}")
+   string(REGEX REPLACE "-march=[+-a-z]*" "-march" flags_needed "${flags_needed}")
+@@ -354,11 +392,20 @@
+     "<CMAKE_ASM_COMPILER> ${ASM_FLAGS} -xassembler -c -o <OBJECT> <OBJECT>.s"
+     )
+ elseif (UNIX OR (APPLE AND AARCH64))
+-  set(CMAKE_ASM_COMPILE_OBJECT
+-    "${CMAKE_CPP} ${CMAKE_CPP_FLAGS} ${rule_flags} ${rule_defs} -E <SOURCE> -o <OBJECT>.s"
+-    "<CMAKE_COMMAND> -Dfile=<OBJECT>.s -P \"${cpp2asm_newline_script_path}\""
+-    "<CMAKE_ASM_COMPILER> ${ASM_FLAGS} -o <OBJECT> <OBJECT>.s"
+-    )
++  if (USING_GCC_AS_ASM)
++    # When using GCC as assembler, need -c flag to compile without linking
++    set(CMAKE_ASM_COMPILE_OBJECT
++      "${CMAKE_CPP} ${CMAKE_CPP_FLAGS} ${rule_flags} ${rule_defs} -E <SOURCE> -o <OBJECT>.s"
++      "<CMAKE_COMMAND> -Dfile=<OBJECT>.s -P \"${cpp2asm_newline_script_path}\""
++      "<CMAKE_ASM_COMPILER> ${ASM_FLAGS} -c -o <OBJECT> <OBJECT>.s"
++      )
++  else ()
++    set(CMAKE_ASM_COMPILE_OBJECT
++      "${CMAKE_CPP} ${CMAKE_CPP_FLAGS} ${rule_flags} ${rule_defs} -E <SOURCE> -o <OBJECT>.s"
++      "<CMAKE_COMMAND> -Dfile=<OBJECT>.s -P \"${cpp2asm_newline_script_path}\""
++      "<CMAKE_ASM_COMPILER> ${ASM_FLAGS} -o <OBJECT> <OBJECT>.s"
++      )
++  endif ()
+ else ()
+   # Even if we didn't preprocess we'd need our own rule since cmake doesn't
+   # support ml.
