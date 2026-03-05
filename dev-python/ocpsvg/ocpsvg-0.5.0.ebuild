@@ -5,6 +5,7 @@ EAPI=8
 
 PYTHON_COMPAT=( python3_{11..13} )
 DISTUTILS_USE_PEP517=setuptools
+PYPI_VERIFY_REPO="https://github.com/snoyer/ocpsvg"
 inherit distutils-r1 pypi
 
 DESCRIPTION="SVG import and export for OCP (Open CASCADE) using svgelements"
