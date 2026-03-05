@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{11..13} )
+PYTHON_COMPAT=( python3_{12..13} )
 DISTUTILS_USE_PEP517=setuptools
 PYPI_PN="ocp_gordon"
 PYPI_VERIFY_REPO="https://github.com/gongfan99/ocp_gordon"
