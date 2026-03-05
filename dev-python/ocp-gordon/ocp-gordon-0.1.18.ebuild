@@ -6,6 +6,7 @@ EAPI=8
 PYTHON_COMPAT=( python3_{11..13} )
 DISTUTILS_USE_PEP517=setuptools
 PYPI_PN="ocp_gordon"
+PYPI_VERIFY_REPO="https://github.com/gongfan99/ocp_gordon"
 inherit distutils-r1 pypi
 
 DESCRIPTION="Gordon surface fitting for OCP (Open CASCADE Python bindings)"
