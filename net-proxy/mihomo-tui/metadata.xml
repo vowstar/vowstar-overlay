@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<!-- maintainer-needed -->
+	<longdescription lang="en">
+		mihomo-tui is a simple TUI (Terminal User Interface) dashboard for
+		monitoring and managing Mihomo via its REST API. Built with Rust
+		and ratatui, it provides real-time proxy status, traffic monitoring,
+		and configuration management directly from the terminal.
+	</longdescription>
+	<longdescription lang="zh">
+		mihomo-tui 是一个简洁的终端用户界面 (TUI) 仪表板，用于通过 REST API
+		监控和管理 Mihomo。使用 Rust 和 ratatui 构建，提供实时代理状态、
+		流量监控和配置管理功能，可直接在终端中使用。
+	</longdescription>
+	<upstream>
+		<remote-id type="github">potoo0/mihomo-tui</remote-id>
+	</upstream>
+</pkgmetadata>
