@@ -1,7 +1,7 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 inherit autotools
 
@@ -18,31 +18,33 @@ if [[ ${PV} == "9999" ]] ; then
 	EGIT_REPO_URI="https://github.com/steveicarus/${PN}.git"
 else
 	SRC_URI="https://github.com/steveicarus/${PN}/archive/v${GITHUB_PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~alpha amd64 ~arm ~arm64 ~hppa ~m68k ~mips ppc ~ppc64 ~riscv ~s390 ~sparc x86"
+	KEYWORDS="amd64 ~arm ~arm64 ~ppc ~ppc64 ~riscv ~x86"
 	S="${WORKDIR}/${PN}-${GITHUB_PV}"
 fi
 
-LICENSE="LGPL-2.1"
+LICENSE="GPL-2+"
 SLOT="0"
 IUSE="examples"
 
-# If you are building from git, you will also need gperf to generate
-# the configure scripts.
-RDEPEND="
-	sys-libs/readline:0
-	sys-libs/zlib
-"
-
+# 721022, should depend on sys-libs/readline:=
 DEPEND="
+	sys-libs/readline:=
+	virtual/zlib:=
+"
+RDEPEND="${DEPEND}"
+BDEPEND="
 	dev-util/gperf
-	sys-devel/bison
-	sys-devel/flex
-	${RDEPEND}
+	app-alternatives/yacc
+	app-alternatives/lex
 "
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-10.3-file-missing.patch #705412
 	"${FILESDIR}"/${PN}-10.3-fno-common.patch #706366
+	"${FILESDIR}"/${PN}-10.3-gen-bison-header.patch #734760
+	"${FILESDIR}"/${PN}-10.3-call-nm.patch #731906
+	"${FILESDIR}"/${PN}-10.3-configure-ac.patch #426262
+	"${FILESDIR}"/${PN}-10.3-override-var.patch #730096
 )
 
 src_prepare() {
@@ -51,6 +53,9 @@ src_prepare() {
 	# From upstreams autoconf.sh, to make it utilize the autotools eclass
 	# Here translate the autoconf.sh, equivalent to the following code
 	# > sh autoconf.sh
+
+	# Move configure.in to configure.ac (bug #426262)
+	mv configure.in configure.ac || die
 
 	# Autoconf in root ...
 	eautoconf --force
