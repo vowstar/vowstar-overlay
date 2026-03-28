@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">geopandas/geopandas</remote-id>
+		<remote-id type="pypi">geopandas</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		GeoPandas is a Python library that extends the datatypes used by
+		pandas to allow spatial operations on geometric types. It combines
+		the capabilities of pandas with shapely for geometric operations,
+		pyproj for coordinate reference systems, and pyogrio for file I/O,
+		making it easy to work with geospatial data in Python.
+	</longdescription>
+	<longdescription lang="zh">
+		GeoPandas 是一个 Python 库，它扩展了 pandas 使用的数据类型以支持
+		几何类型的空间操作。它结合了 pandas 的数据处理能力、shapely 的几何
+		运算、pyproj 的坐标参考系统以及 pyogrio 的文件 I/O 功能，使得在
+		Python 中处理地理空间数据变得简单高效。
+	</longdescription>
+</pkgmetadata>
