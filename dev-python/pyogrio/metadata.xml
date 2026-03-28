@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">geopandas/pyogrio</remote-id>
+		<remote-id type="pypi">pyogrio</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		pyogrio provides a vectorized spatial vector file format I/O engine
+		using GDAL/OGR. It is designed as a high-performance replacement for
+		Fiona, offering faster reading and writing of geospatial data formats
+		such as Shapefiles, GeoPackages, GeoJSON, and many more.
+	</longdescription>
+	<longdescription lang="zh">
+		pyogrio 提供基于 GDAL/OGR 的矢量空间数据文件格式 I/O 引擎。
+		它被设计为 Fiona 的高性能替代品，提供对 Shapefile、GeoPackage、
+		GeoJSON 等地理空间数据格式更快速的读写操作。
+	</longdescription>
+</pkgmetadata>
