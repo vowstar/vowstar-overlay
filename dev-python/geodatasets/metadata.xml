@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">geopandas/geodatasets</remote-id>
+		<remote-id type="pypi">geodatasets</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		geodatasets provides a collection of spatial data examples for use
+		with Python geospatial libraries such as GeoPandas. It includes
+		datasets like Natural Earth boundaries, NYC boroughs, and other
+		commonly used geographic datasets for testing and demonstration.
+	</longdescription>
+	<longdescription lang="zh">
+		geodatasets 提供了一系列空间数据示例，可与 GeoPandas 等 Python 地理
+		空间库配合使用。它包含 Natural Earth 边界、纽约市行政区划等常用的地理
+		数据集，用于测试和演示。
+	</longdescription>
+</pkgmetadata>
