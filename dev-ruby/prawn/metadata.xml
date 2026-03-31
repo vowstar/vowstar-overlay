@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-  <maintainer type="project">
-    <email>ruby@gentoo.org</email>
-    <name>Gentoo Ruby Project</name>
+  <maintainer type="person">
+    <email>vowstar@gmail.com</email>
+    <name>Huang Rui</name>
   </maintainer>
+  <longdescription lang="en">
+    Prawn is a fast, nimble PDF generation library for Ruby. It provides
+    a simple API for creating PDF documents with text, graphics, images,
+    and more.
+  </longdescription>
+  <longdescription lang="zh">
+    Prawn 是一个快速、灵活的 Ruby PDF 生成库。它提供了简洁的 API，
+    用于创建包含文本、图形、图像等内容的 PDF 文档。
+  </longdescription>
   <upstream>
     <remote-id type="github">prawnpdf/prawn</remote-id>
   </upstream>
