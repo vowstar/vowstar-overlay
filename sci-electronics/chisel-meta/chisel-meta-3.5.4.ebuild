@@ -24,7 +24,6 @@ RDEPEND="
 	dev-ruby/asciidoctor-bibtex
 	dev-ruby/asciidoctor-diagram
 	dev-ruby/asciidoctor-mathematical
-	dev-ruby/asciidoctor-pdf
 	dev-vcs/git
 	net-misc/wget
 	sci-electronics/circt
