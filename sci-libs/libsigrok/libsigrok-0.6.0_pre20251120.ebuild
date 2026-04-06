@@ -85,7 +85,6 @@ BDEPEND="
 "
 
 PATCHES=(
-	"${FILESDIR}"/${PN}-0.6.0_pre20241020-swig.patch
 	"${FILESDIR}"/${PN}-0.6.0-sipeed-slogic.patch
 )
 
