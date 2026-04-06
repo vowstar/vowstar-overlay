@@ -16,13 +16,12 @@ SRC_URI="https://github.com/jab/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.gh
 
 LICENSE="MPL-2.0"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~arm64 ~x86"
 
 BDEPEND="
 	test? (
 		dev-python/hypothesis[${PYTHON_USEDEP}]
 		dev-python/sortedcontainers[${PYTHON_USEDEP}]
-		dev-python/sortedcollections[${PYTHON_USEDEP}]
 		dev-python/typing-extensions[${PYTHON_USEDEP}]
 	)
 "

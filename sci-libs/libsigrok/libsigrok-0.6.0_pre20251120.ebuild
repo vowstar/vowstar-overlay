@@ -1,10 +1,10 @@
-# Copyright 1999-2025 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{11..13} )
-USE_RUBY="ruby31 ruby32"
+PYTHON_COMPAT=( python3_{12..14} )
+USE_RUBY="ruby32 ruby33 ruby34"
 RUBY_OPTIONAL="yes"
 inherit python-r1 java-pkg-opt-2 ruby-ng udev xdg-utils
 
@@ -15,10 +15,10 @@ case ${PV} in
 	S="${WORKDIR}"/${P}
 	;;
 *_p*)
-	inherit autotools unpacker
-	COMMIT="f06f788118191d19fdbbb37046d3bd5cec91adb1"
-	SRC_URI="https://sigrok.org/gitweb/?p=${PN}.git;a=snapshot;h=${COMMIT};sf=zip -> ${PN}-${COMMIT:0:7}.zip"
-	S="${WORKDIR}"/${PN}-${COMMIT:0:7}
+	inherit autotools
+	COMMIT="0bc2487778e660f4d3116729b6f4aee2b1996bb0"
+	SRC_URI="https://github.com/sigrokproject/${PN}/archive/${COMMIT}.tar.gz -> ${PN}-${COMMIT:0:7}.tar.gz"
+	S="${WORKDIR}"/${PN}-${COMMIT}
 	;;
 *)
 	SRC_URI="https://sigrok.org/download/source/${PN}/${P}.tar.gz"
@@ -47,7 +47,7 @@ RESTRICT="!test? ( test )"
 COMMON_DEPEND="
 	>=dev-libs/glib-2.32.0
 	>=dev-libs/libzip-0.8:=
-	sys-libs/zlib
+	virtual/zlib:=
 	bluetooth? ( >=net-wireless/bluez-4.0:= )
 	cxx? ( dev-cpp/glibmm:2 )
 	ftdi? ( dev-embedded/libftdi:1 )
@@ -83,10 +83,10 @@ BDEPEND="
 	virtual/pkgconfig
 	cxx? ( app-text/doxygen )
 "
-[[ ${PV} == *_p* ]] && BDEPEND+=" app-arch/unzip"
 
 PATCHES=(
-	"${FILESDIR}/${PN}-0.6.0-sipeed-slogic.patch"
+	"${FILESDIR}"/${PN}-0.6.0_pre20241020-swig.patch
+	"${FILESDIR}"/${PN}-0.6.0-sipeed-slogic.patch
 )
 
 pkg_setup() {
@@ -99,10 +99,9 @@ src_unpack() {
 	case ${PV} in
 	*9999*)
 		git-r3_src_unpack ;;
-	*_p*)
-		unpack_zip ${A} ;;
+	*)
+		default ;;
 	esac
-	default
 }
 
 sigrok_src_prepare() {
