@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		frugy is a tool for generating IPMI FRU binary data from YAML
+		configuration files. It supports Board Info, Product Info, Chassis
+		Info, Internal Use Area, and Multirecord Area including OEM records.
+	</longdescription>
+	<longdescription lang="zh">
+		frugy 是一个从 YAML 配置文件生成 IPMI FRU 二进制数据的工具。支持
+		Board Info、Product Info、Chassis Info、Internal Use Area 和
+		Multirecord Area，包括 OEM 记录。
+	</longdescription>
+	<upstream>
+		<remote-id type="pypi">frugy</remote-id>
+	</upstream>
+</pkgmetadata>
