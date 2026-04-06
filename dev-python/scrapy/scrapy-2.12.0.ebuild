@@ -20,7 +20,7 @@ RESTRICT="!test? ( test )"
 # https://bugs.gentoo.org/684734
 RDEPEND="dev-python/cssselect[${PYTHON_USEDEP}]
 	dev-python/cryptography[${PYTHON_USEDEP}]
-	<dev-python/priority-2.0.0[${PYTHON_USEDEP}]
+	dev-python/priority[${PYTHON_USEDEP}]
 	dev-python/h2[${PYTHON_USEDEP}]
 	dev-python/itemadapter[${PYTHON_USEDEP}]
 	dev-python/itemloaders[${PYTHON_USEDEP}]
