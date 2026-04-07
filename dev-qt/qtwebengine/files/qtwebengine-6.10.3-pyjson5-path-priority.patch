@@ -1,0 +1,15 @@
+https://bugs.gentoo.org/972369
+
+Add __init__.py to chromium's bundled pyjson5 directories so they
+are treated as regular packages. Without these, a system-installed
+pyjson5 package (which has __init__.py) takes priority over the
+bundled one during import resolution, causing build failures.
+
+--- a/src/3rdparty/chromium/third_party/pyjson5/__init__.py
++++ b/src/3rdparty/chromium/third_party/pyjson5/__init__.py
+@@ -0,0 +1 @@
++# This file makes pyjson5 a regular package to prevent shadowing by system pyjson5.
+--- a/src/3rdparty/chromium/third_party/pyjson5/src/__init__.py
++++ b/src/3rdparty/chromium/third_party/pyjson5/src/__init__.py
+@@ -0,0 +1 @@
++# This file makes pyjson5.src a regular package to prevent shadowing by system pyjson5.
