@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		easyeda2kicad converts electronic components from LCSC or EasyEDA
+		into KiCad library files, including symbols, footprints, and 3D models.
+	</longdescription>
+	<longdescription lang="zh">
+		easyeda2kicad 将 LCSC 或 EasyEDA 的电子元件转换为 KiCad 库文件，
+		包括原理图符号、封装和 3D 模型。
+	</longdescription>
+	<upstream>
+		<remote-id type="github">uPesy/easyeda2kicad.py</remote-id>
+		<remote-id type="pypi">easyeda2kicad</remote-id>
+	</upstream>
+</pkgmetadata>
