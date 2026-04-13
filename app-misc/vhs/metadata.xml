@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		VHS is a CLI tool for recording terminal sessions as GIFs, MP4s,
+		or WebM videos. Write simple .tape scripts to automate terminal
+		interactions and produce high-quality recordings for documentation,
+		demos, and integration testing.
+	</longdescription>
+	<longdescription lang="zh">
+		VHS 是一个用于将终端会话录制为 GIF、MP4 或 WebM 视频的命令行工具。
+		通过编写简单的 .tape 脚本来自动化终端交互，生成高质量的录制文件，
+		适用于文档演示和集成测试。
+	</longdescription>
+	<upstream>
+		<remote-id type="github">charmbracelet/vhs</remote-id>
+		<bugs-to>https://github.com/charmbracelet/vhs/issues</bugs-to>
+	</upstream>
+</pkgmetadata>
