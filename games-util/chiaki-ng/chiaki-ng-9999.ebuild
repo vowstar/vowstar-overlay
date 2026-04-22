@@ -5,7 +5,7 @@ EAPI=8
 
 VER_MUNIT="439de4a9b136bc3b5163e73d4caf37c590bef875" # Assuming unchanged, will verify if build fails
 
-PYTHON_COMPAT=( python3_{10..14} )
+PYTHON_COMPAT=( python3_{12..14} )
 inherit cmake python-single-r1 xdg
 
 DESCRIPTION="Client for PlayStation 4 and PlayStation 5 Remote Play"
@@ -39,6 +39,7 @@ RDEPEND="
 	media-libs/libplacebo
 	media-libs/opus
 	net-dns/libidn2
+	net-libs/miniupnpc:=
 	net-misc/curl
 	media-video/pipewire
 	sdl? ( media-libs/libsdl2[joystick,haptic] )
@@ -67,7 +68,7 @@ BDEPEND="
 PATCHES=(
 	# Use shared nanopb library instead of static
 	# https://bugs.gentoo.org/965824
-	"${FILESDIR}/${PN}-1.9.9-use-shared-nanopb.patch"
+	"${FILESDIR}/${PN}-1.10.0-use-shared-nanopb.patch"
 )
 
 src_prepare() {
@@ -75,7 +76,9 @@ src_prepare() {
 
 	if use test; then
 		rm -r "${S}"/test/munit
-		ln -s "${WORKDIR}"/munit-${VER_MUNIT} "${S}"/test/munit
+		cp -r "${WORKDIR}"/munit-${VER_MUNIT} "${S}"/test/munit || die
+		# munit uses ATOMIC_VAR_INIT, which was removed in C23 (GCC 15+)
+		eapply "${FILESDIR}/${PN}-1.10.0-munit-c23.patch"
 	fi
 }
 
