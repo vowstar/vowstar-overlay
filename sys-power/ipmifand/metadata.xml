@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">vowstar/ipmifand</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		ipmifand is a small C daemon that drives Supermicro IPMI fan zones
+		from CPU temperature (via ipmitool sensor) and disk temperature
+		(via smartctl). It supports two independent fan zones with separate
+		update intervals, PWM bounds, and linear-interpolated
+		temperature-to-PWM curves defined in INI configuration. On graceful
+		exit it restores BIOS automatic fan control so the hardware does
+		not sit at the last manual PWM after the daemon stops.
+	</longdescription>
+	<longdescription lang="zh">
+		ipmifand 是一个小型 C 守护进程，根据 CPU 温度（通过 ipmitool sensor）
+		和磁盘温度（通过 smartctl）驱动 Supermicro IPMI 风扇分区。支持两个
+		独立的风扇分区，分别配置更新间隔、PWM 上下限以及通过 INI 配置文件
+		定义的温度-PWM 线性插值曲线。守护进程正常退出时会恢复 BIOS 自动
+		风扇控制，避免硬件停留在最后的手动 PWM 设定。
+	</longdescription>
+</pkgmetadata>
