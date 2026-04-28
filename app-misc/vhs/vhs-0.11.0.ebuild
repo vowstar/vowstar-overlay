@@ -25,6 +25,8 @@ RDEPEND="
 	|| (
 		www-client/chromium
 		www-client/google-chrome
+		www-client/google-chrome-beta
+		www-client/google-chrome-unstable
 	)
 "
 BDEPEND=">=dev-lang/go-1.25.8"
