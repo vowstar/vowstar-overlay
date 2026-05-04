@@ -42,7 +42,8 @@ fi
 # Licensed under CC BY-SA 4.0: all the demo files provided in demos/*
 # Licensed under clause-3 BSD: ibis/kibis files in eeschema/sim/kibis
 # Licensed under CC0: uopamp.lib.spice in some directories in qa/data/eeschema/spice_netlists/
-LICENSE="GPL-2+ GPL-3+ Boost-1.0 BSD BSD-2 Apache-2.0 ISC MIT ZLIB CC-BY-SA-4.0 CC0-1.0"
+# Licensed under WTFPL-2 and Apache-2.0: bundled GLAD (replaces former system glew dep)
+LICENSE="GPL-2+ GPL-3+ Boost-1.0 BSD BSD-2 Apache-2.0 ISC MIT ZLIB CC-BY-SA-4.0 CC0-1.0 WTFPL-2"
 SLOT="0"
 IUSE="doc examples nls openmp test wayland"
 
