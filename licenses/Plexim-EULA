@@ -1,0 +1,103 @@
+                Plexim GmbH, PLECS License Agreement
+
+Read the terms and conditions of this agreement carefully before
+installing PLECS.  This license agreement represents the entire
+agreement between you (the "licensee" - either an individual or an
+entity) and Plexim GmbH ("Plexim") concerning PLECS and the
+accompanying user documentation.
+
+By installing PLECS, you accept the terms of the agreement. If you are
+not willing to do so, do not continue with the installation.
+
+-----------------------------------------------------------------------
+
+The licensee may receive a full refund if within thirty days from the
+date of delivery the licensee does not accept the terms and conditions
+of this license, or if the licensee terminates this license for any
+reason within this period.
+
+
+License Grant
+
+Plexim GmbH hereby grants to the licensee a nonexclusive license to
+install and use PLECS and the accompanying documentation as
+provided herein. PLECS and the documentation are, and shall at all
+times remain, the property of Plexim and the licensee shall have no
+right, title, or interest therein, except as expressly set forth in
+this agreement.
+
+
+License Options
+
+Individual User.   PLECS may be installed and operated on one or more
+individual, standalone computers, provided the program is only
+accessible to, and operated by, a single licensed user designated by the
+licensee. The location(s) of the standalone computers may be located at
+work, home, in a laboratory, or on a laptop. Only one licensed user may
+be designated by the licensee to access or use PLECS under each
+individual user license. The licensee may replace the user for the
+license, on a temporary or permanent basis, provided only one licensed
+user is designated as the named user at any given time. An individual
+user license of PLECS permits the use of PLECS in conjunction with one
+single individual or group license of MATLAB.
+
+Concurrent User.   PLECS may be installed in a central location on a
+single designated network server. The licensee may have as many
+licensed users simultaneously operating PLECS at any given time as the
+number of concurrent licenses purchased.
+
+
+Educational Use Restrictions
+
+Academic License.   If licensed to a degree-granting institutions at an
+academic discount rate PLECS is restricted to use in connection with
+on-campus computing facilities that are used solely in support of
+classroom instruction and research activities of students, teaching
+faculty and staff, and research staff. The right to use PLECS for any
+other purposes, including commercial, is expressly prohibited.
+
+
+Limitation of Liability
+
+PLECS should not be relied on as the sole basis to solve a problem
+whose incorrect solution could result in injury to person or property.
+If PLECS is employed in such a manner, it is at the licensee's own
+risk and Plexim disclaims all liability for such misuse to the extent
+allowed by law.
+
+
+Limited Warranty/Limitation of Remedies
+
+Plexim warrants that Plexim has the right to grant the license rights
+hereunder. Plexim warrants that the physical media provided shall be
+free from defects in material and workmanship for a period of ninety
+(90) days from delivery, or it will be replaced by Plexim at no cost to
+the licensee. Plexim further warrants, for a period of one (1) year from
+delivery, that each copy of PLECS will conform in all material respects
+to the description of its operation in the documentation. In the event
+that PLECS does not operate as warranted, the licensee's exclusive
+remedy and Plexim's sole liability under this warranty shall be
+a) the correction or workaround by Plexim of major defects within a
+   reasonable time, or
+b) should such correction or workaround prove neither satisfactory nor
+   practical, termination of the relevant  license and refund of the
+   initial license fee paid to Plexim for PLECS.
+
+
+General
+
+To the extent any governing law, treaty, or regulation is in conflict
+with this agreement, the conflicting terms of this agreement shall be
+superseded only to the extent necessary by such law, treaty, or
+regulation. If any provision of this agreement shall be otherwise
+unlawful, void, or otherwise unenforceable, that provision shall be
+enforced to the maximum extent permissible. In either case, the
+remainder of this agreement shall not be affected.
+
+
+3rd Party Licenses
+
+The PLECS software installation package contains 3rd party software
+that is covered by separate license agreements. See the file
+onlinehelp/3rdparty.html for a list of the 3rd party software and the
+respective license agreements.
