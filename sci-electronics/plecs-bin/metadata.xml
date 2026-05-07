@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		PLECS Standalone is a block diagram simulator developed by Plexim
+		for high-speed simulations of power electronic circuits and
+		electrical systems. It combines an intuitive schematic editor
+		with a powerful simulation engine and provides specialized
+		libraries for power semiconductors, electrical machines, thermal
+		modeling and control. This package installs the proprietary
+		Linux 64-bit binary distribution; a valid license from Plexim is
+		required at runtime.
+	</longdescription>
+	<longdescription lang="zh">
+		PLECS Standalone 是 Plexim 公司开发的电力电子电路与电气系统仿真软件，
+		提供直观的电路原理图编辑器和高性能仿真引擎，并内置功率半导体、电机、
+		热模型与控制等专用模型库，可用于电力电子变换器、电机驱动和电网等系统的
+		快速时域仿真。本包提供 Linux 64 位的二进制分发版，运行时需要 Plexim
+		提供的有效许可证。
+	</longdescription>
+</pkgmetadata>

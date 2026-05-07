@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=PLECS
+GenericName=Power Electronics Simulator
+Comment=Block diagram simulator for power electronics and electrical systems
+Exec=plecs %F
+Icon=plecs
+Terminal=false
+Categories=Science;Engineering;Electronics;Simulation;
+MimeType=application/x-plecs;
+StartupNotify=true
