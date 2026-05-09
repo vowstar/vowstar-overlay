@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		A libusb based programming tool for 24Cxx serial EEPROMs using
+		the WinChipHead CH341A IC. Supports reading, writing, erasing
+		and verifying 24c01 through 24c1024 EEPROMs.
+	</longdescription>
+	<longdescription lang="zh">
+		基于 libusb 的 24Cxx 系列串行 EEPROM 编程工具，使用沁恒 CH341A
+		芯片。支持对 24c01 至 24c1024 EEPROM 进行读取、写入、擦除和校验。
+	</longdescription>
+	<upstream>
+		<remote-id type="github">command-tab/ch341eeprom</remote-id>
+	</upstream>
+</pkgmetadata>
