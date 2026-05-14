@@ -125,7 +125,7 @@ src_unpack() {
 }
 
 PATCHES=(
-	"${FILESDIR}"/kicad-10.0.0-fix-cmake4-compat.patch # Bug 970924
+	"${FILESDIR}"/${PN}-10.0.0-fix-cmake4-compat.patch # Bug 970924
 )
 
 src_prepare() {
