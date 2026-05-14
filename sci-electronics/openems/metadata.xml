@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		openEMS is a free and open electromagnetic field solver using the
+		FDTD method. It supports Cartesian and cylindrical coordinates,
+		multi-threading via OpenMP, SIMD acceleration, and a Matlab/Octave
+		scripting interface for setting up simulations.
+	</longdescription>
+	<longdescription lang="zh">
+		openEMS 是一款开源的电磁场仿真求解器，基于 FDTD 时域有限差分法，
+		支持笛卡尔与圆柱坐标系、OpenMP 多线程及 SIMD 加速，并提供
+		Matlab/Octave 脚本接口用于搭建仿真模型。
+	</longdescription>
+	<use>
+		<flag name="mpi">Enable MPI support for distributed simulation</flag>
+	</use>
+	<upstream>
+		<remote-id type="github">thliebig/openEMS</remote-id>
+	</upstream>
+</pkgmetadata>
