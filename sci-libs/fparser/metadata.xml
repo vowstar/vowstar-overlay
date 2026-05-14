@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		Function parser library by Juha Nieminen, openEMS-compatible
+		fork maintained by Thorsten Liebig. Parses and evaluates
+		mathematical expressions at runtime, used by CSXCAD and openEMS.
+	</longdescription>
+	<longdescription lang="zh">
+		由 Juha Nieminen 编写、Thorsten Liebig 维护的 openEMS 兼容版函数
+		解析库。可在运行时解析并求值数学表达式，CSXCAD 与 openEMS 依赖该
+		库实现公式参数化建模。
+	</longdescription>
+	<upstream>
+		<remote-id type="github">thliebig/fparser</remote-id>
+	</upstream>
+</pkgmetadata>
