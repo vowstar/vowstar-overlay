@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		CSXCAD is a C++ library providing primitives, properties and a
+		rectilinear grid for describing electromagnetic CAD geometries.
+		It is the geometry backend used by the openEMS FDTD solver.
+	</longdescription>
+	<longdescription lang="zh">
+		CSXCAD 是用 C++ 编写的几何描述库，提供基元、属性以及矩形栅格等
+		抽象，用来描述电磁仿真所需的 CAD 几何，是 openEMS FDTD 求解器
+		的几何后端。
+	</longdescription>
+	<upstream>
+		<remote-id type="github">thliebig/CSXCAD</remote-id>
+	</upstream>
+</pkgmetadata>
