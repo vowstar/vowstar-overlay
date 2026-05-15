@@ -48,6 +48,10 @@ BDEPEND="
 	l10n_ru? ( dev-texlive/texlive-langcyrillic )
 	l10n_zh? ( dev-texlive/texlive-langchinese )"
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-9.0.9-cmake4-compat.patch
+)
+
 src_configure() {
 	local mycmakeargs=(
 		-DPDF_GENERATOR="DBLATEX"
