@@ -87,6 +87,14 @@ src_install() {
 	else
 		sh ./install-printer.sh || die
 	fi
+
+	# upstream install.sh embeds ${D} into symlink targets; strip it.
+	local link target
+	while IFS= read -r -d '' link; do
+		target="$(readlink "${link}")"
+		[[ "${target}" == "${D}"* ]] || continue
+		ln -sfn "${target#${D}}" "${link}" || die
+	done < <(find "${D}" -type l -print0)
 }
 
 pkg_postinst() {
