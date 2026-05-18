@@ -68,8 +68,18 @@ src_install() {
 	fperms 0755 "${target}"/webengine
 	fperms 0755 "${target}"/webengine.bin
 
-	dosym "../..${target}/PLECS" /usr/bin/plecs
-	dosym "../..${target}/PLECS_server" /usr/bin/plecs-server
+	# Upstream's PLECS shell wrapper resolves its sibling .bin via $0, so a
+	# /usr/bin symlink would make it look for /usr/bin/plecs.bin. Install
+	# thin wrappers that invoke the real launcher by absolute path.
+	cat > "${T}"/plecs <<-EOF || die
+		#!/bin/sh
+		exec "${target}"/PLECS "\$@"
+	EOF
+	cat > "${T}"/plecs-server <<-EOF || die
+		#!/bin/sh
+		exec "${target}"/PLECS_server "\$@"
+	EOF
+	dobin "${T}"/plecs "${T}"/plecs-server
 
 	doicon -s scalable "${FILESDIR}/${MY_PN}.svg"
 	domenu "${FILESDIR}/${MY_PN}.desktop"
