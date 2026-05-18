@@ -30,7 +30,6 @@ RDEPEND="
 	media-libs/libpng:0
 	media-libs/mesa
 	net-print/cups
-	sci-libs/suitesparse
 	sys-apps/dbus
 	virtual/libudev
 	virtual/zlib
