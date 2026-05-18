@@ -19,6 +19,8 @@ KEYWORDS="-* ~amd64"
 
 RESTRICT="strip mirror bindist fetch"
 
+# ZW3D bundles its own Qt 5.9.7 in files/libqt/ and RPATH points there
+# (see src_install below), so the system does not need any dev-qt/*:5.
 RDEPEND="
 	app-arch/bzip2
 	app-arch/xz-utils
@@ -27,11 +29,6 @@ RDEPEND="
 	dev-libs/glib:2
 	dev-libs/libpcre
 	dev-libs/libxml2
-	dev-qt/qtcore:5
-	dev-qt/qtgui:5
-	dev-qt/qtnetwork:5
-	dev-qt/qtprintsupport:5
-	dev-qt/qtsvg:5
 	media-fonts/noto-cjk
 	media-gfx/imagemagick
 	media-libs/freetype
@@ -42,7 +39,7 @@ RDEPEND="
 	media-libs/tiff
 	media-libs/tiff-compat:4
 	net-libs/zeromq
-	sys-libs/zlib
+	virtual/zlib
 	x11-libs/cairo
 	x11-libs/gdk-pixbuf:2
 	x11-libs/gtk+:3
