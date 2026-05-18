@@ -1,17 +1,11 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="8"
 
-if [[ "${PN}" == "davinci-resolve-studio" ]] ; then
-	BASE_NAME="DaVinci_Resolve_Studio_${PV}_Linux"
-	CONFLICT_PKG="!!media-video/davinci-resolve"
-	CHECKREQS_DISK_BUILD=20G
-else
-	BASE_NAME="DaVinci_Resolve_${PV}_Linux"
-	CONFLICT_PKG="!!media-video/davinci-resolve-studio"
-	CHECKREQS_DISK_BUILD=15G
-fi
+# Upstream uses "21.0b3" in the filename; Gentoo PV is 21.0_beta3.
+MY_PV="${PV/_beta/b}"
+BASE_NAME="DaVinci_Resolve_${MY_PV}_Linux"
 ARC_NAME="${BASE_NAME}.zip"
 
 inherit check-reqs desktop udev xdg
@@ -30,13 +24,15 @@ IUSE="doc udev"
 
 RESTRICT="strip mirror bindist fetch"
 
+CHECKREQS_DISK_BUILD=20G
+
+# Resolve 21 bundles its own Qt6 in /opt/resolve/libs/, so no system Qt dep
+# is needed (or possible: it is built against a vendored toolchain).
 RDEPEND="
 	app-arch/libarchive
 	dev-libs/glib
 	dev-libs/log4cxx
 	dev-libs/openssl:=
-	dev-qt/qtcore:5
-	dev-qt/qtsvg:5
 	media-libs/gstreamer
 	media-libs/libpano13
 	media-libs/libpng
@@ -49,7 +45,6 @@ RDEPEND="
 	virtual/opencl
 	x11-libs/gtk+:=
 	x11-misc/xdg-user-dirs
-	${CONFLICT_PKG}
 "
 
 DEPEND="
@@ -78,7 +73,6 @@ src_install() {
 	mkdir -p "${D}/usr/lib/udev/rules.d" || die
 	mkdir -p "${D}/etc/xdg/menus" || die
 
-	# xorriso -osirrox on -indev "${BASE_NAME}".run -extract / "${BASE_NAME}" || die
 	chmod u+x ./"${BASE_NAME}".run || die
 	./"${BASE_NAME}".run --appimage-extract || die
 
