@@ -78,6 +78,9 @@ src_install() {
 
 	pushd squashfs-root/share/panels || die
 	tar -zxvf dvpanel-framework-linux-x86_64.tgz || die
+	# The 21.0 panels tgz extracts lib/ with no owner-write bit, so mv
+	# would fail when removing entries from the read-only source dir.
+	chmod u+w lib || die
 	mv *.so "${S}/squashfs-root/libs" || die
 	mv lib/* "${S}/squashfs-root/libs" || die
 	popd || die
@@ -85,13 +88,10 @@ src_install() {
 	# Use portage manage packages so remove installers
 	rm -rf "${S}"/squashfs-root/installer "${S}"/squashfs-root/installer* "${S}"/squashfs-root/AppRun "${S}"/squashfs-root/AppRun* || die
 
-	# Fix permission to all files
-	chmod 0644 -R "${S}/squashfs-root" || die
-	find "${S}/squashfs-root" -type d -exec chmod 0755 "{}" \; || die
-
-	while IFS= read -r -d '' i; do
-		chmod 0755 "${i}" || die
-	done < <(find "${S}/squashfs-root" -type d -print0)
+	# Normalise permissions. Do directories first (need +x to descend)
+	# then files; chmod -R 0644 would lose +x mid-descent.
+	find "${S}/squashfs-root" -type d -exec chmod 0755 {} \; || die
+	find "${S}/squashfs-root" -type f -exec chmod 0644 {} \; || die
 
 	while IFS= read -r -d '' i; do
 		[[ -f "${i}" && $(od -t x1 -N 4 "${i}") == *"7f 45 4c 46"* ]] || continue
@@ -159,8 +159,6 @@ src_install() {
 	# Install the squashfs-root
 	cp -rf "${S}"/squashfs-root/* "${D}/opt/${PKG_NAME}" || die
 
-	# Setting the right permissions"
-	chown -R root:root "${D}/opt/${PKG_NAME}/"{configs,DolbyVision,easyDCP,Fairlight,logs,Media,'Resolve Disk Database',.crashreport,.license,.LUT} || die
 	# Install launchers and configs
 	pushd "${D}/opt/${PKG_NAME}/" || die
 
