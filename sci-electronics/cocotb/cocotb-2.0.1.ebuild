@@ -18,6 +18,10 @@ KEYWORDS="~amd64 ~arm64 ~riscv ~x86"
 # Tests requires many eda tools, and can't work inside network sandbox
 RESTRICT=test
 
+PATCHES=(
+	"${FILESDIR}"/${P}-python-3.14.patch
+)
+
 RDEPEND="
 	dev-python/find-libpython[${PYTHON_USEDEP}]
 "
