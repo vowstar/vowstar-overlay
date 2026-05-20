@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_EXT=1
-PYTHON_COMPAT=( python3_{11..13} )
+PYTHON_COMPAT=( python3_{11..14} )
 DISTUTILS_USE_PEP517=setuptools
 PYPI_VERIFY_REPO="https://github.com/geopandas/pyogrio"
 inherit distutils-r1 pypi
