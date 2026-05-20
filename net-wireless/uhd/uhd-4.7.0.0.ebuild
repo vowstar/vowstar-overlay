@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..13} )
+PYTHON_COMPAT=( python3_{10..14} )
 MY_PV=e75629c3cfb4d0a654648f775e65e79375cf4f13
 
 inherit cmake gnome2-utils python-single-r1 udev
