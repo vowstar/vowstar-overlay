@@ -72,7 +72,7 @@ COMMON_DEPEND="
 	>=sci-libs/opencascade-7.5.0:0=
 	>=x11-libs/cairo-1.8.8:=
 	>=x11-libs/pixman-0.30
-	>sci-electronics/ngspice-27[shared]
+	>=sci-electronics/ngspice-27.1[shared]
 	virtual/zlib:=
 	x11-libs/wxGTK:${WX_GTK_VER}=[X,opengl]
 	$(python_gen_cond_dep '
