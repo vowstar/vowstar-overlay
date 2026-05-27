@@ -122,6 +122,7 @@ src_unpack() {
 
 PATCHES=(
 	"${FILESDIR}"/${P}-fix-cmake4-compat.patch # Bug 970924
+	"${FILESDIR}"/${P}-gcc16-bitmap2component-link.patch
 )
 
 src_prepare() {
