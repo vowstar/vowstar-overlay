@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -18,7 +18,7 @@ else
 		https://github.com/NVIDIA/${PN}/archive/v${PV/_rc/-rc.}.tar.gz -> ${P}.tar.gz
 	"
 	S="${WORKDIR}/${PN}-${PV/_rc/-rc.}"
-	KEYWORDS="amd64"
+	KEYWORDS="~amd64"
 fi
 
 LICENSE="Apache-2.0"
@@ -31,6 +31,10 @@ RESTRICT="test" # Bug 831702
 RDEPEND="
 	~sys-libs/libnvidia-container-${PV}
 "
+
+PATCHES=(
+	"${FILESDIR}/${PN}-1.19.0-no-prestrip.patch"
+)
 
 src_compile() {
 	emake binaries
