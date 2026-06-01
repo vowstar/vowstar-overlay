@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		ptouch-rs is a Rust driver and toolset for Brother P-Touch USB label
+		printers. It provides a command-line tool (ptouch) and an optional GUI
+		(ptouch-gui) to print text and image labels, compose multi-element
+		labels, chain print, feed and cut tape, and export labels to image
+		files without a printer connected.
+	</longdescription>
+	<longdescription lang="zh">
+		ptouch-rs 是用 Rust 编写的 Brother P-Touch USB 标签打印机驱动与工具集。
+		它提供命令行工具 ptouch 以及可选的图形界面 ptouch-gui，可打印文本和图片
+		标签、组合多元素标签、连续打印、走纸与切纸，并支持在不连接打印机的情况下
+		将标签导出为图片文件。
+	</longdescription>
+	<use>
+		<flag name="gui">Build the ptouch-gui graphical label editor
+			(egui/wgpu based)</flag>
+	</use>
+	<upstream>
+		<maintainer status="active">
+			<email>vowstar@gmail.com</email>
+			<name>Huang Rui</name>
+		</maintainer>
+		<bugs-to>https://github.com/vowstar/ptouch-rs/issues</bugs-to>
+		<remote-id type="github">vowstar/ptouch-rs</remote-id>
+	</upstream>
+</pkgmetadata>
