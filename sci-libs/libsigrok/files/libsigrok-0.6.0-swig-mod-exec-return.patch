@@ -1,0 +1,25 @@
+https://bugs.gentoo.org/878395
+
+Fix Python bindings build with SWIG >= 4.3 (multi-phase module init).
+
+SWIG 4.3+ emits the user %init block into SWIG_mod_exec(PyObject *),
+which returns int (a Py_mod_exec slot). The hand-written "return nullptr"
+on the GLib-import failure path cannot convert to int, so the C++ wrapper
+fails to compile under Python 3.13/3.14:
+
+  classes_wrap.cpp: In function 'int SWIG_mod_exec(PyObject*)':
+  error: cannot convert 'std::nullptr_t' to 'int' in return
+
+Return -1 instead, the correct failure value for a Py_mod_exec slot.
+
+--- a/bindings/python/sigrok/core/classes.i
++++ b/bindings/python/sigrok/core/classes.i
+@@ -73,7 +73,7 @@
+      */
+     if (!GLib) {
+         fprintf(stderr, "Import of gi.repository.GLib failed.\n");
+-        return nullptr;
++        return -1;
+     }
+     import_array();
+ %}

@@ -86,6 +86,7 @@ BDEPEND="
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-0.6.0-sipeed-slogic.patch
+	"${FILESDIR}"/${PN}-0.6.0-swig-mod-exec-return.patch
 )
 
 pkg_setup() {
