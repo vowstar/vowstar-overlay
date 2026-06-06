@@ -4,18 +4,17 @@
 EAPI=8
 
 PYTHON_COMPAT=( python3_{12..14} )
-USE_RUBY="ruby32 ruby33 ruby34"
+USE_RUBY="ruby32 ruby33 ruby34 ruby40"
 RUBY_OPTIONAL="yes"
-inherit python-r1 java-pkg-opt-2 ruby-ng udev xdg-utils
+inherit autotools python-r1 java-pkg-opt-2 ruby-ng udev xdg-utils
 
 case ${PV} in
 *9999*)
 	EGIT_REPO_URI="https://github.com/sigrokproject/${PN}.git"
-	inherit git-r3 autotools
+	inherit git-r3
 	S="${WORKDIR}"/${P}
 	;;
 *_p*)
-	inherit autotools
 	COMMIT="0bc2487778e660f4d3116729b6f4aee2b1996bb0"
 	SRC_URI="https://github.com/sigrokproject/${PN}/archive/${COMMIT}.tar.gz -> ${PN}-${COMMIT:0:7}.tar.gz"
 	S="${WORKDIR}"/${PN}-${COMMIT}
@@ -113,6 +112,12 @@ each_ruby_prepare() {
 }
 
 src_prepare() {
+	# Sipeed SLogic driver sources, kept out of the build-glue patch so no
+	# single FILESDIR file trips pkgcheck FileSize. Must land before the
+	# ruby/python source copies so every build tree gets them.
+	mkdir -p src/hardware/sipeed-slogic-analyzer || die
+	cp "${FILESDIR}"/sipeed-slogic-analyzer/{api.c,protocol.c,protocol.h} \
+		src/hardware/sipeed-slogic-analyzer/ || die
 	if use ruby; then
 		# copy source to where ruby-ng_src_unpack puts it
 		cp -rl "${S}" "${WORKDIR}"/all || die
