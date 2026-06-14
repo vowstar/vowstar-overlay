@@ -8,7 +8,7 @@ EGO_PN="github.com/NVIDIA/${PN}"
 inherit go-module
 
 DESCRIPTION="NVIDIA container runtime toolkit"
-HOMEPAGE="https://github.com/NVIDIA/container-toolkit"
+HOMEPAGE="https://github.com/NVIDIA/nvidia-container-toolkit"
 
 if [[ "${PV}" == "9999" ]] ; then
 	inherit git-r3
@@ -31,6 +31,9 @@ RESTRICT="test" # Bug 831702
 RDEPEND="
 	~sys-libs/libnvidia-container-${PV}
 "
+
+# go.mod requires a newer Go than go-module.eclass guarantees (bug 976194)
+BDEPEND=">=dev-lang/go-1.25.0"
 
 PATCHES=(
 	"${FILESDIR}/${PN}-1.19.0-no-prestrip.patch"
