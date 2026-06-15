@@ -24,9 +24,13 @@ SLOT="0"
 IUSE="debug doc examples static-libs"
 REQUIRED_USE="examples? ( doc )"
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-2.3.4-arch-pthreads-fallback.patch
+)
+
 src_prepare() {
 	default
-	eautoconf --force
+	eautoreconf
 }
 
 src_configure() {
