@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		fake-battery-nut bridges a UPS monitored by NUT (Network UPS Tools)
+		into a virtual laptop battery. A small kernel module exposes BAT0 and
+		AC0 devices under /sys/class/power_supply, and a userspace daemon polls
+		upsc and feeds charge, runtime, voltage and status into the module
+		through /dev/fake_battery_nut. UPower and desktop environments such as
+		KDE and GNOME then show the UPS as a battery and can react to low-power
+		events.
+	</longdescription>
+	<longdescription lang="zh">
+		fake-battery-nut 把由 NUT（Network UPS Tools）监控的 UPS 伪装成一块虚拟
+		笔记本电池。内核模块在 /sys/class/power_supply 下创建 BAT0 与 AC0 设备，
+		用户态守护进程轮询 upsc，并通过 /dev/fake_battery_nut 把电量、剩余时间、
+		电压和状态写入模块。这样 UPower 以及 KDE、GNOME 等桌面环境就能把 UPS
+		当作电池显示，并在低电量时触发相应的电源管理动作。
+	</longdescription>
+	<upstream>
+		<remote-id type="github">aaronsb/fake-battery-nut</remote-id>
+		<bugs-to>https://github.com/aaronsb/fake-battery-nut/issues</bugs-to>
+	</upstream>
+</pkgmetadata>

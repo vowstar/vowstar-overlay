@@ -1,0 +1,14 @@
+[Unit]
+Description=NUT UPS to Fake Battery Bridge
+After=nut-server.service
+Wants=nut-server.service
+
+[Service]
+Type=simple
+Environment=NUT_UPS=cyberpower@localhost
+ExecStart=/usr/bin/nut-to-fakebattery
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
