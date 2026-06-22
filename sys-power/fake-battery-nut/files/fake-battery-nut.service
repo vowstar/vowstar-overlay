@@ -6,6 +6,7 @@ Wants=nut-server.service
 [Service]
 Type=simple
 Environment=NUT_UPS=cyberpower@localhost
+EnvironmentFile=-/etc/conf.d/fake-battery-nut
 ExecStart=/usr/bin/nut-to-fakebattery
 Restart=on-failure
 RestartSec=5
