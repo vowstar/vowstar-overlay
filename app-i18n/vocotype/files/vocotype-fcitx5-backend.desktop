@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=VoCoType Fcitx5 Backend
-Exec=sh -c 'systemctl --user --no-block start vocotype-fcitx5-backend.service 2>/dev/null || exec /usr/bin/vocotype-fcitx5-backend'
-Hidden=false
-NoDisplay=true
-X-KDE-autostart-after=panel
