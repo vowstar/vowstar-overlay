@@ -102,6 +102,8 @@ CRATES="
 	crossbeam-epoch@0.9.18
 	crossbeam-utils@0.8.21
 	crunchy@0.2.4
+	csv-core@0.1.13
+	csv@1.4.0
 	cursor-icon@1.2.0
 	data-url@0.3.2
 	dispatch2@0.3.1
@@ -359,6 +361,7 @@ CRATES="
 	rustix@1.1.4
 	rustversion@1.0.22
 	rustybuzz@0.20.1
+	ryu@1.0.23
 	same-file@1.0.6
 	scoped-tls@1.0.1
 	scopeguard@1.2.0
@@ -369,6 +372,7 @@ CRATES="
 	serde_derive@1.0.228
 	serde_json@1.0.149
 	serde_repr@0.1.20
+	serde_spanned@0.6.9
 	shlex@1.3.0
 	signal-hook-registry@1.4.8
 	simd-adler32@0.3.8
@@ -408,9 +412,13 @@ CRATES="
 	tinystr@0.8.2
 	tinyvec@1.10.0
 	tinyvec_macros@0.1.1
+	toml@0.8.23
+	toml_datetime@0.6.11
 	toml_datetime@1.0.0+spec-1.1.0
+	toml_edit@0.22.27
 	toml_edit@0.25.4+spec-1.1.0
 	toml_parser@1.0.9+spec-1.1.0
+	toml_write@0.1.2
 	tracing-attributes@0.1.31
 	tracing-core@0.1.36
 	tracing@0.1.44
@@ -574,7 +582,7 @@ SRC_URI="
 	${CARGO_CRATE_URIS}
 "
 
-LICENSE="MIT"
+LICENSE="MIT GPL-3+"
 # Dependent crate licenses
 LICENSE+="
 	Apache-2.0 Boost-1.0 BSD BSD-2 CC0-1.0 ISC MIT OFL-1.1
