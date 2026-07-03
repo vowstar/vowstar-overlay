@@ -1,4 +1,4 @@
-# Copyright 2025 Gentoo Authors
+# Copyright 2025-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -26,12 +26,26 @@ KEYWORDS="~amd64 ~arm64 ~x86"
 
 RDEPEND="
 	dev-python/typing-extensions[${PYTHON_USEDEP}]
-	dev-python/tomli[${PYTHON_USEDEP}]
 	dev-python/pyyaml[${PYTHON_USEDEP}]
 	dev-python/pyjson5[${PYTHON_USEDEP}]
 "
 
 distutils_enable_tests pytest
+
+python_prepare_all() {
+	# Use the stdlib tomllib (identical API and error output, present since
+	# py3.11) instead of the deprecated dev-python/tomli.  Rewrite both import
+	# forms: the module aliases keep the tomli.* call sites, and the test
+	# imports TOMLDecodeError from tomllib so its isinstance check still holds.
+	local f
+	while IFS= read -r -d '' f; do
+		sed -i \
+			-e 's/^import tomli$/import tomllib as tomli/' \
+			-e 's/^from tomli import/from tomllib import/' \
+			"${f}" || die
+	done < <(grep -rlZ "tomli" --include=*.py .)
+	distutils-r1_python_prepare_all
+}
 
 python_test() {
 	# Remove pytest.ini addopts that require pytest-timeout and pytest-cov
