@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -7,7 +7,9 @@ inherit latex-package
 
 DESCRIPTION="Typeset tabulars and arrays with LATEX3"
 HOMEPAGE="https://www.ctan.org/pkg/tabularray/"
-SRC_URI="https://mirrors.ctan.org/macros/latex/contrib/tabularray.zip -> ${P}.zip"
+SRC_URI="https://github.com/lvjr/tabularray/archive/refs/tags/2025C.tar.gz -> ${P}.tar.gz"
+
+S="${WORKDIR}/${PN}-2025C"
 
 LICENSE="LPPL-1.3c"
 SLOT="0"
@@ -21,17 +23,13 @@ RDEPEND="
 	dev-texlive/texlive-plaingeneric
 "
 DEPEND="${RDEPEND}"
-BDEPEND="
-	${RDEPEND}
-	app-arch/unzip
-"
+BDEPEND="${RDEPEND}"
 
 TEXMF="/usr/share/texmf-site"
-S=${WORKDIR}/${PN}
 
 src_install() {
 	latex-package_src_doinstall styles
-	dodoc README.txt
+	dodoc README.md
 	if use doc ; then
 		latex-package_src_doinstall pdf
 	fi
