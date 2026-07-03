@@ -30,6 +30,9 @@ RDEPEND="
 	dev-python/pyjson5[${PYTHON_USEDEP}]
 "
 
+# The test suite only uses the built-in parametrize marker, so no pytest
+# plugins are needed.  Declaring an empty set also disables plugin autoloading.
+EPYTEST_PLUGINS=()
 distutils_enable_tests pytest
 
 python_prepare_all() {
