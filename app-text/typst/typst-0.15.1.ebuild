@@ -1,9 +1,9 @@
-# Copyright 2024-2025 Gentoo Authors
+# Copyright 2024-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-RUST_MIN_VER="1.89"
+RUST_MIN_VER="1.92"
 
 inherit cargo shell-completion
 
@@ -16,7 +16,7 @@ if [[ ${PV} == 9999 ]]; then
 else
 	SRC_URI="
 		https://github.com/${PN}/${PN}/archive/v${PV}/${P}.tar.gz
-		https://github.com/odrling/typst/releases/download/v${PV}/typst-vendor.tar.xz -> ${P}-vendor.tar.xz
+		https://github.com/odrling/typst/releases/download/v${PV}-vendor/typst-vendor.tar.xz -> ${P}-vendor.tar.xz
 	"
 	KEYWORDS="~amd64 ~arm64"
 fi
@@ -66,7 +66,8 @@ src_prepare() {
 src_compile() {
 	if [[ ${PV} != 9999 ]]; then
 		local GIT_HASH=$(gunzip < "${DISTDIR}/${P}.tar.gz" | git get-tar-commit-id)
-		export TYPST_VERSION="${PV} (${GIT_HASH::8})"
+		export TYPST_COMMIT_SHA="${GIT_HASH}"
+		export TYPST_VERSION="${PV}"
 	fi
 	export GEN_ARTIFACTS="artifacts/"
 
