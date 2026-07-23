@@ -21,7 +21,7 @@ else
 	S="${WORKDIR}/${MY_P}"
 
 	if [[ ${PV} != *_rc* ]] ; then
-		KEYWORDS="~amd64 ~arm64 ~riscv ~x86"
+		KEYWORDS="amd64 ~arm64 ~riscv ~x86"
 	fi
 fi
 
@@ -121,7 +121,7 @@ src_unpack() {
 }
 
 PATCHES=(
-	"${FILESDIR}"/${P}-fix-cmake4-compat.patch # Bug 970924
+	"${FILESDIR}"/${PN}-9.0.6-fix-cmake4-compat.patch # Bug 970924
 	"${FILESDIR}"/${P}-gcc16-bitmap2component-link.patch
 )
 
