@@ -1,4 +1,4 @@
-# Copyright 1999-2025 Gentoo Authors
+# Copyright 1999-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="8"
@@ -8,7 +8,7 @@ inherit desktop unpacker xdg
 DESCRIPTION="GUI Guider is a user-friendly GUI development tool for LVGL"
 HOMEPAGE="https://www.nxp.com/design/design-center/software/development-software/gui-guider"
 SRC_URI="
-	Gui-Guider-Setup-${PV}-GA.deb
+	GUIGuider-${PV}-amd64.deb
 "
 S="${WORKDIR}"
 
@@ -19,19 +19,21 @@ KEYWORDS="-* ~amd64"
 RESTRICT="bindist fetch strip"
 
 RDEPEND="
+	app-accessibility/at-spi2-core
 	dev-libs/libayatana-appindicator
 	dev-libs/libffi
 	dev-libs/nss
 	media-libs/libsdl2
-	media-libs/vips
+	virtual/libusb:1
 	x11-libs/libnotify
+	x11-libs/libXScrnSaver
 	x11-libs/libXtst
 "
 DEPEND="${RDEPEND}"
 BDEPEND="dev-util/patchelf"
 
 QA_PREBUILT="*"
-DOCS=( "opt/Gui-Guider/EULA.txt" )
+DOCS=( "opt/GUIGuider/EULA.html" )
 
 pkg_nofetch() {
 	einfo "${PN} requires you to accept their license agreement before downloading."
@@ -43,32 +45,24 @@ pkg_nofetch() {
 
 src_install() {
 	insinto "/opt"
-	doins -r opt/Gui-Guider
+	doins -r opt/GUIGuider
 	# Fix RPATHs to ensure the libraries can be found
-	pushd "${D}/opt/Gui-Guider" || die
+	pushd "${D}/opt/GUIGuider" || die
 	for f in $(find .) ; do
 		[[ -f "${f}" && $(od -t x1 -N 4 "${f}") == *"7f 45 4c 46"* ]] || continue
-		fperms 0755 "/opt/Gui-Guider/${f}"
-		[[ "${f: -4}" != ".cfx" ]] || continue
-		patchelf --set-rpath "/opt/Gui-Guider" "${f}" || die "patchelf failed on ${f}"
+		fperms 0755 "/opt/GUIGuider/${f}"
 	done
 	popd || die
-	for f in $(find "${D}/opt/Gui-Guider/environment/LinkServer/linux/binaries") ; do
+	local linkserver="/opt/GUIGuider/resources/assets/LinkServer/linux/binaries"
+	pushd "${D}${linkserver}" || die
+	for f in $(find .) ; do
 		[[ -f "${f}" && $(od -t x1 -N 4 "${f}") == *"7f 45 4c 46"* ]] || continue
+		# .cfx are statically linked ARM flash algorithms
 		[[ "${f: -4}" != ".cfx" ]] || continue
-		patchelf --set-rpath \
-"/opt/Gui-Guider/environment/LinkServer/linux/binaries:\
-/opt/Gui-Guider/environment/LinkServer/linux/dist:\
-/opt/Gui-Guider/environment/LinkServer/linux/MCU-LINK_installer/bin:\
-/opt/Gui-Guider/environment/LinkServer/linux/dist/lib-dynload" \
-			"${f}" || die "patchelf failed on ${f}"
+		patchelf --set-rpath "${linkserver}" "${f}" || die "patchelf failed on ${f}"
 	done
-	for i in 16 32 64 128 256 512; do
-		png_file="usr/share/icons/hicolor/${i}x${i}/apps/Gui-Guider.png"
-		if [ -e "${png_file}" ]; then
-			newicon -s "${i}" "${png_file}" "Gui-Guider.png"
-		fi
-	done
-	domenu "usr/share/applications/Gui-Guider.desktop"
+	popd || die
+	newicon -s 512 "usr/share/icons/hicolor/512x512/apps/guiguider.png" "guiguider.png"
+	domenu "usr/share/applications/guiguider.desktop"
 	einstalldocs
 }
