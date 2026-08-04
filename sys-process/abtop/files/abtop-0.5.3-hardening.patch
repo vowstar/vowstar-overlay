@@ -1,0 +1,172 @@
+diff --git a/src/app.rs b/src/app.rs
+index c9de3cc..cc7f62e 100644
+--- a/src/app.rs
++++ b/src/app.rs
+@@ -76,0 +77,7 @@ pub enum NarrowSection {
++struct KillConfirmation {
++    pid: u32,
++    session_id: String,
++    started_at: String,
++    created_at: Instant,
++}
++
+@@ -114,2 +121 @@ pub struct App {
+-    /// Kill confirmation: (selected_index, timestamp). Expires after 2s.
+-    kill_confirm: Option<(usize, Instant)>,
++    kill_confirm: Option<KillConfirmation>,
+@@ -714,2 +720,6 @@ impl App {
+-        let session = &self.sessions[self.selected];
+-        if matches!(session.status, SessionStatus::Done | SessionStatus::Unknown) {
++        let pid = self.sessions[self.selected].pid;
++        let session_id = self.sessions[self.selected].session_id.clone();
++        if matches!(
++            self.sessions[self.selected].status,
++            SessionStatus::Done | SessionStatus::Unknown
++        ) {
+@@ -719,15 +729,10 @@ impl App {
+-        // Check if we have a pending confirmation for this exact session
+-        if let Some((idx, ts)) = self.kill_confirm.take() {
+-            if idx == self.selected && ts.elapsed().as_secs() < 2 {
+-                // Confirmed — verify PID still runs a killable agent before killing
+-                let pid = session.pid;
+-                let verified = std::process::Command::new("ps")
+-                    .args(["-p", &pid.to_string(), "-o", "command="])
+-                    .output()
+-                    .ok()
+-                    .map(|output| {
+-                        let cmd = String::from_utf8_lossy(&output.stdout).trim().to_string();
+-                        is_killable_agent_command(&cmd)
+-                    })
+-                    .unwrap_or(false);
+-                if !verified {
++        if let Some(confirm) = self.kill_confirm.take() {
++            if confirm.pid == pid
++                && confirm.session_id == session_id
++                && confirm.created_at.elapsed().as_secs() < 2
++            {
++                let same_process = process_started_at(pid)
++                    .is_some_and(|started_at| started_at == confirm.started_at);
++                let verified = process_command(pid)
++                    .is_some_and(|command| is_killable_agent_command(&command));
++                if !same_process || !verified {
+@@ -748 +753 @@ impl App {
+-            .get(&session.session_id)
++            .get(&session_id)
+@@ -750,2 +755,11 @@ impl App {
+-            .unwrap_or_else(|| format!("PID {}", session.pid));
+-        self.kill_confirm = Some((self.selected, Instant::now()));
++            .unwrap_or_else(|| format!("PID {}", pid));
++        let Some(started_at) = process_started_at(pid) else {
++            self.set_status(format!("PID {} is no longer running", pid));
++            return;
++        };
++        self.kill_confirm = Some(KillConfirmation {
++            pid,
++            session_id,
++            started_at,
++            created_at: Instant::now(),
++        });
+@@ -931,0 +946,24 @@ fn generate_summary(prompt: &str, assistant_text: &str) -> Option<String> {
++fn process_command(pid: u32) -> Option<String> {
++    let output = std::process::Command::new("ps")
++        .args(["-p", &pid.to_string(), "-o", "command="])
++        .output()
++        .ok()?;
++    if !output.status.success() {
++        return None;
++    }
++    let command = String::from_utf8_lossy(&output.stdout).trim().to_string();
++    (!command.is_empty()).then_some(command)
++}
++
++fn process_started_at(pid: u32) -> Option<String> {
++    let output = std::process::Command::new("ps")
++        .args(["-p", &pid.to_string(), "-o", "lstart="])
++        .output()
++        .ok()?;
++    if !output.status.success() {
++        return None;
++    }
++    let started_at = String::from_utf8_lossy(&output.stdout).trim().to_string();
++    (!started_at.is_empty()).then_some(started_at)
++}
++
+diff --git a/src/collector/claude.rs b/src/collector/claude.rs
+index 5bd94ef..0c8638c 100644
+--- a/src/collector/claude.rs
++++ b/src/collector/claude.rs
+@@ -146,0 +147,3 @@ impl ClaudeCollector {
++                if entry.file_type().map(|ft| ft.is_symlink()).unwrap_or(true) {
++                    continue;
++                }
+@@ -305,0 +309,3 @@ impl ClaudeCollector {
++        if is_symlink(path) {
++            return None;
++        }
+@@ -308,0 +315,3 @@ impl ClaudeCollector {
++        if !is_safe_session_id(&sf.session_id) {
++            return None;
++        }
+@@ -1043,0 +1053,3 @@ fn build_discovery_context(
++        if is_symlink(path) {
++            continue;
++        }
+@@ -1050,0 +1063,3 @@ fn build_discovery_context(
++        if !is_safe_session_id(&sf.session_id) {
++            continue;
++        }
+@@ -1157,0 +1173,3 @@ fn find_live_session_id(
++        if !is_safe_session_id(stem) {
++            continue;
++        }
+@@ -1261,0 +1280,9 @@ fn is_symlink(path: &Path) -> bool {
++fn is_safe_session_id(session_id: &str) -> bool {
++    !session_id.is_empty()
++        && session_id != "."
++        && session_id != ".."
++        && !session_id
++            .chars()
++            .any(|c| c.is_control() || c == '/' || c == '\\')
++}
++
+@@ -2031,0 +2059,15 @@ mod tests {
++    #[test]
++    fn safe_session_id_rejects_path_components() {
++        assert!(is_safe_session_id("a1b2c3d4-5678_test"));
++        assert!(is_safe_session_id("session.jsonl"));
++        assert!(is_safe_session_id("session name"));
++        assert!(is_safe_session_id("\u{4f1a}\u{8bdd}"));
++        assert!(!is_safe_session_id(""));
++        assert!(!is_safe_session_id("."));
++        assert!(!is_safe_session_id(".."));
++        assert!(!is_safe_session_id("../secret"));
++        assert!(!is_safe_session_id("nested/session"));
++        assert!(!is_safe_session_id("nested\\session"));
++        assert!(!is_safe_session_id("session\nname"));
++    }
++
+diff --git a/src/lib.rs b/src/lib.rs
+index b393efc..624d254 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -447 +447 @@ fn print_snapshot(app: &App) {
+-            let profile = server.profile.as_deref().unwrap_or("default");
++            let profile = sanitize_output(server.profile.as_deref().unwrap_or("default"));
+@@ -450 +450,6 @@ fn print_snapshot(app: &App) {
+-                server.pid, server.parent_cli, profile, active, total, last_age
++                server.pid,
++                sanitize_output(server.parent_cli),
++                profile,
++                active,
++                total,
++                last_age
+@@ -464,5 +469 @@ fn print_snapshot(app: &App) {
+-        let sid_short = if session.session_id.len() >= 7 {
+-            &session.session_id[..7]
+-        } else {
+-            &session.session_id
+-        };
++        let sid_short: String = session.session_id.chars().take(7).collect();
+@@ -477 +478 @@ fn print_snapshot(app: &App) {
+-            session.model.replace("claude-", ""),
++            sanitize_output(&session.model.replace("claude-", "")),

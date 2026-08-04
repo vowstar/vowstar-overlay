@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		abtop monitors local coding agent sessions in a terminal dashboard.
+		It displays token usage, context consumption, rate limits, child
+		processes, listening ports, Git state, and host resource usage.
+	</longdescription>
+	<longdescription lang="zh">
+		abtop 是用于监控本地编程智能体会话的终端仪表板。
+		它可显示令牌用量、上下文占用、速率限制、子进程、
+		监听端口、Git 状态和主机资源用量。
+	</longdescription>
+	<upstream>
+		<remote-id type="github">graykode/abtop</remote-id>
+	</upstream>
+</pkgmetadata>
