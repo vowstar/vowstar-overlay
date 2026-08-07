@@ -20,10 +20,9 @@ CRATES="
 "
 
 declare -A GIT_CRATES=(
-	[crossterm]='https://github.com/nornagon/crossterm;87db8bfa6dc99427fd3b071681b07fc31c6ce995;crossterm-%commit%'
+	[crossterm]='https://github.com/openai-oss-forks/crossterm;f69a4a0499f2fdc7d5d222df32373ffffe9ba3f5;crossterm-%commit%'
 	[nucleo-matcher]='https://github.com/helix-editor/nucleo;4253de9faabb4e5c6d81d946a5e35a90f87347ee;nucleo-%commit%/matcher'
 	[nucleo]='https://github.com/helix-editor/nucleo;4253de9faabb4e5c6d81d946a5e35a90f87347ee;nucleo-%commit%'
-	[ratatui]='https://github.com/nornagon/ratatui;9b2ad1298408c45918ee9f8241a6f95498cdbed2;ratatui-%commit%'
 	[runfiles]='https://github.com/dzbarsky/rules_rust;b56cbaa8465e74127f1ea216f813cd377295ad81;rules_rust-%commit%/rust/runfiles'
 	[tokio-tungstenite]='https://github.com/openai-oss-forks/tokio-tungstenite;0e5b2d73aa18dd9f0a50ee9ff199d5aef7594186;tokio-tungstenite-%commit%'
 	[tungstenite]='https://github.com/openai-oss-forks/tungstenite-rs;4fffad30fe373adbdcffab9545e9e9bf4f2fc19f;tungstenite-rs-%commit%'
@@ -32,7 +31,7 @@ declare -A GIT_CRATES=(
 RUST_MIN_VER="1.95.0"
 
 # python3 .github/scripts/rusty_v8_bazel.py resolved-v8-crate-version
-RUSTY_V8_TAG="149.2.0"
+RUSTY_V8_TAG="150.4.0"
 
 inherit cargo check-reqs toolchain-funcs
 
@@ -124,7 +123,6 @@ src_prepare() {
 
 	[patch.crates-io]
 	crossterm = { path = "$(gen_git_crate_dir crossterm)" }
-	ratatui = { path = "$(gen_git_crate_dir ratatui)" }
 	tokio-tungstenite = { path = "$(gen_git_crate_dir tokio-tungstenite)" }
 	tungstenite = { path = "$(gen_git_crate_dir tungstenite)" }
 	EOF
