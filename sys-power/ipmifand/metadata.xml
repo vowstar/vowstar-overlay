@@ -9,19 +9,26 @@
 		<remote-id type="github">vowstar/ipmifand</remote-id>
 	</upstream>
 	<longdescription lang="en">
-		ipmifand is a small C daemon that drives Supermicro IPMI fan zones
-		from CPU temperature (via ipmitool sensor) and disk temperature
-		(via smartctl). It supports two independent fan zones with separate
-		update intervals, PWM bounds, and linear-interpolated
-		temperature-to-PWM curves defined in INI configuration. On graceful
-		exit it restores BIOS automatic fan control so the hardware does
-		not sit at the last manual PWM after the daemon stops.
+		ipmifand is a small C daemon that controls server fans through IPMI
+		from CPU temperature (via ipmitool) and disk temperature (via
+		smartctl). One binary supports several hardware profiles selected in
+		INI configuration: named profiles for Supermicro X10DRC, Supermicro
+		X10DRU-i+, and ASRock Rack X570D4U-2L2T boards that verify the DMI
+		vendor and board name, plus a command-template mode compatible with
+		earlier releases. The named profiles use the local /dev/ipmi0
+		interface, apply 100 percent duty on start, on any sensor, disk, RPM,
+		or command failure, and before exit, and only follow the configured
+		temperature-to-duty curves after the board passes its readback
+		checks.
 	</longdescription>
 	<longdescription lang="zh">
-		ipmifand 是一个小型 C 守护进程，根据 CPU 温度（通过 ipmitool sensor）
-		和磁盘温度（通过 smartctl）驱动 Supermicro IPMI 风扇分区。支持两个
-		独立的风扇分区，分别配置更新间隔、PWM 上下限以及通过 INI 配置文件
-		定义的温度-PWM 线性插值曲线。守护进程正常退出时会恢复 BIOS 自动
-		风扇控制，避免硬件停留在最后的手动 PWM 设定。
+		ipmifand 是一个小型 C 守护进程，根据 CPU 温度（通过 ipmitool）和磁盘
+		温度（通过 smartctl）经由 IPMI 控制服务器风扇。单个二进制通过 INI
+		配置选择多种硬件 profile：适用于 Supermicro X10DRC、Supermicro
+		X10DRU-i+ 和 ASRock Rack X570D4U-2L2T 主板的命名 profile（会校验 DMI
+		厂商与板型），以及兼容早期版本的命令模板模式。命名 profile 使用本地
+		/dev/ipmi0 接口，在启动、任何传感器/磁盘/RPM/命令故障以及退出前都将
+		占空比设为 100%，仅在主板通过回读校验后才按配置的温度-占空比曲线
+		调速。
 	</longdescription>
 </pkgmetadata>

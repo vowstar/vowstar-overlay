@@ -5,7 +5,7 @@ EAPI=8
 
 inherit systemd toolchain-funcs
 
-DESCRIPTION="Daemon driving Supermicro IPMI fan zones from CPU and disk temperatures"
+DESCRIPTION="Profile-driven fail-safe IPMI fan daemon for Supermicro and ASRock Rack boards"
 HOMEPAGE="https://github.com/vowstar/ipmifand"
 SRC_URI="https://github.com/vowstar/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
 
@@ -34,6 +34,10 @@ _emake_args() {
 
 src_compile() {
 	emake $(_emake_args)
+}
+
+src_test() {
+	emake $(_emake_args) check
 }
 
 src_install() {
