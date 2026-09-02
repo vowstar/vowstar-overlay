@@ -23,6 +23,6 @@ RDEPEND="
 	hangul? ( app-i18n/fcitx-hangul:${SLOT} )
 	lua? ( app-i18n/fcitx-lua:${SLOT} )
 	m17n? ( app-i18n/fcitx-m17n:${SLOT} )
-	qt6? ( app-i18n/fcitx-qt:${SLOT}[qt6?] )
+	qt6? ( app-i18n/fcitx-qt:${SLOT} )
 	rime? ( app-i18n/fcitx-rime:${SLOT} )
 "
