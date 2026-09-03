@@ -53,3 +53,7 @@ src_install() {
 
 	dosym "../$(get_libdir)/node_modules/@deepseek-ai/dsh/lib/bin.js" "/usr/bin/dsh"
 }
+
+pkg_postinst() {
+	elog "Run 'dsh web' (browser UI) or 'dsh --profile headless \"task\"' (one-shot); see 'dsh --help' for all profiles."
+}
