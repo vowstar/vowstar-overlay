@@ -29,6 +29,7 @@ QA_PREBUILT="
 "
 
 RDEPEND=">=net-libs/nodejs-22.19"
+
 src_prepare() {
 	default
 	# amd64 only ships the linux-x64 prebuilds.
@@ -37,16 +38,16 @@ src_prepare() {
 		"${S}"/node_modules/node-pty/prebuilds/linux-arm64 || die
 	# koffi-linux-x64 ships glibc and musl builds; keep the active libc.
 	if use elibc_musl; then
-		rm -rf "${S}"/node_modules/@koromix/koffi-linux-x64/linux_x64
+		rm -rf "${S}"/node_modules/@koromix/koffi-linux-x64/linux_x64 || die
 	else
-		rm -rf "${S}"/node_modules/@koromix/koffi-linux-x64/musl_x64
+		rm -rf "${S}"/node_modules/@koromix/koffi-linux-x64/musl_x64 || die
 	fi
 }
 
 src_install() {
 	local install_dir="/usr/$(get_libdir)/node_modules/@deepseek-ai/dsh"
 
-	insinto "${install_dir#${EPREFIX}}"
+	insinto "${install_dir}"
 	doins -r "${S}"/*
 
 	fperms +x "${install_dir}/lib/bin.js"
