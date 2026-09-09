@@ -30,6 +30,9 @@ src_prepare() {
 	# Boost >=1.69 made the system library header-only; drop it from the
 	# component list so find_package(Boost) succeeds on modern Boost.
 	sed -i -e '/^[[:space:]]*system$/d' CMakeLists.txt || die
+	# HDF5 2.x dropped the h5hlcc wrapper, so a versioned find_package(HDF5)
+	# cannot resolve the HL component. Upstream master did the same.
+	sed -i -e 's/HDF5 1.8 COMPONENTS/HDF5 COMPONENTS/' CMakeLists.txt || die
 	cmake_src_prepare
 }
 
