@@ -28,6 +28,8 @@ RDEPEND="
 "
 DEPEND="${RDEPEND}"
 
+PATCHES=( "${FILESDIR}/${P}-hdf5-version-check.patch" )
+
 src_prepare() {
 	# Boost >=1.69 made the system library header-only; drop it from the
 	# component list so find_package(Boost) succeeds on modern Boost.
