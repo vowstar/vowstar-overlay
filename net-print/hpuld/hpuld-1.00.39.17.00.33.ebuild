@@ -22,6 +22,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~arm64 ~loong ~mips"
 
 IUSE="+scanner"
+RESTRICT="mirror bindist"
 
 RDEPEND="
 	dev-libs/libusb
