@@ -3,7 +3,7 @@
 
 EAPI=8
 
-MY_LLVM_PV="040a641988f6ed6f4fab250706ca2b620c1de2d8"
+MY_LLVM_PV="6279700538792da0c5a08e17babfe9b6e824c69f"
 CMAKE_BUILD_TYPE="Release"
 PYTHON_COMPAT=( python3_{12..14} )
 inherit cmake python-r1
@@ -57,6 +57,12 @@ DOCS=(
 	"${S_LLVM}/mlir/mlir-LICENSE.TXT"
 	"${S_CIRCT}/circt-LICENSE"
 )
+
+src_prepare() {
+	sed -i -e "s|^set(CIRCT_VERSION \"unknown git version\")|set(CIRCT_VERSION \"firtool-${PV}\")|" \
+		"${S_CIRCT}"/cmake/modules/GenVersionFile.cmake || die
+	cmake_src_prepare
+}
 
 src_configure() {
 	python_setup
