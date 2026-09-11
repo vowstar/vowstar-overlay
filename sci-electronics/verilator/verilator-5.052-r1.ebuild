@@ -50,10 +50,6 @@ BDEPEND="
 
 src_prepare() {
 	default
-	if [[ ! "${PV}" == "9999" ]] ; then
-		# https://github.com/verilator/verilator/issues/3352
-		sed -i "s/UNKNOWN_REV/(Gentoo ${PVR})/g" "${S}"/src/config_rev || die
-	fi
 	# https://bugs.gentoo.org/785151 and https://bugs.gentoo.org/975566
 	sed -i "s/\<python3\>/${EPYTHON}/g" "${S}"/configure.ac || die
 	find . -name "Makefile" -exec sed -i "s/\<python3\>/${EPYTHON}/g" {} + || die
@@ -83,6 +79,12 @@ src_prepare() {
 src_configure() {
 	# https://bugs.gentoo.org/887919
 	econf CFLAGS="${CFLAGS}" CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS}"
+}
+
+src_compile() {
+	# https://github.com/verilator/verilator/issues/3352
+	export VERILATOR_SRC_VERSION="(Gentoo ${PVR})"
+	default
 }
 
 src_test() {
