@@ -3,7 +3,7 @@
 
 EAPI="8"
 
-PYTHON_COMPAT=( python3_{12..14} )
+PYTHON_COMPAT=( python3_{12..15} )
 
 inherit autotools python-single-r1
 
@@ -54,17 +54,14 @@ src_prepare() {
 		# https://github.com/verilator/verilator/issues/3352
 		sed -i "s/UNKNOWN_REV/(Gentoo ${PVR})/g" "${S}"/src/config_rev || die
 	fi
-	# https://bugs.gentoo.org/785151
-	# Word-boundary match to avoid mangling python3_version etc. (bug 975566).
+	# https://bugs.gentoo.org/785151 and https://bugs.gentoo.org/975566
 	sed -i "s/\<python3\>/${EPYTHON}/g" "${S}"/configure.ac || die
 	find . -name "Makefile" -exec sed -i "s/\<python3\>/${EPYTHON}/g" {} + || die
 	find test_regress -type f -exec sed -i "s/\<python3\>/${EPYTHON}/g" {} + || die
 	python_fix_shebang .
 	# https://bugs.gentoo.org/887917 and https://bugs.gentoo.org/975970
 	# Upstream hard-codes -O3 / -Og / -ggdb / -gz / -Os / -O0, overriding user
-	# CFLAGS/CXXFLAGS. The previous attempt targeted CFG_*_DEBUG which does not
-	# exist in verilator's configure.ac (real names use _DBG), so the sed was
-	# a silent no-op. Fix every injection point.
+	# CFLAGS/CXXFLAGS.
 	local v
 	for v in CFG_CXXFLAGS_OPT CFG_CXXFLAGS_DBG CFG_LDFLAGS_DBG ; do
 		sed -i "/AC_SUBST(${v})/i ${v}=\"\"" "${S}"/configure.ac || die
