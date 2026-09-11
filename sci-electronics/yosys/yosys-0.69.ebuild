@@ -41,7 +41,7 @@ BDEPEND="
 "
 
 PATCHES=(
-	"${FILESDIR}"/${PN}-0.67-respect-flags.patch
+	"${FILESDIR}"/${PN}-0.69-respect-flags.patch
 	"${FILESDIR}"/${PN}-0.67-cmake4-compat.patch
 )
 
