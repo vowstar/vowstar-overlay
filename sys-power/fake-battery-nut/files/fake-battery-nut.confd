@@ -1,3 +1,4 @@
 # Which NUT UPS to mirror as a virtual battery, given as upsname@host.
 # Run "upsc -l" to list the UPS names served by your local upsd.
+# Read by the OpenRC service. Under systemd, override the unit instead.
 NUT_UPS="cyberpower@localhost"

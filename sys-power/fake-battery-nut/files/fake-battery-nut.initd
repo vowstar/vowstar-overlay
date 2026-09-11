@@ -4,6 +4,8 @@
 
 description="Bridge a NUT-monitored UPS into a virtual battery for UPower"
 
+export NUT_UPS
+
 command="/usr/bin/nut-to-fakebattery"
 supervisor="supervise-daemon"
 respawn_delay=5

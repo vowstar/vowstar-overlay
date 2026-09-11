@@ -51,7 +51,9 @@ pkg_postinst() {
 	elog "Set your UPS name (upsname@host) before starting. The default is"
 	elog "cyberpower@localhost."
 	elog
-	elog "Set NUT_UPS in /etc/conf.d/${PN}, which both init systems read."
-	elog "OpenRC:  rc-service ${PN} start"
-	elog "systemd: systemctl start ${PN}.service"
+	elog "OpenRC:  set NUT_UPS in /etc/conf.d/${PN}, then"
+	elog "         rc-service ${PN} start"
+	elog "systemd: systemctl edit ${PN}.service and set"
+	elog "         Environment=NUT_UPS=upsname@host, then"
+	elog "         systemctl start ${PN}.service"
 }
