@@ -1,0 +1,48 @@
+From b473d89e3c87aeae13e9fe9e0b8ef3a287161235 Mon Sep 17 00:00:00 2001
+From: Paul Zander <negril.nx@gmail.com>
+Date: Tue, 20 May 2025 14:13:14 +0200
+Subject: [PATCH] vtk components
+
+Only include the components we actually use.
+This prevents a circular loop occt -> vtk -> occt.
+
+VTK 9 hides the GL2PS modules when it is built with GL ES and OpenCASCADE does
+not use GL2PS, so do not require that component and link it only when the
+target exists.
+
+diff --git a/adm/cmake/occt_toolkit.cmake b/adm/cmake/occt_toolkit.cmake
+index c9399159..a3f7fea9 100644
+--- a/adm/cmake/occt_toolkit.cmake
++++ b/adm/cmake/occt_toolkit.cmake
+@@ -460,7 +460,7 @@ if("${VTK_RENDERING_BACKEND}" STREQUAL "OpenGL2" OR IS_VTK_9XX)
+       list (REMOVE_ITEM USED_TOOLKITS_BY_CURRENT_PROJECT ${VTK_EXCLUDE_LIBRARY})
+       if (${VTK_EXCLUDE_LIBRARY} STREQUAL vtkRenderingOpenGL)
+         list (APPEND USED_TOOLKITS_BY_CURRENT_PROJECT vtkRenderingOpenGL2)
+-        if(VTK_MAJOR_VERSION GREATER 6)
++        if(VTK_MAJOR_VERSION GREATER 6 AND (NOT IS_VTK_9XX OR TARGET VTK::RenderingGL2PSOpenGL2))
+           list (APPEND USED_TOOLKITS_BY_CURRENT_PROJECT vtkRenderingGL2PSOpenGL2)
+         endif()
+       endif()
+diff --git a/adm/cmake/vtk.cmake b/adm/cmake/vtk.cmake
+index a81cdf9b..1d4a55a7 100644
+--- a/adm/cmake/vtk.cmake
++++ b/adm/cmake/vtk.cmake
+@@ -60,7 +60,17 @@ if (3RDPARTY_VTK_DIR AND EXISTS "${3RDPARTY_VTK_DIR}")
+   set (ENV{VTK_DIR} "${3RDPARTY_VTK_DIR}")
+ endif()
+ 
+-find_package(VTK QUIET)
++find_package(VTK
++  COMPONENTS
++    CommonCore
++    FiltersGeneral
++    IOImage
++    ImagingCore
++    InteractionStyle
++    RenderingCore
++    RenderingFreeType
++    RenderingOpenGL2
++)
+ 
+ if (3RDPARTY_VTK_DIR AND EXISTS "${3RDPARTY_VTK_DIR}")
+   set (ENV{VTK_DIR} ${CACHED_VTK_DIR})

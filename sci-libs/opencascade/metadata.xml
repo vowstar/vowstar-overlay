@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<maintainer type="person" proxied="yes">
+		<email>negril.nx+gentoo@gmail.com</email>
+		<name>Paul Zander</name>
+	</maintainer>
+	<maintainer type="project" proxied="proxy">
+		<email>proxy-maint@gentoo.org</email>
+		<name>Proxy Maintainers</name>
+	</maintainer>
+	<longdescription lang="en">
+		Open CASCADE Technology is a development platform for CAD, CAE, 3D
+		surface and solid modeling and data exchange. This copy carries the
+		VTK component patch that keeps the visualization toolkit support
+		usable when VTK is built with GL ES.
+	</longdescription>
+	<longdescription lang="zh">
+		Open CASCADE Technology 是用于 CAD、CAE、三维曲面与实体建模以及
+		数据交换的开发平台。本副本带有一处 VTK 组件补丁，使 VTK 以 GL ES
+		构建时其可视化支持仍可用。
+	</longdescription>
+	<use>
+		<flag name="freeimage">Enable support for image i/o via <pkg>media-libs/freeimage</pkg></flag>
+		<flag name="jemalloc">Enable jemalloc allocator support via <pkg>dev-libs/jemalloc</pkg></flag>
+		<flag name="json">Enable JSON support through <pkg>dev-libs/rapidjson</pkg></flag>
+		<flag name="optimize">Don't clear allocated memory. Use optimized memory manager unless USE="tbb" is set</flag>
+		<flag name="tbb">Enable multithreading with the Intel Threads Building Block <pkg>dev-cpp/tbb</pkg></flag>
+		<flag name="testprograms">Indicates whether non-regression OCCT test scripts should be installed</flag>
+		<flag name="vtk">Enable Visualization Toolkit support via <pkg>sci-libs/vtk</pkg></flag>
+	</use>
+	<upstream>
+		<bugs-to>https://github.com/Open-Cascade-SAS/OCCT/issues</bugs-to>
+		<changelog>https://github.com/Open-Cascade-SAS/OCCT/releases</changelog>
+		<doc>https://github.com/Open-Cascade-SAS/OCCT/wiki</doc>
+		<remote-id type="github">Open-Cascade-SAS/OCCT</remote-id>
+	</upstream>
+</pkgmetadata>
