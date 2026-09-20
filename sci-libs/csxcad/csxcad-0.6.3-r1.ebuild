@@ -21,14 +21,16 @@ SLOT="0"
 KEYWORDS="~amd64 ~arm64"
 
 RDEPEND="
-	dev-libs/boost:=
 	dev-libs/tinyxml
 	sci-libs/fparser
 	sci-libs/hdf5:=
 	sci-libs/vtk:=
+"
+DEPEND="
+	${RDEPEND}
+	dev-libs/boost:=
 	sci-mathematics/cgal:=
 "
-DEPEND="${RDEPEND}"
 
 src_prepare() {
 	# Boost >=1.69 made the system library header-only; drop it from the
@@ -37,6 +39,9 @@ src_prepare() {
 	# HDF5 2.x dropped the h5hlcc wrapper, so a versioned find_package(HDF5)
 	# cannot resolve the HL component. Upstream master did the same.
 	sed -i -e 's/HDF5 1.8 COMPONENTS/HDF5 COMPONENTS/' CMakeLists.txt || die
+	# CMake 4 dropped compatibility with versions below 3.5, and warns below
+	# 3.10.
+	sed -i -e 's/cmake_minimum_required(VERSION 3.0)/cmake_minimum_required(VERSION 3.10)/' CMakeLists.txt || die
 	cmake_src_prepare
 }
 
