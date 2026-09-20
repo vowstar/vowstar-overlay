@@ -12,6 +12,10 @@ HOMEPAGE="https://github.com/thliebig/CSXCAD"
 SRC_URI="https://github.com/thliebig/${MY_PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 S="${WORKDIR}/${MY_PN}-${PV}"
 
+PATCHES=(
+	"${FILESDIR}"/${PN}-0.6.3-std-cout.patch
+)
+
 LICENSE="LGPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64"
