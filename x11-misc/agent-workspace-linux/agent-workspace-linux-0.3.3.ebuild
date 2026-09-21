@@ -37,6 +37,7 @@ declare -A GIT_CRATES=(
 	[ztracing_macro]='https://github.com/zed-industries/zed;9d272b036335401f339d024ea94968fd51016c40;zed-%commit%/crates/ztracing_macro'
 )
 
+# Highest rust-version among dependency crates: oo7 0.6.0 (1.92)
 RUST_MIN_VER="1.92"
 
 inherit cargo optfeature
@@ -58,13 +59,8 @@ LICENSE+="
 SLOT="0"
 KEYWORDS="~amd64"
 
-BDEPEND="
-	media-libs/fontconfig
-	media-libs/freetype
-	virtual/pkgconfig
-"
-
 RDEPEND="
+	media-libs/fontconfig
 	x11-apps/xauth
 	x11-apps/xdpyinfo
 	x11-apps/xprop
@@ -88,9 +84,19 @@ RDEPEND="
 	)
 "
 
+DEPEND="${RDEPEND} media-libs/freetype"
+
+BDEPEND="virtual/pkgconfig"
+
+src_install() {
+	cargo_src_install
+	insinto /usr/share/${PN}
+	doins -r skills
+}
+
 pkg_postinst() {
 	optfeature "accurate window origins" x11-apps/xwininfo
-	optfeature "the on-screen workspace viewer" dev-libs/wayland media-libs/libglvnd
+	optfeature "the on-screen workspace viewer" media-libs/vulkan-loader media-libs/libglvnd dev-libs/wayland
 	optfeature "mount and network isolation" sys-apps/bubblewrap
 	optfeature "terminal sessions" app-misc/tmux x11-terms/xterm
 	optfeature "browser automation" www-client/google-chrome www-client/chromium
