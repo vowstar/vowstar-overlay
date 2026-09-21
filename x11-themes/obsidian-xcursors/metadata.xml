@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		Obsidian is a shiny black cursor theme with a soft drop shadow, drawn in
+		2007 for KDE and still used on GNOME.  The artwork fills 54% to 71% of
+		its 48x48 canvas and the tarball ships that single nominal size, so the
+		theme draws smaller than the others at the same cursor-size.  This build
+		fits every glyph to 96% of its canvas and generates 24, 30, 36 and 48
+		pixel cursors, and it adds the cursor names GTK, Qt and Mutter look up,
+		which the X11 names of the original build script do not cover.
+	</longdescription>
+	<longdescription lang="zh">
+		Obsidian 是一款带柔和投影的亮黑色鼠标光标主题，2007 年为 KDE 设计，如今
+		在 GNOME 上仍有使用。原始素材的图案只占 48x48 画布的 54% 到 71%，且压缩包
+		只提供这一个标称尺寸，因此在相同的 cursor-size 下看起来比其它主题小。本
+		版本把每个图案放大到画布的 96%，并生成 24、30、36、48 四种像素尺寸的光
+		标，同时补齐 GTK、Qt 和 Mutter 会查找的光标名称，这些名称在原版构建脚本
+		的 X11 名称里并不存在。
+	</longdescription>
+</pkgmetadata>
