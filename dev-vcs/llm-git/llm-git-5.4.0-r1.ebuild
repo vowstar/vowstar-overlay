@@ -16,6 +16,8 @@ LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
 
+PATCHES=( "${FILESDIR}/${PN}-${PV}-pipe-mode-stdout.patch" )
+
 RDEPEND="
 	>=dev-python/httpx2-2.4.0[${PYTHON_USEDEP}]
 	dev-python/blake3[${PYTHON_USEDEP}]
