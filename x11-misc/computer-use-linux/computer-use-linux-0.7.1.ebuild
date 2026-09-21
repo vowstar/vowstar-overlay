@@ -209,6 +209,7 @@ CRATES="
 	zvariant_utils@3.3.1
 "
 
+# Highest rust-version among dependency crates: darling 0.23.0, image 0.25.10 (1.88.0)
 RUST_MIN_VER="1.88.0"
 
 inherit cargo optfeature
@@ -228,6 +229,12 @@ KEYWORDS="~amd64"
 
 # Provides the AT-SPI registry the accessibility tree reads.
 RDEPEND="app-accessibility/at-spi2-core"
+
+src_install() {
+	cargo_src_install
+	insinto /usr/share/${PN}
+	doins -r skills
+}
 
 pkg_postinst() {
 	optfeature "keyboard and pointer input on X11" x11-misc/xdotool
