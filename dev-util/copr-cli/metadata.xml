@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">fedora-copr/copr</remote-id>
+		<remote-id type="pypi">copr-cli</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		copr-cli is the command line frontend of the Copr build service. It creates
+		projects, submits and monitors builds, manages chroots and packages, and
+		reads its login, username and API token from ~/.config/copr.
+	</longdescription>
+	<longdescription lang="zh">
+		copr-cli 是 Copr 构建服务的命令行前端，用于创建项目、提交和监控构建、
+		管理 chroot 与软件包，并从 ~/.config/copr 读取登录名、用户名和 API token。
+	</longdescription>
+</pkgmetadata>
