@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">fedora-copr/copr</remote-id>
+		<remote-id type="pypi">copr</remote-id>
+	</upstream>
+	<longdescription lang="en">
+		copr is the Python client library for the Copr build service. It provides
+		the copr.v3 Client together with proxies for projects, packages, builds,
+		chroots and webhooks, so scripts and tools can drive a Copr instance
+		through its APIv3.
+	</longdescription>
+	<longdescription lang="zh">
+		copr 是 Copr 构建服务的 Python 客户端库，提供 copr.v3 的 Client 以及项目、
+		软件包、构建、chroot 和 webhook 等代理对象，脚本和工具可以通过 APIv3
+		操作 Copr 实例。
+	</longdescription>
+</pkgmetadata>
