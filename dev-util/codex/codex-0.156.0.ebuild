@@ -22,6 +22,8 @@ CRATES="
 declare -A GIT_CRATES=(
 	[appcontainer_common]='https://github.com/microsoft/mxc;6cd3d58f05d3447e67109cfb75e042803b843ca4;mxc-%commit%/src/backends/appcontainer/common'
 	[crossterm]='https://github.com/openai-oss-forks/crossterm;45fecb9508105988f42fe6ff0441783ed3717f92;crossterm-%commit%'
+	[h3]='https://github.com/hyperium/h3;e07e69412876f7e26f026bd75a48b2704d8c8283;h3-%commit%/h3'
+	[h3-quinn]='https://github.com/hyperium/h3;e07e69412876f7e26f026bd75a48b2704d8c8283;h3-%commit%/h3-quinn'
 	[learning_mode_windows]='https://github.com/microsoft/mxc;6cd3d58f05d3447e67109cfb75e042803b843ca4;mxc-%commit%/src/backends/learning_mode/windows'
 	[nucleo-matcher]='https://github.com/helix-editor/nucleo;4253de9faabb4e5c6d81d946a5e35a90f87347ee;nucleo-%commit%/matcher'
 	[nucleo]='https://github.com/helix-editor/nucleo;4253de9faabb4e5c6d81d946a5e35a90f87347ee;nucleo-%commit%'
@@ -67,6 +69,8 @@ SRC_URI="
 
 S="${WORKDIR}/${PN}-rust-v${PV}/codex-rs"
 
+PATCHES=( "${FILESDIR}"/${PN}-0.156.0-recursion-limit.patch )
+
 LICENSE="Apache-2.0"
 # Dependent crate licenses
 LICENSE+="
@@ -82,7 +86,9 @@ DEPEND="
 	dev-libs/openssl:=
 	sys-apps/dbus
 "
-RDEPEND="${DEPEND}"
+RDEPEND="${DEPEND}
+	>=sys-apps/bubblewrap-0.11.2
+"
 BDEPEND="virtual/pkgconfig"
 
 # rust does not use *FLAGS from make.conf, silence portage warning
