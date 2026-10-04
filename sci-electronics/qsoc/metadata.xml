@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">vowstar/qsoc</remote-id>
+		<bugs-to>https://github.com/vowstar/qsoc/issues</bugs-to>
+		<changelog>https://github.com/vowstar/qsoc/releases</changelog>
+	</upstream>
+	<longdescription lang="en">
+		QSoC is a System on Chip design studio. It reads and writes Verilog
+		and SystemVerilog with the slang front end, describes register maps
+		with SystemRDL, and generates RTL, testbenches and documentation from
+		project descriptions. A command line and TUI front end share a project
+		format with the Qt GUI. An agent runtime and an SMT worker run as
+		helper processes next to the main program.
+	</longdescription>
+	<longdescription lang="zh">
+		QSoC 是一个片上系统设计工作台。它使用 slang 前端读写 Verilog 与
+		SystemVerilog，用 SystemRDL 描述寄存器映射，并根据工程描述生成 RTL、
+		测试平台与文档。命令行与 TUI 前端和 Qt 图形界面共享同一工程格式。
+		agent 运行时与 SMT 求解进程作为主程序的辅助进程运行。
+	</longdescription>
+</pkgmetadata>
