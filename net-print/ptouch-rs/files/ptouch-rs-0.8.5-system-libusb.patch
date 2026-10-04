@@ -1,0 +1,13 @@
+--- a/crates/ptouch-core/Cargo.toml
++++ b/crates/ptouch-core/Cargo.toml
+@@ -16,9 +16,7 @@
+ bluetooth = ["dep:objc2", "dep:objc2-foundation", "dep:objc2-io-bluetooth"]
+ 
+ [dependencies]
+-# vendored: statically compile libusb from source so release binaries carry no
+-# external libusb dependency (self-contained .app / AppImage / .exe).
+-rusb = { version = "0.9", features = ["vendored"] }
++rusb = { version = "0.9" }
+ thiserror = "2.0"
+ log = "0.4"
+ bitflags = { version = "2.6", features = ["serde"] }
