@@ -6,8 +6,8 @@
 		<name>Huang Rui</name>
 	</maintainer>
 	<upstream>
-		<remote-id type="github">streetpea/chiaki-ng</remote-id>
-		<bugs-to>https://github.com/streetpea/chiaki-ng/issues</bugs-to>
+		<remote-id type="github">chiaki-ng/chiaki-ng</remote-id>
+		<bugs-to>https://github.com/chiaki-ng/chiaki-ng/issues</bugs-to>
 	</upstream>
 	<use>
 		<flag name="cli">Build CLI interface</flag>
@@ -20,5 +20,10 @@
 		for PlayStation 4 and PlayStation 5 Remote Play for Linux, FreeBSD,
 		OpenBSD, Android, macOS, Windows, Nintendo Switch and potentially even
 		more platforms.
+	</longdescription>
+	<longdescription lang="zh">
+		Chiaki-NG（次世代）是一个自由开源的 PlayStation 4 和 PlayStation 5
+		远程游玩客户端，支持 Linux、FreeBSD、OpenBSD、Android、macOS、
+		Windows、Nintendo Switch 以及潜在的更多平台。
 	</longdescription>
 </pkgmetadata>
