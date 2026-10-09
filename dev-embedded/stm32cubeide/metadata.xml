@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		STM32CubeIDE is an Eclipse based C/C++ integrated development
+		environment for STM32 microcontrollers and microprocessors. It
+		bundles the GNU toolchain for STM32, the STM32CubeProgrammer command
+		line tools, the ST-LINK GDB server and a Java runtime.
+	</longdescription>
+	<longdescription lang="zh">
+		STM32CubeIDE 是 ST 基于 Eclipse 的 C/C++ 集成开发环境，面向 STM32
+		微控制器与微处理器。它内置 STM32 的 GNU 工具链、STM32CubeProgrammer
+		命令行工具、ST-LINK GDB server 以及 Java 运行时。
+	</longdescription>
+	<use>
+		<flag name="jlink">Install the SEGGER J-Link udev rules shipped with the installer</flag>
+		<flag name="stlink-server">Install the stlink-server daemon that lets several applications share one ST-LINK probe</flag>
+		<flag name="udev">Install the ST-LINK udev rules</flag>
+	</use>
+</pkgmetadata>
