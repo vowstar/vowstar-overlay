@@ -4,8 +4,8 @@
 EAPI=8
 
 VER_MUNIT="439de4a9b136bc3b5163e73d4caf37c590bef875"
-CHIAKI_BASE_COMMIT="ffba9dceba986ee63a305290e57da12cee7ee88c"
-CHIAKI_FEATURE_COMMIT="efe67731bd26dd6aea59f1337c5032c7e1d0875a"
+CHIAKI_BASE_COMMIT="c8bea2642d0e95402f373af55584a3b98cd89417"
+CHIAKI_FEATURE_COMMIT="f53fbbf6e8dd1f6fc45ce5a4214981a17adf239e"
 
 PYTHON_COMPAT=( python3_{12..14} )
 inherit cmake python-single-r1 xdg
@@ -13,9 +13,9 @@ inherit cmake python-single-r1 xdg
 DESCRIPTION="Client for PlayStation 4 and PlayStation 5 Remote Play"
 HOMEPAGE="https://github.com/chiaki-ng/chiaki-ng"
 SRC_URI="
-	https://github.com/chiaki-ng/chiaki-ng/archive/${CHIAKI_BASE_COMMIT}.tar.gz -> ${P}-base.tar.gz
+	https://github.com/chiaki-ng/chiaki-ng/archive/${CHIAKI_BASE_COMMIT}.tar.gz -> ${PN}-${CHIAKI_BASE_COMMIT}.tar.gz
 	https://github.com/vowstar/chiaki-ng/compare/${CHIAKI_BASE_COMMIT}...${CHIAKI_FEATURE_COMMIT}.patch \
-		-> ${P}-automation-bridge.patch
+		-> ${PN}-${CHIAKI_FEATURE_COMMIT}.patch
 	test? ( https://github.com/nemequ/munit/archive/${VER_MUNIT}.tar.gz -> munit-${VER_MUNIT}.tar.gz )
 "
 S="${WORKDIR}/chiaki-ng-${CHIAKI_BASE_COMMIT}"
@@ -65,7 +65,7 @@ BDEPEND="
 "
 
 PATCHES=(
-	"${DISTDIR}/${P}-automation-bridge.patch"
+	"${DISTDIR}/${PN}-${CHIAKI_FEATURE_COMMIT}.patch"
 )
 
 src_prepare() {
