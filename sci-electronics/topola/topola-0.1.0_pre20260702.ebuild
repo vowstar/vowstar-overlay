@@ -1,4 +1,4 @@
-# Copyright 2025 Gentoo Authors
+# Copyright 2025-2026 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -567,7 +567,7 @@ PYTHON_COMPAT=( python3_{12..14} )
 
 # Topola uses a fork of petgraph from codeberg
 PETGRAPH_COMMIT="1bae625ec5f0373ebe859e027af56dcb11a3ac85"
-TOPOLA_COMMIT="3b56eb74c973b148350fc1b0ebcb2040548cbdbc"
+TOPOLA_COMMIT="666e06cfd7ba1f1e5daf700288acb9e0a4f84ceb"
 
 inherit cargo desktop python-any-r1
 
@@ -591,6 +591,7 @@ LICENSE+="
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE="gtk3 wayland X"
+RUST_MIN_VER="1.88"
 
 RDEPEND="
 	dev-libs/wayland
@@ -668,8 +669,6 @@ for root, dirs, files in os.walk('.'):
 		if f == 'Cargo.toml':
 			remove_dev_deps(os.path.join(root, f))
 PYEOF
-
-	cargo_src_prepare
 }
 
 src_configure() {
