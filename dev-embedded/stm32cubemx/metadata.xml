@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		STM32CubeMX is a graphical tool for STM32 microcontrollers. It covers
+		pinout and peripheral configuration, the clock tree, middleware and
+		power consumption, and generates the initialization C code and the
+		project files for the supported toolchains. The MCU database and the
+		Adoptium JRE it runs on are bundled.
+	</longdescription>
+	<longdescription lang="zh">
+		STM32CubeMX 是面向 STM32 微控制器的图形化配置工具，可完成引脚与外设
+		配置、时钟树、中间件与功耗估算，并生成初始化 C 代码以及受支持工具链的
+		工程文件。软件自带 MCU 数据库和 Adoptium JRE 运行时。
+	</longdescription>
+</pkgmetadata>
