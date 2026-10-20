@@ -3,8 +3,8 @@
 
 EAPI=8
 
-# Upstream/npm version string; Gentoo PV normalizes -rc.1 to _rc1.
-MY_PV="0.1.2-rc.1"
+# npm versions use -rc.N; Gentoo PV uses _rcN.
+MY_PV="$(ver_rs 3 - 4 .)"
 
 DESCRIPTION="DeepSeek Harness: an agent harness by DeepSeek AI (dsh CLI)"
 HOMEPAGE="https://github.com/deepseek-ai/deepseek-harness"
@@ -35,12 +35,16 @@ src_prepare() {
 	# amd64 only ships the linux-x64 prebuilds.
 	rm -rf "${S}"/node_modules/node-pty/prebuilds/win32-* \
 		"${S}"/node_modules/node-pty/prebuilds/darwin-* \
-		"${S}"/node_modules/node-pty/prebuilds/linux-arm64 || die
-	# koffi-linux-x64 ships glibc and musl builds; keep the active libc.
+		"${S}"/node_modules/node-pty/prebuilds/linux-arm64 \
+		"${S}"/node_modules/node-pty/third_party/conpty || die
+	# koffi-linux-x64 and node-addon-system-linux-x64 ship glibc and musl
+	# builds; keep the active libc.
 	if use elibc_musl; then
-		rm -rf "${S}"/node_modules/@koromix/koffi-linux-x64/linux_x64 || die
+		rm -rf "${S}"/node_modules/@koromix/koffi-linux-x64/linux_x64 \
+			"${S}"/node_modules/@deepseek-ai/node-addon-system-linux-x64/bin/glibc || die
 	else
-		rm -rf "${S}"/node_modules/@koromix/koffi-linux-x64/musl_x64 || die
+		rm -rf "${S}"/node_modules/@koromix/koffi-linux-x64/musl_x64 \
+			"${S}"/node_modules/@deepseek-ai/node-addon-system-linux-x64/bin/musl || die
 	fi
 }
 
@@ -52,7 +56,7 @@ src_install() {
 
 	fperms +x "${install_dir}/lib/bin.js"
 
-	dosym "../$(get_libdir)/node_modules/@deepseek-ai/dsh/lib/bin.js" "/usr/bin/dsh"
+	dosym -r "${install_dir}/lib/bin.js" /usr/bin/dsh
 }
 
 pkg_postinst() {
