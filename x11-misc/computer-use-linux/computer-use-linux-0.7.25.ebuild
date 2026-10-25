@@ -26,6 +26,7 @@ CRATES="
 	atspi@0.29.0
 	autocfg@1.5.0
 	base64@0.22.1
+	base64@0.23.1
 	bitflags@2.11.1
 	bitvec@1.0.1
 	block-buffer@0.12.1
@@ -50,9 +51,9 @@ CRATES="
 	crossbeam-utils@0.8.21
 	crypto-common@0.2.2
 	cursor-icon@1.2.0
-	darling@0.23.0
-	darling_core@0.23.0
-	darling_macro@0.23.0
+	darling@0.24.1
+	darling_core@0.24.1
+	darling_macro@0.24.1
 	digest@0.11.3
 	dlib@0.5.3
 	downcast-rs@1.2.1
@@ -133,8 +134,8 @@ CRATES="
 	read-fonts@0.39.2
 	ref-cast-impl@1.0.25
 	ref-cast@1.0.25
-	rmcp-macros@2.2.0
-	rmcp@2.1.0
+	rmcp-macros@3.5.1
+	rmcp@3.5.1
 	rustix@1.1.4
 	rustversion@1.0.22
 	schemars@1.2.1
@@ -168,7 +169,7 @@ CRATES="
 	tiny-skia@0.12.0
 	tokio-macros@2.7.0
 	tokio-util@0.7.18
-	tokio@1.52.3
+	tokio@1.53.3
 	toml_datetime@1.1.1+spec-1.1.0
 	toml_edit@0.25.11+spec-1.1.0
 	toml_parser@1.1.2+spec-1.1.0
@@ -235,7 +236,7 @@ CRATES="
 	zvariant_utils@3.3.1
 "
 
-# Highest rust-version among dependency crates: darling 0.23.0, image 0.25.10 (1.88.0)
+# Highest rust-version among dependency crates: darling 0.24.1, image 0.25.10, rmcp 3.5.1 (1.88.0)
 RUST_MIN_VER="1.88.0"
 
 inherit cargo optfeature
@@ -264,7 +265,7 @@ LICENSE+="
 	ZLIB
 "
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="~amd64 ~arm64"
 
 # at-spi2-core provides the AT-SPI registry the accessibility tree reads.
 # libxkbcommon is dlopened for the GNOME keymap check of typed text.
@@ -291,11 +292,13 @@ src_test() {
 	# These bind Unix sockets under a temp dir whose name exceeds sun_path
 	# when TMPDIR is as long as portage's.
 	local CARGO_SKIP_TESTS=(
+		cosmic_focus_protocol_regressions
 		diagnostics_impl::tests::ydotool_socket_check_accepts_datagram_socket
 		diagnostics_impl::tests::ydotool_socket_check_rejects_legacy_stream_socket
 		indicator::tests::capture_release_unlocks_an_inherited_descriptor
 		indicator::tests::captures_fail_when_a_running_overlay_does_not_reply
 		indicator::tests::captures_fail_while_a_stalled_overlay_cannot_be_told_to_hide
+		indicator::tests::captures_hold_the_lock_without_an_overlay
 		indicator::tests::captures_wait_only_while_the_overlay_was_on_screen
 		indicator::tests::concurrent_captures_do_not_consume_each_others_replies
 		indicator::tests::disabled_servers_still_hold_captures
