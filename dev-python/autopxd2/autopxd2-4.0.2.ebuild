@@ -5,8 +5,7 @@ EAPI=8
 
 PYTHON_COMPAT=( python3_{12..15} )
 DISTUTILS_USE_PEP517=setuptools
-PYPI_VERIFY_REPO="https://github.com/elijahr/python-autopxd2"
-inherit distutils-r1 pypi
+inherit distutils-r1
 
 DESCRIPTION="Generate Cython pxd files from C header files"
 HOMEPAGE="
@@ -14,8 +13,13 @@ HOMEPAGE="
 	https://pypi.org/project/autopxd2/
 "
 
+SRC_URI="https://github.com/elijahr/python-autopxd2/archive/refs/tags/v${PV}.tar.gz -> ${P}.gh.tar.gz"
+
+S="${WORKDIR}/python-autopxd2-${PV}"
+
 LICENSE="MIT"
 SLOT="0"
+
 KEYWORDS="~amd64 ~arm64 ~x86"
 
 RDEPEND="
