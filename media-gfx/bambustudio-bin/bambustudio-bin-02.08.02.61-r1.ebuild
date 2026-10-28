@@ -41,6 +41,7 @@ RDEPEND="
 	>=x11-libs/cairo-1.8.8:0
 	x11-libs/gdk-pixbuf:2
 	x11-libs/gtk+:3
+	x11-libs/libdrm
 	x11-libs/libX11
 	x11-libs/libxkbcommon
 	x11-libs/pango
