@@ -18,6 +18,7 @@ CRATES="
 	aho-corasick@1.1.5
 	aligned-vec@0.6.4
 	aligned@0.4.3
+	allocator-api2@0.2.21
 	android-activity@0.6.1
 	android-properties@0.2.2
 	anstream@1.0.0
@@ -172,6 +173,7 @@ CRATES="
 	glutin_egl_sys@0.7.1
 	glutin_glx_sys@0.6.1
 	glutin_wgl_sys@0.6.1
+	gpu-allocator@0.28.0
 	guillotiere@0.7.0
 	half@2.7.1
 	harfrust@0.12.0
@@ -272,6 +274,7 @@ CRATES="
 	once_cell@1.21.4
 	once_cell_polyfill@1.70.2
 	orbclient@0.3.55
+	ordered-float@5.5.1
 	ordered-stream@0.2.0
 	parking@2.2.1
 	parking_lot@0.12.5
@@ -298,10 +301,12 @@ CRATES="
 	png@0.18.1
 	polling@3.11.0
 	pollster@0.4.0
+	pollster@1.0.1
 	polycool@0.4.0
 	portable-atomic-util@0.2.7
 	portable-atomic@1.15.0
 	ppv-lite86@0.2.21
+	presser@0.3.1
 	proc-macro-crate@3.5.0
 	proc-macro2@1.0.107
 	profiling-procmacros@1.0.18
@@ -320,6 +325,7 @@ CRATES="
 	rand_chacha@0.9.0
 	rand_core@0.6.4
 	rand_core@0.9.5
+	range-alloc@0.1.5
 	rangemap@1.8.0
 	rav1e@0.8.1
 	ravif@0.13.0
