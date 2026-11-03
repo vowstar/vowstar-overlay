@@ -66,6 +66,7 @@ BDEPEND="
 
 PATCHES=(
 	"${DISTDIR}/${PN}-${CHIAKI_FEATURE_COMMIT}.patch"
+	"${FILESDIR}/${PN}-1.10.0_p20261007-timestamps-type.patch"
 )
 
 src_prepare() {
