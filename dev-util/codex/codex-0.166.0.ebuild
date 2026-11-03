@@ -31,6 +31,7 @@ declare -A GIT_CRATES=(
 	[runfiles]='https://github.com/dzbarsky/rules_rust;b56cbaa8465e74127f1ea216f813cd377295ad81;rules_rust-%commit%/rust/runfiles'
 	[tokio-tungstenite]='https://github.com/openai-oss-forks/tokio-tungstenite;0e5b2d73aa18dd9f0a50ee9ff199d5aef7594186;tokio-tungstenite-%commit%'
 	[tungstenite]='https://github.com/openai-oss-forks/tungstenite-rs;4fffad30fe373adbdcffab9545e9e9bf4f2fc19f;tungstenite-rs-%commit%'
+	[v8]='https://github.com/seanh-oai/rusty_v8;350c5a859a9b3c84ab8701b3ad51e3b7699b30c0;rusty_v8-%commit%'
 )
 
 RUST_MIN_VER="1.95.0"
@@ -130,6 +131,7 @@ src_prepare() {
 	crossterm = { path = "$(gen_git_crate_dir crossterm)" }
 	tokio-tungstenite = { path = "$(gen_git_crate_dir tokio-tungstenite)" }
 	tungstenite = { path = "$(gen_git_crate_dir tungstenite)" }
+	v8 = { path = "$(gen_git_crate_dir v8)" }
 	EOF
 }
 
