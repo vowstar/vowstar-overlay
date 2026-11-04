@@ -9,6 +9,8 @@ DESCRIPTION="Select colors with proper WCAG color contrast"
 HOMEPAGE="https://www.ctan.org/pkg/ninecolors/"
 SRC_URI="https://mirrors.ctan.org/macros/latex/contrib/ninecolors.zip -> ${P}.zip"
 
+S="${WORKDIR}/${PN}"
+
 LICENSE="LPPL-1.3"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~loong ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86 ~x64-macos"
@@ -26,7 +28,6 @@ BDEPEND="
 "
 
 TEXMF="/usr/share/texmf-site"
-S=${WORKDIR}/${PN}
 
 src_install() {
 	latex-package_src_doinstall styles
