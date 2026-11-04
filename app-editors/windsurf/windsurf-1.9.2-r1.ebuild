@@ -5,14 +5,15 @@ EAPI=8
 
 inherit desktop shell-completion unpacker xdg
 
-DESCRIPTION="AI-powered code editor maintaining flow state with instant assistance."
-HOMEPAGE="https://codeium.com"
+DESCRIPTION="AI-powered code editor maintaining flow state with instant assistance"
+HOMEPAGE="https://devin.ai/desktop"
 
 SRC_URI="https://windsurf-stable.codeiumdata.com/wVxQEIWkwPUEAGf3/apt/pool/main/w/windsurf/Windsurf-linux-x64-${PV}.deb"
 S="${WORKDIR}"
 
 # License same as vscode
 LICENSE="
+	windsurf
 	Apache-2.0
 	BSD
 	BSD-1
@@ -52,8 +53,9 @@ RDEPEND="
 	media-libs/libglvnd
 	media-libs/mesa
 	net-misc/curl
+	net-print/cups
 	sys-apps/dbus
-	sys-libs/zlib
+	virtual/zlib
 	sys-process/lsof
 	x11-libs/cairo
 	x11-libs/gtk+:3
