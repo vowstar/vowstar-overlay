@@ -7,7 +7,7 @@ VER_MUNIT="439de4a9b136bc3b5163e73d4caf37c590bef875"
 CHIAKI_BASE_COMMIT="43728af2e639fecb8a7af1cd68c29820a40de973"
 CHIAKI_FEATURE_COMMIT="15b2c22cc09d5f9779b030b947e76bc79c1068d2"
 
-PYTHON_COMPAT=( python3_{12..14} )
+PYTHON_COMPAT=( python3_{13..14} )
 inherit cmake python-single-r1 xdg
 
 DESCRIPTION="Client for PlayStation 4 and PlayStation 5 Remote Play"
