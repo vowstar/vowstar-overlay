@@ -1,28 +1,29 @@
-# Copyright 1999-2026 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-VER_MUNIT="439de4a9b136bc3b5163e73d4caf37c590bef875"
-CHIAKI_BASE_COMMIT="c8bea2642d0e95402f373af55584a3b98cd89417"
-CHIAKI_FEATURE_COMMIT="a1c77fc7e52a864cf34a7de80558b02d9f1835eb"
+VER_MUNIT="439de4a9b136bc3b5163e73d4caf37c590bef875" # Assuming unchanged, will verify if build fails
 
 PYTHON_COMPAT=( python3_{12..14} )
 inherit cmake python-single-r1 xdg
 
 DESCRIPTION="Client for PlayStation 4 and PlayStation 5 Remote Play"
-HOMEPAGE="https://github.com/chiaki-ng/chiaki-ng"
-SRC_URI="
-	https://github.com/chiaki-ng/chiaki-ng/archive/${CHIAKI_BASE_COMMIT}.tar.gz -> ${PN}-${CHIAKI_BASE_COMMIT}.tar.gz
-	https://github.com/vowstar/chiaki-ng/compare/${CHIAKI_BASE_COMMIT}...${CHIAKI_FEATURE_COMMIT}.patch \
-		-> ${PN}-${CHIAKI_FEATURE_COMMIT}.patch
-	test? ( https://github.com/nemequ/munit/archive/${VER_MUNIT}.tar.gz -> munit-${VER_MUNIT}.tar.gz )
-"
-S="${WORKDIR}/chiaki-ng-${CHIAKI_BASE_COMMIT}"
+HOMEPAGE="https://github.com/streetpea/chiaki-ng"
+
+if [[ "${PV}" == "9999" ]] ; then
+	EGIT_REPO_URI="https://github.com/streetpea/${PN}.git"
+	inherit git-r3
+else
+	SRC_URI="
+		https://github.com/streetpea/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
+		test? ( https://github.com/nemequ/munit/archive/${VER_MUNIT}.tar.gz -> munit-${VER_MUNIT}.tar.gz )
+	"
+	KEYWORDS="~amd64"
+fi
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~amd64"
 IUSE="+cli +gui +sdl +ffmpeg mbedtls test"
 REQUIRED_USE="
 	${PYTHON_REQUIRED_USE}
@@ -65,8 +66,9 @@ BDEPEND="
 "
 
 PATCHES=(
-	"${DISTDIR}/${PN}-${CHIAKI_FEATURE_COMMIT}.patch"
-	"${FILESDIR}/${PN}-1.10.0_p20261007-timestamps-type.patch"
+	# Use shared nanopb library instead of static
+	# https://bugs.gentoo.org/965824
+	"${FILESDIR}/${PN}-1.10.0-use-shared-nanopb.patch"
 )
 
 src_prepare() {
