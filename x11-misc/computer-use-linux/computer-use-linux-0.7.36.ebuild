@@ -134,6 +134,7 @@ CRATES="
 	read-fonts@0.39.2
 	ref-cast-impl@1.0.25
 	ref-cast@1.0.25
+	reis@0.7.1
 	rmcp-macros@3.5.1
 	rmcp@3.5.1
 	rustix@1.1.4
@@ -286,13 +287,20 @@ pkg_postinst() {
 	optfeature "input synthesis through uinput on Wayland" x11-misc/ydotool
 	optfeature "enabling the accessibility setting through gsettings" dev-libs/glib
 	optfeature "completion notifications" x11-libs/libnotify
+	optfeature "capturing unfocused windows in the Hyprland background mode" gui-apps/grim
 }
 
 src_test() {
-	# These bind Unix sockets under a temp dir whose name exceeds sun_path
-	# when TMPDIR is as long as portage's.
+	# Most of these bind Unix sockets under a temp dir whose name exceeds
+	# sun_path when TMPDIR is as long as portage's. The fixtures that spawn the
+	# server under a private D-Bus session fail in the build sandbox.
+	# dbus-daemon refuses socket paths over 99 bytes, so the private bus of the
+	# remote_desktop portal probe test does not start under portage's TMPDIR.
 	local CARGO_SKIP_TESTS=(
+		app_state_refuses_unfocused_target_before_capture
 		cosmic_focus_protocol_regressions
+		gnome_indicator_capture_regressions
+		hyprland_background_mode_never_focuses_the_target
 		diagnostics_impl::tests::ydotool_socket_check_accepts_datagram_socket
 		diagnostics_impl::tests::ydotool_socket_check_rejects_legacy_stream_socket
 		indicator::tests::capture_release_unlocks_an_inherited_descriptor
@@ -305,6 +313,7 @@ src_test() {
 		indicator::tests::keycaps_mask_secret_focus_and_the_hide_text_setting
 		indicator::tests::overlays_can_answer_the_client_socket
 		indicator::tests::set_values_are_masked_even_when_the_cached_role_was_public
+		remote_desktop::tests::only_a_running_bus_can_report_the_remote_desktop_portal_missing
 		server::tests::pointer_coordinate_backend_dispatch_is_safe
 		windowing::backends::kwin::transaction_tests::duplicate_callback_path_fails_without_disturbing_its_owner
 		windowing::backends::kwin::transaction_tests::transaction_times_out_and_cleans_up_when_callback_never_arrives
