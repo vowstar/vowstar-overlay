@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">tangency-labs/solidcraft</remote-id>
+		<bugs-to>https://github.com/tangency-labs/solidcraft/issues</bugs-to>
+		<changelog>https://github.com/tangency-labs/solidcraft/releases</changelog>
+	</upstream>
+	<longdescription lang="en">
+		SolidCraft is an open-source parametric 3D CAD application written in
+		Rust. It provides sketches with a constraint solver, a parametric
+		feature timeline, assemblies and sheet metal, and imports and exports
+		STEP, IGES, 3MF, STL and OBJ. It also includes a headless CLI and an MCP
+		server.
+	</longdescription>
+	<longdescription lang="zh">
+		SolidCraft 是一款用 Rust 编写的开源参数化三维 CAD 应用，提供带约束
+		求解器的草绘、参数化特征时间线、装配与钣金功能，并支持 STEP、IGES、
+		3MF、STL 和 OBJ 格式的导入导出。它还包含无界面命令行工具和 MCP
+		服务器。
+	</longdescription>
+</pkgmetadata>
