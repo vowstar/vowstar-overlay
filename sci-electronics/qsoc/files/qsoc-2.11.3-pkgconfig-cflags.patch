@@ -1,0 +1,11 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -496,6 +496,8 @@ target_include_directories(qsoc_common SYSTEM PUBLIC
+     "${FMT_INCLUDE_DIRS}"
+ )
+ 
++target_compile_options(qsoc_common PUBLIC ${SVLANG_CFLAGS})
++
+ set(QSOC_COMMON_LINK_LIBRARIES
+     Qt${QT_VERSION_MAJOR}::Core
+     Qt${QT_VERSION_MAJOR}::Network

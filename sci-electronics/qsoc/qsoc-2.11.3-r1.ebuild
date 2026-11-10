@@ -32,6 +32,10 @@ BDEPEND="
 	virtual/pkgconfig
 "
 
+PATCHES=(
+	"${FILESDIR}/${PN}-2.11.3-pkgconfig-cflags.patch"
+)
+
 src_configure() {
 	local mycmakeargs=(
 		-DFETCHCONTENT_FULLY_DISCONNECTED=ON
