@@ -20,7 +20,7 @@ RDEPEND="
 	dev-libs/libfmt:=
 	>=dev-qt/qtbase-6.5:6[gui,network,widgets]
 	>=dev-qt/qtsvg-6.5:6
-	>=sci-electronics/slang-11
+	>=sci-electronics/slang-12.1
 "
 DEPEND="
 	${RDEPEND}
@@ -32,10 +32,6 @@ BDEPEND="
 	virtual/pkgconfig
 "
 
-PATCHES=(
-	"${FILESDIR}/${PN}-2.11.3-pkgconfig-cflags.patch"
-)
-
 src_configure() {
 	local mycmakeargs=(
 		-DFETCHCONTENT_FULLY_DISCONNECTED=ON
@@ -43,9 +39,6 @@ src_configure() {
 		-DANTLR_BUILD_SHARED=OFF
 		-DLIBSSH2_DISABLE_INSTALL=ON
 		-DQSCHEMATIC_BUILD_SHARED=OFF
-		-DSLANG_USE_MIMALLOC=OFF
-		-DSLANG_USE_CPPTRACE=OFF
-		-DSLANG_INCLUDE_TESTS=OFF
 		-DENABLE_CLANG_TIDY=OFF
 		-DENABLE_DOXYGEN=OFF
 		-DENABLE_SPDX_HEADERS=OFF
