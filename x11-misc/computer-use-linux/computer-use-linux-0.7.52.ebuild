@@ -11,7 +11,7 @@ CRATES="
 	arrayvec@0.7.8
 	async-broadcast@0.7.2
 	async-channel@2.5.0
-	async-executor@1.14.0
+	async-executor@1.14.1
 	async-io@2.6.0
 	async-lock@3.4.2
 	async-process@2.5.0
@@ -25,6 +25,8 @@ CRATES="
 	atspi-proxies@0.13.0
 	atspi@0.29.0
 	autocfg@1.5.0
+	axum-core@0.5.6
+	axum@0.8.9
 	base64@0.22.1
 	base64@0.23.1
 	bitflags@2.11.1
@@ -41,6 +43,7 @@ CRATES="
 	cc@1.2.62
 	cfg-if@1.0.4
 	cfg_aliases@0.2.1
+	chacha20@0.10.2
 	chrono@0.4.44
 	concurrent-queue@2.5.0
 	const-oid@0.10.2
@@ -90,7 +93,14 @@ CRATES="
 	heck@0.5.0
 	hermit-abi@0.5.2
 	hex@0.4.3
+	http-body-util@0.1.5
+	http-body@1.1.0
+	http@1.5.0
+	httparse@1.10.1
+	httpdate@1.0.3
 	hybrid-array@0.4.14
+	hyper-util@0.1.21
+	hyper@1.12.0
 	iana-time-zone-haiku@0.1.2
 	iana-time-zone@0.1.65
 	id-arena@2.3.0
@@ -105,10 +115,12 @@ CRATES="
 	libmimalloc-sys@0.1.49
 	linux-raw-sys@0.12.1
 	log@0.4.29
+	matchit@0.8.4
 	memchr@2.8.0
 	memmap2@0.9.11
 	memoffset@0.9.1
 	mimalloc@0.1.52
+	mime@0.3.18
 	miniz_oxide@0.8.9
 	mio@1.2.0
 	moxcms@0.8.1
@@ -118,6 +130,7 @@ CRATES="
 	ordered-stream@0.2.0
 	parking@2.2.1
 	pastey@0.2.2
+	percent-encoding@2.3.2
 	pin-project-lite@0.2.17
 	piper@0.2.5
 	pkg-config@0.3.33
@@ -131,13 +144,15 @@ CRATES="
 	quote@1.0.45
 	r-efi@6.0.0
 	radium@0.7.0
+	rand@0.10.3
+	rand_core@0.10.1
 	read-fonts@0.39.2
 	ref-cast-impl@1.0.25
 	ref-cast@1.0.25
 	reis@0.7.1
-	rmcp-macros@3.5.1
-	rmcp@3.5.1
-	rustix@1.1.4
+	rmcp-macros@3.9.0
+	rmcp@3.9.0
+	rustix@1.1.6
 	rustversion@1.0.22
 	schemars@1.2.1
 	schemars_derive@1.2.1
@@ -157,11 +172,13 @@ CRATES="
 	smallvec@1.15.1
 	smithay-client-toolkit@0.21.1
 	socket2@0.6.3
+	sse-stream@0.2.6
 	static_assertions@1.1.0
 	strict-num@0.1.1
 	strsim@0.11.1
 	syn@2.0.117
 	syn@3.0.6
+	sync_wrapper@1.0.2
 	tap@1.0.1
 	tempfile@3.27.0
 	thiserror-impl@2.0.18
@@ -169,11 +186,15 @@ CRATES="
 	tiny-skia-path@0.12.0
 	tiny-skia@0.12.0
 	tokio-macros@2.7.0
+	tokio-stream@0.1.19
 	tokio-util@0.7.18
 	tokio@1.53.3
 	toml_datetime@1.1.1+spec-1.1.0
 	toml_edit@0.25.11+spec-1.1.0
 	toml_parser@1.1.2+spec-1.1.0
+	tower-layer@0.3.3
+	tower-service@0.3.3
+	tower@0.5.3
 	tracing-attributes@0.1.31
 	tracing-core@0.1.36
 	tracing@0.1.44
@@ -237,8 +258,8 @@ CRATES="
 	zvariant_utils@3.3.1
 "
 
-# Highest rust-version among dependency crates: darling 0.24.1, image 0.25.10, rmcp 3.5.1 (1.88.0)
-RUST_MIN_VER="1.88.0"
+# Cargo.toml rust-version (File::try_lock); dependency crates need at most 1.88.0
+RUST_MIN_VER="1.89.0"
 
 inherit cargo optfeature
 
@@ -251,20 +272,7 @@ SRC_URI="
 
 LICENSE="MIT"
 # Dependent crate licenses
-LICENSE+="
-	0BSD
-	Apache-2.0
-	Apache-2.0-with-LLVM-exceptions
-	BSD
-	BSD-2
-	GPL-3
-	ISC
-	LGPL-2.1+
-	MIT
-	Unicode-3.0
-	Unlicense
-	ZLIB
-"
+LICENSE+=" Apache-2.0 BSD-2 BSD GPL-3 ISC MIT Unicode-3.0 ZLIB"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64"
 
@@ -306,6 +314,8 @@ src_test() {
 		indicator::tests::capture_release_unlocks_an_inherited_descriptor
 		indicator::tests::captures_fail_when_a_running_overlay_does_not_reply
 		indicator::tests::captures_fail_while_a_stalled_overlay_cannot_be_told_to_hide
+		indicator::tests::captures_fail_when_the_capture_lock_cannot_be_taken
+		indicator::tests::captures_fail_without_a_client_socket_in_a_live_runtime
 		indicator::tests::captures_hold_the_lock_without_an_overlay
 		indicator::tests::captures_wait_only_while_the_overlay_was_on_screen
 		indicator::tests::concurrent_captures_do_not_consume_each_others_replies
@@ -314,7 +324,13 @@ src_test() {
 		indicator::tests::overlays_can_answer_the_client_socket
 		indicator::tests::set_values_are_masked_even_when_the_cached_role_was_public
 		remote_desktop::tests::only_a_running_bus_can_report_the_remote_desktop_portal_missing
+		server::tests::element_calls_naming_a_replaced_snapshot_send_nothing
 		server::tests::pointer_coordinate_backend_dispatch_is_safe
+		server::tests::stale_uinput_pointer_is_replaced
+		server::tests::uinput_monitor_gap_coordinate_gets_a_note
+		server::tests::uinput_scroll_sends_kernel_signed_wheel_without_ydotool
+		server::tests::untargeted_scroll_keeps_portal_start_error
+		server::tests::x11_monitor_gap_coordinate_gets_a_note
 		windowing::backends::kwin::transaction_tests::duplicate_callback_path_fails_without_disturbing_its_owner
 		windowing::backends::kwin::transaction_tests::transaction_times_out_and_cleans_up_when_callback_never_arrives
 		windowing::backends::kwin::transaction_tests::transaction_times_out_and_cleans_up_when_load_script_never_replies
@@ -324,6 +340,38 @@ src_test() {
 		windowing::backends::niri::tests::socket_rejects_truncated_and_oversized_replies
 		ydotool::tests::implicit_socket_rejects_shared_tmp_and_wrong_owner
 		ydotool::tests::implicit_socket_requires_private_runtime_directory_and_socket
+		atspi_tree_impl::tests::editable_text_exact_readback_accepts_empty_whitespace_and_trailing_newline
+		atspi_tree_impl::tests::editable_text_missing_text_and_read_errors_are_structured_outcomes
+		atspi_tree_impl::tests::editable_text_negative_counts_and_stalled_readback_are_structured_outcomes
+		atspi_tree_impl::tests::editable_text_non_bmp_matching_count_does_not_accept_different_content
+		atspi_tree_impl::tests::editable_text_non_bmp_readback_supports_scalar_and_utf16_peers
+		atspi_tree_impl::tests::editable_text_normalization_mismatch_is_not_verified
+		atspi_tree_impl::tests::editable_text_readback_chunks_utf16_without_splitting_non_bmp
+		atspi_tree_impl::tests::editable_text_readback_waits_for_async_publication
+		atspi_tree_impl::tests::editable_text_rejection_and_mutation_errors_remain_errors
+		atspi_tree_impl::tests::editable_text_true_without_publication_is_mismatch_and_mutates_once
+		atspi_tree_impl::tests::indexed_actions_bound_untrusted_counts_before_reading_indices
+		atspi_tree_impl::tests::indexed_actions_time_out_the_entire_read
+		atspi_tree_impl::tests::indexed_children_resolve_webkit_names_on_the_accessibility_bus
+		atspi_tree_impl::tests::numeric_value_dispatch_remains_isolated_from_editable_text
+		atspi_tree_impl::tests::password_text_is_unverifiable_even_when_requested_text_is_bullets
+		atspi_tree_impl::tests::qt_action_names_do_not_depend_on_localized_names
+		atspi_tree_impl::tests::focused_field_insert_bounds_each_edit_call
+		atspi_tree_impl::tests::focused_field_insert_checks_the_untouched_text
+		atspi_tree_impl::tests::focused_field_insert_is_exact_under_qt_length_rules
+		atspi_tree_impl::tests::focused_field_insert_lands_at_the_caret_and_reads_back
+		atspi_tree_impl::tests::focused_field_insert_needs_a_focused_editable_field
+		atspi_tree_impl::tests::focused_field_insert_needs_the_toolkit_for_non_ascii_text
+		atspi_tree_impl::tests::focused_field_insert_replaces_the_selection
+		atspi_tree_impl::tests::focused_field_insert_reports_a_readback_mismatch
+		atspi_tree_impl::tests::focused_field_insert_skips_password_fields
+		atspi_tree_impl::tests::focused_field_insert_stays_in_the_target_window
+		atspi_tree_impl::tests::pid_roots_keep_all_toolkits_and_a_missing_pid_stays_empty
+		atspi_tree_impl::tests::text_snapshot_reads_selections_through_get_n_selections
+		gnome_extension::tests::system_migration_keeps_reload_warning_until_shell_changes_loaded_path
+		remote_desktop::eis_tests::gnome_fractional_pointer_reaches_full_eis_region
+		test_sockets::tests::a_private_bus_keeps_its_socket_in_its_dir_and_removes_both
+		reload_is_required_only_for_changes_gnome_shell_runs
 	)
 	cargo_src_test
 }
