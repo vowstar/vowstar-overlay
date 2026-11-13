@@ -1,0 +1,26 @@
+Octave 9 renamed octave_base_value::count to m_count and Octave 11 removed
+the deprecated count alias.
+
+--- a/src/midi_object.cc
++++ b/src/midi_object.cc
+@@ -16,6 +16,8 @@
+ 
+ // Octave Includes
+ #include <octave/oct.h>
++#include <octave/version.h>
++
+ 
+ #ifdef HAVE_CONFIG_H
+ #  include "config.h"
+@@ -135,7 +137,11 @@ octave_midi::clone (void) const
+ octave_base_value *
+ octave_midi::unique_clone (void)
+ {
++#if OCTAVE_MAJOR_VERSION >= 9
++  m_count++;
++#else
+   count++;
++#endif
+   return this;
+ }
+ 

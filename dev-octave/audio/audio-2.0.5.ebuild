@@ -24,6 +24,13 @@ BDEPEND="virtual/pkgconfig"
 
 S="${WORKDIR}/${P}"
 
+PATCHES=( "${FILESDIR}/${P}-octave-count.patch" )
+
+src_prepare() {
+	default
+	tar -czf "${WORKDIR}/${P}-patched.tar.gz" -C "${WORKDIR}" "${P}" || die
+}
+
 src_install() {
 	local INST_PREFIX="${D}/usr/share/octave/packages"
 	local ARCH_PREFIX="${D}/usr/$(get_libdir)/octave/packages"
@@ -37,7 +44,7 @@ src_install() {
 		pkg prefix ${INST_PREFIX} ${ARCH_PREFIX};\
 		pkg local_list octave_packages;\
 		pkg global_list octave_packages;\
-		pkg install -verbose -nodeps ${DISTDIR}/${P}.tar.gz;" || die
+		pkg install -verbose -nodeps ${WORKDIR}/${P}-patched.tar.gz;" || die
 }
 
 pkg_postinst() {
