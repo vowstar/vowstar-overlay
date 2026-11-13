@@ -1,0 +1,19 @@
+fmt 11 moved fmt::format from fmt/core.h to fmt/format.h; fmt/core.h only
+provides it when FMT_DEPRECATED_HEAVY_CORE is defined. Ioex_Internals.C uses
+fmt::format throughout but included only fmt/core.h, so building against
+dev-libs/libfmt-12 fails with "'format' is not a member of 'fmt'".
+
+Every other IOSS source that includes fmt/core.h also includes fmt/format.h
+(or fmt/ostream.h / fmt/color.h, which include it).
+
+--- a/ThirdParty/ioss/vtkioss/exodus/Ioex_Internals.C
++++ b/ThirdParty/ioss/vtkioss/exodus/Ioex_Internals.C
+@@ -7,7 +7,7 @@
+ #include "exodus/Ioex_Internals.h" // for Internals, ElemBlock, etc
+ #include "exodus/Ioex_Utils.h"
+ #include "vtk_fmt.h"
+-#include VTK_FMT(fmt/core.h)
++#include VTK_FMT(fmt/format.h)
+ 
+ #include "Ioss_ElementTopology.h"
+ #include "Ioss_GroupingEntity.h"
