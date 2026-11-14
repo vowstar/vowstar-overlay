@@ -10,7 +10,7 @@ HOMEPAGE="https://github.com/vowstar/qsoc"
 
 SRC_URI="https://github.com/vowstar/qsoc/releases/download/v${PV}/${P}.tar.xz"
 
-LICENSE="Apache-2.0 BSD BSD-2 MIT public-domain"
+LICENSE="Apache-2.0 BSD BSD-2 ISC MIT public-domain ZLIB"
 SLOT="0"
 KEYWORDS="~amd64"
 RESTRICT="test"
@@ -19,6 +19,7 @@ RDEPEND="
 	dev-cpp/yaml-cpp:=
 	dev-libs/libfmt:=
 	>=dev-qt/qtbase-6.5:6[gui,network,widgets]
+	>=dev-qt/qtdeclarative-6.5:6
 	>=dev-qt/qtsvg-6.5:6
 	>=sci-electronics/slang-12.1
 "
