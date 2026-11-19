@@ -33,6 +33,7 @@ CRATES="
 	bitvec@1.0.1
 	block-buffer@0.12.1
 	blocking@1.6.2
+	bstr@1.13.1
 	bumpalo@3.20.2
 	bytemuck@1.25.0
 	bytemuck_derive@1.12.1
@@ -57,8 +58,8 @@ CRATES="
 	darling@0.24.1
 	darling_core@0.24.1
 	darling_macro@0.24.1
+	debug-fn@1.0.0
 	digest@0.11.3
-	dlib@0.5.3
 	downcast-rs@1.2.1
 	dyn-clone@1.0.20
 	endi@1.1.1
@@ -74,6 +75,7 @@ CRATES="
 	find-msvc-tools@0.1.9
 	flate2@1.1.9
 	foldhash@0.1.5
+	foldhash@0.2.0
 	font-types@0.11.3
 	funty@2.0.0
 	futures-channel@0.3.32
@@ -107,12 +109,16 @@ CRATES="
 	ident_case@1.0.1
 	image@0.25.10
 	indexmap@2.14.0
+	isnt@0.2.0
 	itoa@1.0.18
 	js-sys@0.3.98
+	kbvm-proc@0.3.0
+	kbvm@0.2.0
 	leb128fmt@0.1.0
 	libc@0.2.186
-	libloading@0.8.9
 	libmimalloc-sys@0.1.49
+	linearize-derive@0.2.2
+	linearize@0.1.8
 	linux-raw-sys@0.12.1
 	log@0.4.29
 	matchit@0.8.4
@@ -156,6 +162,7 @@ CRATES="
 	rustversion@1.0.22
 	schemars@1.2.1
 	schemars_derive@1.2.1
+	secure-execution@0.1.0
 	semver@1.0.28
 	serde@1.0.228
 	serde_core@1.0.228
@@ -201,8 +208,10 @@ CRATES="
 	typenum@1.20.1
 	uds_windows@1.2.1
 	unicode-ident@1.0.24
+	unicode-width@0.2.3
 	unicode-xid@0.2.6
 	uuid@1.23.1
+	version_check@0.9.5
 	wasi@0.11.1+wasi-snapshot-preview1
 	wasip2@1.0.3+wasi-0.2.9
 	wasip3@0.4.0+wasi-0.3.0-rc-2026-01-06
@@ -242,7 +251,6 @@ CRATES="
 	x11rb-protocol@0.14.0
 	x11rb@0.14.0
 	xcursor@0.3.11
-	xkbcommon-dl@0.4.2
 	xkeysym@0.2.1
 	zbus-lockstep-macros@0.5.2
 	zbus-lockstep@0.5.2
@@ -258,8 +266,8 @@ CRATES="
 	zvariant_utils@3.3.1
 "
 
-# Cargo.toml rust-version (File::try_lock); dependency crates need at most 1.88.0
-RUST_MIN_VER="1.89.0"
+# Cargo.toml rust-version, set by the kbvm dependency
+RUST_MIN_VER="1.95.0"
 
 inherit cargo optfeature
 
@@ -272,16 +280,24 @@ SRC_URI="
 
 LICENSE="MIT"
 # Dependent crate licenses
-LICENSE+=" Apache-2.0 BSD-2 BSD GPL-3 ISC MIT Unicode-3.0 ZLIB"
+LICENSE+="
+	0BSD
+	Apache-2.0
+	Apache-2.0-with-LLVM-exceptions
+	BSD
+	BSD-2
+	GPL-3
+	LGPL-2.1+
+	MIT
+	Unicode-3.0
+	Unlicense
+	ZLIB
+"
 SLOT="0"
 KEYWORDS="~amd64 ~arm64"
 
 # at-spi2-core provides the AT-SPI registry the accessibility tree reads.
-# libxkbcommon is dlopened for the GNOME keymap check of typed text.
-RDEPEND="
-	app-accessibility/at-spi2-core
-	x11-libs/libxkbcommon
-"
+RDEPEND="app-accessibility/at-spi2-core"
 
 src_install() {
 	cargo_src_install
@@ -324,6 +340,8 @@ src_test() {
 		indicator::tests::overlays_can_answer_the_client_socket
 		indicator::tests::set_values_are_masked_even_when_the_cached_role_was_public
 		remote_desktop::tests::only_a_running_bus_can_report_the_remote_desktop_portal_missing
+		server::app_state_pid_scope_tests::app_state_keeps_pid_scope_when_window_lookup_fails
+		server::type_text_atspi_fallback_tests::a_two_group_keymap_refusal_types_through_atspi
 		server::tests::element_calls_naming_a_replaced_snapshot_send_nothing
 		server::tests::pointer_coordinate_backend_dispatch_is_safe
 		server::tests::stale_uinput_pointer_is_replaced
@@ -350,12 +368,6 @@ src_test() {
 		atspi_tree_impl::tests::editable_text_readback_waits_for_async_publication
 		atspi_tree_impl::tests::editable_text_rejection_and_mutation_errors_remain_errors
 		atspi_tree_impl::tests::editable_text_true_without_publication_is_mismatch_and_mutates_once
-		atspi_tree_impl::tests::indexed_actions_bound_untrusted_counts_before_reading_indices
-		atspi_tree_impl::tests::indexed_actions_time_out_the_entire_read
-		atspi_tree_impl::tests::indexed_children_resolve_webkit_names_on_the_accessibility_bus
-		atspi_tree_impl::tests::numeric_value_dispatch_remains_isolated_from_editable_text
-		atspi_tree_impl::tests::password_text_is_unverifiable_even_when_requested_text_is_bullets
-		atspi_tree_impl::tests::qt_action_names_do_not_depend_on_localized_names
 		atspi_tree_impl::tests::focused_field_insert_bounds_each_edit_call
 		atspi_tree_impl::tests::focused_field_insert_checks_the_untouched_text
 		atspi_tree_impl::tests::focused_field_insert_is_exact_under_qt_length_rules
@@ -366,7 +378,13 @@ src_test() {
 		atspi_tree_impl::tests::focused_field_insert_reports_a_readback_mismatch
 		atspi_tree_impl::tests::focused_field_insert_skips_password_fields
 		atspi_tree_impl::tests::focused_field_insert_stays_in_the_target_window
+		atspi_tree_impl::tests::indexed_actions_bound_untrusted_counts_before_reading_indices
+		atspi_tree_impl::tests::indexed_actions_time_out_the_entire_read
+		atspi_tree_impl::tests::indexed_children_resolve_webkit_names_on_the_accessibility_bus
+		atspi_tree_impl::tests::numeric_value_dispatch_remains_isolated_from_editable_text
+		atspi_tree_impl::tests::password_text_is_unverifiable_even_when_requested_text_is_bullets
 		atspi_tree_impl::tests::pid_roots_keep_all_toolkits_and_a_missing_pid_stays_empty
+		atspi_tree_impl::tests::qt_action_names_do_not_depend_on_localized_names
 		atspi_tree_impl::tests::text_snapshot_reads_selections_through_get_n_selections
 		gnome_extension::tests::system_migration_keeps_reload_warning_until_shell_changes_loaded_path
 		remote_desktop::eis_tests::gnome_fractional_pointer_reaches_full_eis_region
