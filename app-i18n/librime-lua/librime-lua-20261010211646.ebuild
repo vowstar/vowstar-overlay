@@ -28,7 +28,8 @@ REQUIRED_USE="${LUA_REQUIRED_USE}"
 RDEPEND=">=app-i18n/librime-1.6:0=
 	${LUA_DEPS}"
 DEPEND="${RDEPEND}
-	dev-libs/boost:0"
+	dev-libs/boost:0
+	x11-base/xorg-proto"
 
 if [[ "${PV}" != "99999999999999" ]]; then
 	S="${WORKDIR}/${PN}-${LIBRIME_LUA_GIT_REVISION}"
