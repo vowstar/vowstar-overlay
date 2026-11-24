@@ -20,8 +20,10 @@ RDEPEND="
 	dev-cpp/glog:=
 	dev-cpp/yaml-cpp:=
 	>=dev-libs/boost-1.74:=
+	dev-libs/darts
 	dev-libs/leveldb:=
 	dev-libs/marisa
+	x11-base/xorg-proto
 "
 DEPEND="${RDEPEND}
 	test? ( dev-cpp/gtest )
@@ -56,5 +58,5 @@ src_install() {
 	cmake_src_install
 
 	insinto /usr/include
-	doins include/darts.h include/utf8.h
+	doins include/utf8.h
 }
