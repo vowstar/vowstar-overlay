@@ -57,6 +57,4 @@ src_install() {
 
 	insinto /usr/include
 	doins include/darts.h include/utf8.h
-	insinto /usr/include/X11
-	doins include/X11/keysym.h
 }
