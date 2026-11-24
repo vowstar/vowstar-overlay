@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<use>
+		<flag name="debug">Enable debugging (including logging of input of RIME input methods)</flag>
+	</use>
+	<longdescription lang="en">
+		RIME (Rime Input Method Engine) is the core library of the Rime input
+		method. It provides the dictionary, input engine and plugin interfaces
+		used by its Fcitx and IBus frontends.
+	</longdescription>
+	<longdescription lang="zh">
+		RIME（Rime Input Method Engine）是 Rime 输入法的核心库，提供词典、
+		输入引擎和插件接口，供 Fcitx 与 IBus 前端使用。
+	</longdescription>
+	<upstream>
+		<remote-id type="github">rime/librime</remote-id>
+	</upstream>
+</pkgmetadata>
