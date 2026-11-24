@@ -29,6 +29,7 @@ RDEPEND=">=app-i18n/librime-1.6:0=
 	${LUA_DEPS}"
 DEPEND="${RDEPEND}
 	dev-libs/boost:0
+	dev-libs/darts
 	x11-base/xorg-proto"
 
 if [[ "${PV}" != "99999999999999" ]]; then
