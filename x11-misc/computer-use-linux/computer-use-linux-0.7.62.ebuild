@@ -299,6 +299,8 @@ KEYWORDS="~amd64 ~arm64"
 # at-spi2-core provides the AT-SPI registry the accessibility tree reads.
 RDEPEND="app-accessibility/at-spi2-core"
 
+QA_FLAGS_IGNORED="usr/bin/computer-use-linux-cosmic usr/bin/computer-use-linux-indicator"
+
 src_install() {
 	cargo_src_install
 	insinto /usr/share/${PN}
