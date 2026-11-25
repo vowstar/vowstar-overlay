@@ -28,8 +28,8 @@ RDEPEND="
 	media-libs/fontconfig
 	media-libs/glew:0
 	>=media-libs/glm-0.9.9.1
-	media-libs/gst-plugins-base
-	media-libs/gstreamer
+	media-libs/gst-plugins-base:1.0
+	media-libs/gstreamer:1.0
 	media-libs/libglvnd
 	media-libs/mesa
 	net-libs/libsoup:2.4
