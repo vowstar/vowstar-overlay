@@ -60,6 +60,9 @@ src_test() {
 	unset CI
 	export GIT_CONFIG_NOSYSTEM=1
 	export GIT_CONFIG_GLOBAL=/dev/null
+	export GIT_CONFIG_COUNT=1
+	export GIT_CONFIG_KEY_0=safe.directory
+	export GIT_CONFIG_VALUE_0="*"
 	# Keep the test home outside the snapshot directory under ${T}.
 	export HOME="${T}/home"
 	mkdir -p "${HOME}" || die
@@ -78,6 +81,7 @@ src_test() {
 		bash_without_a_prompt_of_its_own_gets_a_clear_one
 		python::only_valid_project_environments_are_selected_in_order
 		python::project_environment_is_loaded_after_user_config_and_can_be_deactivated
+		tools::format::tests::a_selection_without_any_installed_tool_asks_to_install_one
 		tools::format::tests::without_a_sign_the_first_installed_tool_is_used
 	)
 
