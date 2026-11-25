@@ -389,6 +389,27 @@ src_test() {
 		gnome_extension::tests::system_migration_keeps_reload_warning_until_shell_changes_loaded_path
 		remote_desktop::eis_tests::gnome_fractional_pointer_reaches_full_eis_region
 		test_sockets::tests::a_private_bus_keeps_its_socket_in_its_dir_and_removes_both
+		virtual_pen::tests::kwin_emulate_tablet_blocker_reads_systemd_service_over_dbus
+		virtual_pen::tests::kwin_environ_proc_fixture_covers_hidepid_nixos_and_ppid_mismatch
+		virtual_pen::tests::kwin_environ_reads_wrapper_parent_when_kwin_is_non_dumpable
+		virtual_pen::tests::kwin_environ_refuses_non_wrapper_parent_and_reads_xwayland_child
+		screenshot_impl::tests::portal_capture_cleans_same_tick_picture_and_preserves_existing_name
+		screenshot_impl::tests::portal_capture_removes_new_invalid_returned_path
+		screenshot_impl::tests::portal_capture_removes_new_returned_path
+		server::tree_spill_server_tests::max_tree_bytes_keeps_the_prefix_that_fits
+		server::tree_spill_server_tests::an_index_past_the_inline_prefix_resolves_against_the_cached_tree
+		server::tree_spill_server_tests::max_tree_bytes_omitted_or_above_the_budget_is_fit_tree
+		server::tree_spill_server_tests::max_tree_bytes_zero_returns_no_nodes_but_names_the_cached_tree
+		tree_spill::tests::a_directory_others_can_write_is_refused
+		tree_spill::tests::a_new_spill_replaces_the_previous_one_and_a_new_snapshot_removes_it
+		tree_spill::tests::large_trees_spill_whole_and_keep_a_prefix_that_fits
+		tree_spill::tests::sweep_keeps_live_servers_and_removes_gone_or_reused_pids
+		tree_spill::tests::sweep_removes_files_older_than_an_hour
+		windowing::wayland_session::tests::identifies_the_connected_peer_without_environment_guessing
+		x11_agent_master_types_and_clicks_without_moving_the_user_focus
+		background_text_and_keys_reach_a_browser_tab_over_devtools
+		background_text_and_keys_reach_a_terminal_program_by_its_tty
+		background_text_and_keys_reach_an_atspi_element_without_focus
 		reload_is_required_only_for_changes_gnome_shell_runs
 	)
 	cargo_src_test
