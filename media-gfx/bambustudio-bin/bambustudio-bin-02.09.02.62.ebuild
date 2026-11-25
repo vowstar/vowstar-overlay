@@ -13,7 +13,7 @@ HOMEPAGE="https://bambulab.com"
 
 SRC_URI="
 	amd64? (
-		https://github.com/bambulab/${MY_PN}/releases/download/v${PV}/BambuStudio_ubu24-v02.09.01.70-20261103183404.AppImage
+		https://github.com/bambulab/${MY_PN}/releases/download/v${PV}/BambuStudio_ubu24-v02.09.02.62-20261124164959.AppImage
 		-> ${P}.AppImage
 	)
 "
