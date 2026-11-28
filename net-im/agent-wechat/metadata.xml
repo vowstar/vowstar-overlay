@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>vowstar@gmail.com</email>
+		<name>Huang Rui</name>
+	</maintainer>
+	<longdescription lang="en">
+		Agent WeChat is a native WeChat client and local daemon with a
+		command line interface and an authenticated HTTP API. It connects to
+		WeChat directly, can reuse an existing WeChat for Linux profile, and
+		lets scripts or AI agents read conversations, send messages and work
+		with media.
+	</longdescription>
+	<longdescription lang="zh">
+		Agent WeChat 是原生微信客户端和本地守护进程，提供命令行界面与带认证的
+		HTTP API。它直接连接微信服务器，可复用现有的微信 Linux 版数据目录，让脚本
+		或 AI agent 读取会话、发送消息并处理媒体文件。
+	</longdescription>
+	<upstream>
+		<remote-id type="github">thisnick/agent-wechat</remote-id>
+		<bugs-to>https://github.com/thisnick/agent-wechat/issues</bugs-to>
+	</upstream>
+</pkgmetadata>

@@ -1,0 +1,11 @@
+--- a/crates/wechat-media/src/wxgf.rs
++++ b/crates/wechat-media/src/wxgf.rs
+@@ -184,7 +184,7 @@
+         unsafe {
+             command.pre_exec(|| {
+                 for (resource, limit) in [
+-                    (libc::RLIMIT_AS, 512 * 1024 * 1024),
++                    (libc::RLIMIT_AS, 1024 * 1024 * 1024),
+                     (libc::RLIMIT_CPU, 8),
+                     (libc::RLIMIT_FSIZE, MAX_IMAGE_BYTES as libc::rlim_t),
+                     (libc::RLIMIT_NOFILE, 32),

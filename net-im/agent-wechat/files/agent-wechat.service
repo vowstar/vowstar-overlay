@@ -1,0 +1,24 @@
+[Unit]
+Description=Agent WeChat native daemon
+Documentation=https://thisnick.github.io/agent-wechat/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/wx serve
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillSignal=SIGTERM
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.local/share/agent-wechat
+# Add the WeChat profile path when the daemon uses wx auth login --official.
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+[Install]
+WantedBy=default.target

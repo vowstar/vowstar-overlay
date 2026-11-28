@@ -1,0 +1,424 @@
+# Copyright 2026 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+EAPI=8
+
+RUST_MIN_VER="1.93.1"
+
+DESCRIPTION="Native WeChat client, CLI and local hub for scripts and AI agents"
+HOMEPAGE="https://github.com/thisnick/agent-wechat"
+
+CRATES="
+	adler2@2.0.1
+	aead@0.5.2
+	aes-gcm@0.10.3
+	aes@0.8.4
+	ahash@0.8.12
+	aho-corasick@1.1.5
+	android_system_properties@0.1.6
+	anstream@1.0.0
+	anstyle-parse@1.0.0
+	anstyle-query@1.1.5
+	anstyle-wincon@3.0.11
+	anstyle@1.0.14
+	anyhow@1.0.104
+	arc-swap@1.9.3
+	async-stream-impl@0.3.6
+	async-stream@0.3.6
+	atomic-waker@1.1.2
+	autocfg@1.5.1
+	axum-core@0.5.6
+	axum-server@0.8.0
+	axum@0.8.9
+	base16ct@0.2.0
+	base64@0.22.1
+	base64@0.23.1
+	base64ct@1.8.3
+	bindgen@0.72.1
+	bitflags@1.3.2
+	bitflags@2.13.2
+	block-buffer@0.10.4
+	block-padding@0.3.3
+	bumpalo@3.20.3
+	bytemuck@1.25.2
+	byteorder-lite@0.1.0
+	bytes@1.12.1
+	cbc@0.1.2
+	cc@1.9.0
+	cexpr@0.6.0
+	cfg-if@1.0.5
+	cfg_aliases@0.2.2
+	chacha20@0.10.2
+	chacha20@0.9.1
+	chrono@0.4.45
+	cipher@0.4.4
+	clang-sys@1.9.1
+	clap@4.6.7
+	clap_builder@4.6.7
+	clap_derive@4.6.7
+	clap_lex@1.1.1
+	cmake@0.1.58
+	color_quant@1.1.0
+	colorchoice@1.0.5
+	const-oid@0.9.6
+	constant_time_eq@0.6.1
+	core-foundation-sys@0.8.7
+	core_detect@1.0.0
+	coreaudio-rs@0.12.1
+	coreaudio-sys@0.2.18
+	cpufeatures@0.2.17
+	cpufeatures@0.3.1
+	crc32fast@1.5.3
+	crypto-bigint@0.5.5
+	crypto-common@0.1.7
+	ctr@0.9.2
+	data-encoding@2.11.1
+	der@0.7.10
+	digest@0.10.7
+	displaydoc@0.2.7
+	dyn-clone@1.0.20
+	ecdsa@0.16.9
+	either@1.19.0
+	elliptic-curve@0.13.8
+	encoding_rs@0.8.42
+	equivalent@1.0.3
+	errno@0.3.14
+	fallible-iterator@0.3.0
+	fallible-streaming-iterator@0.1.9
+	fastrand@2.5.0
+	fdeflate@0.3.7
+	ff@0.13.1
+	filetime@0.2.29
+	find-msvc-tools@0.1.15
+	flate2@1.1.10
+	fnv@1.0.7
+	foldhash@0.2.0
+	foreign-types-shared@0.1.1
+	foreign-types@0.3.2
+	form_urlencoded@1.2.2
+	fs-err@3.3.2
+	fs2@0.4.3
+	futures-channel@0.3.34
+	futures-core@0.3.34
+	futures-io@0.3.34
+	futures-macro@0.3.34
+	futures-sink@0.3.34
+	futures-task@0.3.34
+	futures-util@0.3.34
+	g2gen@1.2.2
+	g2p@1.2.2
+	g2poly@1.2.2
+	generic-array@0.14.7
+	getrandom@0.2.17
+	getrandom@0.3.4
+	getrandom@0.4.3
+	ghash@0.5.1
+	gif@0.14.2
+	glob@0.3.4
+	group@0.13.0
+	h2@0.4.20
+	hashbrown@0.14.5
+	hashbrown@0.17.1
+	hashlink@0.9.1
+	heck@0.5.0
+	hex@0.4.3
+	hkdf@0.12.4
+	hmac@0.12.1
+	http-body-util@0.1.5
+	http-body@1.1.0
+	http@1.5.0
+	httparse@1.10.1
+	httpdate@1.0.3
+	hyper-rustls@0.27.10
+	hyper-util@0.1.21
+	hyper@1.12.0
+	iana-time-zone-haiku@0.1.2
+	iana-time-zone@0.1.65
+	icu_collections@2.3.0
+	icu_locale_core@2.3.0
+	icu_normalizer@2.3.0
+	icu_normalizer_data@2.3.0
+	icu_properties@2.3.0
+	icu_properties_data@2.3.0
+	icu_provider@2.3.1
+	idna@1.1.0
+	idna_adapter@1.2.2
+	image-webp@0.2.4
+	image@0.25.10
+	indexmap@2.14.2
+	inout@0.1.4
+	ipnet@2.12.2
+	is_terminal_polyfill@1.70.2
+	itertools@0.13.0
+	itoa@1.0.18
+	jobserver@0.1.35
+	jpeg-decoder@0.3.2
+	js-sys@0.3.106
+	lazy_static@1.5.1
+	libc@0.2.191
+	libloading@0.8.9
+	libm@0.2.16
+	libsqlite3-sys@0.30.1
+	linux-raw-sys@0.12.1
+	litemap@0.8.3
+	log@0.4.34
+	lru-slab@0.1.3
+	lru@0.18.5
+	matchit@0.8.4
+	md-5@0.10.6
+	memchr@2.8.3
+	mime@0.3.17
+	mime_guess@2.0.5
+	minimal-lexical@0.2.1
+	miniz_oxide@0.8.9
+	miniz_oxide@0.9.1
+	mio@1.2.4
+	moxcms@0.8.1
+	multer@3.1.0
+	multiversion_no_op@1.0.0
+	nix@0.31.3
+	nom@7.1.3
+	num-bigint-dig@0.8.6
+	num-complex@0.4.6
+	num-integer@0.1.47
+	num-iter@0.1.46
+	num-traits@0.2.19
+	once_cell@1.21.4
+	once_cell_polyfill@1.70.2
+	opaque-debug@0.3.1
+	openssl-macros@0.1.1
+	openssl-src@300.6.1+3.6.3
+	openssl-sys@0.9.117
+	openssl@0.10.81
+	opusic-c@1.6.1
+	opusic-sys@0.7.6
+	p224@0.13.2
+	p256@0.13.2
+	pbkdf2@0.12.2
+	pem-rfc7468@0.7.0
+	percent-encoding@2.3.2
+	pin-project-lite@0.2.17
+	pkcs1@0.7.5
+	pkcs8@0.10.2
+	pkg-config@0.3.34
+	png@0.18.1
+	poly1305@0.8.0
+	polyval@0.6.2
+	potential_utf@0.1.6
+	ppv-lite86@0.2.21
+	primal-check@0.3.4
+	primeorder@0.13.6
+	proc-macro2@1.0.107
+	pxfm@0.1.30
+	qrcodegen@1.8.0
+	quick-error@2.0.1
+	quick-xml@0.38.4
+	quinn-proto@0.11.19
+	quinn-udp@0.5.16
+	quinn@0.11.12
+	quote@1.0.47
+	r-efi@5.3.0
+	r-efi@6.0.0
+	rand@0.10.3
+	rand@0.8.8
+	rand@0.9.5
+	rand_chacha@0.3.1
+	rand_chacha@0.9.0
+	rand_core@0.10.1
+	rand_core@0.6.4
+	rand_core@0.9.5
+	rand_pcg@0.10.2
+	realfft@3.5.1
+	ref-cast-impl@1.0.27
+	ref-cast@1.0.27
+	regex-automata@0.4.18
+	regex-syntax@0.8.11
+	regex@1.13.1
+	reqwest@0.12.28
+	rfc6979@0.4.0
+	ring@0.17.14
+	roxmltree@0.21.1
+	rqrr@0.11.0
+	rsa@0.9.10
+	rubato@0.16.2
+	rusqlite@0.32.1
+	rustc-hash@2.1.3
+	rustfft@6.4.1
+	rustix@1.1.5
+	rustls-pki-types@1.15.1
+	rustls-webpki@0.103.16
+	rustls@0.23.46
+	rustversion@1.0.23
+	ryu@1.0.23
+	schemars@1.2.3
+	schemars_derive@1.2.3
+	scopeguard@1.2.0
+	sec1@0.7.3
+	serde@1.0.229
+	serde_core@1.0.229
+	serde_derive@1.0.229
+	serde_derive_internals@0.30.0
+	serde_json@1.0.154
+	serde_path_to_error@0.1.20
+	serde_spanned@0.6.9
+	serde_urlencoded@0.7.1
+	sha1@0.10.7
+	sha2@0.10.9
+	shlex@1.3.0
+	shlex@2.0.1
+	signal-hook-registry@1.4.8
+	signature@2.2.0
+	simd-adler32@0.3.10
+	simdutf8@0.1.5
+	slab@0.4.12
+	smallvec@1.16.3
+	socket2@0.6.5
+	spin@0.9.9
+	spki@0.7.3
+	stable_deref_trait@1.2.1
+	strength_reduce@0.2.4
+	strsim@0.11.1
+	subtle@2.6.1
+	syn@2.0.119
+	syn@3.0.9
+	sync_wrapper@1.0.2
+	synstructure@0.14.0
+	tempfile@3.27.0
+	termcolor@1.4.1
+	thiserror-impl@2.0.21
+	thiserror@2.0.21
+	tinystr@0.8.4
+	tinyvec@1.13.3
+	tokio-macros@2.7.2
+	tokio-rustls@0.26.6
+	tokio-tungstenite@0.29.0
+	tokio-util@0.7.20
+	tokio@1.54.0
+	toml@0.8.23
+	toml_datetime@0.6.11
+	toml_edit@0.22.27
+	toml_write@0.1.2
+	tower-http@0.6.11
+	tower-layer@0.3.3
+	tower-service@0.3.3
+	tower@0.5.3
+	tracing-core@0.1.36
+	tracing@0.1.44
+	transpose@0.2.3
+	try-lock@0.2.5
+	ts-rs-macros@10.1.0
+	ts-rs@10.1.0
+	tungstenite@0.29.0
+	typed-path@0.13.0
+	typenum@1.20.1
+	unicase@2.10.0
+	unicode-ident@1.0.27
+	unicode-width@0.2.3
+	universal-hash@0.5.1
+	untrusted@0.9.0
+	url@2.5.8
+	utf8_iter@1.0.4
+	utf8parse@0.2.2
+	uuid@1.28.0
+	vcpkg@0.2.15
+	version_check@0.9.5
+	want@0.3.2
+	wasapi@0.25.0
+	wasi@0.11.1+wasi-snapshot-preview1
+	wasip2@1.0.4+wasi-0.2.12
+	wasm-bindgen-futures@0.4.79
+	wasm-bindgen-macro-support@0.2.129
+	wasm-bindgen-macro@0.2.129
+	wasm-bindgen-shared@0.2.129
+	wasm-bindgen@0.2.129
+	wasm-streams@0.4.2
+	web-sys@0.3.106
+	web-time@1.1.0
+	webpki-roots@1.0.10
+	weezl@0.1.12
+	winapi-i686-pc-windows-gnu@0.4.0
+	winapi-util@0.1.11
+	winapi-x86_64-pc-windows-gnu@0.4.0
+	winapi@0.3.9
+	windows-collections@0.3.2
+	windows-core@0.62.2
+	windows-future@0.3.2
+	windows-implement@0.60.2
+	windows-interface@0.59.3
+	windows-link@0.2.1
+	windows-numerics@0.3.1
+	windows-result@0.4.1
+	windows-strings@0.5.1
+	windows-sys@0.52.0
+	windows-sys@0.61.2
+	windows-targets@0.52.6
+	windows-threading@0.2.1
+	windows@0.62.2
+	windows_aarch64_gnullvm@0.52.6
+	windows_aarch64_msvc@0.52.6
+	windows_i686_gnu@0.52.6
+	windows_i686_gnullvm@0.52.6
+	windows_i686_msvc@0.52.6
+	windows_x86_64_gnu@0.52.6
+	windows_x86_64_gnullvm@0.52.6
+	windows_x86_64_msvc@0.52.6
+	winnow@0.7.15
+	wit-bindgen@0.57.1
+	writeable@0.6.4
+	yoke-derive@0.8.4
+	yoke@0.8.3
+	zerocopy-derive@0.8.63
+	zerocopy@0.8.63
+	zerofrom-derive@0.1.8
+	zerofrom@0.1.8
+	zeroize@1.9.1
+	zeroize_derive@1.5.0
+	zerotrie@0.2.5
+	zerovec-derive@0.11.6
+	zerovec@0.11.8
+	zip@9.5.1
+	zlib-rs@0.6.8
+	zmij@1.0.23
+	zopfli@0.8.4
+	zstd-safe@7.3.0
+	zstd-sys@2.1.2+zstd.1.5.7
+	zstd@0.13.3
+	zune-core@0.5.3
+	zune-jpeg@0.5.15
+"
+
+inherit cargo systemd
+
+SRC_URI="
+	https://github.com/thisnick/agent-wechat/archive/refs/tags/v${PV}.tar.gz
+		-> ${P}.tar.gz
+	${CARGO_CRATE_URIS}
+"
+
+S="${WORKDIR}/agent-wechat-${PV}/packages/native-client-rust"
+
+PATCHES=( "${FILESDIR}/${P}-wxgf-rlimit.patch" )
+
+LICENSE="MIT"
+# Dependent crate licenses
+LICENSE+=" Apache-2.0 BSD CDLA-Permissive-2.0 ISC MIT Unicode-3.0 ZLIB"
+SLOT="0"
+KEYWORDS="~amd64"
+
+RESTRICT="test"
+
+BDEPEND="dev-build/cmake"
+RDEPEND="media-libs/libpulse media-video/ffmpeg"
+
+src_compile() {
+	cargo_src_compile --locked -p wx-native
+}
+
+src_install() {
+	dobin "$(cargo_target_dir)/wx"
+
+	dodoc "${WORKDIR}/${P}/LICENSE" \
+		"${WORKDIR}/${P}/packages/cli/THIRD_PARTY_NOTICES.txt"
+
+	systemd_douserunit "${FILESDIR}"/agent-wechat.service
+}
